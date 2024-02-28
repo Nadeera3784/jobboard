@@ -1,0 +1,25 @@
+version: '3.9'
+
+networks:
+  jobboard-network:
+    driver: bridge
+    name: jobboard-network
+
+volumes:
+  redis-data:
+    name: laravel_redis-data
+
+services:
+  redis:
+    image: 'redis:latest'
+    platform: linux/amd64
+    command:
+      - redis-server
+      - '--appendonly'
+      - 'yes'
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis-data:/data'
+    networks:
+      - jobboard-network

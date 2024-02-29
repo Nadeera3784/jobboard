@@ -2,8 +2,8 @@ import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from
 import { LocationService } from '../services/location.service';
 import { response } from 'express';
 import { Response as ResponseType } from '../../app/enums/response.enum';
-import { CreateLocationDto } from "../dtos/createLocation.dto";
-import { UpdateLocationDto } from "../dtos/updateLocation.dto";
+import { CreateLocationDto } from "../dtos/create-location.dto";
+import { UpdateLocationDto } from "../dtos/update-location.dto";
 
 @Controller('locations')
 export class LocationController {

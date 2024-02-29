@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration from '../../config/ configuration'
+import configuration from '../../config/configuration'
 import { MongooseModule } from '@nestjs/mongoose';
 import { CategoryModule } from '../category/category.module';
 import { LocationModule } from '../location/location.module';
+import { AppService } from './services/app.service';
+import { AppController } from './controllers/app.controller';
 
 @Module({
   imports: [
@@ -22,7 +24,7 @@ import { LocationModule } from '../location/location.module';
     CategoryModule,
     LocationModule
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

@@ -19,5 +19,25 @@ export default () => ({
           host: process.env.REDIS_HOST,
           port: process.env.REDIS_PORT,
         }
-    }
+    },
+    job_types: [
+      'Full-time',
+      'Part-time',
+      'Contract',
+      'Internship',
+      'Temporary'
+    ],
+    remote: [
+      'Remote',
+      'On-site',
+      'Hybrid'
+    ],
+    experience_level: [
+      'Internship',
+      'Associate',
+      'Director',
+      'Entry level',
+      'Mid-Senior level',
+      'Executive'
+    ]
   });

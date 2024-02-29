@@ -12,7 +12,7 @@ export class Location extends Document {
   @IsNotEmpty()
   name: string;
 
-  @Prop({ default: "Active" })
+  @Prop({ default: 'Active' })
   @IsOptional()
   status: string;
 

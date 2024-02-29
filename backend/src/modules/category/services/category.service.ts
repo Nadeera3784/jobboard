@@ -12,18 +12,10 @@ export class CategoryService {
         @InjectModel(Category.name) private readonly categoryModel: Model<Category>
     ) { }
 
-    /*
-     Get the list of category
-     @returns Promise<Category[]>
-    */
     async getAll() {
         return await this.categoryModel.find();
     }
 
-    /*
-     Create 
-     @returns Promise<Category>
-    */
     async create(createCategoryDto: CreateCategoryDto) {
         return await this.categoryModel.create(createCategoryDto);
     }

@@ -1,14 +1,15 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
-import { CategoryService } from '../services/category.service';
+import { LocationService } from '../services/location.service';
+import { response } from 'express';
 import { Response as ResponseType } from '../../app/enums/response.enum';
-import { CreateCategoryDto } from "../dtos/createCategory.dto";
-import { UpdateCategoryDto } from "../dtos/updateCategory.dto";
+import { CreateLocationDto } from "../dtos/createLocation.dto";
+import { UpdateLocationDto } from "../dtos/updateLocation.dto";
 
-@Controller('categories')
-export class CategoryController {
+@Controller('locations')
+export class LocationController {
 
     constructor(
-        private readonly categoryService: CategoryService
+        private readonly locationService: LocationService
     ) { }
 
     @Get()
@@ -16,7 +17,7 @@ export class CategoryController {
         @Res() response
     ) {
         try {
-            const categories = await this.categoryService.getAll();
+            const categories = await this.locationService.getAll();
             return response.status(HttpStatus.OK).json({
                 type: ResponseType.SUCCESS,
                 message: null,
@@ -34,7 +35,7 @@ export class CategoryController {
     @Get('/:id')
     public async getById(@Res() response, @Param() { id }) {
         try {
-            const category = await this.categoryService.getById(id);
+            const category = await this.locationService.getById(id);
             return response.status(HttpStatus.OK).json({
                 type: ResponseType.SUCCESS,
                 message: null,
@@ -50,13 +51,13 @@ export class CategoryController {
     }
 
     @Post()
-    public async create(@Res() response, @Body() createCategoryDto: CreateCategoryDto) {
+    public async create(@Res() response, @Body() createLocationDto: CreateLocationDto) {
         try {
-            const category = await this.categoryService.create(createCategoryDto);
+            const location = await this.locationService.create(createLocationDto);
             return response.status(HttpStatus.OK).json({
                 type: ResponseType.SUCCESS,
-                message: 'Category has been created successfully',
-                data: category,
+                message: 'Location has been created successfully',
+                data: location,
             });
         } catch (error) {
             return response.status(HttpStatus.BAD_REQUEST).json({
@@ -71,13 +72,13 @@ export class CategoryController {
     public async update(
         @Res() response,
         @Param() { id },
-        @Body() updateCategoryDto: UpdateCategoryDto,
+        @Body() updateLocationDto: UpdateLocationDto,
     ) {
         try {
-            const category = await this.categoryService.update(id, updateCategoryDto);
+            const location = await this.locationService.update(id, updateLocationDto);
             return response.status(HttpStatus.OK).json({
                 type: ResponseType.SUCCESS,
-                message: 'Category has been updated successfully',
+                message: 'Location has been updated successfully',
                 data: null,
             });
         } catch (error) {
@@ -92,10 +93,10 @@ export class CategoryController {
     @Delete('/:id')
     public async delete(@Res() response, @Param() { id }) {
         try {
-            await this.categoryService.delete(id);
+            await this.locationService.delete(id);
             return response.status(HttpStatus.OK).json({
                 type: ResponseType.SUCCESS,
-                message: 'Category has been deleted successfully',
+                message: 'Location has been deleted successfully',
                 data: null,
             });
         } catch (error) {

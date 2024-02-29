@@ -5,7 +5,8 @@ import { Document, now } from 'mongoose';
 @Schema({
   versionKey: false,
 })
-export class Category extends Document {
+export class Location extends Document {
+
   @Prop({ unique: true })
   @IsString()
   @IsNotEmpty()
@@ -14,10 +15,10 @@ export class Category extends Document {
   @Prop({ default: "Active" })
   @IsOptional()
   status: string;
-  
+
   @Prop({ default: now() })
   @IsOptional()
   created_at: Date;
 }
 
-export const CategorySchema = SchemaFactory.createForClass(Category);
+export const LocationSchema = SchemaFactory.createForClass(Location);

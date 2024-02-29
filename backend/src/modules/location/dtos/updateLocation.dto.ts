@@ -1,6 +1,6 @@
-import {IsNotEmpty, IsOptional, IsString, Length } from 'class-validator';
+import {IsNotEmpty, IsString, Length , IsOptional} from 'class-validator';
 
-export class UpdateCategoryDto {
+export class UpdateLocationDto {
     @IsNotEmpty()
     @IsString()
     @Length(1, 20, {
@@ -11,5 +11,4 @@ export class UpdateCategoryDto {
     @IsString()
     @IsOptional()
     status: string;
-    
 }

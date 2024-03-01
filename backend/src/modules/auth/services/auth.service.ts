@@ -1,26 +1,47 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { SignupDto } from '../dtos/sign-up.dto';
+import { UserService } from '../../user/services/user.service';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
 @Injectable()
 export class AuthService {
-  
-    signUp = () => {
-        return true;
+
+    constructor(
+        private readonly userService: UserService,
+        @InjectQueue('verification-email') private verificationEmailQueue: Queue,
+    ) {
     }
 
-    signIn = () => {
+
+    public async signUp(signupDto: SignupDto) {
+        try {
+            return await this.userService.create(signupDto);
+        } catch (error) {
+            return error;
+        }
+    }
+
+    public signIn = () => {
 
     }
 
-    verifyEmail() {
+    public verifyEmail() {
 
     }
 
-    forgotPassword(email: string) {
+    public forgotPassword(email: string) {
 
     }
 
-    resetPassword(token: string, password: string) {
+    public resetPassword(token: string, password: string) {
         
+    }
+
+    public async sendVerificationMail(payload) {
+        await this.verificationEmailQueue.add('send-verification-email', payload, {
+          attempts: 3,
+        });
     }
 
 }

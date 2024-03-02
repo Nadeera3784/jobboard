@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
+
 import { LocationService } from '../services/location.service';
-import { response } from 'express';
 import { Response as ResponseType } from '../../app/enums/response.enum';
 import { CreateLocationDto } from "../dtos/create-location.dto";
 import { UpdateLocationDto } from "../dtos/update-location.dto";

@@ -1,4 +1,4 @@
 export class UserRegisterdEvent {
-    name: string;
+    token: string;
     email: string;
 }

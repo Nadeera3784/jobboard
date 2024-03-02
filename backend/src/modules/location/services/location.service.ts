@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Location } from '../schemas/location.schema';
-import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+
+import { Location } from '../schemas/location.schema';
 import { CreateLocationDto } from "../dtos/create-location.dto";
 import { UpdateLocationDto } from "../dtos/update-location.dto";
 
@@ -21,18 +22,18 @@ export class LocationService {
         return await this.locationModel.create(createLocationDto);
     }
 
-    async getById(id: number) {
+    async getById(id: string) {
         return await this.locationModel.findById(id);
     }
 
-    async update(id: number, updateLocationDto: UpdateLocationDto) {
+    async update(id: string, updateLocationDto: UpdateLocationDto) {
         return await this.locationModel.findByIdAndUpdate(
             { _id: id },
             updateLocationDto,
         );
     }
 
-    async delete(id: number) {
+    async delete(id: string) {
         return await this.locationModel.deleteOne({
             _id: id
         });

@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
+
 import { SharedFilters } from '../../../config/shared-filters';
 
 @Injectable()
 export class AppService {
   
-  getFilters(){
+  public getFilters(){
     const sharedFilters = SharedFilters();
     return {
       remote: sharedFilters.remote,

@@ -1,8 +1,9 @@
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { SignupDto } from '../dtos/sign-up.dto';
-import { UserService } from '../../user/services/user.service';
+import {Inject, Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+
+import { SignupDto } from '../dtos/sign-up.dto';
+import { UserService } from '../../user/services/user.service';
 
 @Injectable()
 export class AuthService {

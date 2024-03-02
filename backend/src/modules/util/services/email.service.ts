@@ -27,7 +27,6 @@ export class EmailService {
         token: string
     ) {
         const confirmLink = `${this.appUrl}/auth/new-verification?token=${token}`;
-
         await this.resend.emails.send({
             from: this.mailFrom,
             to: email,

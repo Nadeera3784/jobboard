@@ -1,4 +1,11 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, MaxLength } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+  MaxLength,
+} from 'class-validator';
 
 export class SignupDto {
   @IsString()
@@ -27,6 +34,5 @@ export class SignupDto {
 
   @IsString()
   @IsOptional()
-  role: String
-
+  role: string;
 }

@@ -1,12 +1,11 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import {IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { Document, now } from 'mongoose';
 
 @Schema({
   versionKey: false,
 })
 export class Location extends Document {
-
   @Prop({ unique: true })
   @IsString()
   @IsNotEmpty()

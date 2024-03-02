@@ -12,22 +12,17 @@ import { UpdateUserFeature } from './features/update-user-feature';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema },
-    ]),
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   providers: [
-    UserService, 
-    DeleteUserFeature, 
-    GetAllUsersFeature, 
+    UserService,
+    DeleteUserFeature,
+    GetAllUsersFeature,
     GetUserByIdFeature,
     CreateUserFeature,
-    UpdateUserFeature
+    UpdateUserFeature,
   ],
   controllers: [UserController],
-  exports: [
-    UserService
-  ]
+  exports: [UserService],
 })
-
-export class UserModule { }
+export class UserModule {}

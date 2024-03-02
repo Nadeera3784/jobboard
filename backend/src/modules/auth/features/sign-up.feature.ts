@@ -10,11 +10,10 @@ import { BaseFeature } from '../../core/features/base-feature';
 
 @Injectable()
 export class SignUpFeature extends BaseFeature {
-
   constructor(
     private readonly authService: AuthService,
     private readonly tokenService: TokenService,
-    private eventEmitter: EventEmitter2
+    private eventEmitter: EventEmitter2,
   ) {
     super();
   }
@@ -23,21 +22,35 @@ export class SignUpFeature extends BaseFeature {
     try {
       const isRegistered = await this.authService.signUp(signupDto);
       if (isRegistered instanceof BadRequestException) {
-        return this.responseError(HttpStatus.BAD_REQUEST, ResponseType.ERROR, isRegistered.message);
+        return this.responseError(
+          HttpStatus.BAD_REQUEST,
+          ResponseType.ERROR,
+          isRegistered.message,
+        );
       }
       await this.publishEvents(isRegistered);
-      return this.responseSuccess(HttpStatus.OK, ResponseType.SUCCESS, 'User has been created successfully')
+      return this.responseSuccess(
+        HttpStatus.OK,
+        ResponseType.SUCCESS,
+        'User has been created successfully',
+      );
     } catch (error) {
-      return this.responseError(HttpStatus.BAD_REQUEST, ResponseType.ERROR, 'Something went wrong, Please try again later', error);
+      return this.responseError(
+        HttpStatus.BAD_REQUEST,
+        ResponseType.ERROR,
+        'Something went wrong, Please try again later',
+        error,
+      );
     }
   }
 
   private async publishEvents(user) {
     const userRegisterdEvent = new UserRegisterdEvent();
-    const verificationToken = await this.tokenService.generateVerificationToken(user.email);
+    const verificationToken = await this.tokenService.generateVerificationToken(
+      user.email,
+    );
     userRegisterdEvent.token = verificationToken.token;
     userRegisterdEvent.email = verificationToken.email;
     this.eventEmitter.emit('user.registerd', userRegisterdEvent);
   }
-
 }

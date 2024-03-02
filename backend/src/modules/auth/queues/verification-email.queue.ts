@@ -12,12 +12,9 @@ import { Logger } from '@nestjs/common';
 
 @Processor('verification-email')
 export class VerificationMailQueue {
+  private readonly logger = new Logger(EmailService.name);
 
-  private readonly logger = new Logger(EmailService.name)
-  
-  constructor(
-    private readonly mailService: EmailService,
-    ) {}
+  constructor(private readonly mailService: EmailService) {}
 
   @OnQueueActive()
   onActive(job: Job) {
@@ -33,7 +30,7 @@ export class VerificationMailQueue {
   async send(job: Job<any>) {
     try {
       console.log('send mail trigered', job);
-      const {token, email} =  job.data;
+      const { token, email } = job.data;
       await this.mailService.sendVerificationEmail(email, token);
     } catch (error) {
       console.log(`Failed to send email | error: ${error.message}`);
@@ -41,9 +38,7 @@ export class VerificationMailQueue {
   }
 
   @OnQueueFailed()
-  onFailed(job: Job, err: Error){
-    this.logger.log(
-      ` ${job.id} : ${JSON.stringify(err.message)}`,
-    );
+  onFailed(job: Job, err: Error) {
+    this.logger.log(` ${job.id} : ${JSON.stringify(err.message)}`);
   }
 }

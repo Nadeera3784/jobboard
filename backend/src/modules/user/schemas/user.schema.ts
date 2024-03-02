@@ -1,5 +1,11 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { IsEmail, IsNotEmpty, IsString, MaxLength, IsOptional } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+  IsOptional,
+} from 'class-validator';
 import { Document, now } from 'mongoose';
 import { Role } from '../enums/role.enum';
 
@@ -18,7 +24,7 @@ export class User extends Document {
   @IsEmail()
   email: string;
 
-  @Prop({default: null})
+  @Prop({ default: null })
   @MaxLength(10)
   @IsOptional()
   phone: string;
@@ -27,16 +33,16 @@ export class User extends Document {
   @IsNotEmpty()
   password: string;
 
-  @Prop({default: null})
+  @Prop({ default: null })
   @IsString()
   @IsOptional()
   image: string;
 
-  @Prop({enum: Role, default: Role.User })
+  @Prop({ enum: Role, default: Role.User })
   @IsNotEmpty()
-  role: String
+  role: string;
 
-  @Prop({default: null})
+  @Prop({ default: null })
   @IsOptional()
   email_verified: Date;
 

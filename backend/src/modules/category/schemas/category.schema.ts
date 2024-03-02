@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import {IsNotEmpty, IsString, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { Document, now } from 'mongoose';
 
 @Schema({
@@ -11,10 +11,10 @@ export class Category extends Document {
   @IsNotEmpty()
   name: string;
 
-  @Prop({ default: "Active" })
+  @Prop({ default: 'Active' })
   @IsOptional()
   status: string;
-  
+
   @Prop({ default: now() })
   @IsOptional()
   created_at: Date;

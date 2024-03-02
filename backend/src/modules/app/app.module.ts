@@ -4,7 +4,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
 
-import configuration from '../../config/configuration'
+import configuration from '../../config/configuration';
 import { CategoryModule } from '../category/category.module';
 import { LocationModule } from '../location/location.module';
 import { UserModule } from '../user/user.module';
@@ -50,12 +50,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
     CategoryModule,
     LocationModule,
     UserModule,
-    AuthModule
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService
-  ],
+  providers: [AppService],
   exports: [UserModule],
 })
 export class AppModule {}

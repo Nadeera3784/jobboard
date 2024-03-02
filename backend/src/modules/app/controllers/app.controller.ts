@@ -6,8 +6,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('/shared/filters')
-  getFilters(){
+  getFilters() {
     return this.appService.getFilters();
   }
-  
 }

@@ -28,7 +28,7 @@ async function bootstrap() {
   app.use(json({ limit: '50mb' }));
 
   app.use(urlencoded({ limit: '50mb', extended: true }));
-  
+
   app.use(
     helmet({
       contentSecurityPolicy: false,
@@ -38,7 +38,7 @@ async function bootstrap() {
   app.use(morgan('dev'));
 
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  
+
   const port = process.env.PORT || 3000;
 
   await app.listen(port);
@@ -49,4 +49,3 @@ async function bootstrap() {
 bootstrap().then((port) =>
   console.log(`App successfully started on port ${port} !`),
 );
-

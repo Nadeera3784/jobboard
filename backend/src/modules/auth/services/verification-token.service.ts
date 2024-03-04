@@ -7,7 +7,7 @@ import { VerificationToken } from '../schemas/verificationToken.schema';
 import { CreateVerificationTokenDto } from '../dtos/create-verification-token.dto';
 
 @Injectable()
-export class TokenService {
+export class VerificationTokenService {
   constructor(
     @InjectModel(VerificationToken.name)
     private readonly verificationTokenModel: Model<VerificationToken>,
@@ -40,6 +40,12 @@ export class TokenService {
       email: email,
       token: token,
       expires: expires,
+    });
+  }
+
+  async getVerificationTokenByToken(token: string) {
+    return await this.verificationTokenModel.findOne({
+      token: token,
     });
   }
 }

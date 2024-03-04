@@ -61,11 +61,11 @@ export class CategoryController {
     @Body() createCategoryDto: CreateCategoryDto,
   ) {
     try {
-      const category = await this.categoryService.create(createCategoryDto);
+      await this.categoryService.create(createCategoryDto);
       return response.status(HttpStatus.OK).json({
         type: ResponseType.SUCCESS,
         message: 'Category has been created successfully',
-        data: category,
+        data: null,
       });
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST).json({
@@ -83,7 +83,7 @@ export class CategoryController {
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     try {
-      const category = await this.categoryService.update(id, updateCategoryDto);
+      await this.categoryService.update(id, updateCategoryDto);
       return response.status(HttpStatus.OK).json({
         type: ResponseType.SUCCESS,
         message: 'Category has been updated successfully',

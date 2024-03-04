@@ -17,17 +17,20 @@ export class UpdateUserDto {
   @IsOptional()
   email: string;
 
+  @IsOptional()
+  email_verified?: Date;
+
   @MaxLength(10)
   @IsOptional()
-  phone: string;
+  phone?: string;
 
   @IsOptional()
   @IsString()
-  image: string;
+  image?: string;
 
   @IsString()
   @IsOptional()
-  role: string;
+  role?: string;
 
   @IsString()
   @IsOptional()

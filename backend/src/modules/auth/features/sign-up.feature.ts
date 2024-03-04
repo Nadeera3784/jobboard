@@ -1,18 +1,19 @@
 import { Injectable, BadRequestException, HttpStatus } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-import { AuthService } from '../services/auth.service';
 import { Response as ResponseType } from '../../app/enums/response.enum';
 import { SignupDto } from '../dtos/sign-up.dto';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
-import { TokenService } from '../services/token.service';
+import { VerificationTokenService } from '../services/verification-token.service';
 import { BaseFeature } from '../../core/features/base-feature';
+import { UserService } from '../../user/services/user.service';
+import Events from '../constants/events.constants'
 
 @Injectable()
 export class SignUpFeature extends BaseFeature {
   constructor(
-    private readonly authService: AuthService,
-    private readonly tokenService: TokenService,
+    private readonly verificationTokenService: VerificationTokenService,
+    private readonly userService: UserService,
     private eventEmitter: EventEmitter2,
   ) {
     super();
@@ -20,7 +21,7 @@ export class SignUpFeature extends BaseFeature {
 
   public async handle(signupDto: SignupDto) {
     try {
-      const isRegistered = await this.authService.signUp(signupDto);
+      const isRegistered = await this.userService.create(signupDto);
       if (isRegistered instanceof BadRequestException) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,
@@ -46,11 +47,10 @@ export class SignUpFeature extends BaseFeature {
 
   private async publishEvents(user) {
     const userRegisterdEvent = new UserRegisterdEvent();
-    const verificationToken = await this.tokenService.generateVerificationToken(
-      user.email,
-    );
+    const verificationToken =
+      await this.verificationTokenService.generateVerificationToken(user.email);
     userRegisterdEvent.token = verificationToken.token;
     userRegisterdEvent.email = verificationToken.email;
-    this.eventEmitter.emit('user.registerd', userRegisterdEvent);
+    this.eventEmitter.emit(Events.USER_REGISTERED, userRegisterdEvent);
   }
 }

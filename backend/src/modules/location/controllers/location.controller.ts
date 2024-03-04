@@ -40,11 +40,11 @@ export class LocationController {
   @Get('/:id')
   public async getById(@Res() response, @Param() { id }) {
     try {
-      const category = await this.locationService.getById(id);
+      const location = await this.locationService.getById(id);
       return response.status(HttpStatus.OK).json({
         type: ResponseType.SUCCESS,
         message: null,
-        data: category,
+        data: location,
       });
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST).json({
@@ -61,11 +61,11 @@ export class LocationController {
     @Body() createLocationDto: CreateLocationDto,
   ) {
     try {
-      const location = await this.locationService.create(createLocationDto);
+      await this.locationService.create(createLocationDto);
       return response.status(HttpStatus.OK).json({
         type: ResponseType.SUCCESS,
         message: 'Location has been created successfully',
-        data: location,
+        data: null,
       });
     } catch (error) {
       return response.status(HttpStatus.BAD_REQUEST).json({
@@ -83,7 +83,7 @@ export class LocationController {
     @Body() updateLocationDto: UpdateLocationDto,
   ) {
     try {
-      const location = await this.locationService.update(id, updateLocationDto);
+      await this.locationService.update(id, updateLocationDto);
       return response.status(HttpStatus.OK).json({
         type: ResponseType.SUCCESS,
         message: 'Location has been updated successfully',

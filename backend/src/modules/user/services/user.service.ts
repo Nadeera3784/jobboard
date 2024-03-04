@@ -10,7 +10,7 @@ import * as bcrypt from 'bcrypt';
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-  ) { }
+  ) {}
 
   /**
    * Retrieves all users.
@@ -67,6 +67,15 @@ export class UserService {
    */
   public async update(id: string, updateUserDto: UpdateUserDto) {
     return await this.userModel.findByIdAndUpdate({ _id: id }, updateUserDto);
+  }
+
+  public async updateEmailVerified(id: string) {
+    return await this.userModel.findByIdAndUpdate(
+      { _id: id },
+      {
+        email_verified: new Date(),
+      },
+    );
   }
 
   /**

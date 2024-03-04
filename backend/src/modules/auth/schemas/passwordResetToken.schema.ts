@@ -5,7 +5,7 @@ import { Document } from 'mongoose';
 @Schema({
   versionKey: false,
 })
-export class passwordResetToken extends Document {
+export class PasswordResetToken extends Document {
   @Prop({ unique: true })
   @IsNotEmpty()
   @IsEmail()
@@ -22,4 +22,4 @@ export class passwordResetToken extends Document {
 }
 
 export const PasswordResetTokenSchema =
-  SchemaFactory.createForClass(passwordResetToken);
+  SchemaFactory.createForClass(PasswordResetToken);

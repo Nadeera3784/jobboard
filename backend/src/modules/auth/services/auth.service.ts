@@ -1,28 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-
-import { SignupDto } from '../dtos/sign-up.dto';
-import { UserService } from '../../user/services/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UserService,
     @InjectQueue('verification-email') private verificationEmailQueue: Queue,
   ) {}
 
-  public async signUp(signupDto: SignupDto) {
-    try {
-      return await this.userService.create(signupDto);
-    } catch (error) {
-      return error;
-    }
-  }
-
   public signIn = () => {};
-
-  public verifyEmail() {}
 
   public forgotPassword(email: string) {}
 

@@ -1,10 +1,10 @@
-interface SharedFilters {
+interface SharedFiltersProps {
   job_types: string[];
   remote: string[];
   experience_level: string[];
 }
 
-export const SharedFilters = (): SharedFilters => {
+export const SharedFilters = (): SharedFiltersProps => {
   return {
     job_types: [
       'Full-time',

@@ -40,7 +40,7 @@ import { PasswordResetTokenService } from './services/password-reset-token.servi
     VerificationMailQueue,
     UserRegisterdListener,
     VerifyEmailFeature,
-    PasswordResetTokenService
+    PasswordResetTokenService,
   ],
   controllers: [AuthController],
 })

@@ -7,7 +7,7 @@ import { UserRegisterdEvent } from '../events/user-registerd.event';
 import { VerificationTokenService } from '../services/verification-token.service';
 import { BaseFeature } from '../../core/features/base-feature';
 import { UserService } from '../../user/services/user.service';
-import Events from '../constants/events.constants'
+import { Events } from '../enums/events.enum';
 
 @Injectable()
 export class SignUpFeature extends BaseFeature {

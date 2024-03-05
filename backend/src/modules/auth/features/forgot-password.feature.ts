@@ -1,23 +1,30 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 import { PasswordResetTokenService } from '../services/password-reset-token.service';
 import { UserService } from '../../user/services/user.service';
 import { Response as ResponseType } from '../../app/enums/response.enum';
 import { BaseFeature } from '../../core/features/base-feature';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
+import { ResetPasswordEvent } from '../events/reset-password.event';
+import { Events } from '../enums/events.enum';
 
 @Injectable()
 export class ForgotPasswordFeature extends BaseFeature {
   constructor(
     private readonly passwordResetTokenService: PasswordResetTokenService,
     private readonly userService: UserService,
+    private eventEmitter: EventEmitter2,
   ) {
     super();
   }
 
   public async handle(forgotPasswordDto: ForgotPasswordDto) {
     try {
-      const existingUser = this.userService.getByEmail(forgotPasswordDto.email);
+      const existingUser = await this.userService.getByEmail(
+        forgotPasswordDto.email,
+      );
+
       if (!existingUser) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,
@@ -25,9 +32,12 @@ export class ForgotPasswordFeature extends BaseFeature {
           'Email not found!',
         );
       }
-      this.passwordResetTokenService.generatePasswordResetToken(
+      await this.passwordResetTokenService.generatePasswordResetToken(
         forgotPasswordDto.email,
       );
+
+      this.publishEvents(existingUser);
+
       return this.responseSuccess(
         HttpStatus.OK,
         ResponseType.SUCCESS,
@@ -41,5 +51,16 @@ export class ForgotPasswordFeature extends BaseFeature {
         error,
       );
     }
+  }
+
+  private async publishEvents(user) {
+    const resetPasswordEvent = new ResetPasswordEvent();
+    const verificationToken =
+      await this.passwordResetTokenService.generatePasswordResetToken(
+        user.email,
+      );
+    resetPasswordEvent.token = verificationToken.token;
+    resetPasswordEvent.email = verificationToken.email;
+    this.eventEmitter.emit(Events.RESET_PASSWORD, resetPasswordEvent);
   }
 }

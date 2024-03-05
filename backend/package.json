@@ -26,6 +26,7 @@
     "@nestjs/config": "^3.2.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/event-emitter": "^2.0.4",
+    "@nestjs/jwt": "^10.2.0",
     "@nestjs/mongoose": "^10.0.4",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/throttler": "^5.1.2",

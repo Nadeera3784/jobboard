@@ -16,8 +16,8 @@ export class LocationService {
    * Retrieves all locations.
    * @returns A promise that resolves to an array of all locations.
    */
-  async getAll() {
-    return await this.locationModel.find();
+  async getAll(query = {}, select = '') {
+    return await this.locationModel.find(query).select(select);
   }
 
   /**

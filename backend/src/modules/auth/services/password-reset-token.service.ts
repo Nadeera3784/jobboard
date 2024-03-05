@@ -18,6 +18,12 @@ export class PasswordResetTokenService {
     });
   }
 
+  async getByToken(token: string) {
+    return await this.passwordResetTokenModel.findOne({
+      token: token,
+    });
+  }
+
   async delete(id: string) {
     return await this.passwordResetTokenModel.findByIdAndDelete(id);
   }

@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 import configuration from '../../config/configuration';
 import { CategoryModule } from '../category/category.module';
@@ -11,7 +12,8 @@ import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { AppService } from './services/app.service';
 import { AppController } from './controllers/app.controller';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -24,6 +26,15 @@ import { ThrottlerModule } from '@nestjs/throttler';
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         uri: configService.get('database.mongodb.uri'),
+      }),
+      inject: [ConfigService],
+    }),
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get('app.jwtkey'),
+        signOptions: {
+          expiresIn: '1h',
+        },
       }),
       inject: [ConfigService],
     }),
@@ -53,7 +64,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, GetSharedFiltersFeature],
   exports: [UserModule],
 })
 export class AppModule {}

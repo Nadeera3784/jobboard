@@ -78,6 +78,16 @@ export class UserService {
     );
   }
 
+  public async updatePassword(id: string, password: string) {
+    const newPassword = await bcrypt.hash(password, 10);
+    return await this.userModel.findByIdAndUpdate(
+      { _id: id },
+      {
+        password: newPassword,
+      },
+    );
+  }
+
   /**
    * Deletes a user with the specified ID.
    * @param id - The unique identifier of the user to delete.

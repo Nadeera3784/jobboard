@@ -3,77 +3,61 @@ import {
   Controller,
   Delete,
   Get,
-  HttpStatus,
   Param,
   Post,
   Put,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 
-import { CategoryService } from '../services/category.service';
-import { Response as ResponseType } from '../../app/enums/response.enum';
 import { CreateCategoryDto } from '../dtos/create-category.dto';
 import { UpdateCategoryDto } from '../dtos/update-category.dto';
+import { CreateCategoryFeature } from '../features/create-category-feature';
+import { UpdateCategorynFeature } from '../features/update-category-feature';
+import { DeleteCategoryFeature } from '../features/delete-category-feature';
+import { GetAllCategoriesFeature } from '../features/get-all-categories-features';
+import { GetCategoryByIdFeature } from '../features/get-category-by-id-feature';
+import { RolesAllowed } from '../../auth/decorators/role.decorator';
+import { AuthGuard } from '../../auth/guards/auth.guard';
+import { RoleGuard } from '../../auth/guards/role.guard';
+import { Roles } from '../../user/enums/roles.enum';
 
 @Controller('categories')
+@UseGuards(AuthGuard, RoleGuard)
 export class CategoryController {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    private readonly createCategoryFeature: CreateCategoryFeature,
+    private readonly updateCategorynFeature: UpdateCategorynFeature,
+    private readonly deleteCategoryFeature: DeleteCategoryFeature,
+    private readonly getAllCategoriesFeature: GetAllCategoriesFeature,
+    private readonly getCategoryByIdFeature: GetCategoryByIdFeature
+    ) {}
 
   @Get()
+  @RolesAllowed(Roles.ADMIN)
   public async getAll(@Res() response) {
-    try {
-      const categories = await this.categoryService.getAll();
-      return response.status(HttpStatus.OK).json({
-        type: ResponseType.SUCCESS,
-        message: null,
-        data: categories || [],
-      });
-    } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        type: ResponseType.ERROR,
-        message: 'Something went wrong, Please try again later',
-        data: null,
-      });
-    }
+    const { status, response: featureUpResponse } =
+    await this.getAllCategoriesFeature.handle();
+  return response.status(status).json(featureUpResponse);
   }
 
   @Get('/:id')
+  @RolesAllowed(Roles.ADMIN)
   public async getById(@Res() response, @Param() { id }) {
-    try {
-      const category = await this.categoryService.getById(id);
-      return response.status(HttpStatus.OK).json({
-        type: ResponseType.SUCCESS,
-        message: null,
-        data: category,
-      });
-    } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        type: ResponseType.ERROR,
-        message: 'Something went wrong, Please try again later',
-        data: null,
-      });
-    }
+    const { status, response: featureUpResponse } =
+      await this.getCategoryByIdFeature.handle(id);
+    return response.status(status).json(featureUpResponse);
   }
 
   @Post()
+  @RolesAllowed(Roles.ADMIN)
   public async create(
     @Res() response,
     @Body() createCategoryDto: CreateCategoryDto,
   ) {
-    try {
-      await this.categoryService.create(createCategoryDto);
-      return response.status(HttpStatus.OK).json({
-        type: ResponseType.SUCCESS,
-        message: 'Category has been created successfully',
-        data: null,
-      });
-    } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        type: ResponseType.ERROR,
-        message: 'Something went wrong, Please try again later',
-        data: null,
-      });
-    }
+    const { status, response: featureUpResponse } =
+      await this.createCategoryFeature.handle(createCategoryDto);
+    return response.status(status).json(featureUpResponse);
   }
 
   @Put('/:id')
@@ -82,37 +66,16 @@ export class CategoryController {
     @Param() { id },
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    try {
-      await this.categoryService.update(id, updateCategoryDto);
-      return response.status(HttpStatus.OK).json({
-        type: ResponseType.SUCCESS,
-        message: 'Category has been updated successfully',
-        data: null,
-      });
-    } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        type: ResponseType.ERROR,
-        message: 'Something went wrong, Please try again later',
-        data: null,
-      });
-    }
+    const { status, response: featureUpResponse } =
+      await this.updateCategorynFeature.handle(id, updateCategoryDto);
+    return response.status(status).json(featureUpResponse);
   }
 
   @Delete('/:id')
+  @RolesAllowed(Roles.ADMIN)
   public async delete(@Res() response, @Param() { id }) {
-    try {
-      await this.categoryService.delete(id);
-      return response.status(HttpStatus.OK).json({
-        type: ResponseType.SUCCESS,
-        message: 'Category has been deleted successfully',
-        data: null,
-      });
-    } catch (error) {
-      return response.status(HttpStatus.BAD_REQUEST).json({
-        type: ResponseType.ERROR,
-        message: 'Something went wrong, Please try again later',
-        data: null,
-      });
-    }
+    const { status, response: featureUpResponse } =
+    await this.deleteCategoryFeature.handle(id);
+  return response.status(status).json(featureUpResponse);
   }
 }

@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 
 import { CreateUserDto } from '../dtos/create-user.dto';
@@ -16,8 +17,13 @@ import { GetAllUsersFeature } from '../features/get-all-users-features';
 import { GetUserByIdFeature } from '../features/get-user-by-id-feature';
 import { CreateUserFeature } from '../features/create-user-feature';
 import { UpdateUserFeature } from '../features/update-user-feature';
+import { RolesAllowed } from '../../auth/decorators/role.decorator';
+import { AuthGuard } from '../../auth/guards/auth.guard';
+import { RoleGuard } from '../../auth/guards/role.guard';
+import { Roles } from '../enums/roles.enum';
 
 @Controller('users')
+@UseGuards(AuthGuard, RoleGuard)
 export class UserController {
   constructor(
     private readonly deleteUserFeature: DeleteUserFeature,
@@ -28,6 +34,7 @@ export class UserController {
   ) {}
 
   @Get()
+  @RolesAllowed(Roles.ADMIN)
   public async getAll(@Res() response) {
     const { status, response: featureUpResponse } =
       await this.getAllUsersFeature.handle();
@@ -35,6 +42,7 @@ export class UserController {
   }
 
   @Get('/:id')
+  @RolesAllowed(Roles.ADMIN)
   public async getById(@Res() response, @Param() { id }) {
     const { status, response: featureUpResponse } =
       await this.getUserByIdFeature.handle(id);
@@ -42,6 +50,7 @@ export class UserController {
   }
 
   @Post()
+  @RolesAllowed(Roles.ADMIN)
   public async create(@Res() response, @Body() createUserDto: CreateUserDto) {
     const { status, response: featureUpResponse } =
       await this.createUserFeature.handle(createUserDto);
@@ -49,6 +58,7 @@ export class UserController {
   }
 
   @Put('/:id')
+  @RolesAllowed(Roles.ADMIN)
   public async update(
     @Res() response,
     @Param() { id },
@@ -60,6 +70,7 @@ export class UserController {
   }
 
   @Delete('/:id')
+  @RolesAllowed(Roles.ADMIN)
   public async delete(@Res() response, @Param() { id }) {
     const { status, response: featureUpResponse } =
       await this.deleteUserFeature.handle(id);

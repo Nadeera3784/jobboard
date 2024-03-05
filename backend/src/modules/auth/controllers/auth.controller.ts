@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 
 import { SignupDto } from '../dtos/sign-up.dto';
 import { SignInDto } from '../dtos/sign-in.dto';
@@ -9,6 +9,8 @@ import { SignInFeature } from '../features/sign-in.feature';
 import { VerifyEmailFeature } from '../features/verify-email.feature';
 import { ForgotPasswordFeature } from '../features/forgot-password.feature';
 import { ResetPasswordFeature } from '../features/reset-password.feature';
+import { MeFeature } from '../features/me-feature';
+import { AuthGuard } from '../../auth/guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +20,7 @@ export class AuthController {
     private readonly forgotPasswordFeature: ForgotPasswordFeature,
     private readonly resetPasswordFeature: ResetPasswordFeature,
     private readonly signInFeature: SignInFeature,
+    private readonly meFeature: MeFeature,
   ) {}
 
   @Post('/signup')
@@ -27,7 +30,7 @@ export class AuthController {
     return response.status(status).json(featureUpResponse);
   }
 
-  @Post('/login')
+  @Post('/signin')
   public async signIn(@Res() response, @Body() signInDto: SignInDto) {
     const { status, response: featureUpResponse } =
       await this.signInFeature.handle(signInDto);
@@ -61,4 +64,16 @@ export class AuthController {
       await this.resetPasswordFeature.handle(token, resetPasswordDto);
     return response.status(status).json(featureUpResponse);
   }
+
+  @Get('/me')
+  @UseGuards(AuthGuard)
+  public async me(
+    @Req() request,
+    @Res() response
+  ) {
+    const { status, response: featureUpResponse } =
+      await this.meFeature.handle(request.user.id);
+    return response.status(status).json(featureUpResponse);
+  }
+
 }

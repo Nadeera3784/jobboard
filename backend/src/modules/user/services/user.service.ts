@@ -44,8 +44,8 @@ export class UserService {
    * @param id - The unique identifier of the user to retrieve.
    * @returns A promise that resolves to the user with the specified ID, or null if not found.
    */
-  public async getById(id: string) {
-    return await this.userModel.findById(id);
+  public async getById(id: string, select = '') {
+    return await this.userModel.findById(id).select(select);
   }
 
   /**

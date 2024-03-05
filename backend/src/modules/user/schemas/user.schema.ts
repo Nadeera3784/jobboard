@@ -7,7 +7,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { Document, now } from 'mongoose';
-import { Role } from '../enums/role.enum';
+import { Roles } from '../enums/roles.enum';
 
 @Schema({
   versionKey: false,
@@ -38,7 +38,7 @@ export class User extends Document {
   @IsOptional()
   image: string;
 
-  @Prop({ enum: Role, default: Role.User })
+  @Prop({ enum: Roles, default: Roles.USER })
   @IsNotEmpty()
   role: string;
 

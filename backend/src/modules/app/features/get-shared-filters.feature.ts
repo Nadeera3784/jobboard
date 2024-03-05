@@ -18,7 +18,7 @@ export class GetSharedFiltersFeature extends BaseFeature {
 
   public async handle() {
     try {
-      const fitlers = this.appService.getFilters();
+      const filters = this.appService.getFilters();
       const locations = await this.locationService.getAll(
         {
           status: 'Active',
@@ -35,7 +35,7 @@ export class GetSharedFiltersFeature extends BaseFeature {
       const data = {
         locations: locations,
         categories: categories,
-        ...fitlers,
+        ...filters,
       };
 
       return this.responseSuccess(

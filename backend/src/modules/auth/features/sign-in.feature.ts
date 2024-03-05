@@ -36,7 +36,7 @@ export class SignInFeature extends BaseFeature {
       }
 
       if (!existingUser.email_verified) {
-        await this.publishEvents(existingUser);
+        await this.publishEvents(existingUser.email);
       }
 
       const isPasswordMatch = await this.authService.signIn(
@@ -77,10 +77,10 @@ export class SignInFeature extends BaseFeature {
     }
   }
 
-  private async publishEvents(user) {
+  private async publishEvents(email: string) {
     const userRegisterdEvent = new UserRegisterdEvent();
     const verificationToken =
-      await this.verificationTokenService.generateVerificationToken(user.email);
+      await this.verificationTokenService.generateVerificationToken(email);
     userRegisterdEvent.token = verificationToken.token;
     userRegisterdEvent.email = verificationToken.email;
     this.eventEmitter.emit(Events.USER_REGISTERED, userRegisterdEvent);

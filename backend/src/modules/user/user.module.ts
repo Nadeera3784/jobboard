@@ -9,6 +9,7 @@ import { GetAllUsersFeature } from './features/get-all-users-features';
 import { GetUserByIdFeature } from './features/get-user-by-id-feature';
 import { CreateUserFeature } from './features/create-user-feature';
 import { UpdateUserFeature } from './features/update-user-feature';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -21,8 +22,12 @@ import { UpdateUserFeature } from './features/update-user-feature';
     GetUserByIdFeature,
     CreateUserFeature,
     UpdateUserFeature,
+    JwtService,
   ],
   controllers: [UserController],
-  exports: [UserService],
+  exports: [
+    UserService,
+    JwtService
+  ],
 })
 export class UserModule {}

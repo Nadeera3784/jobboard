@@ -10,10 +10,10 @@ import { CategoryModule } from '../category/category.module';
 import { LocationModule } from '../location/location.module';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
+import { JobModule } from '../job/job.module';
 import { AppService } from './services/app.service';
 import { AppController } from './controllers/app.controller';
 import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
-import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -26,15 +26,6 @@ import { JwtModule } from '@nestjs/jwt';
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         uri: configService.get('database.mongodb.uri'),
-      }),
-      inject: [ConfigService],
-    }),
-    JwtModule.registerAsync({
-      useFactory: (configService: ConfigService) => ({
-        secret: configService.get('app.jwtkey'),
-        signOptions: {
-          expiresIn: '1h',
-        },
       }),
       inject: [ConfigService],
     }),
@@ -62,6 +53,7 @@ import { JwtModule } from '@nestjs/jwt';
     LocationModule,
     UserModule,
     AuthModule,
+    JobModule
   ],
   controllers: [AppController],
   providers: [AppService, GetSharedFiltersFeature],

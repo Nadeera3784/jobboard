@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bull';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 import {
   PasswordResetTokenSchema,
@@ -25,6 +27,7 @@ import { ForgotPasswordFeature } from '../auth/features/forgot-password.feature'
 import { SignUpFeature } from '../auth/features/sign-up.feature';
 import { ResetPasswordFeature } from '../auth/features/reset-password.feature';
 import { SignInFeature } from '../auth/features/sign-in.feature';
+import { MeFeature } from '../auth/features/me-feature';
 
 @Module({
   imports: [
@@ -40,6 +43,15 @@ import { SignInFeature } from '../auth/features/sign-in.feature';
         name: 'reset-password-email',
       },
     ),
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get('app.jwtkey'),
+        signOptions: {
+          expiresIn: '1h',
+        },
+      }),
+      inject: [ConfigService],
+    }),
     UserModule,
   ],
   providers: [
@@ -56,6 +68,7 @@ import { SignInFeature } from '../auth/features/sign-in.feature';
     PasswordResetMailQueue,
     ResetPasswordFeature,
     SignInFeature,
+    MeFeature
   ],
   controllers: [AuthController],
 })

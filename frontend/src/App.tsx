@@ -1,12 +1,12 @@
-import Layout from './components/Layout/Layout'
-import HomePage from './pages/Home/Home'
+import { Toaster } from 'sonner';
+import { AppRouter } from "./router/AppRouter";
 
 function App() {
   return (
-   <Layout>
-      <HomePage/>
-   </Layout>
-  
+    <>
+      <AppRouter />
+      <Toaster position="top-right" richColors closeButton/>
+    </>
   )
 }
 

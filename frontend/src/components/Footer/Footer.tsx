@@ -1,4 +1,4 @@
-function Footer() {
+export const Footer = () => {
     return (
         <footer className="bg-white">
             <div className="container xl:max-w-7xl mx-auto px-4 py-16 lg:px-8 lg:py-32">
@@ -184,11 +184,10 @@ function Footer() {
                         </a>
                     </nav>
                     <div className="text-gray-500">
-                        <span className="font-medium">Company Inc</span> © 2021
+                        <span className="font-medium">Company Inc</span> © {new Date().getFullYear()}
                     </div>
                 </div>
             </div>
         </footer>
     )
 }
-export default Footer;

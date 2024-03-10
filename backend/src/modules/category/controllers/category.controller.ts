@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -17,20 +18,22 @@ import { UpdateCategorynFeature } from '../features/update-category-feature';
 import { DeleteCategoryFeature } from '../features/delete-category-feature';
 import { GetAllCategoriesFeature } from '../features/get-all-categories-features';
 import { GetCategoryByIdFeature } from '../features/get-category-by-id-feature';
+import { DatatableFeature } from '../features/datatable.feature';
 import { RolesAllowed } from '../../auth/decorators/role.decorator';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RoleGuard } from '../../auth/guards/role.guard';
 import { Roles } from '../../user/enums/roles.enum';
 
 @Controller('categories')
-@UseGuards(AuthGuard, RoleGuard)
+//@UseGuards(AuthGuard, RoleGuard)
 export class CategoryController {
   constructor(
     private readonly createCategoryFeature: CreateCategoryFeature,
     private readonly updateCategorynFeature: UpdateCategorynFeature,
     private readonly deleteCategoryFeature: DeleteCategoryFeature,
     private readonly getAllCategoriesFeature: GetAllCategoriesFeature,
-    private readonly getCategoryByIdFeature: GetCategoryByIdFeature
+    private readonly getCategoryByIdFeature: GetCategoryByIdFeature,
+    private readonly datatableFeature: DatatableFeature,
     ) {}
 
   @Get()
@@ -78,4 +81,13 @@ export class CategoryController {
     await this.deleteCategoryFeature.handle(id);
   return response.status(status).json(featureUpResponse);
   }
+
+  @RolesAllowed(Roles.ADMIN)
+  @Post('/datatable')
+  public async dataTable(@Req() request, @Res() response){
+    const { status, response: featureUpResponse } =
+    await this.datatableFeature.handle(request);
+    return response.status(status).json(featureUpResponse);
+  }
+
 }

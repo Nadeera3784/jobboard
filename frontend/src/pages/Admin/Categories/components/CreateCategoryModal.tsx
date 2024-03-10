@@ -1,9 +1,44 @@
 import { Fragment, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "../../../../components/Form/Input";
+import { CreateCategorySchema } from "../../../../schemas";
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "../../../../components/Form/Form";
+import { Button } from "../../../../components/Form/Button";
+import useCategoryCreation from '../../../../hooks/useCategoryCreation';
+import { toast } from 'sonner'
+import { Loader2 } from 'lucide-react';
 
 export const CreateCategoryModal = () => {
 
     const [isOpen, setIsOpen] = useState(false);
+    const { loading, success, createCategory } = useCategoryCreation();
+
+    const form = useForm<z.infer<typeof CreateCategorySchema>>({
+        resolver: zodResolver(CreateCategorySchema),
+        defaultValues: {
+            name: "",
+        },
+    });
+
+    const onSubmit = async (values: z.infer<typeof CreateCategorySchema>) => {
+        await createCategory({ name: values.name });
+        if (success) {
+            form.reset();
+            toast.success('Category created successfully!');
+        } else {
+            toast.warning("Something went wrong, Please try again later");
+        }
+    };
 
     const closeModal = () => {
         setIsOpen(false)
@@ -85,25 +120,45 @@ export const CreateCategoryModal = () => {
                                         </div>
                                     </div>
                                     <div className="mt-2">
-                                        <div className="space-y-2">
-                                            <label
-                                                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                                htmlFor=":ro1:-form-item"
+                                        <Form {...form}>
+                                            <form
+                                                onSubmit={form.handleSubmit(onSubmit)}
+                                                className="space-y-2"
                                             >
-                                                Name
-                                            </label>
-                                            <input
-                                                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                                                name="username"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div className="mt-4 flex justify-end">
-                                        <button
-                                            type="button"
-                                            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-black text-white shadow hover:bg-gray-600 h-9 px-4 py-2">
-                                            Create
-                                        </button>
+                                                <FormField
+                                                    control={form.control}
+                                                    name="name"
+                                                    render={({ field }) => (
+                                                        <FormItem>
+                                                            <FormLabel>Name</FormLabel>
+                                                            <FormControl>
+                                                                <Input
+                                                                    {...field}
+                                                                    disabled={loading}
+                                                                    placeholder=""
+                                                                    type="text"
+                                                                />
+                                                            </FormControl>
+                                                            <FormMessage
+                                                            />
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                                <div className="mt-4 flex justify-end">
+                                                    <Button
+                                                        disabled={loading}
+                                                        type="submit"
+                                                    >
+
+                                                        {loading && (
+                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                        )}
+
+                                                        Create
+                                                    </Button>
+                                                </div>
+                                            </form>
+                                        </Form>
                                     </div>
                                 </Dialog.Panel>
                             </Transition.Child>

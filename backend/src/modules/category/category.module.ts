@@ -9,6 +9,7 @@ import { UpdateCategorynFeature } from './features/update-category-feature';
 import { DeleteCategoryFeature } from './features/delete-category-feature';
 import { GetAllCategoriesFeature } from './features/get-all-categories-features';
 import { GetCategoryByIdFeature } from './features/get-category-by-id-feature';
+import { DatatableFeature } from './features/datatable.feature';
 import { UserModule } from '../user/user.module';
 
 @Module({
@@ -24,7 +25,8 @@ import { UserModule } from '../user/user.module';
     UpdateCategorynFeature,
     DeleteCategoryFeature,
     GetAllCategoriesFeature,
-    GetCategoryByIdFeature
+    GetCategoryByIdFeature,
+    DatatableFeature
   ],
   controllers: [CategoryController],
   exports: [CategoryService],

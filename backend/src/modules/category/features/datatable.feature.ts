@@ -10,14 +10,14 @@ export class DatatableFeature extends BaseFeature {
     super();
   }
 
-  public async handle(request, response) {
+  public async handle(request) {
     try {
-     
-
+      const data = await this.categoryService.datatable(request);
       return this.responseSuccess(
         HttpStatus.OK,
         ResponseType.SUCCESS,
-        'Category has been created successfully',
+        null,
+        data
       );
     } catch (error) {
       return this.responseError(

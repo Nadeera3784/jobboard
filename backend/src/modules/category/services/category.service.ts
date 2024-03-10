@@ -101,14 +101,18 @@ export class CategoryService {
       if (order.length && columns.length) {
         const sortByOrder: any = order.reduce((memo: any, ordr: any) => {
           const column = columns[ordr.column];
-          memo[column.data] = ordr.dir === 'asc' ? 1 : -1;
+          memo[ordr.name] = ordr.dir === 'asc' ? 1 : -1;
           return memo;
         }, {});
+
+        console.log('sort', order);
 
         if (Object.keys(sortByOrder).length) {
           sort = sortByOrder;
         }
       }
+
+
 
       let recordsTotal = 0;
       let recordsFiltered = 0;
@@ -118,21 +122,21 @@ export class CategoryService {
 
       const filtered_count = await this.categoryModel.countDocuments(searchQuery);
       recordsFiltered = filtered_count;
-
+      
       const results = await this.categoryModel.find(searchQuery, 'name')
         .select("_id name created_at status")
-        .where(whereQuery)
+        //.where(whereQuery)
         .skip(Number(params.start))
         .limit(Number(params.length))
         .sort(sort)
         .exec();
 
-      const data = JSON.stringify({
+      const data = {
         "draw": params.draw,
         "recordsFiltered": recordsFiltered,
         "recordsTotal": recordsTotal,
         "data": results
-      });
+      };
       return data;
     } catch (error) {
       return error;

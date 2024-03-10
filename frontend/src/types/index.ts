@@ -17,3 +17,7 @@ export type SortItem = {
     dir: string;
     name: string;
 };
+
+export type EmptyContentProps = {
+    error: string
+}

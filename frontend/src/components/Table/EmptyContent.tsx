@@ -1,6 +1,8 @@
-export const EmptyContent = () => {
+import { EmptyContentProps } from '../../types/index';
+  
+export const EmptyContent: React.FC<EmptyContentProps> = ({ error }) => {
     return (
-        <>
+        <div className='flex flex-row items-center justify-center '>
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -397,8 +399,8 @@ export const EmptyContent = () => {
                     fill="#444053"
                 />
             </svg>
-
-        </>
+            <h3>{error}</h3>
+        </div>
     );
 };
 

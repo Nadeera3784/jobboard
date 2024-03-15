@@ -123,13 +123,27 @@ export class CategoryService {
       const filtered_count = await this.categoryModel.countDocuments(searchQuery);
       recordsFiltered = filtered_count;
       
-      const results = await this.categoryModel.find(searchQuery, 'name')
+      let results = await this.categoryModel.find(searchQuery, 'name')
         .select("_id name created_at status")
         //.where(whereQuery)
         .skip(Number(params.start))
         .limit(Number(params.length))
         .sort(sort)
         .exec();
+
+        results = results.map((result: any) => {
+          return {
+            ...result.toObject(),
+            actions: [
+              {
+                id: 1,
+                label: 'Edit',
+                type: 'link',
+                endpoint: 'http://localhost:5173/category/' + result._id
+              }
+            ]
+          };
+        });
 
       const data = {
         "draw": params.draw,

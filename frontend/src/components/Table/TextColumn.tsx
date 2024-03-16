@@ -4,6 +4,6 @@ type TextColumnProps = {
 
 export const TextColumn: React.FC<TextColumnProps> = ({ data }) => {
   return (
-      <>{data}</>
+      <div className="flex w-[100px] items-center">{data}</div>
   );
 };

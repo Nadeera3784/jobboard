@@ -140,6 +140,12 @@ export class CategoryService {
                 label: 'Edit',
                 type: 'link',
                 endpoint: 'http://localhost:5173/category/' + result._id
+              },
+              {
+                id: 2,
+                label: 'Delete',
+                type: 'delete',
+                endpoint: 'http://localhost:5173/category/' + result._id
               }
             ]
           };

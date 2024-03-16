@@ -7,6 +7,7 @@ export const TestPage = () => {
          endpoint='http://127.0.0.1:3000/api/v1/categories/datatable'
          per_page={10}
          has_row_buttons={true}
+         has_multiselect={false}
          columns={[
           {
             name : '_id',

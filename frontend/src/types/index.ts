@@ -18,6 +18,7 @@ export type TableProps = {
   per_page: number;
   columns: TableColumn[];
   has_row_buttons: boolean;
+  has_multiselect: boolean;
 };
 
 export type SortItem = {
@@ -29,3 +30,16 @@ export type SortItem = {
 export type EmptyContentProps = {
     error: string
 }
+
+export type Action = {
+    type: string; 
+    label: string;
+}
+
+export type PaginationProps = {
+    currentPage: number;
+    totalPages: number;
+    onChangePerPage: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    handlePageChange: (pageNumber: number) => void;
+}
+  

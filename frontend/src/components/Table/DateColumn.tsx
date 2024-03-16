@@ -4,7 +4,7 @@ type DateColumnProps = {
 
 export const DateColumn: React.FC<DateColumnProps> = ({ data }) => {
     return (
-        <>{new Date(data).toLocaleDateString()}</>
+        <div className="flex w-[100px] items-center">{new Date(data).toLocaleDateString()}</div>
     );
 };
 

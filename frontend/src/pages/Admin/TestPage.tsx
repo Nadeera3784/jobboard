@@ -1,4 +1,4 @@
-import { Table } from '../../components/Table/Table';
+import { Table } from '../../components/Table';
 
 export const TestPage = () => {
     return (
@@ -8,6 +8,7 @@ export const TestPage = () => {
          per_page={10}
          has_row_buttons={true}
          has_multiselect={false}
+         refresh={false}
          columns={[
           {
             name : '_id',

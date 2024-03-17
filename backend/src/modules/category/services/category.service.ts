@@ -73,7 +73,7 @@ export class CategoryService {
       const status = params.status || "";
       let searchQuery: any = {};
       const daterange = params.daterange || "";
-      let sort: any = {};
+      let sort: any = {'created_at': -1};
       const whereQuery: any = { status: String };
 
       if (status) {
@@ -104,8 +104,6 @@ export class CategoryService {
           memo[ordr.name] = ordr.dir === 'asc' ? 1 : -1;
           return memo;
         }, {});
-
-        console.log('sort', order);
 
         if (Object.keys(sortByOrder).length) {
           sort = sortByOrder;
@@ -145,7 +143,8 @@ export class CategoryService {
                 id: 2,
                 label: 'Delete',
                 type: 'delete',
-                endpoint: 'http://localhost:5173/category/' + result._id
+                endpoint: 'http://127.0.0.1:3000/api/v1/categories/' + result._id,
+                confirm_message: "Are you sure want to delete?"
               }
             ]
           };

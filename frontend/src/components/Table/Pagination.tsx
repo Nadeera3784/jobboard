@@ -2,15 +2,17 @@ import React from 'react';
 import { PaginationProps } from '../../types';
 
 export const Pagination: React.FC<PaginationProps> = ({
-    currentPage,
-    totalPages,
+    current_page,
+    total_pages,
+    selected_row_count,
+    total_row_count,
     onChangePerPage,
     handlePageChange,
   }) => {
     return (
         <div className="flex items-center justify-between px-2">
         <div className="flex-1 text-sm text-muted-foreground">
-          0 of 100 row(s) selected.
+          {selected_row_count} of {total_row_count} row(s) selected.
         </div>
         <div className="flex items-center space-x-6 lg:space-x-8">
           <div className="flex items-center space-x-2">
@@ -30,13 +32,13 @@ export const Pagination: React.FC<PaginationProps> = ({
             </div>
           </div>
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {currentPage} of {totalPages}
+            Page {current_page} of {total_pages}
           </div>
           <div className="flex items-center space-x-2">
             <button
               className="items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground hidden h-8 w-8 p-0 lg:flex"
               onClick={() => handlePageChange(1)}
-              disabled={currentPage === 1}
+              disabled={current_page === 1}
             >
               <span className="sr-only">Go to first page</span>
               <svg
@@ -56,10 +58,10 @@ export const Pagination: React.FC<PaginationProps> = ({
               </svg>
             </button>
 
-            {currentPage > 1 && (
+            {current_page > 1 && (
               <button
                 className="items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground hidden h-8 w-8 p-0 lg:flex"
-                onClick={() => handlePageChange(currentPage - 1)}
+                onClick={() => handlePageChange(current_page - 1)}
                 type='button'
               >
                 <span className="sr-only">Go to previous page</span>
@@ -80,21 +82,21 @@ export const Pagination: React.FC<PaginationProps> = ({
                 </svg>
               </button>
             )}
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+            {Array.from({ length: total_pages }, (_, i) => i + 1).map(page => (
               <button
                 className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0"
                 key={page}
                 onClick={() => handlePageChange(page)}
-                disabled={currentPage === page}
+                disabled={current_page === page}
               >
                 {page}
               </button>
             ))}
-            {currentPage < totalPages && (
+            {current_page < total_pages && (
               <button
                 className="items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground hidden h-8 w-8 p-0 lg:flex"
                 type='button'
-                onClick={() => handlePageChange(currentPage + 1)}
+                onClick={() => handlePageChange(current_page + 1)}
               >
                 <span className="sr-only">Go to next page</span>
                 <svg
@@ -115,8 +117,8 @@ export const Pagination: React.FC<PaginationProps> = ({
               </button>
             )}
             <button
-              onClick={() => handlePageChange(totalPages)}
-              disabled={currentPage === totalPages}
+              onClick={() => handlePageChange(total_pages)}
+              disabled={current_page === total_pages}
               className="items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground hidden h-8 w-8 p-0 lg:flex">
               <span className="sr-only">Go to last page</span>
               <svg

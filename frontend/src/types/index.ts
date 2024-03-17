@@ -1,4 +1,4 @@
-export type TableColumn = {
+export type ColumnProps = {
     name: string;
     label: string;
     type: string;
@@ -16,12 +16,13 @@ export type ActionButton = {
 export type TableProps = {
   endpoint: string;
   per_page: number;
-  columns: TableColumn[];
+  columns: ColumnProps[];
   has_row_buttons: boolean;
   has_multiselect: boolean;
+  refresh: boolean;
 };
 
-export type SortItem = {
+export type SortItemProps = {
     column: number;
     dir: string;
     name: string;
@@ -31,14 +32,19 @@ export type EmptyContentProps = {
     error: string
 }
 
-export type Action = {
+export type ActionProps = {
     type: string; 
     label: string;
+    endpoint?: string;
+    method?: string;
+    confirm_message?: string;
 }
 
 export type PaginationProps = {
-    currentPage: number;
-    totalPages: number;
+    current_page: number;
+    total_pages: number;
+    selected_row_count: number;
+    total_row_count: number;
     onChangePerPage: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     handlePageChange: (pageNumber: number) => void;
 }

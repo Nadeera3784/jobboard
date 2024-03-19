@@ -8,6 +8,8 @@ import { ForgotPasswordPage } from "../pages/Auth/ForgotPasswordPage";
 import { AdminLayout } from "../layouts/AdminLayout";
 import { DashboardPage } from "../pages/Admin/DashboardPage";
 import { CategoriesPage } from "../pages/Admin/Categories/CategoriesPage";
+import { EditCategoryPage } from "../pages/Admin/Categories/EditCategoryPage";
+
 import { TestPage } from "../pages/Admin/TestPage";
 
 export const AppRouter = () => {
@@ -25,6 +27,8 @@ export const AppRouter = () => {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} />
           <Route path="categories" element={<CategoriesPage />} />
+          <Route path="categories/:id" element={<EditCategoryPage />}/>
+
           <Route path="test" element={<TestPage />} />
         </Route>
       </Routes>

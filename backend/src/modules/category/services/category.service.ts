@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import moment from 'moment';
+import { faker } from '@faker-js/faker';
 
 import { Category } from '../schemas/category.schema';
 import { CreateCategoryDto } from '../dtos/create-category.dto';
@@ -75,7 +76,6 @@ export class CategoryService {
       const daterange = params.daterange || "";
       let sort: any = {'created_at': -1};
       const whereQuery: any = { status: String };
-
       if (status) {
         whereQuery.status = status;
       }
@@ -128,7 +128,6 @@ export class CategoryService {
         .limit(Number(params.length))
         .sort(sort)
         .exec();
-
         results = results.map((result: any) => {
           return {
             ...result.toObject(),
@@ -137,7 +136,7 @@ export class CategoryService {
                 id: 1,
                 label: 'Edit',
                 type: 'link',
-                endpoint: 'http://localhost:5173/category/' + result._id
+                endpoint: '/admin/categories/' + result._id
               },
               {
                 id: 2,
@@ -159,6 +158,15 @@ export class CategoryService {
       return data;
     } catch (error) {
       return error;
+    }
+  }
+
+  async seeds(){
+    for (let index = 0; index < 20; index++) {
+      await this.categoryModel.create({
+         name: faker.person.firstName(),
+         status: "Active"
+      });
     }
   }
 

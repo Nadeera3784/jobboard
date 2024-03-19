@@ -11,10 +11,10 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "../../../../components/Form/Form";
-import { useCreateCategory } from '../../../../hooks/useCreateCategory';
-import { Button } from "../../../../components/Form/Button";
-import { Input } from "../../../../components/Form/Input"
+} from "../../../components/Form/Form";
+import { useCreateCategory } from '../../../hooks/useCreateCategory';
+import { Button } from "../../../components/Form/Button";
+import { Input } from "../../../components/Form/Input"
 import {
     Dialog,
     DialogClose,
@@ -24,8 +24,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "../../../../components/Dialog/Dialog"
-import { CreateCategorySchema } from "../../../../schemas";
+} from "../../../components/Dialog/Dialog"
+import { CreateCategorySchema } from "../../../schemas";
 
 export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
 
@@ -45,9 +45,8 @@ export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
             toast.warning("Something went wrong, Please try again later");
             return;
         }
-        
         await process(validatedFields.data);
-        if (response.status_code === 200 || response.status_code === null ) {
+        if (response.status) {
             form.reset();
             toast.success('Category created successfully!');
             refresh();
@@ -70,7 +69,6 @@ export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
                         <DialogTitle>New Category</DialogTitle>
                         <DialogDescription> Create a new category</DialogDescription>
                     </DialogHeader>
-       
                     <Form {...form}>
                         <form
                             onSubmit={form.handleSubmit(onSubmit)}

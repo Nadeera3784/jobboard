@@ -21,7 +21,7 @@ import {
 import { Button } from '../Form/Button';
 import { DeleteDialog } from './DeleteDialog';
 
-export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_row_buttons, has_multiselect, refresh}) => {
+export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_row_buttons, has_multiselect, refresh }) => {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,7 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
     try {
       const response = await axios.post(endpoint, {
         order: order,
-        columns: columns.filter(column => columnVisibility[column.name]), // Only send visible columns
+        columns: columns.filter(column => columnVisibility[column.name]),
         status: '',
         daterange: '',
         search: { value: keyword },
@@ -147,155 +147,151 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   return (
-    <div className='space-y-4 lg:space-y-8'>
-      <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex flex-1 items-center space-x-2">
-              <Input
-                className='h-8 w-[150px] lg:w-[250px]'
-                placeholder="search..."
-                onChange={(event) => onSearch(event)}
-                value={search}
-              />
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="ml-auto">
-                  Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {columns.map((column, key) => (
-                  column.visible && (
-                    <DropdownMenuCheckboxItem
-                      key={key}
-                      className="capitalize"
-                      checked={columnVisibility[column.name]}
-                      onCheckedChange={() => toggleColumnVisibility(column.name)}
-                    >
-                      {column.label}
-                    </DropdownMenuCheckboxItem>
-                  )
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-          </div>
-          <div className="rounded-md border">
-            <div className="relative w-full overflow-auto">
-              <table className='w-full caption-bottom text-sm'>
-                <thead className='[&_tr]:border-b'>
-                  <tr className='border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted'>
-                    {has_multiselect &&
-                      <th
-                        className="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
-                        colSpan={1}
-                      >
-                        <Checkbox
-                          checked={selectAllChecked}
-                          onCheckedChange={handleCheckAll}
-                        />
-                      </th>
-                    }
-                    {columns.map((column, key) => (
-                      column.visible &&
-                      columnVisibility[column.name] && (
-                        <th key={key} className='h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]' colSpan={1}>
-                          <span className='flex items-center space-x-2'>
-                            <button
-                              className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs -ml-3 h-8 data-[state=open]:bg-accent"
-                              type="button"
-                              onClick={() => onClickSort(column, key, sort.find(item => item.column === key)?.dir !== 'asc' ? 'asc' : 'desc')}
-                            >
-                              <span>{column.label}</span>
-                              {sort.find(item => item.column === key) && (
-                                sort.find(item => item.column === key)?.dir === 'asc' ? <ArrowUpZA className='className="w-3 h-3 ml-2 -mr-1' /> : <ArrowDownAZ className='className="w-3 h-3 ml-2 -mr-1' />
-                              )}
-                            </button>
-                          </span>
-                        </th>
-                      )
-                    ))}
-                    {has_row_buttons &&
-                      <th
-                        className="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
-                        colSpan={1}
-                      >
-                        <div className="flex items-center space-x-2">
-                          <div
-                            className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs -ml-3 h-8 data-[state=open]:bg-accent"
-                          >
-                            <span>Manage</span>
-                          </div>
-                        </div>
-                      </th>
-                    }
-                  </tr>
-                </thead>
-                <tbody className='[&_tr:last-child]:border-0'>
-                  {loading && (
-                    <Loader />
-                  )}
-                  {data && (data as any[]).map((item, key) => (
-                    <tr key={key} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                      {has_multiselect &&
-                        <td className="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
-                          <Checkbox
-                            value={item._id}
-                            checked={selectedRows.includes(item._id)}
-                            onCheckedChange={() => handleCheckboxChange(item._id)}
-                          />
-                        </td>
-                      }
-                      {columns.map((column) => (
-                        column.visible &&
-                        columnVisibility[column.name] && ( 
-                          <td key={column.name} className="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
-                            {column.type === 'text' && <TextColumn data={item[column.name]} />}
-                            {column.type === 'date' && <DateColumn data={item[column.name]} />}
-                          </td>
-                        )
-                      ))}
-                      {item?.actions &&
-                        <td className="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
-                          {item.actions.map((action: ActionProps, index: React.Key | null | undefined) => (
-                            <span key={index} className='px-1'>
-                              {action.type === 'link' && <LinkAction data={action} />}
-                              {action.type === 'delete' && <DeleteAction data={action} onClickOpenDialog={() => onClickDialog(action)} />}
-                            </span>
-                          ))}
-                        </td>
-                      }
-                    </tr>
-                  ))}
-                  {data.length == 0 && !loading &&
-                    <EmptyContent error={error} />
-                  }
-                </tbody>
-              </table>
-
-              <DeleteDialog
-                open={open}
-                modelTitle={modelTitle}
-                onClose={handleClose}
-                action={selectedAction}
-                loading={loading}
-                refresh={fetchData}
-              />
-
-            </div>
-          </div>
-          <Pagination
-            current_page={currentPage}
-            total_pages={totalPages}
-            selected_row_count={selectedRows.length}
-            total_row_count={data.length}
-            onChangePerPage={onChangePerPage}
-            handlePageChange={handlePageChange}
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div className="flex flex-1 items-center space-x-2">
+          <Input
+            className='h-8 w-[150px] lg:w-[250px]'
+            placeholder="search..."
+            onChange={(event) => onSearch(event)}
+            value={search}
           />
         </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" className="ml-auto">
+              Columns <ChevronDownIcon className="ml-2 h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {columns.map((column, key) => (
+              column.visible && (
+                <DropdownMenuCheckboxItem
+                  key={key}
+                  className="capitalize"
+                  checked={columnVisibility[column.name]}
+                  onCheckedChange={() => toggleColumnVisibility(column.name)}
+                >
+                  {column.label}
+                </DropdownMenuCheckboxItem>
+              )
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+
       </div>
+      <div className="rounded-md border">
+        <div className="relative w-full overflow-auto">
+          <table className='w-full caption-bottom text-sm'>
+            <thead className='[&_tr]:border-b'>
+              <tr className='border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted'>
+                {has_multiselect &&
+                  <th
+                    className="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+                    colSpan={1}
+                  >
+                    <Checkbox
+                      checked={selectAllChecked}
+                      onCheckedChange={handleCheckAll}
+                    />
+                  </th>
+                }
+                {columns.map((column, key) => (
+                  column.visible &&
+                  columnVisibility[column.name] && (
+                    <th key={key} className='h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]' colSpan={1}>
+                      <span className='flex items-center space-x-2'>
+                        <button
+                          className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs -ml-3 h-8 data-[state=open]:bg-accent"
+                          type="button"
+                          onClick={() => onClickSort(column, key, sort.find(item => item.column === key)?.dir !== 'asc' ? 'asc' : 'desc')}
+                        >
+                          <span>{column.label}</span>
+                          {sort.find(item => item.column === key) && (
+                            sort.find(item => item.column === key)?.dir === 'asc' ? <ArrowUpZA className='className="w-3 h-3 ml-2 -mr-1' /> : <ArrowDownAZ className='className="w-3 h-3 ml-2 -mr-1' />
+                          )}
+                        </button>
+                      </span>
+                    </th>
+                  )
+                ))}
+                {has_row_buttons &&
+                  <th
+                    className="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+                    colSpan={1}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div
+                        className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs -ml-3 h-8 data-[state=open]:bg-accent"
+                      >
+                        <span>Manage</span>
+                      </div>
+                    </div>
+                  </th>
+                }
+              </tr>
+            </thead>
+            <tbody className='[&_tr:last-child]:border-0'>
+              {loading && (
+                <Loader />
+              )}
+              {data && (data as any[]).map((item, key) => (
+                <tr key={key} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                  {has_multiselect &&
+                    <td className="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
+                      <Checkbox
+                        value={item._id}
+                        checked={selectedRows.includes(item._id)}
+                        onCheckedChange={() => handleCheckboxChange(item._id)}
+                      />
+                    </td>
+                  }
+                  {columns.map((column) => (
+                    column.visible &&
+                    columnVisibility[column.name] && (
+                      <td key={column.name} className="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
+                        {column.type === 'text' && <TextColumn data={item[column.name]} />}
+                        {column.type === 'date' && <DateColumn data={item[column.name]} />}
+                      </td>
+                    )
+                  ))}
+                  {item?.actions &&
+                    <td className="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
+                      {item.actions.map((action: ActionProps, index: React.Key | null | undefined) => (
+                        <span key={index} className='px-1'>
+                          {action.type === 'link' && <LinkAction data={action} />}
+                          {action.type === 'delete' && <DeleteAction data={action} onClickOpenDialog={() => onClickDialog(action)} />}
+                        </span>
+                      ))}
+                    </td>
+                  }
+                </tr>
+              ))}
+              {data.length == 0 && !loading &&
+                <EmptyContent error={error} />
+              }
+            </tbody>
+          </table>
+
+          <DeleteDialog
+            open={open}
+            modelTitle={modelTitle}
+            onClose={handleClose}
+            action={selectedAction}
+            loading={loading}
+            refresh={fetchData}
+          />
+
+        </div>
+      </div>
+      <Pagination
+        current_page={currentPage}
+        total_pages={totalPages}
+        selected_row_count={selectedRows.length}
+        total_row_count={data.length}
+        onChangePerPage={onChangePerPage}
+        handlePageChange={handlePageChange}
+      />
     </div>
   )
 }

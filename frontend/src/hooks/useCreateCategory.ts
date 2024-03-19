@@ -1,23 +1,16 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-interface ApiResponse {
-    status: boolean;
-    message: string;
-    data: any[];
-}
-
-export interface CreateCategory {
-    name: string;
-}
+import { ApiResponse, CreateCategory, ResponseState } from '../types';
+import AppConstants from '../constants/AppConstants';
 
 export const useCreateCategory = () => {
-    const [response, setResponse] = useState({
-        status: true,
+    const [response, setResponse] = useState<ResponseState>({
+        status: false,
         loading: false,
         errored: false,
         data: {},
-        status_code: null as number | null, // Type annotation for status_code
+        status_code: 400,
         message: ''
     });
 
@@ -26,13 +19,13 @@ export const useCreateCategory = () => {
             ...prevResponse,
             loading: true
         }));
-        const ENDPOINT = `http://127.0.0.1:3000/api/v1/categories`;
+        const ENDPOINT = `${AppConstants.API_URL}/categories`;
 
         try {
             const apiResponse = await axios.post<ApiResponse>(ENDPOINT, params);
             setResponse({
                 errored: false,
-                status: apiResponse.data.status,
+                status: apiResponse.data.type === 'success',
                 message: apiResponse.data.message,
                 data: apiResponse.data.data,
                 status_code: apiResponse.status,
@@ -44,7 +37,7 @@ export const useCreateCategory = () => {
                 message: error.response?.data.errors || error.response?.data.message || error.message,
                 data: [],
                 status: false,
-                status_code: error.response?.status || null,
+                status_code: error.response?.status || 400,
                 loading: false
             });
         } finally {

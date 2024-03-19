@@ -10,17 +10,8 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
   } from "../Dialog/AlertDialog"
-import { ActionProps } from '../../types';
+import {DeleteDialogProps } from '../../types';
 import { useDeleteCategory } from '../../hooks/useDeleteCategory';
-
-interface DeleteDialogProps {
-  open: boolean;
-  modelTitle: string;
-  onClose: () => void;
-  action?: ActionProps;
-  loading: boolean;
-  refresh: () => void;
-}
 
 export const DeleteDialog : React.FC<DeleteDialogProps> = ({ open, modelTitle, onClose, action, loading, refresh}) => {
 
@@ -31,7 +22,7 @@ export const DeleteDialog : React.FC<DeleteDialogProps> = ({ open, modelTitle, o
             response.loading = loading;
             await process({endpoint: action.endpoint});
             response.loading = loading;
-            if (response.status_code === 200 || response.status_code === null ) {
+            if (response.status) {
                 onClose();
                 refresh(); 
             } else {

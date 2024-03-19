@@ -3,7 +3,6 @@ export const DashboardPage = () => {
     return (
         <div className="bg-gray-100">
             <div className="container p-4 lg:p-8">
-
                 <div className="flex-1 space-y-4 p-8 pt-6">
                     <div className="flex items-center justify-between space-y-2">
                         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
@@ -25,12 +24,10 @@ export const DashboardPage = () => {
                                         clipRule="evenodd"
                                     />
                                 </svg>
-
                                 New Category
                             </button>
                         </div>
                     </div>
-
                 </div>
                 <div className="space-y-4 lg:space-y-8">
                     <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">

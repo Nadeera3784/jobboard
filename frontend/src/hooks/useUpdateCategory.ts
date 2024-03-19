@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { ApiResponse, DeleteCategory, ResponseState } from '../types';
+import { ApiResponse, ResponseState, updateCategory } from '../types';
+import AppConstants from '../constants/AppConstants';
 
-export const useDeleteCategory = () => {
+export const useUpdateCategory = () => {
     const [response, setResponse] = useState<ResponseState>({
         status: false,
         loading: false,
@@ -12,14 +13,16 @@ export const useDeleteCategory = () => {
         status_code: 200,
         message: ''
     });
-    const process = async (params: DeleteCategory, finallyCallback?: (response: any) => void) => {
+
+    const process = async (params: updateCategory, id: string, finallyCallback?: (response: any) => void) => {
         setResponse(prevResponse => ({
             ...prevResponse,
             loading: true
         }));
-        const ENDPOINT = params.endpoint;
+        const ENDPOINT = `${AppConstants.API_URL}/categories/${id}`;
+
         try {
-            const apiResponse = await axios.delete<ApiResponse>(ENDPOINT);
+            const apiResponse = await axios.put<ApiResponse>(ENDPOINT, params);
             setResponse({
                 errored: false,
                 status: apiResponse.data.type === 'success',
@@ -28,7 +31,6 @@ export const useDeleteCategory = () => {
                 status_code: apiResponse.status,
                 loading: false
             });
-            console.log('useDeleteCategory', response);
         } catch (error: any) {
             setResponse({
                 errored: true,

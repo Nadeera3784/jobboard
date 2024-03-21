@@ -48,3 +48,13 @@ export type PaginationProps = {
     onChangePerPage: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     handlePageChange: (pageNumber: number) => void;
 }
+
+export type  DeleteDialogProps = {
+    open: boolean;
+    modelTitle: string;
+    onClose: () => void;
+    action?: ActionProps;
+    loading: boolean;
+    refresh: () => void;
+}
+  

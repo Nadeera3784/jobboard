@@ -1,25 +1,29 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { ApiResponse, DeleteCategory, ResponseState } from '../types';
+import { ApiResponse, CreateLocation, ResponseState } from '../../types';
+import AppConstants from '../../constants/AppConstants';
+import HttpStatus from '../../constants/HttpStatus';
 
-export const useDeleteCategory = () => {
+export const useCreateLocation = () => {
     const [response, setResponse] = useState<ResponseState>({
         status: false,
         loading: false,
         errored: false,
         data: {},
-        status_code: 200,
+        status_code: HttpStatus.OK,
         message: ''
     });
-    const process = async (params: DeleteCategory, finallyCallback?: (response: any) => void) => {
+
+    const process = async (params: CreateLocation, finallyCallback?: (response: any) => void) => {
         setResponse(prevResponse => ({
             ...prevResponse,
             loading: true
         }));
-        const ENDPOINT = params.endpoint;
+        const ENDPOINT = `${AppConstants.API_URL}/locations`;
+
         try {
-            const apiResponse = await axios.delete<ApiResponse>(ENDPOINT);
+            const apiResponse = await axios.post<ApiResponse>(ENDPOINT, params);
             setResponse({
                 errored: false,
                 status: apiResponse.data.type === 'success',
@@ -28,14 +32,13 @@ export const useDeleteCategory = () => {
                 status_code: apiResponse.status,
                 loading: false
             });
-            console.log('useDeleteCategory', response);
         } catch (error: any) {
             setResponse({
                 errored: true,
                 message: error.response?.data.errors || error.response?.data.message || error.message,
-                data: [],
+                data: {},
                 status: false,
-                status_code: error.response?.status || 400,
+                status_code: error.response?.status || HttpStatus.BAD_REQUEST,
                 loading: false
             });
         } finally {

@@ -1,3 +1,4 @@
+import { MapPinned } from "lucide-react";
 import { useState } from "react";
 import { Link , Outlet} from "react-router-dom";
 
@@ -76,12 +77,12 @@ export const AdminLayout = () => {
                                     </span>
                                     <span className="py-2 flex-grow">Categories</span>
                                 </Link>
-                                <a href="#" className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50">
+                                <Link to="/admin/locations" className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50">
                                     <span className="flex-none flex items-center">
-                                        <svg className="hi-outline hi-clipboard-list inline-block w-5 h-5" stroke="currentColor" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
+                                        <MapPinned className="hi-outline hi-clipboard-list inline-block w-5 h-5"/>
                                     </span>
-                                    <span className="py-2 flex-grow">Engagements</span>
-                                </a>
+                                    <span className="py-2 flex-grow">Locations</span>
+                                </Link>
                                 <a href="#" className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50">
                                     <span className="flex-none flex items-center">
                                     <svg className="hi-solid hi-collection inline-block w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/></svg> 

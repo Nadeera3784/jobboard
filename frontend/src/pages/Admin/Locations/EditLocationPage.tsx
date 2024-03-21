@@ -25,16 +25,16 @@ import {
 import { Input } from "../../../components/Form/Input";
 import { Button } from '../../../components/Form/Button';
 import { CreateCategorySchema as UpdateCategorySchema } from "../../../schemas";
-import { useGetCategoryById } from '../../../hooks/Categories/useGetCategoryById';
-import { useUpdateCategory } from '../../../hooks/Categories/useUpdateCategory';
+import { useGetLocationById } from '../../../hooks/Locations/useGetLocationById';
+import { useUpdateLocation } from '../../../hooks/Locations/useUpdateLocation';
 import HttpStatus from '../../../constants/HttpStatus';
 
-export const EditCategoryPage = () => {
+export const EditLocationPage = () => {
 
     let { id } = useParams<{ id: string }>(); 
 
-    const { response, process } = useGetCategoryById();
-    const { response: updateResponse, process: processUpdateCategory } = useUpdateCategory();
+    const { response, process } = useGetLocationById();
+    const { response: updateResponse, process: processUpdateCategory } = useUpdateLocation();
 
     const form = useForm<z.infer<typeof UpdateCategorySchema>>({
         resolver: zodResolver(UpdateCategorySchema),

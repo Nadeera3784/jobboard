@@ -5,6 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Location } from '../schemas/location.schema';
 import { CreateLocationDto } from '../dtos/create-location.dto';
 import { UpdateLocationDto } from '../dtos/update-location.dto';
+import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class LocationService {
@@ -61,4 +62,97 @@ export class LocationService {
       _id: id,
     });
   }
+
+  async datatable(request: any) {
+    try {
+      const params = request.body;
+      let order = params.order || [];
+      let columns = params.columns || [];
+      const status = params.status || "";
+      let searchQuery: any = {};
+      let sort: any = {'created_at': -1};
+      const whereQuery: any = { status: String };
+      if (status) {
+        whereQuery.status = status;
+      }
+      
+      if (params.search.value) {
+          const regex = new RegExp(params.search.value, "i");
+          searchQuery = {
+            $or: [
+              { 'name': regex },
+            ],
+          };
+      } 
+
+      if (order.length && columns.length) {
+        const sortByOrder: any = order.reduce((memo: any, ordr: any) => {
+          const column = columns[ordr.column];
+          memo[ordr.name] = ordr.dir === 'asc' ? 1 : -1;
+          return memo;
+        }, {});
+
+        if (Object.keys(sortByOrder).length) {
+          sort = sortByOrder;
+        }
+      }
+
+      let recordsTotal = 0;
+      let recordsFiltered = 0;
+
+      const all_count = await this.locationModel.countDocuments({});
+      recordsTotal = all_count;
+
+      const filtered_count = await this.locationModel.countDocuments(searchQuery);
+      recordsFiltered = filtered_count;
+      
+      let results = await this.locationModel.find(searchQuery, 'name')
+        .select("_id name created_at status")
+        .skip(Number(params.start))
+        .limit(Number(params.length))
+        .sort(sort)
+        .exec();
+        results = results.map((result: any) => {
+          return {
+            ...result.toObject(),
+            actions: [
+              {
+                id: 1,
+                label: 'Edit',
+                type: 'link',
+                endpoint: '/admin/locations/' + result._id
+              },
+              {
+                id: 2,
+                label: 'Delete',
+                type: 'delete',
+                endpoint: 'http://127.0.0.1:3000/api/v1/locations/' + result._id,
+                confirm_message: "Are you sure want to delete?"
+              }
+            ]
+          };
+        });
+
+      const data = {
+        "draw": params.draw,
+        "recordsFiltered": recordsFiltered,
+        "recordsTotal": recordsTotal,
+        "data": results
+      };
+      return data;
+    } catch (error) {
+      return error;
+    }
+  }
+
+  
+  async seeds(){
+    for (let index = 0; index < 20; index++) {
+      await this.locationModel.create({
+         name: faker.location.city(),
+         status: "Active"
+      });
+    }
+  }
+
 }

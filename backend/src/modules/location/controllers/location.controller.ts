@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -17,13 +18,14 @@ import { DeleteLocationFeature } from '../features/delete-location-feature';
 import { GetAllLocationsFeature } from '../features/get-all-locations-features';
 import { GetLocationByIdFeature } from '../features/get-location-by-id-feature';
 import { UpdateLocationFeature } from '../features/update-location-feature';
+import { DatatableFeature } from '../features/datatable.feature';
 import { RolesAllowed } from '../../auth/decorators/role.decorator';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RoleGuard } from '../../auth/guards/role.guard';
 import { Roles } from '../../user/enums/roles.enum';
 
 @Controller('locations')
-@UseGuards(AuthGuard, RoleGuard)
+//@UseGuards(AuthGuard, RoleGuard)
 export class LocationController {
   constructor(
     private readonly createLocationFeature: CreateLocationFeature,
@@ -31,6 +33,7 @@ export class LocationController {
     private readonly getAllLocationsFeature: GetAllLocationsFeature,
     private readonly getLocationByIdFeature: GetLocationByIdFeature,
     private readonly updateLocationFeature: UpdateLocationFeature,
+    private readonly datatableFeature: DatatableFeature,
   ) {}
 
   @Get()
@@ -76,6 +79,14 @@ export class LocationController {
   public async delete(@Res() response, @Param() { id }) {
     const { status, response: featureUpResponse } =
       await this.deleteLocationFeature.handle(id);
+    return response.status(status).json(featureUpResponse);
+  }
+
+  @RolesAllowed(Roles.ADMIN)
+  @Post('/datatable')
+  public async dataTable(@Req() request, @Res() response){
+    const { status, response: featureUpResponse } =
+    await this.datatableFeature.handle(request);
     return response.status(status).json(featureUpResponse);
   }
 }

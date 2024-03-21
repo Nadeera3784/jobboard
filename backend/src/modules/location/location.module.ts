@@ -9,6 +9,7 @@ import { DeleteLocationFeature } from './features/delete-location-feature';
 import { GetAllLocationsFeature } from './features/get-all-locations-features';
 import { GetLocationByIdFeature } from './features/get-location-by-id-feature';
 import { UpdateLocationFeature } from './features/update-location-feature';
+import { DatatableFeature } from './features/datatable.feature';
 import { UserModule } from '../user/user.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { UserModule } from '../user/user.module';
     GetAllLocationsFeature,
     GetLocationByIdFeature,
     UpdateLocationFeature,
+    DatatableFeature
   ],
   controllers: [LocationController],
   exports: [LocationService],

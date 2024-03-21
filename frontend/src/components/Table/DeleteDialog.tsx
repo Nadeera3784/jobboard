@@ -10,8 +10,9 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
   } from "../Dialog/AlertDialog"
-import {DeleteDialogProps } from '../../types';
-import { useDeleteCategory } from '../../hooks/useDeleteCategory';
+import { DeleteDialogProps } from '../../types';
+import { useDeleteCategory } from '../../hooks/Categories/useDeleteCategory';
+import HttpStatus from '../../constants/HttpStatus';
 
 export const DeleteDialog : React.FC<DeleteDialogProps> = ({ open, modelTitle, onClose, action, loading, refresh}) => {
 
@@ -22,8 +23,9 @@ export const DeleteDialog : React.FC<DeleteDialogProps> = ({ open, modelTitle, o
             response.loading = loading;
             await process({endpoint: action.endpoint});
             response.loading = loading;
-            if (response.status) {
+            if (response.status_code === HttpStatus.OK) {
                 onClose();
+                toast.warning(response?.message || "Deleted Successfully!");
                 refresh(); 
             } else {
                 toast.warning("Something went wrong, Please try again later");

@@ -28,7 +28,7 @@ import {
 import { CreateCategorySchema } from "../../../schemas";
 import HttpStatus from '../../../constants/HttpStatus';
 
-export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
+export const CreateLocationModal = ({ refresh }: { refresh: () => void }) => {
 
     const { response, process} = useCreateCategory();
 
@@ -62,13 +62,13 @@ export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
                 <DialogTrigger asChild>
                     <Button variant="default">
                         <PlusCircle className="mr-2 h-4 w-4"/>
-                         New Category
+                         New Location
                     </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-md">
                     <DialogHeader>
-                        <DialogTitle>New Category</DialogTitle>
-                        <DialogDescription> Create a new category</DialogDescription>
+                        <DialogTitle>New Location</DialogTitle>
+                        <DialogDescription> Create a new location</DialogDescription>
                     </DialogHeader>
                     <Form {...form}>
                         <form

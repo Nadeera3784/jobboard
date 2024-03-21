@@ -9,6 +9,8 @@ import { AdminLayout } from "../layouts/AdminLayout";
 import { DashboardPage } from "../pages/Admin/DashboardPage";
 import { CategoriesPage } from "../pages/Admin/Categories/CategoriesPage";
 import { EditCategoryPage } from "../pages/Admin/Categories/EditCategoryPage";
+import { LocationsPage } from "../pages/Admin/Locations/LocationsPage";
+import { EditLocationPage } from "../pages/Admin/Locations/EditLocationPage";
 
 import { TestPage } from "../pages/Admin/TestPage";
 
@@ -28,7 +30,9 @@ export const AppRouter = () => {
           <Route index element={<DashboardPage />} />
           <Route path="categories" element={<CategoriesPage />} />
           <Route path="categories/:id" element={<EditCategoryPage />}/>
-
+          <Route path="locations" element={<LocationsPage />} />
+          <Route path="locations/:id" element={<EditLocationPage />}/>
+          
           <Route path="test" element={<TestPage />} />
         </Route>
       </Routes>

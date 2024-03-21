@@ -123,7 +123,6 @@ export class CategoryService {
       
       let results = await this.categoryModel.find(searchQuery, 'name')
         .select("_id name created_at status")
-        //.where(whereQuery)
         .skip(Number(params.start))
         .limit(Number(params.length))
         .sort(sort)

@@ -1,28 +1,29 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { ApiResponse, ResponseState, updateCategory } from '../types';
-import AppConstants from '../constants/AppConstants';
+import { ApiResponse, CreateCategory, ResponseState } from '../../types';
+import AppConstants from '../../constants/AppConstants';
+import HttpStatus from '../../constants/HttpStatus';
 
-export const useUpdateCategory = () => {
+export const useCreateCategory = () => {
     const [response, setResponse] = useState<ResponseState>({
         status: false,
         loading: false,
         errored: false,
         data: {},
-        status_code: 200,
+        status_code: HttpStatus.OK,
         message: ''
     });
 
-    const process = async (params: updateCategory, id: string, finallyCallback?: (response: any) => void) => {
+    const process = async (params: CreateCategory, finallyCallback?: (response: any) => void) => {
         setResponse(prevResponse => ({
             ...prevResponse,
             loading: true
         }));
-        const ENDPOINT = `${AppConstants.API_URL}/categories/${id}`;
+        const ENDPOINT = `${AppConstants.API_URL}/categories`;
 
         try {
-            const apiResponse = await axios.put<ApiResponse>(ENDPOINT, params);
+            const apiResponse = await axios.post<ApiResponse>(ENDPOINT, params);
             setResponse({
                 errored: false,
                 status: apiResponse.data.type === 'success',
@@ -35,9 +36,9 @@ export const useUpdateCategory = () => {
             setResponse({
                 errored: true,
                 message: error.response?.data.errors || error.response?.data.message || error.message,
-                data: [],
+                data: {},
                 status: false,
-                status_code: error.response?.status || 400,
+                status_code: error.response?.status || HttpStatus.BAD_REQUEST,
                 loading: false
             });
         } finally {

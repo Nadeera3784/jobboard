@@ -12,7 +12,7 @@ import {
     FormLabel,
     FormMessage,
 } from "../../../components/Form/Form";
-import { useCreateCategory } from '../../../hooks/Categories/useCreateCategory';
+import { useCreateLocation } from '../../../hooks/Locations/useCreateLocation';
 import { Button } from "../../../components/Form/Button";
 import { Input } from "../../../components/Form/Input"
 import {
@@ -30,7 +30,7 @@ import HttpStatus from '../../../constants/HttpStatus';
 
 export const CreateLocationModal = ({ refresh }: { refresh: () => void }) => {
 
-    const { response, process} = useCreateCategory();
+    const { response, process} = useCreateLocation();
 
     const form = useForm<z.infer<typeof CreateCategorySchema>>({
         resolver: zodResolver(CreateCategorySchema),

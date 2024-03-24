@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { JwtService } from '@nestjs/jwt';
 
 import { UserService } from './services/user.service';
 import { UserController } from './controllers/user.controller';
@@ -9,7 +10,7 @@ import { GetAllUsersFeature } from './features/get-all-users-features';
 import { GetUserByIdFeature } from './features/get-user-by-id-feature';
 import { CreateUserFeature } from './features/create-user-feature';
 import { UpdateUserFeature } from './features/update-user-feature';
-import { JwtService } from '@nestjs/jwt';
+import { DatatableFeature } from './features/datatable.feature';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { JwtService } from '@nestjs/jwt';
     GetUserByIdFeature,
     CreateUserFeature,
     UpdateUserFeature,
+    DatatableFeature,
     JwtService,
   ],
   controllers: [UserController],

@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   Param,
   Post,
   Put,
@@ -37,6 +38,7 @@ export class CategoryController {
     ) {}
 
   @Get()
+  @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async getAll(@Res() response) {
     const { status, response: featureUpResponse } =
@@ -45,6 +47,7 @@ export class CategoryController {
   }
 
   @Get('/:id')
+  @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async getById(@Res() response, @Param() { id }) {
     const { status, response: featureUpResponse } =
@@ -53,6 +56,7 @@ export class CategoryController {
   }
 
   @Post()
+  @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async create(
     @Res() response,
@@ -64,6 +68,8 @@ export class CategoryController {
   }
 
   @Put('/:id')
+  @Header('Content-Type', 'application/json')
+  @RolesAllowed(Roles.ADMIN)
   public async update(
     @Res() response,
     @Param() { id },
@@ -75,6 +81,7 @@ export class CategoryController {
   }
 
   @Delete('/:id')
+  @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async delete(@Res() response, @Param() { id }) {
     const { status, response: featureUpResponse } =
@@ -82,8 +89,9 @@ export class CategoryController {
   return response.status(status).json(featureUpResponse);
   }
 
-  @RolesAllowed(Roles.ADMIN)
+  @Header('Content-Type', 'application/json')
   @Post('/datatable')
+  @RolesAllowed(Roles.ADMIN)
   public async dataTable(@Req() request, @Res() response){
     const { status, response: featureUpResponse } =
     await this.datatableFeature.handle(request);

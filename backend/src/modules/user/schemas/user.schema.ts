@@ -39,8 +39,12 @@ export class User extends Document {
   image: string;
 
   @Prop({ enum: Roles, default: Roles.USER })
-  @IsNotEmpty()
+  @IsOptional()
   role: string;
+
+  @Prop({ default: 'Active' })
+  @IsOptional()
+  status: string;
 
   @Prop({ default: null })
   @IsOptional()

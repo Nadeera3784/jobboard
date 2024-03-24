@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import {Helmet} from "react-helmet";
 
-import { CreateCategoryModal } from './CreateCategoryModal'
+import { CreateUserModal } from './CreateUserModal'
 import { Table } from '../../../components/Table';
 import AppConstants from '../../../constants/AppConstants';
 
-export const CategoriesPage = () => {
+export const UsersPage = () => {
 
     const [refresh, setRefresh] = useState(false);
 
@@ -15,15 +15,15 @@ export const CategoriesPage = () => {
     
     return (
         <div className="bg-gray-100">
-            <Helmet>
-                <title>Admin | Categories</title>
+             <Helmet>
+                <title>Admin | Users</title>
              </Helmet>
             <div className="container p-4 lg:p-8">
                 <div className="flex-1 space-y-4 p-8 pt-6">
                     <div className="flex items-center justify-between space-y-2">
-                        <h2 className="text-3xl font-bold tracking-tight">Categories</h2>
+                        <h2 className="text-3xl font-bold tracking-tight">Users</h2>
                         <div className="flex items-center space-x-2">
-                            <CreateCategoryModal
+                            <CreateUserModal
                                 refresh={onRefresh}
                             />
                         </div>
@@ -33,7 +33,7 @@ export const CategoriesPage = () => {
                     <div className='space-y-4 lg:space-y-8'>
                         <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">
                             <Table
-                                endpoint={`${AppConstants.API_URL}/categories/datatable`}
+                                endpoint={`${AppConstants.API_URL}/users/datatable`}
                                 per_page={10}
                                 has_row_buttons={true}
                                 has_multiselect={false}
@@ -54,6 +54,20 @@ export const CategoriesPage = () => {
                                         visible: true,
                                     },
                                     {
+                                        name: 'email',
+                                        label: 'Email',
+                                        type: 'text',
+                                        orderable: true,
+                                        visible: true,
+                                    },
+                                    {
+                                        name: 'role',
+                                        label: 'Role',
+                                        type: 'label',
+                                        orderable: true,
+                                        visible: true,
+                                    },
+                                    {
                                         name: 'created_at',
                                         label: 'Created',
                                         type: 'date',
@@ -66,6 +80,7 @@ export const CategoriesPage = () => {
                                         type: 'text',
                                         orderable: true,
                                         visible: true,
+                                        width: '100px'
                                     }
                                 ]}
                             />

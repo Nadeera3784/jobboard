@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Header, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
 
 import { SignupDto } from '../dtos/sign-up.dto';
 import { SignInDto } from '../dtos/sign-in.dto';
@@ -24,6 +24,7 @@ export class AuthController {
   ) {}
 
   @Post('/signup')
+  @Header('Content-Type', 'application/json')
   public async signUp(@Res() response, @Body() signupDto: SignupDto) {
     const { status, response: featureUpResponse } =
       await this.signUpFeature.handle(signupDto);
@@ -31,6 +32,7 @@ export class AuthController {
   }
 
   @Post('/signin')
+  @Header('Content-Type', 'application/json')
   public async signIn(@Res() response, @Body() signInDto: SignInDto) {
     const { status, response: featureUpResponse } =
       await this.signInFeature.handle(signInDto);
@@ -38,6 +40,7 @@ export class AuthController {
   }
 
   @Post('/verify-email/:token')
+  @Header('Content-Type', 'application/json')
   public async verifyEmai(@Res() response, @Param('token') token: string) {
     const { status, response: featureUpResponse } =
       await this.verifyEmailFeature.handle(token);
@@ -45,6 +48,7 @@ export class AuthController {
   }
 
   @Post('/forgot')
+  @Header('Content-Type', 'application/json')
   public async forgotPassword(
     @Res() response,
     @Body() forgotPasswordDto: ForgotPasswordDto,
@@ -55,6 +59,7 @@ export class AuthController {
   }
 
   @Post('/reset/:token')
+  @Header('Content-Type', 'application/json')
   public async resetPassword(
     @Res() response,
     @Param('token') token: string,
@@ -66,6 +71,7 @@ export class AuthController {
   }
 
   @Get('/me')
+  @Header('Content-Type', 'application/json')
   @UseGuards(AuthGuard)
   public async me(
     @Req() request,

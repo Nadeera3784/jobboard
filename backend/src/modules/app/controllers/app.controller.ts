@@ -1,4 +1,4 @@
-import { Controller, Get, Res } from '@nestjs/common';
+import { Controller, Get, Header, Res } from '@nestjs/common';
 import { GetSharedFiltersFeature } from '../features/get-shared-filters.feature';
 
 @Controller('app')
@@ -8,6 +8,7 @@ export class AppController {
   ) {}
 
   @Get('/shared/filters')
+  @Header('Content-Type', 'application/json')
   public async getFilters(@Res() response) {
     const { status, response: featureUpResponse } =
       await this.getSharedFiltersFeature.handle();

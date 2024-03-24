@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
   Param,
   Post,
   Put,
@@ -37,6 +38,7 @@ export class LocationController {
   ) {}
 
   @Get()
+  @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async getAll(@Res() response) {
     const { status, response: featureUpResponse } =
@@ -45,6 +47,8 @@ export class LocationController {
   }
 
   @Get('/:id')
+  @Header('Content-Type', 'application/json')
+  @RolesAllowed(Roles.ADMIN)
   public async getById(@Res() response, @Param() { id }) {
     const { status, response: featureUpResponse } =
       await this.getLocationByIdFeature.handle(id);
@@ -52,6 +56,7 @@ export class LocationController {
   }
 
   @Post()
+  @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async create(
     @Res() response,
@@ -63,6 +68,7 @@ export class LocationController {
   }
 
   @Put('/:id')
+  @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async update(
     @Res() response,
@@ -75,6 +81,7 @@ export class LocationController {
   }
 
   @Delete('/:id')
+  @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async delete(@Res() response, @Param() { id }) {
     const { status, response: featureUpResponse } =
@@ -82,8 +89,9 @@ export class LocationController {
     return response.status(status).json(featureUpResponse);
   }
 
-  @RolesAllowed(Roles.ADMIN)
   @Post('/datatable')
+  @Header('Content-Type', 'application/json')
+  @RolesAllowed(Roles.ADMIN)
   public async dataTable(@Req() request, @Res() response){
     const { status, response: featureUpResponse } =
     await this.datatableFeature.handle(request);

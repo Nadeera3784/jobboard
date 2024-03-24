@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {Helmet} from "react-helmet";
 
 import { CreateLocationModal } from './CreateLocationModal'
 import { Table } from '../../../components/Table';
@@ -14,6 +15,9 @@ export const LocationsPage = () => {
     
     return (
         <div className="bg-gray-100">
+            <Helmet>
+                <title>Admin | Locations</title>
+             </Helmet>
             <div className="container p-4 lg:p-8">
                 <div className="flex-1 space-y-4 p-8 pt-6">
                     <div className="flex items-center justify-between space-y-2">

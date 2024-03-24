@@ -4,6 +4,7 @@ export type ColumnProps = {
     type: string;
     orderable: boolean;
     visible: boolean;
+    width?: string;
 };
 
 export type ActionButton = {

@@ -30,7 +30,11 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
-  role?: string;
+  role: string;
+
+  @IsString()
+  @IsOptional()
+  status: string;
 
   @IsString()
   @IsOptional()

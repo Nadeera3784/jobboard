@@ -11,6 +11,7 @@ import { CategoriesPage } from "../pages/Admin/Categories/CategoriesPage";
 import { EditCategoryPage } from "../pages/Admin/Categories/EditCategoryPage";
 import { LocationsPage } from "../pages/Admin/Locations/LocationsPage";
 import { EditLocationPage } from "../pages/Admin/Locations/EditLocationPage";
+import { UsersPage } from "../pages/Admin/Users/UsersPage";
 
 import { TestPage } from "../pages/Admin/TestPage";
 
@@ -32,7 +33,7 @@ export const AppRouter = () => {
           <Route path="categories/:id" element={<EditCategoryPage />}/>
           <Route path="locations" element={<LocationsPage />} />
           <Route path="locations/:id" element={<EditLocationPage />}/>
-          
+          <Route path="users" element={<UsersPage />} />
           <Route path="test" element={<TestPage />} />
         </Route>
       </Routes>

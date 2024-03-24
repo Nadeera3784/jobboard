@@ -11,7 +11,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   }) => {
     return (
         <div className="flex items-center justify-between px-2">
-        <div className="flex-1 text-sm text-muted-foreground">
+        <div className="flex-1 text-sm text-slate-700">
           {selected_row_count} of {total_row_count} row(s) selected.
         </div>
         <div className="flex items-center space-x-6 lg:space-x-8">

@@ -6,7 +6,7 @@ export default () => ({
   },
   database: {
     mongodb: {
-      uri: process.env.DB_URI,
+      uri: process.env.MONGODB_URI,
     },
   },
   mail: {

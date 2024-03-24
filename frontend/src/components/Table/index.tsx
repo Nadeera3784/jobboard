@@ -4,6 +4,7 @@ import { ArrowDownAZ, ArrowUpZA, ChevronDownIcon } from 'lucide-react';
 
 import { TextColumn } from './TextColumn';
 import { DateColumn } from './DateColumn';
+import { LabelColumn } from './LabelColumn';
 import { LinkAction } from './LinkAction';
 import { DeleteAction } from './DeleteAction';
 import { EmptyContent } from './EmptyContent';
@@ -184,10 +185,10 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
         <div className="relative w-full overflow-auto">
           <table className='w-full caption-bottom text-sm'>
             <thead className='[&_tr]:border-b'>
-              <tr className='border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted'>
+              <tr className='border-b transition-colors hover:bg-muted/50 text-slate-700'>
                 {has_multiselect &&
                   <th
-                    className="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+                    className="h-10 px-2 text-left align-middle font-medium text-slate-700"
                     colSpan={1}
                   >
                     <Checkbox
@@ -199,10 +200,10 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
                 {columns.map((column, key) => (
                   column.visible &&
                   columnVisibility[column.name] && (
-                    <th key={key} className='h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]' colSpan={1}>
+                    <th key={key} className='h-10 px-2 text-left align-middle font-medium text-slate-700' colSpan={1}>
                       <span className='flex items-center space-x-2'>
                         <button
-                          className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground rounded-md px-3 text-xs -ml-3 h-8 data-[state=open]:bg-accent"
+                          className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 rounded-md px-3 text-xs -ml-3 h-8"
                           type="button"
                           onClick={() => onClickSort(column, key, sort.find(item => item.column === key)?.dir !== 'asc' ? 'asc' : 'desc')}
                         >
@@ -217,7 +218,7 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
                 ))}
                 {has_row_buttons &&
                   <th
-                    className="h-10 px-2 text-left align-middle font-medium text-muted-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]"
+                    className="h-10 px-2 text-left align-middle font-medium text-slate-700"
                     colSpan={1}
                   >
                     <div className="flex items-center space-x-2">
@@ -236,9 +237,9 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
                 <Loader />
               )}
               {data && (data as any[]).map((item, key) => (
-                <tr key={key} className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                <tr key={key} className="border-b transition-colors hover:bg-gray-100 bg-white">
                   {has_multiselect &&
-                    <td className="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
+                    <td className="p-2 align-middle">
                       <Checkbox
                         value={item._id}
                         checked={selectedRows.includes(item._id)}
@@ -249,14 +250,15 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
                   {columns.map((column) => (
                     column.visible &&
                     columnVisibility[column.name] && (
-                      <td key={column.name} className="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
-                        {column.type === 'text' && <TextColumn data={item[column.name]} />}
+                      <td key={column.name} className="p-2 align-middle">
+                        {column.type === 'text' && <TextColumn text={item[column.name]}  width={column?.width || ""}/>}
                         {column.type === 'date' && <DateColumn data={item[column.name]} />}
+                        {column.type === 'label' && <LabelColumn text={item[column.name]} />}
                       </td>
                     )
                   ))}
                   {item?.actions &&
-                    <td className="p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]">
+                    <td className="p-2 align-middle">
                       {item.actions.map((action: ActionProps, index: React.Key | null | undefined) => (
                         <span key={index} className='px-1'>
                           {action.type === 'link' && <LinkAction data={action} />}

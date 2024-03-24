@@ -1,9 +1,10 @@
 type TextColumnProps = {
-  data: string;
+  text: string;
+  width: string;
 };
 
-export const TextColumn: React.FC<TextColumnProps> = ({ data }) => {
+export const TextColumn: React.FC<TextColumnProps> = ({ text, width}) => {
   return (
-      <div className="flex w-[100px] items-center">{data}</div>
+      <div className={`${width !== "" ?  `w-[${width}]` : ''}`}>{text}</div>
   );
 };

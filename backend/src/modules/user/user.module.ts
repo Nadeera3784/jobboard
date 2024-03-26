@@ -11,6 +11,7 @@ import { GetUserByIdFeature } from './features/get-user-by-id-feature';
 import { CreateUserFeature } from './features/create-user-feature';
 import { UpdateUserFeature } from './features/update-user-feature';
 import { DatatableFeature } from './features/datatable.feature';
+import { UserDeletedListener } from './listeners/user-deleted.listener';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { DatatableFeature } from './features/datatable.feature';
     UpdateUserFeature,
     DatatableFeature,
     JwtService,
+    UserDeletedListener
   ],
   controllers: [UserController],
   exports: [

@@ -21,6 +21,7 @@ import {
 } from "../Dialog/DropdownMenu"
 import { Button } from '../Form/Button';
 import { DeleteDialog } from './DeleteDialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../Form/Select';
 
 export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_row_buttons, has_multiselect, refresh }) => {
 
@@ -53,7 +54,7 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
         start: (page - 1) * limit,
         length: limit,
         draw: currentPage,
-      });
+      });      
       setData(response.data.data.data);
       setTotalItems(response.data.data.recordsTotal);
     } catch (error) {
@@ -149,7 +150,7 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between overflow-auto">
         <div className="flex flex-1 items-center space-x-2">
           <Input
             className='h-8 w-[150px] lg:w-[250px]'
@@ -157,6 +158,30 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
             onChange={(event) => onSearch(event)}
             value={search}
           />
+          <div>
+             <Select
+              >
+                  <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                      <SelectItem value="Active">Active</SelectItem>
+                      <SelectItem value="InActive">InActive</SelectItem>
+                  </SelectContent>
+              </Select>
+          </div>
+          <div>
+             <Select
+              >
+                  <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                      <SelectItem value="Active">Active</SelectItem>
+                      <SelectItem value="InActive">InActive</SelectItem>
+                  </SelectContent>
+              </Select>
+          </div>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

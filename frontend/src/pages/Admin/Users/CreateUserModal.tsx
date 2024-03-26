@@ -25,7 +25,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "../../../components/Dialog/Dialog"
-import { CreateCategorySchema } from "../../../schemas";
+import { CreateUserSchema } from "../../../schemas";
 import HttpStatus from '../../../constants/HttpStatus';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/Form/Select";
 
@@ -33,29 +33,35 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
 
     const { response, process } = useCreateLocation();
 
-    const form = useForm<z.infer<typeof CreateCategorySchema>>({
-        resolver: zodResolver(CreateCategorySchema),
+    const form = useForm<z.infer<typeof CreateUserSchema>>({
+        resolver: zodResolver(CreateUserSchema),
         defaultValues: {
             name: "",
-        },
-
+            email: "",
+            password: "",
+            confirmPassword: "",
+            phone: "",
+            status: "",
+            role: "",
+            image: "",
+        }
     });
 
-    const onSubmit = async (values: z.infer<typeof CreateCategorySchema>) => {
-        const validatedFields = CreateCategorySchema.safeParse(values);
+    const onSubmit = async (values: z.infer<typeof CreateUserSchema>) => {
+        const validatedFields = CreateUserSchema.safeParse(values);
 
         if (!validatedFields.success) {
             toast.warning("Something went wrong, Please try again later");
             return;
         }
-        await process(validatedFields.data);
-        if (response.status_code === HttpStatus.OK) {
-            form.reset();
-            toast.success('Category created successfully!');
-            refresh();
-        } else {
-            toast.warning("Something went wrong, Please try again later");
-        }
+        // await process(validatedFields.data);
+        // if (response.status_code === HttpStatus.OK) {
+        //     form.reset();
+        //     toast.success('Category created successfully!');
+        //     refresh();
+        // } else {
+        //     toast.warning("Something went wrong, Please try again later");
+        // }
     };
 
     return (
@@ -78,94 +84,153 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                             className="space-y-2"
                         >
                             <div className="grid grid-cols-2 gap-4">
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Name</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                disabled={response.loading}
-                                                placeholder=""
-                                                type="text"
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Name</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled={response.loading}
+                                                    placeholder=""
+                                                    type="text"
+                                                />
+                                            </FormControl>
+                                            <FormMessage
                                             />
-                                        </FormControl>
-                                        <FormMessage
-                                        />
-                                    </FormItem>
-                                )}
-                            />
+                                        </FormItem>
+                                    )}
+                                />
 
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Email</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                disabled={response.loading}
-                                                placeholder=""
-                                                type="email"
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled={response.loading}
+                                                    placeholder=""
+                                                    type="email"
+                                                />
+                                            </FormControl>
+                                            <FormMessage
                                             />
-                                        </FormControl>
-                                        <FormMessage
-                                        />
-                                    </FormItem>
-                                )}
-                            />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="phone"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Phone</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled={response.loading}
+                                                    placeholder=""
+                                                    type="text"
+                                                />
+                                            </FormControl>
+                                            <FormMessage
+                                            />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="status"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Role</FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    {...field}
+                                                    disabled={response.loading}
+                                                    onValueChange={field.onChange} defaultValue={field.value}
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select Role" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="user">User</SelectItem>
+                                                        <SelectItem value="admin">Admin</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage
+                                            />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Password</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled={response.loading}
+                                                    placeholder="********"
+                                                    type="password"
+                                                />
+                                            </FormControl>
+                                            <FormMessage
+                                            />
+                                        </FormItem>
+                                    )}
+                                />
+
+                                <FormField
+                                    control={form.control}
+                                    name="confirmPassword"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Confirm Password</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled={response.loading}
+                                                    placeholder="********"
+                                                    type="password"
+                                                />
+                                            </FormControl>
+                                            <FormMessage
+                                            />
+                                        </FormItem>
+                                    )}
+                                />
+
+                               <FormField
+                                    control={form.control}
+                                    name="image"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Avatar</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    disabled={response.loading}
+                                                    type="file"
+                                                />
+                                            </FormControl>
+                                            <FormMessage
+                                            />
+                                        </FormItem>
+                                    )}
+                                />
+
                             </div>
-
-                            <FormField
-                                control={form.control}
-                                name="name"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Phone</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                {...field}
-                                                disabled={response.loading}
-                                                placeholder=""
-                                                type="text"
-                                            />
-                                        </FormControl>
-                                        <FormMessage
-                                        />
-                                    </FormItem>
-                                )}
-                            />
-
-                            <FormField
-                                control={form.control}
-                                name="status"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Role</FormLabel>
-                                        <FormControl>
-                                            <Select
-                                                {...field}
-                                                disabled={response.loading}
-                                                onValueChange={field.onChange} defaultValue={field.value}
-                                            >
-                                                <SelectTrigger className="w-[180px]">
-                                                    <SelectValue placeholder="Select Role" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="user">User</SelectItem>
-                                                    <SelectItem value="admin">Admin</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </FormControl>
-                                        <FormMessage
-                                        />
-                                    </FormItem>
-                                )}
-                            />
-
 
                             <DialogFooter>
                                 <DialogClose asChild>

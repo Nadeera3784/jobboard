@@ -8,7 +8,7 @@ import { UserRegisterdEvent } from '../events/user-registerd.event';
 import { AuthService } from '../services/auth.service';
 import { BaseFeature } from '../../core/features/base-feature';
 import { UserService } from '../../user/services/user.service';
-import { Events } from '../enums/events.enum';
+import { Events } from '../../user/enums/events.enum';
 import { VerificationTokenService } from '../services/verification-token.service';
 
 @Injectable()
@@ -36,7 +36,7 @@ export class SignInFeature extends BaseFeature {
       }
 
       if (!existingUser.email_verified) {
-        await this.publishEvents(existingUser.email);
+        await this.dispatchEvent(existingUser.email);
       }
 
       const isPasswordMatch = await this.authService.signIn(
@@ -77,12 +77,12 @@ export class SignInFeature extends BaseFeature {
     }
   }
 
-  private async publishEvents(email: string) {
-    const userRegisterdEvent = new UserRegisterdEvent();
+  private async dispatchEvent(email: string) {
+    const event = new UserRegisterdEvent();
     const verificationToken =
       await this.verificationTokenService.generateVerificationToken(email);
-    userRegisterdEvent.token = verificationToken.token;
-    userRegisterdEvent.email = verificationToken.email;
-    this.eventEmitter.emit(Events.USER_REGISTERED, userRegisterdEvent);
+    event.token = verificationToken.token;
+    event.email = verificationToken.email;
+    this.eventEmitter.emit(Events.USER_REGISTERED, event);
   }
 }

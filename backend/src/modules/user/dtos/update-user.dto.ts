@@ -4,6 +4,7 @@ import {
   IsString,
   Length,
   MaxLength,
+  MinLength,
 } from 'class-validator';
 
 export class UpdateUserDto {
@@ -38,8 +39,6 @@ export class UpdateUserDto {
 
   @IsString()
   @IsOptional()
-  @Length(6, 8, {
-    message: 'Password must be between 6 and 8 characters',
-  })
+  @MinLength(6)
   password: string;
 }

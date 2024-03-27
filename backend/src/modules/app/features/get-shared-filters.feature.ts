@@ -1,7 +1,7 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 import { Response as ResponseType } from '../enums/response.enum';
-import { BaseFeature } from '../../core/features/base-feature';
+import { BaseFeature } from './base-feature';
 import { AppService } from '../services/app.service';
 import { LocationService } from '../../location/services/location.service';
 import { CategoryService } from '../../category/services/category.service';

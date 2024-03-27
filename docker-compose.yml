@@ -8,8 +8,8 @@ networks:
 volumes:
   redis-data:
     name: jobboard_redis-data
-  # mongodb-data:
-  #   name: jobboard_mongodb-data
+  mongodb-data:
+    name: jobboard_mongodb-data
 
 services:
 
@@ -29,11 +29,11 @@ services:
       - ./docker/redis/redis.conf:/usr/local/etc/redis/redis.conf:cached
       - redis-data:/data:delegated
 
-  # mongodb:
-  #   image: mongo:3.6.23
-  #   ports:
-  #     - 27017:27017
-  #   volumes:
-  #     - mongodb-data:/data:delegated
-  #   networks:
-  #     - jobboard-network
+  mongodb:
+    image: mongo:3.6.23
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb-data:/data:delegated
+    networks:
+      - jobboard-network

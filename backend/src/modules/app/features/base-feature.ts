@@ -22,14 +22,14 @@ export class BaseFeature {
     status: number = HttpStatus.BAD_REQUEST,
     type = 'ERROR',
     message = 'Something went wrong, Please try again later',
-    error: any = null,
+    data: any = null,
   ) {
     return {
       status: status,
       response: {
         type: type,
         message: message,
-        data: error,
+        data: data,
       },
     };
   }

@@ -3,13 +3,13 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 
 import { Response as ResponseType } from '../../app/enums/response.enum';
-import { SignInDto } from '../dtos/sign-in.dto';
+import { SignInDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
 import { AuthService } from '../services/auth.service';
-import { BaseFeature } from '../../core/features/base-feature';
+import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../../user/services/user.service';
 import { Events } from '../../user/enums/events.enum';
-import { VerificationTokenService } from '../services/verification-token.service';
+import { VerificationTokenService } from '../services';
 
 @Injectable()
 export class SignInFeature extends BaseFeature {

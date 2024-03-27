@@ -8,9 +8,10 @@ import {
 } from 'class-validator';
 import { Document, now } from 'mongoose';
 import { Roles } from '../enums/roles.enum';
+import { Exclude } from 'class-transformer';
 
 @Schema({
-  versionKey: false,
+  versionKey: false
 })
 export class User extends Document {
   @Prop()
@@ -19,7 +20,7 @@ export class User extends Document {
   @IsNotEmpty()
   name: string;
 
-  @Prop({ unique: true })
+  @Prop({ index : true,  unique: true })
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -31,9 +32,10 @@ export class User extends Document {
 
   @Prop()
   @IsNotEmpty()
+  @Exclude()
   password: string;
 
-  @Prop({ default: null })
+  @Prop({ default: null})
   @IsString()
   @IsOptional()
   image: string;

@@ -2,10 +2,10 @@ import { Injectable, BadRequestException, HttpStatus } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
 import { Response as ResponseType } from '../../app/enums/response.enum';
-import { SignupDto } from '../dtos/sign-up.dto';
+import { SignupDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
-import { VerificationTokenService } from '../services/verification-token.service';
-import { BaseFeature } from '../../core/features/base-feature';
+import { VerificationTokenService } from '../services';
+import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../../user/services/user.service';
 import { Events } from '../../user/enums/events.enum';
 

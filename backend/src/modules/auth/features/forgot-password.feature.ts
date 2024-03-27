@@ -1,11 +1,11 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-import { PasswordResetTokenService } from '../services/password-reset-token.service';
+import { PasswordResetTokenService } from '../services';
 import { UserService } from '../../user/services/user.service';
 import { Response as ResponseType } from '../../app/enums/response.enum';
-import { BaseFeature } from '../../core/features/base-feature';
-import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
+import { BaseFeature } from '../../app/features/base-feature';
+import { ForgotPasswordDto } from '../dtos';
 import { ResetPasswordEvent } from '../events/reset-password.event';
 import { Events } from '../enums/events.enum';
 

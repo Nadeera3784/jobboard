@@ -1,11 +1,10 @@
-import { IsNotEmpty, IsString, Length, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, MinLength, MaxLength } from 'class-validator';
 
 export class UpdateLocationDto {
   @IsNotEmpty()
   @IsString()
-  @Length(1, 20, {
-    message: 'Name must be between 6 and 20 characters',
-  })
+  @MinLength(1)
+  @MaxLength(20)
   name: string;
 
   @IsString()

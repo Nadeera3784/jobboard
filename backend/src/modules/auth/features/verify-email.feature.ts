@@ -1,7 +1,8 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { VerificationTokenService } from '../services/verification-token.service';
+
+import { VerificationTokenService } from '../services';
 import { Response as ResponseType } from '../../app/enums/response.enum';
-import { BaseFeature } from '../../core/features/base-feature';
+import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../../user/services/user.service';
 
 @Injectable()

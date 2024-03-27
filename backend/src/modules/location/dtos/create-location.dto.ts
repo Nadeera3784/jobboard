@@ -1,10 +1,9 @@
-import { IsNotEmpty, IsString, Length } from 'class-validator';
+import { IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateLocationDto {
   @IsNotEmpty()
   @IsString()
-  @Length(1, 20, {
-    message: 'Name must be between 6 and 20 characters',
-  })
+  @MinLength(1)
+  @MaxLength(20)
   name: string;
 }

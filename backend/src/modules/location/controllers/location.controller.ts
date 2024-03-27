@@ -12,14 +12,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { CreateLocationDto } from '../dtos/create-location.dto';
-import { UpdateLocationDto } from '../dtos/update-location.dto';
-import { CreateLocationFeature } from '../features/create-location-feature';
-import { DeleteLocationFeature } from '../features/delete-location-feature';
-import { GetAllLocationsFeature } from '../features/get-all-locations-features';
-import { GetLocationByIdFeature } from '../features/get-location-by-id-feature';
-import { UpdateLocationFeature } from '../features/update-location-feature';
-import { DatatableFeature } from '../features/datatable.feature';
+import { CreateLocationDto, UpdateLocationDto} from '../dtos';
+import { 
+    CreateLocationFeature , 
+    DeleteLocationFeature , 
+    GetAllLocationsFeature, 
+    GetLocationByIdFeature, 
+    UpdateLocationFeature, 
+    DatatableFeature
+} from '../features';
 import { RolesAllowed } from '../../auth/decorators/role.decorator';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RoleGuard } from '../../auth/guards/role.guard';

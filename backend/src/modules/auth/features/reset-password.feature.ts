@@ -1,10 +1,10 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
-import { PasswordResetTokenService } from '../services/password-reset-token.service';
+import { PasswordResetTokenService } from '../services';
 import { Response as ResponseType } from '../../app/enums/response.enum';
-import { BaseFeature } from '../../core/features/base-feature';
+import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../../user/services/user.service';
-import { ResetPasswordDto } from '../dtos/reset-password.dto';
+import { ResetPasswordDto } from '../dtos';
 
 @Injectable()
 export class ResetPasswordFeature extends BaseFeature {

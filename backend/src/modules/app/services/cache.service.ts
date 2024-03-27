@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class CacheService {
-  private client;
+  private client: redis;
 
   constructor(configService: ConfigService) {
     const options = {

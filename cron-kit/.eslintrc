@@ -1,0 +1,3 @@
+{
+  "ignorePatterns": [ "module", "index.ts", "tests" ]
+}

@@ -2,7 +2,6 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 
-import { Response as ResponseType } from '../../app/enums/response.enum';
 import { SignInDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
 import { AuthService } from '../services/auth.service';
@@ -30,7 +29,6 @@ export class SignInFeature extends BaseFeature {
       if (!existingUser) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,
-          ResponseType.ERROR,
           'There is no user associated with this email',
         );
       }
@@ -53,7 +51,6 @@ export class SignInFeature extends BaseFeature {
 
         return this.responseSuccess(
           HttpStatus.OK,
-          ResponseType.SUCCESS,
           'Login successfully',
           {
             type: 'Bearer',
@@ -64,13 +61,11 @@ export class SignInFeature extends BaseFeature {
 
       return this.responseError(
         HttpStatus.BAD_REQUEST,
-        ResponseType.ERROR,
         'Invalid credentials',
       );
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,
-        ResponseType.ERROR,
         'Something went wrong, Please try again later',
         error,
       );

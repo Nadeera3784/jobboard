@@ -30,7 +30,9 @@ export class User extends Document {
   @IsOptional()
   phone: string;
 
-  @Prop()
+  @Prop({
+    select: false
+  })
   @IsNotEmpty()
   @Exclude()
   password: string;
@@ -48,11 +50,11 @@ export class User extends Document {
   @IsOptional()
   status: string;
 
-  @Prop({ default: null })
+  @Prop({ default: null , select: false})
   @IsOptional()
   email_verified: Date;
 
-  @Prop({ default: now() })
+  @Prop({ default: now() , select: false})
   @IsOptional()
   created_at: Date;
 }

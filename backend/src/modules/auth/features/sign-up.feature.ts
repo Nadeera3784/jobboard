@@ -1,7 +1,6 @@
 import { Injectable, BadRequestException, HttpStatus } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-import { Response as ResponseType } from '../../app/enums/response.enum';
 import { SignupDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
 import { VerificationTokenService } from '../services';
@@ -25,20 +24,17 @@ export class SignUpFeature extends BaseFeature {
       if (isRegistered instanceof BadRequestException) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,
-          ResponseType.ERROR,
           isRegistered.message,
         );
       }
       await this.dispatchEvent(isRegistered);
       return this.responseSuccess(
         HttpStatus.OK,
-        ResponseType.SUCCESS,
         'User has been created successfully',
       );
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,
-        ResponseType.ERROR,
         'Something went wrong, Please try again later',
         error,
       );

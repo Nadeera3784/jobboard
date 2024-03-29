@@ -25,7 +25,7 @@ export const useUpdateLocation = () => {
             const apiResponse = await axios.put<ApiResponse>(ENDPOINT, params);
             setResponse({
                 errored: false,
-                status: apiResponse.data.type === 'success',
+                status: apiResponse.data.statusCode === HttpStatus.OK,
                 message: apiResponse.data.message,
                 data: apiResponse.data.data,
                 status_code: apiResponse.status,

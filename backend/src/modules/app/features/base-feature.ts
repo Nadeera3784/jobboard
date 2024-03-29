@@ -4,14 +4,13 @@ import { HttpStatus, Injectable } from '@nestjs/common';
 export class BaseFeature {
   protected async responseSuccess(
     status: number = HttpStatus.OK,
-    type = 'SUCCESS',
     message = 'Operation successful',
     data: any = null,
   ) {
     return {
       status: status,
       response: {
-        type: type,
+        statusCode: status,
         message: message,
         data: data,
       },
@@ -20,14 +19,14 @@ export class BaseFeature {
 
   protected async responseError(
     status: number = HttpStatus.BAD_REQUEST,
-    type = 'ERROR',
     message = 'Something went wrong, Please try again later',
     data: any = null,
   ) {
     return {
       status: status,
       response: {
-        type: type,
+        
+        statusCode: status,
         message: message,
         data: data,
       },

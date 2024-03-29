@@ -1,5 +1,19 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "projects": {
+    "cron-kit": {
+      "type": "library",
+      "root": "libs/cron-kit",
+      "entryFile": "index",
+      "sourceRoot": "libs/cron-kit/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/cron-kit/tsconfig.lib.json"
+      }
+    }
+  },
+  "compilerOptions": {
+    "webpack": true
+  }
 }

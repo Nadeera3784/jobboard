@@ -56,3 +56,22 @@ export const CreateUserSchema = z.object({
   message: "The passwords did not match",
   path: ["confirmPassword"]
 });
+
+
+export const UpdateUserSchema = z.object({
+  name: z.string().min(5, {
+    message: "Name is required",
+  }),
+  email: z
+  .string()
+  .min(1, { message: "Email is required" })
+  .email("This is not a valid email."),
+  role: z.enum([RoleConstants.ADMIN, RoleConstants.USER]),
+  phone: z.optional(z.string().max(12, {
+    message: "Phone number must be 12 characters max"
+  })),
+  status: z.optional(z.string()),
+  image: z.optional(
+    z.any()
+  )
+})

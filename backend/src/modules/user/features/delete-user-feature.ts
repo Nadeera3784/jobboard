@@ -1,7 +1,6 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 
-import { Response as ResponseType } from '../../app/enums/response.enum';
 import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../services/user.service';
 import { UserDeletedEvent } from '../events/user-deleted.event';
@@ -22,13 +21,11 @@ export class DeleteUserFeature extends BaseFeature {
       await this.dispatchEvent(id);
       return this.responseSuccess(
         HttpStatus.OK,
-        ResponseType.SUCCESS,
         'User has been deleted successfully',
       );
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,
-        ResponseType.ERROR,
         'Something went wrong, Please try again later',
         error,
       );

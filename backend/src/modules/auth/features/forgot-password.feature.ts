@@ -3,7 +3,6 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 
 import { PasswordResetTokenService } from '../services';
 import { UserService } from '../../user/services/user.service';
-import { Response as ResponseType } from '../../app/enums/response.enum';
 import { BaseFeature } from '../../app/features/base-feature';
 import { ForgotPasswordDto } from '../dtos';
 import { ResetPasswordEvent } from '../events/reset-password.event';
@@ -28,7 +27,6 @@ export class ForgotPasswordFeature extends BaseFeature {
       if (!existingUser) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,
-          ResponseType.ERROR,
           'Email not found!',
         );
       }
@@ -40,13 +38,11 @@ export class ForgotPasswordFeature extends BaseFeature {
 
       return this.responseSuccess(
         HttpStatus.OK,
-        ResponseType.SUCCESS,
         'Reset email sent!',
       );
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,
-        ResponseType.ERROR,
         'Something went wrong, Please try again later',
         error,
       );

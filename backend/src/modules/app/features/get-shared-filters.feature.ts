@@ -1,6 +1,5 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
-import { Response as ResponseType } from '../enums/response.enum';
 import { BaseFeature } from './base-feature';
 import { AppService } from '../services/app.service';
 import { LocationService } from '../../location/services/location.service';
@@ -23,13 +22,11 @@ export class GetSharedFiltersFeature extends BaseFeature {
         {
           status: 'Active',
         },
-        '_id name',
       );
       const categories = await this.categoryService.getAll(
         {
           status: 'Active',
-        },
-        '_id name',
+        }
       );
 
       const data = {
@@ -40,14 +37,12 @@ export class GetSharedFiltersFeature extends BaseFeature {
 
       return this.responseSuccess(
         HttpStatus.OK,
-        ResponseType.SUCCESS,
         null,
         data,
       );
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,
-        ResponseType.ERROR,
         'Something went wrong, Please try again later',
         error,
       );

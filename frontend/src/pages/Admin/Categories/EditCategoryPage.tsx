@@ -27,7 +27,7 @@ import { Button } from '../../../components/Form/Button';
 import { CreateCategorySchema as UpdateCategorySchema } from "../../../schemas";
 import { useGetCategoryById } from '../../../hooks/Categories/useGetCategoryById';
 import { useUpdateCategory } from '../../../hooks/Categories/useUpdateCategory';
-import HttpStatus from '../../../constants/HttpStatus';
+import {HttpStatus} from '../../../constants';
 
 export const EditCategoryPage = () => {
 

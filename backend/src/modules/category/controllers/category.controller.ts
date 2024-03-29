@@ -12,14 +12,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { CreateCategoryDto } from '../dtos/create-category.dto';
-import { UpdateCategoryDto } from '../dtos/update-category.dto';
-import { CreateCategoryFeature } from '../features/create-category-feature';
-import { UpdateCategorynFeature } from '../features/update-category-feature';
-import { DeleteCategoryFeature } from '../features/delete-category-feature';
-import { GetAllCategoriesFeature } from '../features/get-all-categories-features';
-import { GetCategoryByIdFeature } from '../features/get-category-by-id-feature';
-import { DatatableFeature } from '../features/datatable.feature';
+import { 
+  CreateCategoryFeature, 
+  DatatableFeature, 
+  DeleteCategoryFeature, 
+  GetAllCategoriesFeature, 
+  GetCategoryByIdFeature, 
+  UpdateCategorynFeature 
+} from '../features';
+import { CreateCategoryDto, UpdateCategoryDto} from '../dtos';
 import { RolesAllowed } from '../../auth/decorators/role.decorator';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RoleGuard } from '../../auth/guards/role.guard';

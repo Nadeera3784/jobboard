@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-import UserRole from '../constants/Role';
+import { RoleConstants } from '../constants';
 
 const MAX_FILE_SIZE = 500000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
@@ -20,7 +20,7 @@ export const CreateUserSchema = z.object({
   .string()
   .min(1, { message: "Email is required" })
   .email("This is not a valid email."),
-  role: z.enum([UserRole.ADMIN, UserRole.USER]),
+  role: z.enum([RoleConstants.ADMIN, RoleConstants.USER]),
   phone: z.optional(z.string().max(12, {
     message: "Phone number must be 12 characters max"
   })),

@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import * as morgan from 'morgan';
 import { useContainer } from 'class-validator';
-import { ValidationPipe } from '@nestjs/common';
+import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
 
@@ -14,7 +14,9 @@ async function bootstrap() {
   app.enableCors();
   app.setGlobalPrefix('api/v1');
   app.enableShutdownHooks();
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+  }));
   app.use(
     helmet({
       contentSecurityPolicy: false,

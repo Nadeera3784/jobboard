@@ -1,6 +1,4 @@
-const Role =  {
+export const RoleConstants =  {
     USER : 'user',
     ADMIN : 'admin',
 }
-
-export default Role;

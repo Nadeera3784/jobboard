@@ -27,7 +27,7 @@ import { Button } from '../../../components/Form/Button';
 import { CreateCategorySchema as UpdateCategorySchema } from "../../../schemas";
 import { useGetLocationById } from '../../../hooks/Locations/useGetLocationById';
 import { useUpdateLocation } from '../../../hooks/Locations/useUpdateLocation';
-import HttpStatus from '../../../constants/HttpStatus';
+import {HttpStatus} from '../../../constants';
 
 export const EditLocationPage = () => {
 

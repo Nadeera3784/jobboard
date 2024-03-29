@@ -1,16 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { ConfigService } from '@nestjs/config';
+import { faker } from '@faker-js/faker';
 
 import { Location } from '../schemas/location.schema';
 import { CreateLocationDto } from '../dtos/create-location.dto';
 import { UpdateLocationDto } from '../dtos/update-location.dto';
-import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class LocationService {
   constructor(
     @InjectModel(Location.name) private readonly locationModel: Model<Location>,
+    private configService: ConfigService,
   ) {}
 
   /**
@@ -68,12 +70,13 @@ export class LocationService {
       const params = request.body;
       let order = params.order || [];
       let columns = params.columns || [];
-      const status = params.status || "";
+      let filters = params.filters || [];
       let searchQuery: any = {};
       let sort: any = {'created_at': -1};
-      const whereQuery: any = { status: String };
-      if (status) {
-        whereQuery.status = status;
+      let whereQuery: any = {};
+
+      if (filters.status) {
+         whereQuery.status = filters.status;
       }
       
       if (params.search.value) {
@@ -84,6 +87,8 @@ export class LocationService {
             ],
           };
       } 
+
+      searchQuery = { ...searchQuery, ...whereQuery };
 
       if (order.length && columns.length) {
         const sortByOrder: any = order.reduce((memo: any, ordr: any) => {
@@ -126,7 +131,7 @@ export class LocationService {
                 id: 2,
                 label: 'Delete',
                 type: 'delete',
-                endpoint: 'http://127.0.0.1:3000/api/v1/locations/' + result._id,
+                endpoint: `${this.configService.get('app.api_url')}/locations/${result._id}`,
                 confirm_message: "Are you sure want to delete?"
               }
             ]

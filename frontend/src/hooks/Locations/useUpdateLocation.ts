@@ -2,8 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 import { ApiResponse, ResponseState, updateLocation } from '../../types';
-import AppConstants from '../../constants/AppConstants';
-import HttpStatus from '../../constants/HttpStatus';
+import {HttpStatus, AppConstants} from '../../constants';
 
 export const useUpdateLocation = () => {
     const [response, setResponse] = useState<ResponseState>({

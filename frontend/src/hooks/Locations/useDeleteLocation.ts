@@ -2,7 +2,7 @@ import { useState } from 'react';
 import axios from 'axios';
 
 import { ApiResponse, DeleteLocation, ResponseState } from '../../types';
-import HttpStatus from '../../constants/HttpStatus';
+import {HttpStatus} from '../../constants';
 
 export const useDeleteLocation = () => {
     const [response, setResponse] = useState<ResponseState>({

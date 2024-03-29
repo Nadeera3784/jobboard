@@ -18,6 +18,7 @@ export type TableProps = {
   endpoint: string;
   per_page: number;
   columns: ColumnProps[];
+  filters: FilterProps[],
   has_row_buttons: boolean;
   has_multiselect: boolean;
   refresh: boolean;
@@ -58,4 +59,12 @@ export type  DeleteDialogProps = {
     loading: boolean;
     refresh: () => void;
 }
-  
+
+export type FilterProps = {
+  name: string,
+  key: string
+  type: string,
+  place_holder: string,
+  endpoint?: string,
+  data?: { value: string; label: string }[]
+}

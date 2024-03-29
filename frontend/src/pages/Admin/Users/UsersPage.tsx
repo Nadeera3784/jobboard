@@ -3,7 +3,7 @@ import {Helmet} from "react-helmet";
 
 import { CreateUserModal } from './CreateUserModal'
 import { Table } from '../../../components/Table';
-import AppConstants from '../../../constants/AppConstants';
+import { AppConstants, RoleConstants} from '../../../constants';
 
 export const UsersPage = () => {
 
@@ -82,6 +82,40 @@ export const UsersPage = () => {
                                         visible: true,
                                         width: '100px'
                                     }
+                                ]}
+                                filters={[
+                                    {
+                                        'name': "Status",
+                                        'key': 'status',
+                                        'type': 'singleSelectStatic',
+                                        'place_holder' : 'Select Status',
+                                        'data': [
+                                            {
+                                                value : "Active",
+                                                label: "Active"
+                                            },
+                                            {
+                                                value : "InActive",
+                                                label: "InActive"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        'name': "Role",
+                                        'key': 'role',
+                                        'type': 'singleSelectStatic',
+                                        'place_holder' : 'Select Role',
+                                        'data': [
+                                            {
+                                                value : RoleConstants.USER,
+                                                label: RoleConstants.USER
+                                            },
+                                            {
+                                                value : RoleConstants.ADMIN,
+                                                label : RoleConstants.ADMIN
+                                            }
+                                        ]
+                                    },
                                 ]}
                             />
                         </div>

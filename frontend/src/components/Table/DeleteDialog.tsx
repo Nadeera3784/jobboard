@@ -12,7 +12,7 @@ import {
   } from "../Dialog/AlertDialog"
 import { DeleteDialogProps } from '../../types';
 import { useDeleteCategory } from '../../hooks/Categories/useDeleteCategory';
-import HttpStatus from '../../constants/HttpStatus';
+import {HttpStatus} from '../../constants';
 
 export const DeleteDialog : React.FC<DeleteDialogProps> = ({ open, modelTitle, onClose, action, loading, refresh}) => {
 

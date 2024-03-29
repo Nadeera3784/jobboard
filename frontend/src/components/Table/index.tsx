@@ -8,11 +8,12 @@ import { LabelColumn } from './LabelColumn';
 import { LinkAction } from './LinkAction';
 import { DeleteAction } from './DeleteAction';
 import { EmptyContent } from './EmptyContent';
-import { TableProps, ColumnProps, SortItemProps, ActionProps } from '../../types';
+import { TableProps, ColumnProps, SortItemProps, ActionProps} from '../../types';
 import { Loader } from './Loader';
 import { Pagination } from './Pagination';
 import { Checkbox } from '../Form/Checkbox';
 import { Input } from '../Form/Input';
+import { SingleSelectStaticFilter } from './SingleSelectStaticFilter';
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -21,9 +22,8 @@ import {
 } from "../Dialog/DropdownMenu"
 import { Button } from '../Form/Button';
 import { DeleteDialog } from './DeleteDialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../Form/Select';
 
-export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_row_buttons, has_multiselect, refresh }) => {
+export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_row_buttons, has_multiselect, filters = [], refresh}) => {
 
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -41,6 +41,7 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
   const [open, setOpen] = useState(false);
   const [modelTitle, setModelTitle] = useState('');
   const [selectedAction, setSelectedAction] = useState<ActionProps>();
+  const [selectedFilters, setSelectedFilters] = useState({});
 
   const fetchData = async (page = currentPage, limit = itemsPerPage, order: SortItemProps[] = [], keyword = '') => {
     setLoading(true);
@@ -48,8 +49,7 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
       const response = await axios.post(endpoint, {
         order: order,
         columns: columns.filter(column => columnVisibility[column.name]),
-        status: '',
-        daterange: '',
+        filters: selectedFilters,
         search: { value: keyword },
         start: (page - 1) * limit,
         length: limit,
@@ -66,7 +66,7 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, itemsPerPage, columnVisibility, refresh]);
+  }, [currentPage, itemsPerPage, columnVisibility, selectedFilters, refresh]);
 
   const onSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -145,6 +145,10 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
     setOpen(false);
   };
 
+  const onFilterChange = (value: any) => {
+    setSelectedFilters(value);
+  }
+
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -158,30 +162,11 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
             onChange={(event) => onSearch(event)}
             value={search}
           />
-          <div>
-             <Select
-              >
-                  <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                      <SelectItem value="Active">Active</SelectItem>
-                      <SelectItem value="InActive">InActive</SelectItem>
-                  </SelectContent>
-              </Select>
-          </div>
-          <div>
-             <Select
-              >
-                  <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select Status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                      <SelectItem value="Active">Active</SelectItem>
-                      <SelectItem value="InActive">InActive</SelectItem>
-                  </SelectContent>
-              </Select>
-          </div>
+           {filters.map((filter, key) => (
+            <div key={key}>
+                 {filter.type === 'singleSelectStatic' && <SingleSelectStaticFilter  data={filter} onFilterChange={onFilterChange}/> }
+            </div>
+          ))}
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

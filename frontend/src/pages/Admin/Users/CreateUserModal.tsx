@@ -26,7 +26,7 @@ import {
     DialogTrigger,
 } from "../../../components/Dialog/Dialog"
 import { CreateUserSchema } from "../../../schemas";
-import HttpStatus from '../../../constants/HttpStatus';
+import {HttpStatus} from '../../../constants';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/Form/Select";
 
 export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {

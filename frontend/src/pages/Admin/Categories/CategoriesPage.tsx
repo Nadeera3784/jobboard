@@ -3,7 +3,7 @@ import {Helmet} from "react-helmet";
 
 import { CreateCategoryModal } from './CreateCategoryModal'
 import { Table } from '../../../components/Table';
-import AppConstants from '../../../constants/AppConstants';
+import {AppConstants} from '../../../constants/AppConstants';
 
 export const CategoriesPage = () => {
 
@@ -67,6 +67,24 @@ export const CategoriesPage = () => {
                                         orderable: true,
                                         visible: true,
                                     }
+                                ]}
+                                filters={[
+                                    {
+                                        'name': "Status",
+                                        'key': 'status',
+                                        'type': 'singleSelectStatic',
+                                        'place_holder' : 'Select Status',
+                                        'data': [
+                                            {
+                                                value : "Active",
+                                                label: "Active"
+                                            },
+                                            {
+                                                value : "InActive",
+                                                label: "InActive"
+                                            }
+                                        ]
+                                    },
                                 ]}
                             />
                         </div>

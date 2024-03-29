@@ -14,7 +14,7 @@ export class MeFeature extends BaseFeature {
 
   public async handle(id: string) {
     try {
-      const user = await this.userService.getById(id, '_id name email phone image created_at');
+      const user = await this.userService.getById(id);
       return this.responseSuccess(
         HttpStatus.OK,
         ResponseType.SUCCESS,

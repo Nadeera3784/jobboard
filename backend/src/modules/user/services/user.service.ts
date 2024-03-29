@@ -2,16 +2,19 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { UpdateUserDto } from '../dtos/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { faker } from '@faker-js/faker';
 import moment from 'moment';
+import { ConfigService } from '@nestjs/config';
+
+import { CreateUserDto , UpdateUserDto} from '../dtos';
+
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
+    private configService: ConfigService,
   ) {}
 
   /**
@@ -46,8 +49,8 @@ export class UserService {
    * @param id - The unique identifier of the user to retrieve.
    * @returns A promise that resolves to the user with the specified ID, or null if not found.
    */
-  public async getById(id: string, select = '') {
-    return await this.userModel.findById(id).select(select);
+  public async getById(id: string) {
+    return await this.userModel.findById(id);
   }
 
   /**
@@ -106,14 +109,19 @@ export class UserService {
       const params = request.body;
       let order = params.order || [];
       let columns = params.columns || [];
-      const status = params.status || "";
+      let filters = params.filters || [];
       let searchQuery: any = {};
       const daterange = params.daterange || "";
       let sort: any = {'created_at': -1};
-      const whereQuery: any = { status: String };
-      if (status) {
-        whereQuery.status = status;
+      let whereQuery: any = {};
+
+       if (filters.status) {
+         whereQuery.status = filters.status;
       }
+
+      if (filters.role) {
+        whereQuery.role = filters.role;
+     }
 
       if (params.search.value) {
           const regex = new RegExp(params.search.value, "i");
@@ -133,6 +141,8 @@ export class UserService {
             'created_at': { $gt: formatted_start_date, $lt: formatted_end_date }
           };
       }
+
+      searchQuery = { ...searchQuery, ...whereQuery };
 
       if (order.length && columns.length) {
         const sortByOrder: any = order.reduce((memo: any, ordr: any) => {
@@ -169,13 +179,13 @@ export class UserService {
                 id: 1,
                 label: 'Edit',
                 type: 'link',
-                endpoint: '/admin/users/' + result._id
+                endpoint: `/admin/users/${result._id}`
               },
               {
                 id: 2,
                 label: 'Delete',
                 type: 'delete',
-                endpoint: 'http://127.0.0.1:3000/api/v1/users/' + result._id,
+                endpoint: `${this.configService.get('app.api_url')}/users/{${result._id}}`,
                 confirm_message: "Are you sure want to delete?"
               }
             ]

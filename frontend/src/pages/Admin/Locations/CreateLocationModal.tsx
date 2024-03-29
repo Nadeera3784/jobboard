@@ -26,7 +26,7 @@ import {
     DialogTrigger,
 } from "../../../components/Dialog/Dialog"
 import { CreateCategorySchema } from "../../../schemas";
-import HttpStatus from '../../../constants/HttpStatus';
+import {HttpStatus} from '../../../constants';
 
 export const CreateLocationModal = ({ refresh }: { refresh: () => void }) => {
 

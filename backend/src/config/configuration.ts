@@ -1,6 +1,6 @@
 export default () => ({
   app: {
-    app_url: process.env.APP_URL,
+    api_url: process.env.API_URL,
     environment: process.env.ENV,
     jwtkey: process.env.APP_JWT_KEY,
   },

@@ -3,15 +3,16 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import moment from 'moment';
 import { faker } from '@faker-js/faker';
+import { ConfigService } from '@nestjs/config';
 
 import { Category } from '../schemas/category.schema';
-import { CreateCategoryDto } from '../dtos/create-category.dto';
-import { UpdateCategoryDto } from '../dtos/update-category.dto';
+import { CreateCategoryDto, UpdateCategoryDto} from '../dtos';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
+    private configService: ConfigService,
   ) { }
 
   /**
@@ -71,14 +72,15 @@ export class CategoryService {
       const params = request.body;
       let order = params.order || [];
       let columns = params.columns || [];
-      const status = params.status || "";
+      let filters = params.filters || [];
       let searchQuery: any = {};
       const daterange = params.daterange || "";
       let sort: any = {'created_at': -1};
-      const whereQuery: any = { status: String };
-      if (status) {
-        whereQuery.status = status;
-      }
+      let whereQuery: any = {};
+
+      if (filters.status) {
+        whereQuery.status = filters.status;
+     }
 
       if (params.search.value) {
           const regex = new RegExp(params.search.value, "i");
@@ -98,6 +100,8 @@ export class CategoryService {
           };
       }
 
+      searchQuery = { ...searchQuery, ...whereQuery };
+
       if (order.length && columns.length) {
         const sortByOrder: any = order.reduce((memo: any, ordr: any) => {
           const column = columns[ordr.column];
@@ -109,7 +113,6 @@ export class CategoryService {
           sort = sortByOrder;
         }
       }
-
 
 
       let recordsTotal = 0;
@@ -141,7 +144,7 @@ export class CategoryService {
                 id: 2,
                 label: 'Delete',
                 type: 'delete',
-                endpoint: 'http://127.0.0.1:3000/api/v1/categories/' + result._id,
+                endpoint: `${this.configService.get('app.api_url')}/categories/${result._id}`,
                 confirm_message: "Are you sure want to delete?"
               }
             ]

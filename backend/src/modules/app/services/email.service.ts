@@ -32,4 +32,13 @@ export class EmailService {
       html: `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`,
     });
   }
+
+  public async sendAccountInactivityReminderEmail(email: string){
+    await this.resend.emails.send({
+      from: this.configService.get('mail.resend.from'),
+      to: email,
+      subject: 'Urgent Action Required: Login to Your Account',
+      html: `<p>It appears that there has been no recent activity in your account. As part of our commitment to  ensuring the security and functionality of your account, we urge you to log in as soon as possible.</p>`,
+    });
+  }
 }

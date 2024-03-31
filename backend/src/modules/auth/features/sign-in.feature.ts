@@ -9,6 +9,7 @@ import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../../user/services/user.service';
 import { Events } from '../../user/enums/events.enum';
 import { VerificationTokenService } from '../services';
+import { UserUpdatedEvent } from '../../user/events';
 
 @Injectable()
 export class SignInFeature extends BaseFeature {
@@ -34,7 +35,7 @@ export class SignInFeature extends BaseFeature {
       }
 
       if (!existingUser.email_verified) {
-        await this.dispatchEvent(existingUser.email);
+        await this.dispatchVerificationEvent(existingUser.email);
       }
 
       const isPasswordMatch = await this.authService.signIn(
@@ -48,6 +49,8 @@ export class SignInFeature extends BaseFeature {
         };
 
         const accessToken = this.jwtService.sign(payload);
+
+        await this.dispatchDateSyncEvent(existingUser._id);
 
         return this.responseSuccess(
           HttpStatus.OK,
@@ -72,7 +75,7 @@ export class SignInFeature extends BaseFeature {
     }
   }
 
-  private async dispatchEvent(email: string) {
+  private async dispatchVerificationEvent(email: string) {
     const event = new UserRegisterdEvent();
     const verificationToken =
       await this.verificationTokenService.generateVerificationToken(email);
@@ -80,4 +83,12 @@ export class SignInFeature extends BaseFeature {
     event.email = verificationToken.email;
     this.eventEmitter.emit(Events.USER_REGISTERED, event);
   }
+
+  private async dispatchDateSyncEvent(id: string){
+    const event = new UserUpdatedEvent();
+    event.type = Events.USER_DATE_SYNC;
+    event.id = id;
+    this.eventEmitter.emit(Events.USER_UPDATED, event);
+  }
+
 }

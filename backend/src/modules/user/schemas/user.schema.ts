@@ -57,6 +57,10 @@ export class User extends Document {
   @Prop({ default: now() , select: false})
   @IsOptional()
   created_at: Date;
+
+  @Prop({ default: now() , select: false})
+  @IsOptional()
+  updated_at: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

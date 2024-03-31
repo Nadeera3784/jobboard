@@ -6,12 +6,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 
 import configuration from '../../config/configuration';
-import { CategoryModule } from '../category/category.module';
-import { LocationModule } from '../location/location.module';
-import { UserModule } from '../user/user.module';
-import { AuthModule } from '../auth/auth.module';
-import { JobModule } from '../job/job.module';
+import { UserModule } from '../user/user.module';;
 import { UserInactivityDetectionCron } from '../user/cron';
+import { DetectInactiveUsersFeature } from '../user/features';
+import { InactivityReminderQueue } from '../user/queues';
+import { EmailService } from './services/email.service';
 
 @Module({
   imports: [
@@ -36,18 +35,22 @@ import { UserInactivityDetectionCron } from '../user/cron';
       }),
       inject: [ConfigService],
     }),
+    BullModule.registerQueue(
+      {
+        name: 'inactivity-reminder-email',
+      },
+    ),
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
-    CategoryModule,
-    LocationModule,
     UserModule,
-    AuthModule,
-    JobModule
   ],
   providers: [
     Logger,
-    UserInactivityDetectionCron
+    EmailService,
+    UserInactivityDetectionCron,
+    DetectInactiveUsersFeature,
+    InactivityReminderQueue,
   ],
-  exports: [UserModule],
+  exports: [],
 })
 export class CronModule {}

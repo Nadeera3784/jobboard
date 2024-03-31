@@ -19,8 +19,8 @@ export class CategoryService {
    * Retrieves all categories.
    * @returns A promise that resolves to an array of all categories.
    */
-  async getAll(query = {}) {
-    return await this.categoryModel.find(query);
+  async getAll(){
+    return await this.categoryModel.find({ status: 'Active'});
   }
 
   /**

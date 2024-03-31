@@ -12,6 +12,7 @@ import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { JobModule } from '../job/job.module';
 import { AppService } from './services/app.service';
+import { CacheService } from './services/cache.service';
 import { AppController } from './controllers/app.controller';
 import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
 
@@ -53,10 +54,10 @@ import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
     LocationModule,
     UserModule,
     AuthModule,
-    JobModule
+    JobModule,
   ],
   controllers: [AppController],
-  providers: [AppService, GetSharedFiltersFeature],
+  providers: [AppService, CacheService, GetSharedFiltersFeature],
   exports: [UserModule],
 })
 export class AppModule {}

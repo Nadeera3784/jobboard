@@ -27,7 +27,8 @@ import { ForgotPasswordFeature } from '../auth/features/forgot-password.feature'
 import { SignUpFeature } from '../auth/features/sign-up.feature';
 import { ResetPasswordFeature } from '../auth/features/reset-password.feature';
 import { SignInFeature } from '../auth/features/sign-in.feature';
-import { MeFeature } from '../auth/features/me-feature';
+import { MeFeature } from './features/me.feature';
+import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
 
 @Module({
   imports: [
@@ -68,7 +69,8 @@ import { MeFeature } from '../auth/features/me-feature';
     PasswordResetMailQueue,
     ResetPasswordFeature,
     SignInFeature,
-    MeFeature
+    MeFeature,
+    UserUpdatedListener
   ],
   controllers: [AuthController],
 })

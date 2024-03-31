@@ -9,7 +9,7 @@ import { SignInFeature } from '../features/sign-in.feature';
 import { VerifyEmailFeature } from '../features/verify-email.feature';
 import { ForgotPasswordFeature } from '../features/forgot-password.feature';
 import { ResetPasswordFeature } from '../features/reset-password.feature';
-import { MeFeature } from '../features/me-feature';
+import { MeFeature } from '../features/me.feature';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 
 @Controller('auth')

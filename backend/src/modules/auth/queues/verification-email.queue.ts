@@ -18,22 +18,23 @@ export class VerificationMailQueue {
 
   @OnQueueActive()
   onActive(job: Job) {
-    console.log(`Processing job ${job.id} of type ${job.name}: ${job.data.id}`);
+    this.logger.log(`Processing job ${job.id} of type ${job.name}`);
   }
 
   @OnQueueCompleted()
   onCompleted(job: Job) {
-    console.log(`Job ${job.id} of type ${job.name} completed`);
+    this.logger.log(`Job ${job.id} of type ${job.name} completed`);
   }
 
   @Process('send-verification-email')
   async send(job: Job<any>) {
     try {
-      console.log('send mail trigered', job);
+      this.logger.log('Mail sending started', job.name);
       const { token, email } = job.data;
       await this.mailService.sendVerificationEmail(email, token);
+      this.logger.log('Mail sending sent', email);
     } catch (error) {
-      console.log(`Failed to send email | error: ${error.message}`);
+      this.logger.log(`Failed to send email | error: ${error.message}`);
     }
   }
 

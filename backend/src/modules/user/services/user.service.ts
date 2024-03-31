@@ -1,14 +1,14 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { User } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, now } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { faker } from '@faker-js/faker';
-import moment from 'moment';
+import * as moment from 'moment';
 import { ConfigService } from '@nestjs/config';
 
 import { CreateUserDto , UpdateUserDto} from '../dtos';
-
+import { User } from '../schemas/user.schema';
+import { Roles } from '../enums';
 
 @Injectable()
 export class UserService {
@@ -83,6 +83,15 @@ export class UserService {
     );
   }
 
+  public async refreshUpdatedDate(id: string){
+    return await this.userModel.findByIdAndUpdate(
+      { _id: id },
+      {
+        updated_at: new Date(),
+      },
+    );
+  }
+
   public async updatePassword(id: string, password: string) {
     const newPassword = await bcrypt.hash(password, 10);
     return await this.userModel.findByIdAndUpdate(
@@ -91,6 +100,35 @@ export class UserService {
         password: newPassword,
       },
     );
+  }
+
+  public async getInactivityUsers(duration: number = 6, batchSize: number = 20,  roles: string[] = [Roles.USER, Roles.COMPANY]) {
+    return await this.userModel.aggregate([
+      {
+        $match: {
+          role: { $in: roles }
+        }
+      },
+      {
+        $addFields: {
+          hasNotUpdatedWithinSixMonths: {
+            $cond: {
+              if: { $eq: [{ $type: "$updated_at" }, "date"] },
+              then: { $lt: ["$updated_at", moment().subtract(duration, 'months').toDate()] },
+              else: true 
+            }
+          }
+        }
+      },
+      {
+        $match: {
+          hasNotUpdatedWithinSixMonths: true
+        }
+      }
+    ])
+    .cursor({
+      batchSize: batchSize
+    });     
   }
 
   /**

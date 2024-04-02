@@ -11,7 +11,7 @@ import { Roles } from '../enums/roles.enum';
 import { Exclude } from 'class-transformer';
 
 @Schema({
-  versionKey: false
+  versionKey: false,
 })
 export class User extends Document {
   @Prop()
@@ -20,7 +20,7 @@ export class User extends Document {
   @IsNotEmpty()
   name: string;
 
-  @Prop({ index : true,  unique: true })
+  @Prop({ index: true, unique: true })
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -31,13 +31,13 @@ export class User extends Document {
   phone: string;
 
   @Prop({
-    select: false
+    select: false,
   })
   @IsNotEmpty()
   @Exclude()
   password: string;
 
-  @Prop({ default: null})
+  @Prop({ default: null })
   @IsString()
   @IsOptional()
   image: string;
@@ -50,15 +50,15 @@ export class User extends Document {
   @IsOptional()
   status: string;
 
-  @Prop({ default: null , select: false})
+  @Prop({ default: null, select: false })
   @IsOptional()
   email_verified: Date;
 
-  @Prop({ default: now() , select: false})
+  @Prop({ default: now(), select: false })
   @IsOptional()
   created_at: Date;
 
-  @Prop({ default: now() , select: false})
+  @Prop({ default: now(), select: false })
   @IsOptional()
   updated_at: Date;
 }

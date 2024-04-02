@@ -12,11 +12,7 @@ export class GetLocationByIdFeature extends BaseFeature {
   public async handle(id: string) {
     try {
       const data = await this.locationService.getById(id);
-      return this.responseSuccess(
-        HttpStatus.OK,
-        null,
-        data,
-      );
+      return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,

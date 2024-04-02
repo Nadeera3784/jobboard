@@ -6,21 +6,21 @@ import { faker } from '@faker-js/faker';
 import { ConfigService } from '@nestjs/config';
 
 import { Category } from '../schemas/category.schema';
-import { CreateCategoryDto, UpdateCategoryDto} from '../dtos';
+import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
 
 @Injectable()
 export class CategoryService {
   constructor(
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
     private configService: ConfigService,
-  ) { }
+  ) {}
 
   /**
    * Retrieves all categories.
    * @returns A promise that resolves to an array of all categories.
    */
-  async getAll(){
-    return await this.categoryModel.find({ status: 'Active'});
+  async getAll() {
+    return await this.categoryModel.find({ status: 'Active' });
   }
 
   /**
@@ -65,39 +65,35 @@ export class CategoryService {
     });
   }
 
-
-
   async datatable(request: any) {
     try {
       const params = request.body;
-      let order = params.order || [];
-      let columns = params.columns || [];
-      let filters = params.filters || [];
+      const order = params.order || [];
+      const columns = params.columns || [];
+      const filters = params.filters || [];
       let searchQuery: any = {};
-      const daterange = params.daterange || "";
-      let sort: any = {'created_at': -1};
-      let whereQuery: any = {};
+      const daterange = params.daterange || '';
+      let sort: any = { created_at: -1 };
+      const whereQuery: any = {};
 
       if (filters.status) {
         whereQuery.status = filters.status;
-     }
+      }
 
       if (params.search.value) {
-          const regex = new RegExp(params.search.value, "i");
-          searchQuery = {
-            $or: [
-              { 'name': regex },
-            ],
-          };
+        const regex = new RegExp(params.search.value, 'i');
+        searchQuery = {
+          $or: [{ name: regex }],
+        };
       } else if (daterange) {
-          const date_array = daterange.split("-");
-          const start_date = moment(new Date(date_array[0])).format('YYYY-MM-DD');
-          const end_date = moment(new Date(date_array[1])).format('YYYY-MM-DD');
-          const formatted_start_date = moment.utc(start_date).format();
-          const formatted_end_date = moment.utc(end_date).format();
-          searchQuery = {
-            'created_at': { $gt: formatted_start_date, $lt: formatted_end_date }
-          };
+        const date_array = daterange.split('-');
+        const start_date = moment(new Date(date_array[0])).format('YYYY-MM-DD');
+        const end_date = moment(new Date(date_array[1])).format('YYYY-MM-DD');
+        const formatted_start_date = moment.utc(start_date).format();
+        const formatted_end_date = moment.utc(end_date).format();
+        searchQuery = {
+          created_at: { $gt: formatted_start_date, $lt: formatted_end_date },
+        };
       }
 
       searchQuery = { ...searchQuery, ...whereQuery };
@@ -114,48 +110,52 @@ export class CategoryService {
         }
       }
 
-
       let recordsTotal = 0;
       let recordsFiltered = 0;
 
       const all_count = await this.categoryModel.countDocuments({});
       recordsTotal = all_count;
 
-      const filtered_count = await this.categoryModel.countDocuments(searchQuery);
+      const filtered_count = await this.categoryModel.countDocuments(
+        searchQuery,
+      );
       recordsFiltered = filtered_count;
-      
-      let results = await this.categoryModel.find(searchQuery, 'name')
-        .select("_id name created_at status")
+
+      let results = await this.categoryModel
+        .find(searchQuery, 'name')
+        .select('_id name created_at status')
         .skip(Number(params.start))
         .limit(Number(params.length))
         .sort(sort)
         .exec();
-        results = results.map((result: any) => {
-          return {
-            ...result.toObject(),
-            actions: [
-              {
-                id: 1,
-                label: 'Edit',
-                type: 'link',
-                endpoint: '/admin/categories/' + result._id
-              },
-              {
-                id: 2,
-                label: 'Delete',
-                type: 'delete',
-                endpoint: `${this.configService.get('app.api_url')}/categories/${result._id}`,
-                confirm_message: "Are you sure want to delete?"
-              }
-            ]
-          };
-        });
+      results = results.map((result: any) => {
+        return {
+          ...result.toObject(),
+          actions: [
+            {
+              id: 1,
+              label: 'Edit',
+              type: 'link',
+              endpoint: '/admin/categories/' + result._id,
+            },
+            {
+              id: 2,
+              label: 'Delete',
+              type: 'delete',
+              endpoint: `${this.configService.get('app.api_url')}/categories/${
+                result._id
+              }`,
+              confirm_message: 'Are you sure want to delete?',
+            },
+          ],
+        };
+      });
 
       const data = {
-        "draw": params.draw,
-        "recordsFiltered": recordsFiltered,
-        "recordsTotal": recordsTotal,
-        "data": results
+        draw: params.draw,
+        recordsFiltered: recordsFiltered,
+        recordsTotal: recordsTotal,
+        data: results,
       };
       return data;
     } catch (error) {
@@ -163,13 +163,12 @@ export class CategoryService {
     }
   }
 
-  async seeds(){
+  async seeds() {
     for (let index = 0; index < 20; index++) {
       await this.categoryModel.create({
-         name: faker.person.firstName(),
-         status: "Active"
+        name: faker.person.firstName(),
+        status: 'Active',
       });
     }
   }
-
 }

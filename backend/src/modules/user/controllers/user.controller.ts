@@ -12,14 +12,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { CreateUserDto , UpdateUserDto} from '../dtos';
-import { 
-  CreateUserFeature, 
-  DatatableFeature, 
-  DeleteUserFeature, 
-  GetAllUsersFeature, 
-  GetUserByIdFeature, 
-  UpdateUserFeature 
+import { CreateUserDto, UpdateUserDto } from '../dtos';
+import {
+  CreateUserFeature,
+  DatatableFeature,
+  DeleteUserFeature,
+  GetAllUsersFeature,
+  GetUserByIdFeature,
+  UpdateUserFeature,
 } from '../features';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RoleGuard } from '../../auth/guards/role.guard';
@@ -35,7 +35,7 @@ export class UserController {
     private readonly getUserByIdFeature: GetUserByIdFeature,
     private readonly createUserFeature: CreateUserFeature,
     private readonly updateUserFeature: UpdateUserFeature,
-    private readonly datatableFeature: DatatableFeature
+    private readonly datatableFeature: DatatableFeature,
   ) {}
 
   @Get()
@@ -90,10 +90,9 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   @Post('/datatable')
   @RolesAllowed(Roles.ADMIN)
-  public async dataTable(@Req() request, @Res() response){
+  public async dataTable(@Req() request, @Res() response) {
     const { status, response: featureUpResponse } =
-    await this.datatableFeature.handle(request);
+      await this.datatableFeature.handle(request);
     return response.status(status).json(featureUpResponse);
   }
-
 }

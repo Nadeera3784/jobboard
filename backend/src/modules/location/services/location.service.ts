@@ -20,7 +20,7 @@ export class LocationService {
    * @returns A promise that resolves to an array of all locations.
    */
   async getAll() {
-    return await this.locationModel.find({status: 'Active'});
+    return await this.locationModel.find({ status: 'Active' });
   }
 
   /**
@@ -68,25 +68,23 @@ export class LocationService {
   async datatable(request: any) {
     try {
       const params = request.body;
-      let order = params.order || [];
-      let columns = params.columns || [];
-      let filters = params.filters || [];
+      const order = params.order || [];
+      const columns = params.columns || [];
+      const filters = params.filters || [];
       let searchQuery: any = {};
-      let sort: any = {'created_at': -1};
-      let whereQuery: any = {};
+      let sort: any = { created_at: -1 };
+      const whereQuery: any = {};
 
       if (filters.status) {
-         whereQuery.status = filters.status;
+        whereQuery.status = filters.status;
       }
-      
+
       if (params.search.value) {
-          const regex = new RegExp(params.search.value, "i");
-          searchQuery = {
-            $or: [
-              { 'name': regex },
-            ],
-          };
-      } 
+        const regex = new RegExp(params.search.value, 'i');
+        searchQuery = {
+          $or: [{ name: regex }],
+        };
+      }
 
       searchQuery = { ...searchQuery, ...whereQuery };
 
@@ -108,41 +106,46 @@ export class LocationService {
       const all_count = await this.locationModel.countDocuments({});
       recordsTotal = all_count;
 
-      const filtered_count = await this.locationModel.countDocuments(searchQuery);
+      const filtered_count = await this.locationModel.countDocuments(
+        searchQuery,
+      );
       recordsFiltered = filtered_count;
-      
-      let results = await this.locationModel.find(searchQuery, 'name')
-        .select("_id name created_at status")
+
+      let results = await this.locationModel
+        .find(searchQuery, 'name')
+        .select('_id name created_at status')
         .skip(Number(params.start))
         .limit(Number(params.length))
         .sort(sort)
         .exec();
-        results = results.map((result: any) => {
-          return {
-            ...result.toObject(),
-            actions: [
-              {
-                id: 1,
-                label: 'Edit',
-                type: 'link',
-                endpoint: '/admin/locations/' + result._id
-              },
-              {
-                id: 2,
-                label: 'Delete',
-                type: 'delete',
-                endpoint: `${this.configService.get('app.api_url')}/locations/${result._id}`,
-                confirm_message: "Are you sure want to delete?"
-              }
-            ]
-          };
-        });
+      results = results.map((result: any) => {
+        return {
+          ...result.toObject(),
+          actions: [
+            {
+              id: 1,
+              label: 'Edit',
+              type: 'link',
+              endpoint: '/admin/locations/' + result._id,
+            },
+            {
+              id: 2,
+              label: 'Delete',
+              type: 'delete',
+              endpoint: `${this.configService.get('app.api_url')}/locations/${
+                result._id
+              }`,
+              confirm_message: 'Are you sure want to delete?',
+            },
+          ],
+        };
+      });
 
       const data = {
-        "draw": params.draw,
-        "recordsFiltered": recordsFiltered,
-        "recordsTotal": recordsTotal,
-        "data": results
+        draw: params.draw,
+        recordsFiltered: recordsFiltered,
+        recordsTotal: recordsTotal,
+        data: results,
       };
       return data;
     } catch (error) {
@@ -150,14 +153,12 @@ export class LocationService {
     }
   }
 
-  
-  async seeds(){
+  async seeds() {
     for (let index = 0; index < 20; index++) {
       await this.locationModel.create({
-         name: faker.location.city(),
-         status: "Active"
+        name: faker.location.city(),
+        status: 'Active',
       });
     }
   }
-
 }

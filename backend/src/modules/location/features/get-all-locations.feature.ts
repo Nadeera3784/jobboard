@@ -12,11 +12,7 @@ export class GetAllLocationsFeature extends BaseFeature {
   public async handle() {
     try {
       const data = await this.locationService.getAll();
-      return this.responseSuccess(
-        HttpStatus.OK,
-        null,
-        data,
-      );
+      return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,

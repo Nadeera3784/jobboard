@@ -25,10 +25,7 @@ export class VerifyEmailFeature extends BaseFeature {
         );
       }
       if (new Date(existingToken.expires) < new Date()) {
-        return this.responseError(
-          HttpStatus.BAD_REQUEST,
-          'Token has expired!',
-        );
+        return this.responseError(HttpStatus.BAD_REQUEST, 'Token has expired!');
       }
       const existingUser = await this.userService.getByEmail(
         existingToken.email,
@@ -41,10 +38,7 @@ export class VerifyEmailFeature extends BaseFeature {
       }
       await this.userService.updateEmailVerified(existingUser._id);
       await this.verificationTokenService.delete(existingToken._id);
-      return this.responseSuccess(
-        HttpStatus.OK,
-        'Email verified!',
-      );
+      return this.responseSuccess(HttpStatus.OK, 'Email verified!');
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,

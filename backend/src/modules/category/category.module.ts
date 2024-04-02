@@ -17,7 +17,7 @@ import { UserModule } from '../user/user.module';
     MongooseModule.forFeature([
       { name: Category.name, schema: CategorySchema },
     ]),
-    UserModule
+    UserModule,
   ],
   providers: [
     CategoryService,
@@ -26,7 +26,7 @@ import { UserModule } from '../user/user.module';
     DeleteCategoryFeature,
     GetAllCategoriesFeature,
     GetCategoryByIdFeature,
-    DatatableFeature
+    DatatableFeature,
   ],
   controllers: [CategoryController],
   exports: [CategoryService],

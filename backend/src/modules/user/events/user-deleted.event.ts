@@ -1,4 +1,3 @@
 export class UserDeletedEvent {
-    id: string;
+  id: string;
 }
-  

@@ -12,14 +12,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { CreateLocationDto, UpdateLocationDto} from '../dtos';
-import { 
-    CreateLocationFeature , 
-    DeleteLocationFeature , 
-    GetAllLocationsFeature, 
-    GetLocationByIdFeature, 
-    UpdateLocationFeature, 
-    DatatableFeature
+import { CreateLocationDto, UpdateLocationDto } from '../dtos';
+import {
+  CreateLocationFeature,
+  DeleteLocationFeature,
+  GetAllLocationsFeature,
+  GetLocationByIdFeature,
+  UpdateLocationFeature,
+  DatatableFeature,
 } from '../features';
 import { RolesAllowed } from '../../auth/decorators/role.decorator';
 import { AuthGuard } from '../../auth/guards/auth.guard';
@@ -93,9 +93,9 @@ export class LocationController {
   @Post('/datatable')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
-  public async dataTable(@Req() request, @Res() response){
+  public async dataTable(@Req() request, @Res() response) {
     const { status, response: featureUpResponse } =
-    await this.datatableFeature.handle(request);
+      await this.datatableFeature.handle(request);
     return response.status(status).json(featureUpResponse);
   }
 }

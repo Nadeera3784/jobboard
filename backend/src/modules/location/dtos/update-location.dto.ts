@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsOptional, MinLength, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  MinLength,
+  MaxLength,
+} from 'class-validator';
 
 export class UpdateLocationDto {
   @IsNotEmpty()

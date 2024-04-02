@@ -22,10 +22,7 @@ export class SignUpFeature extends BaseFeature {
     try {
       const isRegistered = await this.userService.create(signupDto);
       if (isRegistered instanceof BadRequestException) {
-        return this.responseError(
-          HttpStatus.BAD_REQUEST,
-          isRegistered.message,
-        );
+        return this.responseError(HttpStatus.BAD_REQUEST, isRegistered.message);
       }
       await this.dispatchEvent(isRegistered);
       return this.responseSuccess(

@@ -52,20 +52,13 @@ export class SignInFeature extends BaseFeature {
 
         await this.dispatchDateSyncEvent(existingUser._id);
 
-        return this.responseSuccess(
-          HttpStatus.OK,
-          'Login successfully',
-          {
-            type: 'Bearer',
-            accessToken: accessToken,
-          },
-        );
+        return this.responseSuccess(HttpStatus.OK, 'Login successfully', {
+          type: 'Bearer',
+          accessToken: accessToken,
+        });
       }
 
-      return this.responseError(
-        HttpStatus.BAD_REQUEST,
-        'Invalid credentials',
-      );
+      return this.responseError(HttpStatus.BAD_REQUEST, 'Invalid credentials');
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,
@@ -84,11 +77,10 @@ export class SignInFeature extends BaseFeature {
     this.eventEmitter.emit(Events.USER_REGISTERED, event);
   }
 
-  private async dispatchDateSyncEvent(id: string){
+  private async dispatchDateSyncEvent(id: string) {
     const event = new UserUpdatedEvent();
     event.type = Events.USER_DATE_SYNC;
     event.id = id;
     this.eventEmitter.emit(Events.USER_UPDATED, event);
   }
-
 }

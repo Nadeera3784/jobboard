@@ -7,16 +7,18 @@ import { readFile } from 'fs/promises';
 import { join } from 'path';
 
 import { AppModule } from './modules/app/app.module';
-import {SwaggerModule } from '@nestjs/swagger';
+import { SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.setGlobalPrefix('api/v1');
   app.enableShutdownHooks();
-  app.useGlobalPipes(new ValidationPipe({
+  app.useGlobalPipes(
+    new ValidationPipe({
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-  }));
+    }),
+  );
   app.use(
     helmet({
       contentSecurityPolicy: false,
@@ -24,10 +26,10 @@ async function bootstrap() {
   );
   app.use(morgan('dev'));
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  
+
   const document = JSON.parse(
-    (await readFile(join(process.cwd(), 'swagger.json'))).toString('utf-8')
-  )
+    (await readFile(join(process.cwd(), 'swagger.json'))).toString('utf-8'),
+  );
   SwaggerModule.setup('api-doc', app, document);
 
   const port = process.env.PORT || 3000;

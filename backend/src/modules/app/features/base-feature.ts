@@ -25,7 +25,6 @@ export class BaseFeature {
     return {
       status: status,
       response: {
-        
         statusCode: status,
         message: message,
         data: data,

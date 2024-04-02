@@ -6,14 +6,14 @@ import { Resend } from 'resend';
 export class EmailService {
   private readonly resend;
 
-  constructor(
-    private configService: ConfigService,
-  ) {
+  constructor(private configService: ConfigService) {
     this.resend = new Resend(configService.get('mail.resend.key'));
   }
 
   public async sendVerificationEmail(email: string, token: string) {
-    const confirmLink = `${this.configService.get('app.api_url')}/auth/new-verification?token=${token}`;
+    const confirmLink = `${this.configService.get(
+      'app.api_url',
+    )}/auth/new-verification?token=${token}`;
     await this.resend.emails.send({
       from: this.configService.get('mail.resend.from'),
       to: email,
@@ -23,7 +23,9 @@ export class EmailService {
   }
 
   public async sendPasswordResetEmail(email: string, token: string) {
-    const resetLink = `${this.configService.get('app.api_url')}/auth/new-password?token=${token}`;
+    const resetLink = `${this.configService.get(
+      'app.api_url',
+    )}/auth/new-password?token=${token}`;
 
     await this.resend.emails.send({
       from: this.configService.get('mail.resend.from'),
@@ -33,7 +35,7 @@ export class EmailService {
     });
   }
 
-  public async sendAccountInactivityReminderEmail(email: string){
+  public async sendAccountInactivityReminderEmail(email: string) {
     await this.resend.emails.send({
       from: this.configService.get('mail.resend.from'),
       to: email,

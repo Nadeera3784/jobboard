@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Header, Param, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Header,
+  Param,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 
 import { SignupDto } from '../dtos/sign-up.dto';
 import { SignInDto } from '../dtos/sign-in.dto';
@@ -73,13 +83,10 @@ export class AuthController {
   @Get('/me')
   @Header('Content-Type', 'application/json')
   @UseGuards(AuthGuard)
-  public async me(
-    @Req() request,
-    @Res() response
-  ) {
-    const { status, response: featureUpResponse } =
-      await this.meFeature.handle(request.user.id);
+  public async me(@Req() request, @Res() response) {
+    const { status, response: featureUpResponse } = await this.meFeature.handle(
+      request.user.id,
+    );
     return response.status(status).json(featureUpResponse);
   }
-
 }

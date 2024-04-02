@@ -6,11 +6,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 
 import configuration from '../../config/configuration';
-import { UserModule } from '../user/user.module';;
+import { UserModule } from '../user/user.module';
 import { UserInactivityDetectionCron } from '../user/cron';
 import { DetectInactiveUsersFeature } from '../user/features';
 import { InactivityReminderQueue } from '../user/queues';
-import { EmailService } from './services/email.service';
+import { EmailService } from '../app/services/email.service';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { EmailService } from './services/email.service';
     }),
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get('database.mongodb.uri')
+        uri: configService.get('database.mongodb.uri'),
       }),
       inject: [ConfigService],
     }),
@@ -35,11 +35,9 @@ import { EmailService } from './services/email.service';
       }),
       inject: [ConfigService],
     }),
-    BullModule.registerQueue(
-      {
-        name: 'inactivity-reminder-email',
-      },
-    ),
+    BullModule.registerQueue({
+      name: 'inactivity-reminder-email',
+    }),
     EventEmitterModule.forRoot(),
     ScheduleModule.forRoot(),
     UserModule,

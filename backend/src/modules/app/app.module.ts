@@ -26,7 +26,7 @@ import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
     }),
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get('database.mongodb.uri')
+        uri: configService.get('database.mongodb.uri'),
       }),
       inject: [ConfigService],
     }),

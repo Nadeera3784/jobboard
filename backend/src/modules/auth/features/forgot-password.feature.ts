@@ -25,10 +25,7 @@ export class ForgotPasswordFeature extends BaseFeature {
       );
 
       if (!existingUser) {
-        return this.responseError(
-          HttpStatus.BAD_REQUEST,
-          'Email not found!',
-        );
+        return this.responseError(HttpStatus.BAD_REQUEST, 'Email not found!');
       }
       await this.passwordResetTokenService.generatePasswordResetToken(
         forgotPasswordDto.email,
@@ -36,10 +33,7 @@ export class ForgotPasswordFeature extends BaseFeature {
 
       this.publishEvents(existingUser);
 
-      return this.responseSuccess(
-        HttpStatus.OK,
-        'Reset email sent!',
-      );
+      return this.responseSuccess(HttpStatus.OK, 'Reset email sent!');
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,

@@ -12,15 +12,15 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { 
-  CreateCategoryFeature, 
-  DatatableFeature, 
-  DeleteCategoryFeature, 
-  GetAllCategoriesFeature, 
-  GetCategoryByIdFeature, 
-  UpdateCategorynFeature 
+import {
+  CreateCategoryFeature,
+  DatatableFeature,
+  DeleteCategoryFeature,
+  GetAllCategoriesFeature,
+  GetCategoryByIdFeature,
+  UpdateCategorynFeature,
 } from '../features';
-import { CreateCategoryDto, UpdateCategoryDto} from '../dtos';
+import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
 import { RolesAllowed } from '../../auth/decorators/role.decorator';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RoleGuard } from '../../auth/guards/role.guard';
@@ -36,15 +36,15 @@ export class CategoryController {
     private readonly getAllCategoriesFeature: GetAllCategoriesFeature,
     private readonly getCategoryByIdFeature: GetCategoryByIdFeature,
     private readonly datatableFeature: DatatableFeature,
-    ) {}
+  ) {}
 
   @Get()
   @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async getAll(@Res() response) {
     const { status, response: featureUpResponse } =
-    await this.getAllCategoriesFeature.handle();
-  return response.status(status).json(featureUpResponse);
+      await this.getAllCategoriesFeature.handle();
+    return response.status(status).json(featureUpResponse);
   }
 
   @Get('/:id')
@@ -86,17 +86,16 @@ export class CategoryController {
   @RolesAllowed(Roles.ADMIN)
   public async delete(@Res() response, @Param() { id }) {
     const { status, response: featureUpResponse } =
-    await this.deleteCategoryFeature.handle(id);
-  return response.status(status).json(featureUpResponse);
+      await this.deleteCategoryFeature.handle(id);
+    return response.status(status).json(featureUpResponse);
   }
 
   @Header('Content-Type', 'application/json')
   @Post('/datatable')
   @RolesAllowed(Roles.ADMIN)
-  public async dataTable(@Req() request, @Res() response){
+  public async dataTable(@Req() request, @Res() response) {
     const { status, response: featureUpResponse } =
-    await this.datatableFeature.handle(request);
+      await this.datatableFeature.handle(request);
     return response.status(status).json(featureUpResponse);
   }
-
 }

@@ -10,7 +10,8 @@ import { UserInterface } from '../interfaces';
 export class DetectInactiveUsersFeature extends BaseFeature {
   constructor(
     private readonly userService: UserService,
-    @InjectQueue('inactivity-reminder-email') private inactivityReminderQueue: Queue,
+    @InjectQueue('inactivity-reminder-email')
+    private inactivityReminderQueue: Queue,
   ) {
     super();
   }
@@ -18,7 +19,9 @@ export class DetectInactiveUsersFeature extends BaseFeature {
   public async handle() {
     const users = await this.userService.getInactivityUsers();
     users.eachAsync(async (user: UserInterface) => {
-       await this.inactivityReminderQueue.add('send-reminder-email', user, {attempts: 3});  
+      await this.inactivityReminderQueue.add('send-reminder-email', user, {
+        attempts: 3,
+      });
     });
   }
 }

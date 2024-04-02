@@ -10,7 +10,6 @@ import { User } from '../../user/schemas/user.schema';
   versionKey: false,
 })
 export class Job extends Document {
-
   @Prop({ unique: true })
   @IsString()
   @IsNotEmpty()
@@ -21,19 +20,15 @@ export class Job extends Document {
   @IsNotEmpty()
   description: string;
 
-  @Prop({ default: 'Active' })
-  @IsOptional()
-  status: string;
-
-  @Prop({type: Types.ObjectId, ref: Category.name})
+  @Prop({ type: Types.ObjectId, ref: Category.name })
   @IsNotEmpty()
   category: Category;
 
-  @Prop({type: Types.ObjectId, ref: Location.name})
+  @Prop({ type: Types.ObjectId, ref: Location.name })
   @IsNotEmpty()
   location: Location;
 
-  @Prop({type: Types.ObjectId, ref: User.name})
+  @Prop({ type: Types.ObjectId, ref: User.name })
   @IsNotEmpty()
   user: User;
 
@@ -55,6 +50,10 @@ export class Job extends Document {
   @Prop()
   @IsNotEmpty()
   expires: Date;
+
+  @Prop({ default: 'Active' })
+  @IsOptional()
+  status: string;
 
   @Prop({ default: now() })
   @IsOptional()

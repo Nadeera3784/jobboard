@@ -6,7 +6,7 @@ import { faker } from '@faker-js/faker';
 import * as moment from 'moment';
 import { ConfigService } from '@nestjs/config';
 
-import { CreateUserDto , UpdateUserDto} from '../dtos';
+import { CreateUserDto, UpdateUserDto } from '../dtos';
 import { User } from '../schemas/user.schema';
 import { Roles } from '../enums';
 
@@ -83,7 +83,7 @@ export class UserService {
     );
   }
 
-  public async refreshUpdatedDate(id: string){
+  public async refreshUpdatedDate(id: string) {
     return await this.userModel.findByIdAndUpdate(
       { _id: id },
       {
@@ -102,33 +102,43 @@ export class UserService {
     );
   }
 
-  public async getInactivityUsers(duration: number = 6, batchSize: number = 20,  roles: string[] = [Roles.USER, Roles.COMPANY]) {
-    return await this.userModel.aggregate([
-      {
-        $match: {
-          role: { $in: roles }
-        }
-      },
-      {
-        $addFields: {
-          hasNotUpdatedWithinSixMonths: {
-            $cond: {
-              if: { $eq: [{ $type: "$updated_at" }, "date"] },
-              then: { $lt: ["$updated_at", moment().subtract(duration, 'months').toDate()] },
-              else: true 
-            }
-          }
-        }
-      },
-      {
-        $match: {
-          hasNotUpdatedWithinSixMonths: true
-        }
-      }
-    ])
-    .cursor({
-      batchSize: batchSize
-    });     
+  public async getInactivityUsers(
+    duration = 6,
+    batchSize = 20,
+    roles: string[] = [Roles.USER, Roles.COMPANY],
+  ) {
+    return await this.userModel
+      .aggregate([
+        {
+          $match: {
+            role: { $in: roles },
+          },
+        },
+        {
+          $addFields: {
+            hasNotUpdatedWithinSixMonths: {
+              $cond: {
+                if: { $eq: [{ $type: '$updated_at' }, 'date'] },
+                then: {
+                  $lt: [
+                    '$updated_at',
+                    moment().subtract(duration, 'months').toDate(),
+                  ],
+                },
+                else: true,
+              },
+            },
+          },
+        },
+        {
+          $match: {
+            hasNotUpdatedWithinSixMonths: true,
+          },
+        },
+      ])
+      .cursor({
+        batchSize: batchSize,
+      });
   }
 
   /**
@@ -145,46 +155,42 @@ export class UserService {
   async datatable(request: any) {
     try {
       const params = request.body;
-      let order = params.order || [];
-      let columns = params.columns || [];
-      let filters = params.filters || [];
+      const order = params.order || [];
+      const columns = params.columns || [];
+      const filters = params.filters || [];
       let searchQuery: any = {};
-      const daterange = params.daterange || "";
-      let sort: any = {'created_at': -1};
-      let whereQuery: any = {};
+      const daterange = params.daterange || '';
+      let sort: any = { created_at: -1 };
+      const whereQuery: any = {};
 
-       if (filters.status) {
-         whereQuery.status = filters.status;
+      if (filters.status) {
+        whereQuery.status = filters.status;
       }
 
       if (filters.role) {
         whereQuery.role = filters.role;
-     }
+      }
 
       if (params.search.value) {
-          const regex = new RegExp(params.search.value, "i");
-          searchQuery = {
-            $or: [
-              { 'name': regex },
-              { 'email': regex },
-            ],
-          };
+        const regex = new RegExp(params.search.value, 'i');
+        searchQuery = {
+          $or: [{ name: regex }, { email: regex }],
+        };
       } else if (daterange) {
-          const date_array = daterange.split("-");
-          const start_date = moment(new Date(date_array[0])).format('YYYY-MM-DD');
-          const end_date = moment(new Date(date_array[1])).format('YYYY-MM-DD');
-          const formatted_start_date = moment.utc(start_date).format();
-          const formatted_end_date = moment.utc(end_date).format();
-          searchQuery = {
-            'created_at': { $gt: formatted_start_date, $lt: formatted_end_date }
-          };
+        const date_array = daterange.split('-');
+        const start_date = moment(new Date(date_array[0])).format('YYYY-MM-DD');
+        const end_date = moment(new Date(date_array[1])).format('YYYY-MM-DD');
+        const formatted_start_date = moment.utc(start_date).format();
+        const formatted_end_date = moment.utc(end_date).format();
+        searchQuery = {
+          created_at: { $gt: formatted_start_date, $lt: formatted_end_date },
+        };
       }
 
       searchQuery = { ...searchQuery, ...whereQuery };
 
       if (order.length && columns.length) {
         const sortByOrder: any = order.reduce((memo: any, ordr: any) => {
-          const column = columns[ordr.column];
           memo[ordr.name] = ordr.dir === 'asc' ? 1 : -1;
           return memo;
         }, {});
@@ -202,39 +208,42 @@ export class UserService {
 
       const filtered_count = await this.userModel.countDocuments(searchQuery);
       recordsFiltered = filtered_count;
-      
-      let results = await this.userModel.find(searchQuery, 'name email')
-        .select("_id name email phone role created_at status")
+
+      let results = await this.userModel
+        .find(searchQuery, 'name email')
+        .select('_id name email phone role created_at status')
         .skip(Number(params.start))
         .limit(Number(params.length))
         .sort(sort)
         .exec();
-        results = results.map((result: any) => {
-          return {
-            ...result.toObject(),
-            actions: [
-              {
-                id: 1,
-                label: 'Edit',
-                type: 'link',
-                endpoint: `/admin/users/${result._id}`
-              },
-              {
-                id: 2,
-                label: 'Delete',
-                type: 'delete',
-                endpoint: `${this.configService.get('app.api_url')}/users/{${result._id}}`,
-                confirm_message: "Are you sure want to delete?"
-              }
-            ]
-          };
-        });
+      results = results.map((result: any) => {
+        return {
+          ...result.toObject(),
+          actions: [
+            {
+              id: 1,
+              label: 'Edit',
+              type: 'link',
+              endpoint: `/admin/users/${result._id}`,
+            },
+            {
+              id: 2,
+              label: 'Delete',
+              type: 'delete',
+              endpoint: `${this.configService.get('app.api_url')}/users/${
+                result._id
+              }`,
+              confirm_message: 'Are you sure want to delete?',
+            },
+          ],
+        };
+      });
 
       const data = {
-        "draw": params.draw,
-        "recordsFiltered": recordsFiltered,
-        "recordsTotal": recordsTotal,
-        "data": results
+        draw: params.draw,
+        recordsFiltered: recordsFiltered,
+        recordsTotal: recordsTotal,
+        data: results,
       };
       return data;
     } catch (error) {
@@ -242,17 +251,17 @@ export class UserService {
     }
   }
 
-  async seeds(){
+  async seeds() {
     for (let index = 0; index < 20; index++) {
       await this.userModel.create({
-         name: faker.person.fullName(),
-         email: faker.internet.email(),
-         phone: faker.phone.number(),
-         password: "$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK",
-         email_verified: now(), 
-         status: "Active"
+        name: faker.person.fullName(),
+        email: faker.internet.email(),
+        phone: faker.phone.number(),
+        password:
+          '$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK',
+        email_verified: now(),
+        status: 'Active',
       });
     }
   }
-  
 }

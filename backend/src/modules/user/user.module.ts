@@ -26,12 +26,9 @@ import { UserDeletedListener } from './listeners/user-deleted.listener';
     UpdateUserFeature,
     DatatableFeature,
     JwtService,
-    UserDeletedListener
+    UserDeletedListener,
   ],
   controllers: [UserController],
-  exports: [
-    UserService,
-    JwtService
-  ],
+  exports: [UserService, JwtService],
 })
 export class UserModule {}

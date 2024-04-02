@@ -17,10 +17,7 @@ export class ResetPasswordFeature extends BaseFeature {
   public async handle(token: string, resetPasswordDto: ResetPasswordDto) {
     try {
       if (!token) {
-        return this.responseError(
-          HttpStatus.BAD_REQUEST,
-          'Missing token!',
-        );
+        return this.responseError(HttpStatus.BAD_REQUEST, 'Missing token!');
       }
 
       const existingToken = await this.passwordResetTokenService.getByToken(
@@ -28,17 +25,11 @@ export class ResetPasswordFeature extends BaseFeature {
       );
 
       if (!existingToken) {
-        return this.responseError(
-          HttpStatus.BAD_REQUEST,
-          'Invalid token!',
-        );
+        return this.responseError(HttpStatus.BAD_REQUEST, 'Invalid token!');
       }
 
       if (new Date(existingToken.expires) < new Date()) {
-        return this.responseError(
-          HttpStatus.BAD_REQUEST,
-          'Token has expired!',
-        );
+        return this.responseError(HttpStatus.BAD_REQUEST, 'Token has expired!');
       }
 
       const existingUser = await this.passwordResetTokenService.getByEmail(
@@ -59,10 +50,7 @@ export class ResetPasswordFeature extends BaseFeature {
 
       await this.passwordResetTokenService.delete(existingUser._id);
 
-      return this.responseSuccess(
-        HttpStatus.OK,
-        'Password updated!',
-      );
+      return this.responseSuccess(HttpStatus.OK, 'Password updated!');
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,

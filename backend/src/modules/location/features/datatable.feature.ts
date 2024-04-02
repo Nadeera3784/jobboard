@@ -12,11 +12,7 @@ export class DatatableFeature extends BaseFeature {
   public async handle(request) {
     try {
       const data = await this.locationService.datatable(request);
-      return this.responseSuccess(
-        HttpStatus.OK,
-        null,
-        data
-      );
+      return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,

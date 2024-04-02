@@ -23,13 +23,9 @@ export class GetSharedFiltersFeature extends BaseFeature {
       const filters = this.appService.getFilters();
       const locations = await this.locationService.getAll();
       const categories = await this.categoryService.getAll();
-      const cachedData =  await this.cacheService.get(cacheKey);
-      if(cachedData){
-        return this.responseSuccess(
-          HttpStatus.OK,
-          null,
-          cachedData,
-        );
+      const cachedData = await this.cacheService.get(cacheKey);
+      if (cachedData) {
+        return this.responseSuccess(HttpStatus.OK, null, cachedData);
       }
       const data = {
         locations: locations,
@@ -37,11 +33,7 @@ export class GetSharedFiltersFeature extends BaseFeature {
         ...filters,
       };
       await this.cacheService.set(cacheKey, 60, data);
-      return this.responseSuccess(
-        HttpStatus.OK,
-        null,
-        data,
-      );
+      return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,

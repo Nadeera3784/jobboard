@@ -17,7 +17,7 @@ import { UserModule } from '../user/user.module';
     MongooseModule.forFeature([
       { name: Location.name, schema: LocationSchema },
     ]),
-    UserModule
+    UserModule,
   ],
   providers: [
     LocationService,
@@ -26,7 +26,7 @@ import { UserModule } from '../user/user.module';
     GetAllLocationsFeature,
     GetLocationByIdFeature,
     UpdateLocationFeature,
-    DatatableFeature
+    DatatableFeature,
   ],
   controllers: [LocationController],
   exports: [LocationService],

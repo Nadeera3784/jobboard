@@ -70,7 +70,7 @@ import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
     ResetPasswordFeature,
     SignInFeature,
     MeFeature,
-    UserUpdatedListener
+    UserUpdatedListener,
   ],
   controllers: [AuthController],
 })

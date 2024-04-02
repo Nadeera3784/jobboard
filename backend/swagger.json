@@ -3,7 +3,6 @@
   "info": {
     "title": "JobBoard",
     "description": "JobBoard API documention",
-    "termsOfService": "http://swagger.io/terms/",
     "contact": {
       "email": "apiteam@swagger.io"
     },
@@ -11,7 +10,16 @@
   },
   "servers": [
     {
-      "url": "http://127.0.0.1:3000/api/v1"
+      "url": "http://127.0.0.1:3000/api/v1",
+      "description": "Local "
+    },
+    {
+      "url": "http://dev.joboard.io/api/v1",
+      "description": "Dev "
+    },
+    {
+      "url": "http://stage.joboard.io/api/v1",
+      "description": "Stage "
     }
   ],
   "tags": [
@@ -36,9 +44,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "type": {
-                      "type": "string",
-                      "example": "success"
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
                     },
                     "message": {
                       "type": "string",
@@ -90,9 +98,15 @@
         "tags": [
           "locations"
         ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
         "summary": "Create a  location",
         "description": "Create a location",
         "requestBody": {
+          "description": "Create a new location",
           "content": {
             "application/json": {
               "schema": {
@@ -105,7 +119,8 @@
                 }
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "200": {
@@ -115,9 +130,9 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "type": {
-                      "type": "string",
-                      "example": "success"
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
                     },
                     "message": {
                       "type": "string",
@@ -139,17 +154,20 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "type": {
-                      "type": "string",
-                      "example": "success"
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 422
                     },
                     "message": {
-                      "type": "string",
-                      "example": "Location has been created successfully"
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "name must be longer than or equal to 1 characters"
+                      }
                     },
-                    "data": {
+                    "error": {
                       "type": "string",
-                      "example": null
+                      "example": "Unprocessable Entity"
                     }
                   } 
                 }
@@ -168,6 +186,246 @@
           }
         }
       }
+    },
+    "/locations/{id}": {
+      "get": {
+        "tags": [
+          "locations"
+        ],
+        "summary": "Get a location",
+        "description": "Get a location by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "location id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "66066a1123cb331bef59d690"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "California"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "InActive"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-03-29T07:13:16.528Z"
+                        }
+                      } 
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error operation",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorApiResponse"
+                }
+              }
+             }
+          }
+        }
+      },
+      "put" : {
+        "tags": [
+          "locations"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Update a  location",
+        "description": "Update a location",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "location id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Bexley"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "Active"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Location has been updated successfully"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": null
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validtion Errors",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 422
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "name must be longer than or equal to 1 characters"
+                      }
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unprocessable Entity"
+                    }
+                  } 
+                }
+              }
+             }
+          },
+          "400": {
+            "description": "Error operation",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorApiResponse"
+                }
+              }
+             }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "locations"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Delete location",
+        "description": "Delete a location by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "location id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Location has been deleted successfully"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": null
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error operation",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorApiResponse"
+                }
+              }
+             }
+          }
+        }
+      }
+
     }
   },
   "components": {
@@ -175,9 +433,9 @@
       "ErrorApiResponse": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string",
-            "example": "error"
+          "statusCode": {
+            "type": "integer",
+            "example": 400
           },
           "message": {
             "type": "string",
@@ -192,22 +450,10 @@
     },
 
     "securitySchemes": {
-      "petstore_auth": {
-        "type": "oauth2",
-        "flows": {
-          "implicit": {
-            "authorizationUrl": "https://petstore3.swagger.io/oauth/authorize",
-            "scopes": {
-              "write:pets": "modify pets in your account",
-              "read:pets": "read your pets"
-            }
-          }
-        }
-      },
-      "api_key": {
-        "type": "apiKey",
-        "name": "api_key",
-        "in": "header"
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

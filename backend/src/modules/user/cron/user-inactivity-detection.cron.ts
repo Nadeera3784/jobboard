@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as moment from 'moment';
-import { Cron } from '@nestjs/schedule';
+import { Cron , CronExpression} from '@nestjs/schedule';
 
 import { DetectInactiveUsersFeature } from '../features';
 
@@ -10,8 +10,8 @@ export class UserInactivityDetectionCron {
     private readonly logger: Logger,
     private readonly detectInactiveUsersFeature: DetectInactiveUsersFeature,
   ) {}
-  //TODO: check database for inactive users
-  @Cron('45 * * * * *')
+
+  @Cron(CronExpression.EVERY_WEEKEND)
   private async detectInactiveUsers(): Promise<void> {
     this.logger.log(
       'UserInactivityIdentifierCron Started',

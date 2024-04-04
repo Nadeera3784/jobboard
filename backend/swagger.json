@@ -4,7 +4,7 @@
     "title": "JobBoard",
     "description": "JobBoard API documention",
     "contact": {
-      "email": "apiteam@swagger.io"
+      "email": "apiteam@swagger.io",
     },
     "version": "1.0"
   },

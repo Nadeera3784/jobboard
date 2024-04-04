@@ -4,7 +4,7 @@
     "title": "JobBoard",
     "description": "JobBoard API documention",
     "contact": {
-      "email": "apiteam@swagger.io",
+      "email": "apiteam@swagger.io"
     },
     "version": "1.0"
   },
@@ -26,6 +26,10 @@
     {
       "name": "locations",
       "description": "Location api endpoint"
+    },
+    {
+      "name": "categories",
+      "description": "Categories api endpoint"
     }
   ],
   "paths": {
@@ -403,6 +407,404 @@
                     "message": {
                       "type": "string",
                       "example": "Location has been deleted successfully"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": null
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error operation",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorApiResponse"
+                }
+              }
+             }
+          }
+        }
+      }
+
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Get all categories",
+        "description": "Get all categories",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "data": {
+                      "type": "array",
+                      "items" : {
+                        "type": "object",
+                        "properties": {
+                          "_id": {
+                            "type": "string",
+                            "example": "66066a1123cb331bef59d690"
+                          },
+                          "name": {
+                            "type": "string",
+                            "example": "Category AA"
+                          },
+                          "status": {
+                            "type": "string",
+                            "example": "InActive"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2024-03-29T07:13:16.528Z"
+                          }
+                        } 
+                      }
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error operation",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorApiResponse"
+                }
+              }
+             }
+          }
+        }
+      },
+      "post" : {
+        "tags": [
+          "categories"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Create a  category",
+        "description": "Create a category",
+        "requestBody": {
+          "description": "Create a new category",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Bexley"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Location has been created successfully"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": null
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validtion Errors",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 422
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "name must be longer than or equal to 1 characters"
+                      }
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unprocessable Entity"
+                    }
+                  } 
+                }
+              }
+             }
+          },
+          "400": {
+            "description": "Error operation",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorApiResponse"
+                }
+              }
+             }
+          }
+        }
+      }
+    },
+    "/categories/{id}": {
+      "get": {
+        "tags": [
+          "categories"
+        ],
+        "summary": "Get a category",
+        "description": "Get a category by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "category id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": null
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "_id": {
+                          "type": "string",
+                          "example": "66066a1123cb331bef59d690"
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "Category AA"
+                        },
+                        "status": {
+                          "type": "string",
+                          "example": "InActive"
+                        },
+                        "created_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2024-03-29T07:13:16.528Z"
+                        }
+                      } 
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error operation",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorApiResponse"
+                }
+              }
+             }
+          }
+        }
+      },
+      "put" : {
+        "tags": [
+          "categories"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Update a  category",
+        "description": "Update a category",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "category id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Bexley"
+                  },
+                  "status": {
+                    "type": "string",
+                    "example": "Active"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Category has been updated successfully"
+                    },
+                    "data": {
+                      "type": "string",
+                      "example": null
+                    }
+                  } 
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validtion Errors",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 422
+                    },
+                    "message": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "example": "name must be longer than or equal to 1 characters"
+                      }
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Unprocessable Entity"
+                    }
+                  } 
+                }
+              }
+             }
+          },
+          "400": {
+            "description": "Error operation",
+             "content": {
+               "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorApiResponse"
+                }
+              }
+             }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "categories"
+        ],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "summary": "Delete category",
+        "description": "Delete a category by id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "category id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Category been deleted successfully"
                     },
                     "data": {
                       "type": "string",

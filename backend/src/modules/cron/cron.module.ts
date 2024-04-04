@@ -8,10 +8,14 @@ import { ScheduleModule } from '@nestjs/schedule';
 import configuration from '../../config/configuration';
 import { UserInactivityDetectionCron } from '../user/cron';
 import { DetectInactiveUsersFeature } from '../user/features';
+import { DeleteExpiredJobsFeature } from '../job/features';
 import { InactivityReminderQueue } from '../user/queues';
 import { EmailService } from '../app/services/email.service';
 import { UserService } from '../user/services/user.service';
+import { JobService } from '../job/services';
 import { User, UserSchema } from '../user/schemas/user.schema';
+import { Job, JobSchema } from '../job/schemas/job.schema';
+import { DeleteExpiredJobsCron } from '../job/cron';
 
 @Module({
   imports: [
@@ -28,7 +32,8 @@ import { User, UserSchema } from '../user/schemas/user.schema';
       inject: [ConfigService],
     }),
     MongooseModule.forFeature([
-      { name: User.name, schema: UserSchema }
+      { name: User.name, schema: UserSchema },
+      { name: Job.name, schema: JobSchema }
     ]),
     BullModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
@@ -53,6 +58,9 @@ import { User, UserSchema } from '../user/schemas/user.schema';
     UserInactivityDetectionCron,
     DetectInactiveUsersFeature,
     InactivityReminderQueue,
+    DeleteExpiredJobsFeature,
+    JobService,
+    DeleteExpiredJobsCron
   ],
   exports: [],
 })

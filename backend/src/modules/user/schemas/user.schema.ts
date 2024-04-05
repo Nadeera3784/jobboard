@@ -30,7 +30,7 @@ export class User extends Document {
   @IsOptional()
   phone: string;
 
-  @Prop({ select: false})
+  @Prop({ select: false })
   @IsNotEmpty()
   @Exclude()
   password: string;
@@ -63,6 +63,6 @@ export class User extends Document {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-UserSchema.method('isAdmin', function(this: User): boolean {
+UserSchema.method('isAdmin', function (this: User): boolean {
   return !!this?.role && this.role === Roles.ADMIN;
 });

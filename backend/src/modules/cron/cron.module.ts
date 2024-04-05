@@ -33,7 +33,7 @@ import { DeleteExpiredJobsCron } from '../job/cron';
     }),
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
-      { name: Job.name, schema: JobSchema }
+      { name: Job.name, schema: JobSchema },
     ]),
     BullModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
@@ -60,7 +60,7 @@ import { DeleteExpiredJobsCron } from '../job/cron';
     InactivityReminderQueue,
     DeleteExpiredJobsFeature,
     JobService,
-    DeleteExpiredJobsCron
+    DeleteExpiredJobsCron,
   ],
   exports: [],
 })

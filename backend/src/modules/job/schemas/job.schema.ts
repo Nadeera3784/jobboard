@@ -20,29 +20,29 @@ export class Job extends Document {
   @IsNotEmpty()
   description: string;
 
-  @Prop({ type: Types.ObjectId, ref: Category.name, index: true})
+  @Prop({ type: Types.ObjectId, ref: Category.name, index: true })
   @IsNotEmpty()
   category: Category;
 
-  @Prop({ type: Types.ObjectId, ref: Location.name, index: true})
+  @Prop({ type: Types.ObjectId, ref: Location.name, index: true })
   @IsNotEmpty()
   location: Location;
 
-  @Prop({ type: Types.ObjectId, ref: User.name, index: true})
+  @Prop({ type: Types.ObjectId, ref: User.name, index: true })
   @IsNotEmpty()
   user: User;
 
-  @Prop({index: true})
+  @Prop({ index: true })
   @IsString()
   @IsNotEmpty()
   remote: string;
 
-  @Prop({index: true})
+  @Prop({ index: true })
   @IsString()
   @IsNotEmpty()
   job_type: string;
 
-  @Prop({index: true})
+  @Prop({ index: true })
   @IsString()
   @IsNotEmpty()
   experience_level: string;

@@ -12,7 +12,7 @@ export class DeleteExpiredJobsFeature extends BaseFeature {
   public async handle() {
     const jobs = await this.jobService.getExpiredJobs();
     jobs.eachAsync(async (job) => {
-       this.jobService.delete(job._id);
+      this.jobService.delete(job._id);
     });
   }
 }

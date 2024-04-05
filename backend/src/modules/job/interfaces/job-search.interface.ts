@@ -1,5 +1,4 @@
 export interface JobSearchInterface {
-    $regex: string;
-    $options: string;
-  }
-  
+  $regex: string;
+  $options: string;
+}

@@ -1,5 +1,4 @@
 export enum Status {
-    EXPIRED = 'Expired',
-    ACTIVE = 'Active',
+  EXPIRED = 'Expired',
+  ACTIVE = 'Active',
 }
-  

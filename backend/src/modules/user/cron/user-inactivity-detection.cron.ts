@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import * as moment from 'moment';
-import { Cron , CronExpression} from '@nestjs/schedule';
+import { Cron, CronExpression } from '@nestjs/schedule';
 
 import { DetectInactiveUsersFeature } from '../features';
 

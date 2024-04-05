@@ -5,4 +5,3 @@ export interface JobFilterInterface {
   job_type?: { $regex: RegExp };
   experience_level?: { $regex: RegExp };
 }
-  

@@ -1,4 +1,4 @@
-export * from './employee-filter.interface';
-export * from './employee-search.interface';
-export * from './employee-order.interface';
+export * from './job-filter.interface';
+export * from './job-search.interface';
+export * from './job-order.interface';
 export * from './job.interface';

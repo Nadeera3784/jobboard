@@ -2,7 +2,7 @@ import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
 
 export class CreateJobDto {
   @IsString()
-  @MaxLength(30)
+  @MaxLength(100)
   @IsNotEmpty()
   name: string;
 

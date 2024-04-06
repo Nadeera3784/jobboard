@@ -41,7 +41,7 @@ export class JobController {
       await this.getAllJobsFeature.handle(
         filter,
         search,
-        JSON.parse(order),
+        order,
         Number(limit),
         Number(page),
       );

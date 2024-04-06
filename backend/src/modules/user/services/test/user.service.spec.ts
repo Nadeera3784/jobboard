@@ -1,9 +1,12 @@
-import { UserService } from '../../services/user.service';
 import { ConfigService } from '@nestjs/config';
-import { User } from '../../schemas/user.schema';
 import { Model } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
+
+import { SharedStatus } from '../../../app/enums/shared-status.enum';
+import { User } from '../../schemas/user.schema';
+import { UserService } from '../../services/user.service';
+import { Roles } from '../../enums';
 
 describe('services/UserService', () => {
   let userService: UserService;
@@ -15,8 +18,8 @@ describe('services/UserService', () => {
     email: 'Brown.OKeefe11@hotmail.com',
     phone: '1-816-907-3655',
     image: null,
-    role: 'user',
-    status: 'Active',
+    role: Roles.USER,
+    status: SharedStatus.ACTIVE,
   };
 
   beforeEach(async () => {
@@ -55,7 +58,7 @@ describe('services/UserService', () => {
       email: 'Brown.OKeefe11@hotmail.com',
       phone: '1-816-907-3655',
       image: null,
-      role: 'user',
+      role: Roles.USER,
       password: 'password',
     };
     jest
@@ -70,7 +73,7 @@ describe('services/UserService', () => {
       email: '',
       phone: '1-816-907-3655',
       image: null,
-      role: 'user',
+      role: Roles.USER,
       password: '',
     };
     jest
@@ -86,9 +89,9 @@ describe('services/UserService', () => {
       email: 'Brown.OKeefe11@hotmail.com',
       phone: '1-816-907-3655',
       image: null,
-      role: 'user',
+      role: Roles.USER,
       password: 'password',
-      status: 'Active',
+      status: SharedStatus.ACTIVE,
     };
     jest.spyOn(userModel, 'findByIdAndUpdate').mockResolvedValue(mockData);
     expect(userService.update(id, payload)).resolves.toEqual(mockData);
@@ -101,9 +104,9 @@ describe('services/UserService', () => {
       email: 'Brown.OKeefe11@hotmail.com',
       phone: '1-816-907-3655',
       image: null,
-      role: 'user',
+      role: Roles.USER,
       password: 'password',
-      status: 'Active',
+      status: SharedStatus.ACTIVE,
     };
     jest.spyOn(userModel, 'findByIdAndUpdate').mockRejectedValue(null);
     expect(userService.update(id, payload)).rejects.toBeFalsy();

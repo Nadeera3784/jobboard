@@ -1,62 +1,68 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetUserByIdFeature } from '../get-user-by-id.feature';
+import { DeleteUserFeature } from '../delete-user.feature';
 import { UserService } from '../../services/user.service';
 import { HttpStatus } from '@nestjs/common';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { UserDeletedListener } from '../../listeners/user-deleted.listener';
 
-describe('features/GetUserByIdFeature', () => {
+describe('features/DeleteUserFeature', () => {
   let userService: UserService;
-  let getUserByIdFeature: GetUserByIdFeature;
+  let deleteUserFeature: DeleteUserFeature;
+  let eventEmitter: EventEmitter2;
 
-  const mockData = {
-    _id: '66082529899034a393c5a963',
-    name: 'Dr. Mitchell Skiles',
-    email: 'Brown.OKeefe11@hotmail.com',
-    phone: '1-816-907-3655',
-    image: null,
-    role: 'user',
-    status: 'Active',
-  };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GetUserByIdFeature,
+        DeleteUserFeature,
         {
           provide: UserService,
           useValue: {
-            getById: jest.fn().mockResolvedValue(mockData),
+            delete: jest.fn(),
           },
+        },
+        {
+            provide: EventEmitter2,
+            useValue: {
+               emit: jest.fn(),
+            },
         },
       ],
     }).compile();
+    await module.init();
     userService = module.get<UserService>(UserService);
-    getUserByIdFeature = module.get<GetUserByIdFeature>(GetUserByIdFeature);
+    deleteUserFeature = module.get<DeleteUserFeature>(DeleteUserFeature);
+    eventEmitter = module.get<EventEmitter2>(EventEmitter2);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('GetUserByIdFeature should be defined', () => {
-    expect(getUserByIdFeature).toBeDefined();
+  it('DeleteUserFeature should be defined', () => {
+    expect(deleteUserFeature).toBeDefined();
   });
 
-  it('GetUserByIdFeature handle success', async () => {
+  it('DeleteUserFeature handle success', async () => {
     const id = '66082529899034a393c5a963';
-    const result = await getUserByIdFeature.handle(id);
+    const deleteResult = { acknowledged: true, deletedCount: 1 };
+    jest.spyOn(userService, 'delete').mockResolvedValue(deleteResult);
+    const result = await deleteUserFeature.handle(id);
+    
     expect(result).toHaveProperty('status');
     expect(result).toHaveProperty('response');
     expect(result).toHaveProperty('response.data');
     expect(result).toHaveProperty('response.message');
     expect(result).toHaveProperty('response.statusCode');
-    expect(result.response.data).toMatchObject(mockData);
+    expect(result.response.message).toEqual('User has been deleted successfully');
     expect(result.response.statusCode).toEqual(HttpStatus.OK);
-    expect(result.response.data).not.toBeNull();
+    expect(result.response.data).toBeNull();
   });
 
   it('GetUserByIdFeature handle fail', async () => {
     const id = '';
-    jest.spyOn(userService, 'getById').mockRejectedValue(null);
-    const result = await getUserByIdFeature.handle(id);
+    jest.spyOn(userService, 'delete').mockRejectedValue(null);
+    const result = await deleteUserFeature.handle(id);
+
     expect(result).toHaveProperty('status');
     expect(result).toHaveProperty('response');
     expect(result).toHaveProperty('response.data');

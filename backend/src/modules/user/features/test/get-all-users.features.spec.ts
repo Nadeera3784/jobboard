@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GetUserByIdFeature } from '../get-user-by-id.feature';
+import { GetAllUsersFeature } from '../get-all-users.features';
 import { UserService } from '../../services/user.service';
 import { HttpStatus } from '@nestjs/common';
 
-describe('features/GetUserByIdFeature', () => {
+describe('features/GetAllUsersFeature', () => {
   let userService: UserService;
-  let getUserByIdFeature: GetUserByIdFeature;
+  let getAllUsersFeature: GetAllUsersFeature;
 
   const mockData = {
     _id: '66082529899034a393c5a963',
@@ -16,47 +16,46 @@ describe('features/GetUserByIdFeature', () => {
     role: 'user',
     status: 'Active',
   };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        GetUserByIdFeature,
+        GetAllUsersFeature,
         {
           provide: UserService,
           useValue: {
-            getById: jest.fn().mockResolvedValue(mockData),
+            getAll: jest.fn().mockResolvedValue([mockData]),
           },
         },
       ],
     }).compile();
     userService = module.get<UserService>(UserService);
-    getUserByIdFeature = module.get<GetUserByIdFeature>(GetUserByIdFeature);
+    getAllUsersFeature = module.get<GetAllUsersFeature>(GetAllUsersFeature);
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('GetUserByIdFeature should be defined', () => {
-    expect(getUserByIdFeature).toBeDefined();
+  it('GetAllUsersFeature should be defined', () => {
+    expect(getAllUsersFeature).toBeDefined();
   });
 
-  it('GetUserByIdFeature handle success', async () => {
-    const id = '66082529899034a393c5a963';
-    const result = await getUserByIdFeature.handle(id);
+  it('GetAllUsersFeature handle success', async () => {
+    const result = await getAllUsersFeature.handle();
     expect(result).toHaveProperty('status');
     expect(result).toHaveProperty('response');
     expect(result).toHaveProperty('response.data');
     expect(result).toHaveProperty('response.message');
     expect(result).toHaveProperty('response.statusCode');
-    expect(result.response.data).toMatchObject(mockData);
+    expect(result.response.data).toEqual([mockData]);
     expect(result.response.statusCode).toEqual(HttpStatus.OK);
     expect(result.response.data).not.toBeNull();
   });
 
-  it('GetUserByIdFeature handle fail', async () => {
-    const id = '';
-    jest.spyOn(userService, 'getById').mockRejectedValue(null);
-    const result = await getUserByIdFeature.handle(id);
+  it('GetAllUsersFeature handle fail', async () => {
+    jest.spyOn(userService, 'getAll').mockRejectedValue(null);
+    const result = await getAllUsersFeature.handle();
     expect(result).toHaveProperty('status');
     expect(result).toHaveProperty('response');
     expect(result).toHaveProperty('response.data');

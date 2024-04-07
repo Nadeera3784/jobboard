@@ -24,7 +24,6 @@ export class DeleteUserFeature extends BaseFeature {
         'User has been deleted successfully',
       );
     } catch (error) {
-      console.log(error);
       return this.responseError(
         HttpStatus.BAD_REQUEST,
         'Something went wrong, Please try again later',

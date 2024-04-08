@@ -2,7 +2,7 @@ import {
   IsEmail,
   IsOptional,
   IsString,
-  Length,
+  IsNotEmpty,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -10,12 +10,12 @@ import {
 export class UpdateUserDto {
   @IsString()
   @MaxLength(30)
-  @IsOptional()
+  @IsNotEmpty()
   name: string;
 
   @IsEmail()
   @IsString()
-  @IsOptional()
+  @IsNotEmpty()
   email: string;
 
   @IsOptional()

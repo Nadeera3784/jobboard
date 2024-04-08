@@ -1,5 +1,5 @@
-import { ValidationError } from "class-validator";
+import { ValidationError } from 'class-validator';
 
 export function stringified(errors: ValidationError[]): string {
-    return JSON.stringify(errors)
+  return JSON.stringify(errors);
 }

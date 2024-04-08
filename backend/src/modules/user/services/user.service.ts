@@ -71,7 +71,9 @@ export class UserService {
    * @returns A promise that resolves to the updated user, or null if the user with the specified ID is not found.
    */
   public async update(id: string, updateUserDto: UpdateUserDto) {
-    return await this.userModel.findByIdAndUpdate({ _id: id }, updateUserDto);
+    return await this.userModel.findByIdAndUpdate({ _id: id }, updateUserDto, {
+      returnNewDocument: true,
+    });
   }
 
   public async updateEmailVerified(id: string) {

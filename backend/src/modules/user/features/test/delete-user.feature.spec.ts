@@ -1,9 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { EventEmitter2 } from '@nestjs/event-emitter';
+import { HttpStatus } from '@nestjs/common';
+
 import { DeleteUserFeature } from '../delete-user.feature';
 import { UserService } from '../../services/user.service';
-import { HttpStatus } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
-import { UserDeletedListener } from '../../listeners/user-deleted.listener';
+import { UserDeletedEvent } from '../../events';
+import { Events } from '../../enums';
 
 describe('features/DeleteUserFeature', () => {
   let userService: UserService;
@@ -21,10 +23,10 @@ describe('features/DeleteUserFeature', () => {
           },
         },
         {
-            provide: EventEmitter2,
-            useValue: {
-               emit: jest.fn(),
-            },
+          provide: EventEmitter2,
+          useValue: {
+            emit: jest.fn(),
+          },
         },
       ],
     }).compile();
@@ -47,15 +49,23 @@ describe('features/DeleteUserFeature', () => {
     const deleteResult = { acknowledged: true, deletedCount: 1 };
     jest.spyOn(userService, 'delete').mockResolvedValue(deleteResult);
     const result = await deleteUserFeature.handle(id);
-    
+
     expect(result).toHaveProperty('status');
     expect(result).toHaveProperty('response');
     expect(result).toHaveProperty('response.data');
     expect(result).toHaveProperty('response.message');
     expect(result).toHaveProperty('response.statusCode');
-    expect(result.response.message).toEqual('User has been deleted successfully');
+    expect(result.response.message).toEqual(
+      'User has been deleted successfully',
+    );
     expect(result.response.statusCode).toEqual(HttpStatus.OK);
     expect(result.response.data).toBeNull();
+
+    const event = new UserDeletedEvent();
+    event.id = id;
+    expect(eventEmitter.emit).toHaveBeenCalled();
+    expect(eventEmitter.emit).toHaveBeenCalledTimes(1);
+    expect(eventEmitter.emit).toHaveBeenCalledWith(Events.USER_DELETED, event);
   });
 
   it('GetUserByIdFeature handle fail', async () => {
@@ -68,9 +78,10 @@ describe('features/DeleteUserFeature', () => {
     expect(result).toHaveProperty('response.data');
     expect(result).toHaveProperty('response.message');
     expect(result).toHaveProperty('response.statusCode');
-    expect(result.response.message).toEqual('Something went wrong, Please try again later');
+    expect(result.response.message).toEqual(
+      'Something went wrong, Please try again later',
+    );
     expect(result.response.statusCode).toEqual(HttpStatus.BAD_REQUEST);
     expect(result.response.data).toBeNull();
   });
-  
 });

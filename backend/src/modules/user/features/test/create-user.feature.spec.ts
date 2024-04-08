@@ -39,17 +39,17 @@ describe('features/CreateUserFeature', () => {
 
   it('CreateUserFeature handle success', async () => {
     const input = {
-        name: faker.person.fullName(),
-        email: faker.internet.email(),
-        phone: '0111034673',
-        password: 'password',
-        role: Roles.USER,
-        image: null,
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      phone: '0111034673',
+      password: 'password',
+      role: Roles.USER,
+      image: null,
     };
     const payload = plainToInstance(CreateUserDto, input);
     const errors = await validate(payload);
 
-    expect(errors.length).toBe(0)
+    expect(errors.length).toBe(0);
 
     const result = await createUserFeature.handle(payload);
 
@@ -58,27 +58,31 @@ describe('features/CreateUserFeature', () => {
     expect(result).toHaveProperty('response.data');
     expect(result).toHaveProperty('response.message');
     expect(result).toHaveProperty('response.statusCode');
-    expect(result.response.message).toEqual('User has been created successfully');
+    expect(result.response.message).toEqual(
+      'User has been created successfully',
+    );
     expect(result.response.statusCode).toEqual(HttpStatus.OK);
     expect(result.response.data).toBeNull();
   });
 
   it('CreateUserFeature handle fail', async () => {
     const input = {
-        name: '',
-        email: 'johngmail.com',
-        phone: faker.phone.number(),
-        password: '',
-        role: Roles.USER,
-        image: null,
+      name: '',
+      email: 'johngmail.com',
+      phone: faker.phone.number(),
+      password: '',
+      role: Roles.USER,
+      image: null,
     };
-    const payload = plainToInstance(CreateUserDto, input)
+    const payload = plainToInstance(CreateUserDto, input);
     const errors = await validate(payload);
 
     expect(stringified(errors)).toContain(`name should not be empty`);
     expect(stringified(errors)).toContain(`email must be an email`);
     expect(stringified(errors)).toContain(`password should not be empty`);
-    expect(stringified(errors)).toContain(`password must be longer than or equal to 6 characters`);
+    expect(stringified(errors)).toContain(
+      `password must be longer than or equal to 6 characters`,
+    );
 
     jest.spyOn(userService, 'create').mockRejectedValue(null);
     const result = await createUserFeature.handle(payload);
@@ -88,10 +92,10 @@ describe('features/CreateUserFeature', () => {
     expect(result).toHaveProperty('response.data');
     expect(result).toHaveProperty('response.message');
     expect(result).toHaveProperty('response.statusCode');
-    expect(result.response.message).toEqual('Something went wrong, Please try again later');
+    expect(result.response.message).toEqual(
+      'Something went wrong, Please try again later',
+    );
     expect(result.response.statusCode).toEqual(HttpStatus.BAD_REQUEST);
     expect(result.response.data).toBeNull();
   });
-
-
 });

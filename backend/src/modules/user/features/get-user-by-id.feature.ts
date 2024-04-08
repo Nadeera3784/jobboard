@@ -2,6 +2,7 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 
 import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../services/user.service';
+import { IdDto } from '../../app/dtos/Id.dto';
 
 @Injectable()
 export class GetUserByIdFeature extends BaseFeature {

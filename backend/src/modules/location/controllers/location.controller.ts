@@ -25,6 +25,7 @@ import { RolesAllowed } from '../../auth/decorators/role.decorator';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RoleGuard } from '../../auth/guards/role.guard';
 import { Roles } from '../../user/enums/roles.enum';
+import { IdDto } from '../../app/dtos/Id.dto';
 
 @Controller('locations')
 //@UseGuards(AuthGuard, RoleGuard)
@@ -50,7 +51,7 @@ export class LocationController {
   @Get('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
-  public async getById(@Res() response, @Param() { id }) {
+  public async getById(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getLocationByIdFeature.handle(id);
     return response.status(status).json(featureUpResponse);
@@ -73,7 +74,7 @@ export class LocationController {
   @RolesAllowed(Roles.ADMIN)
   public async update(
     @Res() response,
-    @Param() { id },
+    @Param() { id }: IdDto,
     @Body() updateLocationDto: UpdateLocationDto,
   ) {
     const { status, response: featureUpResponse } =
@@ -84,7 +85,7 @@ export class LocationController {
   @Delete('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
-  public async delete(@Res() response, @Param() { id }) {
+  public async delete(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.deleteLocationFeature.handle(id);
     return response.status(status).json(featureUpResponse);

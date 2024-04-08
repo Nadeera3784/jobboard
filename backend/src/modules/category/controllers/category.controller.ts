@@ -25,6 +25,7 @@ import { RolesAllowed } from '../../auth/decorators/role.decorator';
 import { AuthGuard } from '../../auth/guards/auth.guard';
 import { RoleGuard } from '../../auth/guards/role.guard';
 import { Roles } from '../../user/enums/roles.enum';
+import { IdDto } from '../../app/dtos/Id.dto';
 
 @Controller('categories')
 //@UseGuards(AuthGuard, RoleGuard)
@@ -50,7 +51,7 @@ export class CategoryController {
   @Get('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
-  public async getById(@Res() response, @Param() { id }) {
+  public async getById(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getCategoryByIdFeature.handle(id);
     return response.status(status).json(featureUpResponse);
@@ -73,7 +74,7 @@ export class CategoryController {
   @RolesAllowed(Roles.ADMIN)
   public async update(
     @Res() response,
-    @Param() { id },
+    @Param() { id }: IdDto,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
     const { status, response: featureUpResponse } =
@@ -84,7 +85,7 @@ export class CategoryController {
   @Delete('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
-  public async delete(@Res() response, @Param() { id }) {
+  public async delete(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.deleteCategoryFeature.handle(id);
     return response.status(status).json(featureUpResponse);

@@ -13,7 +13,7 @@ import { LocationsPage } from "../pages/Admin/Locations/LocationsPage";
 import { EditLocationPage } from "../pages/Admin/Locations/EditLocationPage";
 import { UsersPage } from "../pages/Admin/Users/UsersPage";
 import { EditUserPage } from "../pages/Admin/Users/EditUserPage";
-
+import { SearchPage } from "../pages/App/SearchPage";
 import { TestPage } from "../pages/Admin/TestPage";
 
 export const AppRouter = () => {
@@ -27,6 +27,7 @@ export const AppRouter = () => {
         </Route>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
+          <Route path="search" element={<SearchPage />}/>
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} />

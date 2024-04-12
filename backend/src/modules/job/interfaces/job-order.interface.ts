@@ -5,5 +5,4 @@ export interface JobOrderInterface {
   remote?: 1 | -1;
   job_type?: 1 | -1;
   experience_level?: 1 | -1;
-  created_at?: 1 | -1;
 }

@@ -46,7 +46,7 @@ import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
     ),
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get('app.jwtkey'),
+        secret: configService.get('app.jwt_key'),
         signOptions: {
           expiresIn: '1h',
         },

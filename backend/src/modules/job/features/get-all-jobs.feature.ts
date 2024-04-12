@@ -31,7 +31,6 @@ export class GetAllJobsFeature extends BaseFeature {
       );
       return this.responseSuccess(HttpStatus.OK, null, jobs);
     } catch (error) {
-      console.log('DEBUG', error);
       return this.responseError(
         HttpStatus.BAD_REQUEST,
         'Something went wrong, Please try again later',

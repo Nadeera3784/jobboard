@@ -1,8 +1,9 @@
 export default () => ({
   app: {
+    app_port: process.env.APP_PORT,
     api_url: process.env.API_URL,
     environment: process.env.ENV,
-    jwtkey: process.env.APP_JWT_KEY,
+    jwt_key: process.env.APP_JWT_KEY,
   },
   database: {
     mongodb: {

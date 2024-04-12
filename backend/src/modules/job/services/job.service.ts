@@ -12,6 +12,7 @@ import {
   JobSearchInterface,
   JobInterface,
 } from '../interfaces';
+import { parseJson } from '../../app/services/helper.service';
 
 @Injectable()
 export class JobService {
@@ -37,21 +38,26 @@ export class JobService {
           remote: 1,
           job_type: 1,
           experience_level: 1,
-          created_at: 1,
         },
       },
     ];
     const match: any = { $match: {} };
     if (search) {
-      match.$match.$or = [{ name: search }, { description: search }];
+      const parsedSearch: JobSearchInterface = parseJson<JobSearchInterface>(search);
+      match.$match.$or = [
+        { name: parsedSearch }, 
+        { description: parsedSearch }
+      ];
     }
     if (filter) {
-      match.$match = { ...match.$match, ...filter };
+      const parsedFilter: JobFilterInterface = parseJson<JobFilterInterface>(filter);
+      match.$match = { ...match.$match, ...parsedFilter};
     }
     query.push(match);
     const countQuery: any = [...query];
     countQuery.push({ $count: 'count' });
-    query.push({ $sort: order });
+    const parsedOrder: JobOrderInterface = parseJson<JobOrderInterface>(order);
+    query.push({ $sort: parsedOrder });
     query.push({ $skip: limit * (page - 1) });
     query.push({ $limit: limit });
     const [count = { count: 0 }]: any = await Promise.resolve(
@@ -80,6 +86,7 @@ export class JobService {
       _id: id,
     });
   }
+
 
   public async getExpiredJobs(duration = 1, batchSize = 50) {
     return await this.jobModel

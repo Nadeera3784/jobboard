@@ -8,6 +8,7 @@ import { User } from '../../user/schemas/user.schema';
 
 @Schema({
   versionKey: false,
+  autoIndex: true,
 })
 export class Job extends Document {
   @Prop({ unique: true })
@@ -24,25 +25,25 @@ export class Job extends Document {
   @IsNotEmpty()
   category: Types.ObjectId;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: Location.name, index: true })
+  @Prop({ type: SchemaTypes.ObjectId, ref: Location.name})
   @IsNotEmpty()
   location: Location;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: User.name, index: true })
+  @Prop({ type: SchemaTypes.ObjectId, ref: User.name})
   @IsNotEmpty()
   user: User;
 
-  @Prop({ index: true })
+  @Prop()
   @IsString()
   @IsNotEmpty()
   remote: string;
 
-  @Prop({ index: true })
+  @Prop()
   @IsString()
   @IsNotEmpty()
   job_type: string;
 
-  @Prop({ index: true })
+  @Prop()
   @IsString()
   @IsNotEmpty()
   experience_level: string;
@@ -58,4 +59,4 @@ export class Job extends Document {
 
 export const JobSchema = SchemaFactory.createForClass(Job);
 
-JobSchema.index({ name: 1 });
+JobSchema.index({ name: 1 , category: 1, location: 1});

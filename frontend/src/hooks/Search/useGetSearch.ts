@@ -4,7 +4,7 @@ import axios from 'axios';
 import { ApiResponse, ResponseState } from '../../types';
 import {HttpStatus, AppConstants} from '../../constants';
 
-export const useGetFilters = () => {
+export const useGetSearch = () => {
     const [response, setResponse] = useState<ResponseState>({
         status: false,
         loading: false,
@@ -14,12 +14,12 @@ export const useGetFilters = () => {
         message: ''
     });
 
-    const process = async (finallyCallback?: (response: any) => void) => {
+    const process = async (query:  string, finallyCallback?: (response: any) => void) => {
         setResponse(prevResponse => ({
             ...prevResponse,
             loading: true
         }));
-        const ENDPOINT = `${AppConstants.API_URL}/app/shared/filters`;
+        const ENDPOINT = `${AppConstants.API_URL}/jobs/${query}`;
         try {
             const apiResponse = await axios.get<ApiResponse>(ENDPOINT);
             setResponse({

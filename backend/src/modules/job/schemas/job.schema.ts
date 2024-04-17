@@ -1,6 +1,6 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
-import { Document, Types, now } from 'mongoose';
+import { Document, SchemaTypes, Types, now } from 'mongoose';
 
 import { Category } from '../../category/schemas/category.schema';
 import { Location } from '../../location/schemas/location.schema';
@@ -20,15 +20,15 @@ export class Job extends Document {
   @IsNotEmpty()
   description: string;
 
-  @Prop({ type: Types.ObjectId, ref: Category.name, index: true })
+  @Prop({ type: SchemaTypes.ObjectId, ref: Category.name})
   @IsNotEmpty()
-  category: Category;
+  category: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: Location.name, index: true })
+  @Prop({ type: SchemaTypes.ObjectId, ref: Location.name, index: true })
   @IsNotEmpty()
   location: Location;
 
-  @Prop({ type: Types.ObjectId, ref: User.name, index: true })
+  @Prop({ type: SchemaTypes.ObjectId, ref: User.name, index: true })
   @IsNotEmpty()
   user: User;
 

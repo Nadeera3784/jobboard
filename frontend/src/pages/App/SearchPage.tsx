@@ -1,68 +1,46 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import axios from 'axios';
 
 import { useGetFilters } from '../../hooks/Search/useGetFilters';
+import { useGetSearch } from '../../hooks/Search/useGetSearch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/Form/Select';
 import { Input } from '../../components/Form/Input';
-
-type FilterState = {
-    category: { $regex: string };
-    location: { $regex: string };
-    remote: { $regex: string };
-    job_type: { $regex: string };
-    experience_level: { $regex: string };
-};
-
+import { Filters } from '../../types';
 
 export const SearchPage = () => {
 
-    const [jobs, setJobs] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(0);
+    const limit =  5;
+    const [order, setOrder] = useState({
+        name: 1,
+        category: 1,
+        location: 1,
+        remote: 1,
+        job_type: 1,
+        experience_level: 1
+    });
     const [search, setSearch] = useState({
         $regex: '',
         $options: 'i'
     });
-    const [filter, setFilter] = useState<FilterState>({
-        category: { $regex: '' },
-        location: { $regex: '' },
-        remote: { $regex: '' },
-        job_type: { $regex: '' },
-        experience_level: { $regex: '' },
+    const [filter, setFilter] = useState<Filters>({
+        category: '',
+        location: '',
+        remote: '',
+        job_type: '',
+        experience_level: '',
     });
     const [appliedFilters, setAppliedFilters] = useState({});
-
     const { response, process } = useGetFilters();
+    const { response:jobReponse,  process:processSearch } = useGetSearch();
 
     useEffect(() => {
         process();
     }, [response?.status]);
 
     useEffect(() => {
-        const API_BASE_URL = 'http://127.0.0.1:3000/api/v1';
-        const endpoint = '/jobs';
-        const order = {
-            name: 1,
-            category: 1,
-            location: 1,
-            remote: 1,
-            job_type: 1,
-            experience_level: 1
-        };
-        const limit = Number(5);
-        const page = currentPage;
-        const queryString = `?filter=${encodeURIComponent(JSON.stringify(filter))}&search=${encodeURIComponent(JSON.stringify(search))}&order=${encodeURIComponent(JSON.stringify(order))}&limit=${limit}&page=${page}`;
-        const requestURL = `${API_BASE_URL}${endpoint}${queryString}`;
-        axios.get(requestURL)
-            .then(response => {
-                setJobs(response.data.data.data);
-                const totalPages = Math.ceil(response.data.data.count / limit);
-                setTotalPages(totalPages);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }, [currentPage, search, filter]);
+        const queryString = `?filter=${encodeURIComponent(JSON.stringify(filter))}&search=${encodeURIComponent(JSON.stringify(search))}&order=${encodeURIComponent(JSON.stringify(order))}&limit=${limit}&page=${currentPage}`;
+        processSearch(queryString);
+    }, [jobReponse.status, currentPage, search, filter, order]);
 
     const onPageChange = (page: number) => {
         setCurrentPage(page);
@@ -75,20 +53,21 @@ export const SearchPage = () => {
     const updateFilter = (filterKey: string, value: string) => {
         setFilter(prevFilter => ({
             ...prevFilter,
-            [filterKey]: { $regex: value }
+            [filterKey]: value 
         }));
         setAppliedFilters(prevFilters => ({
             ...prevFilters,
             [filterKey]: value
         }));
+        setCurrentPage(1);
     };
 
-    const onRemoveFilter = (filterKey: keyof FilterState) => {
+    const onRemoveFilter = (filterKey: string) => {
         const { [filterKey]: removedFilter, ...rest } = appliedFilters as { [key: string]: string };
         setAppliedFilters(rest);
         setFilter(prevFilter => ({
             ...prevFilter,
-            [filterKey]: { $regex: '' }
+            [filterKey]: '' 
         }));
     };
 
@@ -112,6 +91,18 @@ export const SearchPage = () => {
         updateFilter('category', value);
     }
 
+    const onOrderChange = (value: string) => {
+        const [propertyName, direction] = value.split('-');
+        const directionValue = direction === 'desc' ? -1 : 1;
+        setOrder(prevOrder => ({
+            ...prevOrder,
+            [propertyName]: directionValue
+        }));
+    };
+
+    const getTotalCount = (count: number, limit: number) => {
+        return Math.ceil(count / limit);
+    }
 
     return (
         <div className="relative h-full max-w-7xl mx-auto">
@@ -124,29 +115,16 @@ export const SearchPage = () => {
                         <div className="max-w-7xl mx-auto px-4 flex items-center justify-between sm:px-6 lg:px-8">
                             <div className="relative flex text-left">
                                 <div>
-                                    <button
-                                        type="button"
-                                        className="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900"
-                                        id="menu-button"
-                                        aria-expanded="false"
-                                        aria-haspopup="true"
-                                    >
-                                        Sort
-                                        {/* Heroicon name: solid/chevron-down */}
-                                        <svg
-                                            className="flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                fillRule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clipRule="evenodd"
-                                            />
-                                        </svg>
-                                    </button>
+                                    <Select onValueChange={onOrderChange}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Sort" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {Object.keys(order).map((propertyName, key) => (
+                                                <SelectItem key={key} value={`${propertyName}-asc`}>{propertyName}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </div>
                             </div>
                             <button
@@ -168,21 +146,6 @@ export const SearchPage = () => {
                                         <div className="px-4 relative inline-block text-left">
                                             <Select
                                                 disabled={response.loading}
-                                                onValueChange={onChangeCategory}
-                                            >
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Category" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {response?.data?.categories && (response.data.categories as any[]).map((category, key) => (
-                                                        <SelectItem key={key} value={category._id}>{category.name}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-                                        <div className="px-4 relative inline-block text-left">
-                                            <Select
-                                                disabled={response.loading}
                                                 onValueChange={onChangeLocation}
                                             >
                                                 <SelectTrigger>
@@ -191,6 +154,21 @@ export const SearchPage = () => {
                                                 <SelectContent>
                                                     {response?.data?.locations && (response.data.locations as any[]).map((location, key) => (
                                                         <SelectItem key={key} value={location._id}>{location.name}</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                        <div className="px-4 relative inline-block text-left">
+                                            <Select
+                                                disabled={response.loading}
+                                                onValueChange={onChangeCategory}
+                                            >
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Category" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {response?.data?.categories && (response.data.categories as any[]).map((category, key) => (
+                                                        <SelectItem key={key} value={category._id}>{category.name}</SelectItem>
                                                     ))}
                                                 </SelectContent>
                                             </Select>
@@ -260,9 +238,9 @@ export const SearchPage = () => {
                             <div className="mt-2 sm:mt-0 sm:ml-4">
                                 <div className="-m-1 flex flex-wrap items-center">
                                     {Object.entries(filter).map(([key, value]) => (
-                                        value.$regex && (
+                                        value && (
                                             <span key={key} className="m-1 inline-flex rounded-full border border-gray-200 items-center py-1.5 pl-3 pr-2 text-sm font-medium bg-white text-gray-900">
-                                                <span>{value.$regex}</span>
+                                                <span>{value}</span>
                                                 <button
                                                     type="button"
                                                     onClick={() => onRemoveFilter(key)}
@@ -331,7 +309,6 @@ export const SearchPage = () => {
                                             </div>
                                         </div>
                                         <div>
-                                            {/* Heroicon name: solid/chevron-right */}
                                             <svg
                                                 className="h-5 w-5 text-gray-400"
                                                 xmlns="http://www.w3.org/2000/svg"
@@ -510,12 +487,12 @@ export const SearchPage = () => {
                                 </a>
                             </li>
                         </ul>
-                        
+
                     </div>
                 </div>
                 <div className="flex-grow flex flex-col max-w-10xl mx-auto p-4 lg:p-8 w-full">
                     <ul role="list" className="divide-y divide-gray-200">
-                        {jobs && (jobs as any[]).map((job, key) => (
+                        {jobReponse?.data?.data && (jobReponse.data.data as any[]).map((job, key) => (
                             <li key={key}>
                                 <div className="hover:bg-gray-50  px-4 py-4 sm:px-6">
                                     <div className="flex p-3">
@@ -540,7 +517,6 @@ export const SearchPage = () => {
                                             <div className="mt-2 sm:flex sm:justify-between">
                                                 <div className="sm:flex">
                                                     <p className="flex items-center text-sm text-gray-500">
-                                                        {/* Heroicon name: solid/users */}
                                                         <svg
                                                             className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
                                                             xmlns="http://www.w3.org/2000/svg"
@@ -593,10 +569,7 @@ export const SearchPage = () => {
                                     </div>
                                 </div>
                             </li>
-
-
                         ))}
-
                     </ul>
                     <div className="flex justify-center mt-4">
                         <button
@@ -606,7 +579,7 @@ export const SearchPage = () => {
                         >
                             &lt; Previous
                         </button>
-                        {Array.from({ length: totalPages }, (_, index) => (
+                        {Array.from({ length: getTotalCount(jobReponse.data.count, limit) }, (_, index) => (
                             <button
                                 key={index}
                                 onClick={() => onPageChange(index + 1)}
@@ -617,7 +590,7 @@ export const SearchPage = () => {
                         ))}
                         <button
                             onClick={() => onPageChange(currentPage + 1)}
-                            disabled={currentPage === totalPages}
+                            disabled={currentPage === getTotalCount(jobReponse.data.count, limit)}
                             className="px-3 py-1 mx-1 rounded-md bg-gray-200 text-gray-700"
                         >
                             Next &gt;

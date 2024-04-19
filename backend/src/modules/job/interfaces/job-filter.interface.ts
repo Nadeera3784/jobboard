@@ -1,5 +1,5 @@
 export interface JobFilterInterface {
-  category?: RegExp ;
+  category?: RegExp;
   location?: RegExp;
   remote?: RegExp;
   job_type?: RegExp;

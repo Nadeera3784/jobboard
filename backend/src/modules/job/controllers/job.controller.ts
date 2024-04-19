@@ -3,12 +3,17 @@ import {
   Controller,
   Get,
   Header,
+  Param,
   Post,
   Query,
   Res,
 } from '@nestjs/common';
 
-import { CreateJobFeature, GetAllJobsFeature } from '../features';
+import {
+  CreateJobFeature,
+  GetAllJobsFeature,
+  GetJobByIdFeature,
+} from '../features';
 import { Roles } from '../../user/enums';
 import { CreateJobDto } from '../dtos';
 import { RolesAllowed } from '../../auth/decorators/role.decorator';
@@ -17,6 +22,7 @@ import {
   JobOrderInterface,
   JobSearchInterface,
 } from '../interfaces';
+import { IdDto } from '../../app/dtos/Id.dto';
 
 @Controller('jobs')
 //@UseGuards(AuthGuard, RoleGuard)
@@ -24,6 +30,7 @@ export class JobController {
   constructor(
     private readonly createJobFeature: CreateJobFeature,
     private readonly getAllJobsFeature: GetAllJobsFeature,
+    private readonly getJobByIdFeature: GetJobByIdFeature,
   ) {}
 
   @Get()
@@ -45,6 +52,15 @@ export class JobController {
         Number(limit),
         Number(page),
       );
+    return response.status(status).json(featureUpResponse);
+  }
+
+  @Get('/:id')
+  @Header('Content-Type', 'application/json')
+  @RolesAllowed(Roles.ADMIN)
+  public async getById(@Res() response, @Param() { id }: IdDto) {
+    const { status, response: featureUpResponse } =
+      await this.getJobByIdFeature.handle(id);
     return response.status(status).json(featureUpResponse);
   }
 

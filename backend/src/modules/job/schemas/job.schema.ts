@@ -21,15 +21,15 @@ export class Job extends Document {
   @IsNotEmpty()
   description: string;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: Category.name})
+  @Prop({ type: SchemaTypes.ObjectId, ref: Category.name })
   @IsNotEmpty()
   category: Types.ObjectId;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: Location.name})
+  @Prop({ type: SchemaTypes.ObjectId, ref: Location.name })
   @IsNotEmpty()
   location: Location;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: User.name})
+  @Prop({ type: SchemaTypes.ObjectId, ref: User.name })
   @IsNotEmpty()
   user: User;
 
@@ -59,4 +59,4 @@ export class Job extends Document {
 
 export const JobSchema = SchemaFactory.createForClass(Job);
 
-JobSchema.index({ name: 1 , category: 1, location: 1});
+JobSchema.index({ name: 1, category: 1, location: 1 });

@@ -2,14 +2,18 @@ import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useGetFilters } from '../../hooks/Search/useGetFilters';
 import { useGetSearch } from '../../hooks/Search/useGetSearch';
+import { useGetJobById } from '../../hooks/Search/useGetJobById';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../components/Form/Select';
 import { Input } from '../../components/Form/Input';
-import { Filters } from '../../types';
+import { Filters, Job} from '../../types';
+import Pagination from '../../components/Search/Pagination';
+import JobDetailsCard from '../../components/Search/JobDetailsCard';
+import EmptyDetails from '../../components/Search/EmptyDetails';
 
 export const SearchPage = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
-    const limit =  5;
+    const limit = 10;
     const [order, setOrder] = useState({
         name: 1,
         category: 1,
@@ -30,17 +34,34 @@ export const SearchPage = () => {
         experience_level: '',
     });
     const [appliedFilters, setAppliedFilters] = useState({});
+    const [selectedJob, setSelectedJob] = useState<Job>({
+        _id: '',
+        name: '',
+        description: '',
+        category: '',
+        location: '',
+        remote: '',
+        job_type: '',
+        experience_level: '',
+        user: '',
+    });
     const { response, process } = useGetFilters();
-    const { response:jobReponse,  process:processSearch } = useGetSearch();
+    const { response: searchReponse, process: processSearch } = useGetSearch();
+    const { response: jobReponse, process: processGetById } = useGetJobById();
+
 
     useEffect(() => {
         process();
-    }, [response?.status]);
+    }, [response.status]);
 
     useEffect(() => {
         const queryString = `?filter=${encodeURIComponent(JSON.stringify(filter))}&search=${encodeURIComponent(JSON.stringify(search))}&order=${encodeURIComponent(JSON.stringify(order))}&limit=${limit}&page=${currentPage}`;
         processSearch(queryString);
-    }, [jobReponse.status, currentPage, search, filter, order]);
+    }, [searchReponse.status, currentPage, search, filter, order]);
+
+    useEffect(() => {
+        processGetById(selectedJob._id);
+    }, [selectedJob]);
 
     const onPageChange = (page: number) => {
         setCurrentPage(page);
@@ -53,7 +74,7 @@ export const SearchPage = () => {
     const updateFilter = (filterKey: string, value: string) => {
         setFilter(prevFilter => ({
             ...prevFilter,
-            [filterKey]: value 
+            [filterKey]: value
         }));
         setAppliedFilters(prevFilters => ({
             ...prevFilters,
@@ -67,7 +88,7 @@ export const SearchPage = () => {
         setAppliedFilters(rest);
         setFilter(prevFilter => ({
             ...prevFilter,
-            [filterKey]: '' 
+            [filterKey]: ''
         }));
     };
 
@@ -103,6 +124,14 @@ export const SearchPage = () => {
     const getTotalCount = (count: number, limit: number) => {
         return Math.ceil(count / limit);
     }
+
+    const onClickGetJobDetails = async (job: Job) => {
+        setSelectedJob(job);
+    }
+
+    const startPage = Math.max(1, currentPage - 2);
+
+    const endPage = Math.min(getTotalCount(searchReponse.data.count, limit), startPage + 4);
 
     return (
         <div className="relative h-full max-w-7xl mx-auto">
@@ -271,331 +300,78 @@ export const SearchPage = () => {
             </div>
 
             <div className="flex flex-auto flex-col lg:flex-row">
-                <div className="flex-none lg:flex flex-col w-full lg:w-96 xl:w-96 bg-gray-50">
+                <div className="flex-none lg:flex flex-col w-full lg:w-2/5 xl:w-2/5 bg-gray-50">
                     <div className="bg-white shadow overflow-hidden sm:rounded-md">
-                        <ul role="list" className="divide-y divide-gray-200">
-                            <li>
-                                <a href="#" className="block hover:bg-gray-50">
-                                    <div className="flex items-center px-4 py-4 sm:px-6">
-                                        <div className="min-w-0 flex-1 flex items-center">
-                                            <div className="flex-shrink-0">
-                                                <img
-                                                    className="h-12 w-12 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                                <div>
-                                                    <p className="text-sm font-medium text-indigo-600 truncate">
-                                                        Ricardo Cooper
-                                                    </p>
-                                                    <p className="mt-2 flex items-center text-sm text-gray-500">
-                                                        {/* Heroicon name: solid/mail */}
-                                                        <svg
-                                                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                            fill="currentColor"
-                                                            aria-hidden="true"
-                                                        >
-                                                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                                        </svg>
-                                                        <span className="truncate">ricardo.cooper@example.com</span>
-                                                    </p>
+                        <ul role="list" className="divide-y divide-gray-200 min-h-0  overflow-y-auto">
+                            {searchReponse?.data?.data && (searchReponse.data.data as any[]).map((job, key) => (
+                                <li key={key} onClick={() => onClickGetJobDetails(job)}>
+                                    <div className="block hover:bg-gray-50 cursor-pointer">
+                                        <div className="flex items-center px-4 py-4 sm:px-6">
+                                            <div className="min-w-0 flex-1 flex items-start">
+                                                <div className="flex-shrink-0">
+                                                    <img
+                                                        className="h-12 w-12 rounded-full"
+                                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                                        alt=""
+                                                    />
                                                 </div>
+                                                <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
+                                                    <div>
+                                                        <p className="text-xl font-medium text-balck">
+                                                            {job.name}
+                                                        </p>
+                                                        <p className="flex items-center text-sm text-gray-500">
+                                                            <span>{job.location_name} ({job.remote})</span>
+                                                        </p>
+                                                        <p className="mt-2 text-sm text-gray-500">
+                                                            <span>{job.job_type} </span>
+                                                        </p>
+                                                    </div>
 
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <svg
-                                                className="h-5 w-5 text-gray-400"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                    clipRule="evenodd"
-                                                />
-                                            </svg>
+                                            <div>
+                                                <svg
+                                                    className="h-5 w-5 text-gray-400"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20"
+                                                    fill="currentColor"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
-
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="block hover:bg-gray-50">
-                                    <div className="flex items-center px-4 py-4 sm:px-6">
-                                        <div className="min-w-0 flex-1 flex items-center">
-                                            <div className="flex-shrink-0">
-                                                <img
-                                                    className="h-12 w-12 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                                <div>
-                                                    <p className="text-sm font-medium text-indigo-600 truncate">
-                                                        Ricardo Cooper
-                                                    </p>
-                                                    <p className="mt-2 flex items-center text-sm text-gray-500">
-                                                        {/* Heroicon name: solid/mail */}
-                                                        <svg
-                                                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                            fill="currentColor"
-                                                            aria-hidden="true"
-                                                        >
-                                                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                                        </svg>
-                                                        <span className="truncate">ricardo.cooper@example.com</span>
-                                                    </p>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            {/* Heroicon name: solid/chevron-right */}
-                                            <svg
-                                                className="h-5 w-5 text-gray-400"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                    clipRule="evenodd"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="block hover:bg-gray-50">
-                                    <div className="flex items-center px-4 py-4 sm:px-6">
-                                        <div className="min-w-0 flex-1 flex items-center">
-                                            <div className="flex-shrink-0">
-                                                <img
-                                                    className="h-12 w-12 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                                <div>
-                                                    <p className="text-sm font-medium text-indigo-600 truncate">
-                                                        Ricardo Cooper
-                                                    </p>
-                                                    <p className="mt-2 flex items-center text-sm text-gray-500">
-                                                        {/* Heroicon name: solid/mail */}
-                                                        <svg
-                                                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                            fill="currentColor"
-                                                            aria-hidden="true"
-                                                        >
-                                                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                                        </svg>
-                                                        <span className="truncate">ricardo.cooper@example.com</span>
-                                                    </p>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            {/* Heroicon name: solid/chevron-right */}
-                                            <svg
-                                                className="h-5 w-5 text-gray-400"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                    clipRule="evenodd"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" className="block hover:bg-gray-50">
-                                    <div className="flex items-center px-4 py-4 sm:px-6">
-                                        <div className="min-w-0 flex-1 flex items-center">
-                                            <div className="flex-shrink-0">
-                                                <img
-                                                    className="h-12 w-12 rounded-full"
-                                                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                    alt=""
-                                                />
-                                            </div>
-                                            <div className="min-w-0 flex-1 px-4 md:grid md:grid-cols-2 md:gap-4">
-                                                <div>
-                                                    <p className="text-sm font-medium text-indigo-600 truncate">
-                                                        Ricardo Cooper
-                                                    </p>
-                                                    <p className="mt-2 flex items-center text-sm text-gray-500">
-                                                        {/* Heroicon name: solid/mail */}
-                                                        <svg
-                                                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                            fill="currentColor"
-                                                            aria-hidden="true"
-                                                        >
-                                                            <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                                            <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                                        </svg>
-                                                        <span className="truncate">ricardo.cooper@example.com</span>
-                                                    </p>
-                                                </div>
-
-                                            </div>
-                                        </div>
-                                        <div>
-                                            {/* Heroicon name: solid/chevron-right */}
-                                            <svg
-                                                className="h-5 w-5 text-gray-400"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                viewBox="0 0 20 20"
-                                                fill="currentColor"
-                                                aria-hidden="true"
-                                            >
-                                                <path
-                                                    fillRule="evenodd"
-                                                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                                    clipRule="evenodd"
-                                                />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </a>
+                                </li>
+                            ))}
+                            <li className='p-3'>
+                              <Pagination
+                                currentPage={currentPage}
+                                onPageChange={onPageChange}
+                                startPage={startPage}
+                                endPage={endPage}
+                                totalCount={searchReponse.data.count}
+                                limit={limit}
+                                />
                             </li>
                         </ul>
-
                     </div>
                 </div>
-                <div className="flex-grow flex flex-col max-w-10xl mx-auto p-4 lg:p-8 w-full">
-                    <ul role="list" className="divide-y divide-gray-200">
-                        {jobReponse?.data?.data && (jobReponse.data.data as any[]).map((job, key) => (
-                            <li key={key}>
-                                <div className="hover:bg-gray-50  px-4 py-4 sm:px-6">
-                                    <div className="flex p-3">
-                                        <div className="mr-4">
-                                            <img
-                                                className="h-8 w-8 rounded-full"
-                                                src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                                alt=""
-                                            />
-                                        </div>
-                                        <div className="flex-grow">
-                                            <div className="flex items-center justify-between">
-                                                <p className="text-sm font-medium text-indigo-600 truncate">
-                                                    {job.name}
-                                                </p>
-                                                <div className="ml-2 flex-shrink-0 flex">
-                                                    <p className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                        {job.job_type}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div className="mt-2 sm:flex sm:justify-between">
-                                                <div className="sm:flex">
-                                                    <p className="flex items-center text-sm text-gray-500">
-                                                        <svg
-                                                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                            fill="currentColor"
-                                                            aria-hidden="true"
-                                                        >
-                                                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                                                        </svg>
-                                                        Engineering
-                                                    </p>
-                                                    <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
-                                                        <svg
-                                                            className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            viewBox="0 0 20 20"
-                                                            fill="currentColor"
-                                                            aria-hidden="true"
-                                                        >
-                                                            <path
-                                                                fillRule="evenodd"
-                                                                d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
-                                                                clipRule="evenodd"
-                                                            />
-                                                        </svg>
-                                                        {job.remote}
-                                                    </p>
-                                                </div>
-                                                <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                                                    <svg
-                                                        className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        viewBox="0 0 20 20"
-                                                        fill="currentColor"
-                                                        aria-hidden="true"
-                                                    >
-                                                        <path
-                                                            fillRule="evenodd"
-                                                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                                                            clipRule="evenodd"
-                                                        />
-                                                    </svg>
-                                                    <p>
-                                                        Closing on
-                                                        <time dateTime="2020-01-07"> January 7, 2020</time>
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                    <div className="flex justify-center mt-4">
-                        <button
-                            onClick={() => onPageChange(currentPage - 1)}
-                            disabled={currentPage === 1}
-                            className="px-3 py-1 mx-1 rounded-md bg-gray-200 text-gray-700"
-                        >
-                            &lt; Previous
-                        </button>
-                        {Array.from({ length: getTotalCount(jobReponse.data.count, limit) }, (_, index) => (
-                            <button
-                                key={index}
-                                onClick={() => onPageChange(index + 1)}
-                                className={`px-3 py-1 mx-1 rounded-md ${currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-                            >
-                                {index + 1}
-                            </button>
-                        ))}
-                        <button
-                            onClick={() => onPageChange(currentPage + 1)}
-                            disabled={currentPage === getTotalCount(jobReponse.data.count, limit)}
-                            className="px-3 py-1 mx-1 rounded-md bg-gray-200 text-gray-700"
-                        >
-                            Next &gt;
-                        </button>
-                    </div>
+                <div className="flex flex-col max-w-10xl mx-auto w-full">
+                    {selectedJob._id !== '' && (
+                        <JobDetailsCard
+                        job={jobReponse.data}
+                        />
+                    )}
+
+                    {selectedJob._id == '' && (
+                        <EmptyDetails />
+                    )}
                 </div>
             </div>
         </div>

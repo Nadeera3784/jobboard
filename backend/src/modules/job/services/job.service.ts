@@ -12,7 +12,11 @@ import {
   JobSearchInterface,
   JobInterface,
 } from '../interfaces';
-import { parseJson, getRandomEntity, transformToObjectId} from '../../app/services/helper.service';
+import {
+  parseJson,
+  getRandomEntity,
+  transformToObjectId,
+} from '../../app/services/helper.service';
 import { faker } from '@faker-js/faker';
 
 @Injectable()
@@ -29,23 +33,23 @@ export class JobService {
     const query: any[] = [
       { $match: { status: 'Active' } },
       {
-        $lookup : {
-            from: "categories",
-            localField: "category",
-            foreignField: "_id",
-            as: "categoryInfo",
-        }
+        $lookup: {
+          from: 'categories',
+          localField: 'category',
+          foreignField: '_id',
+          as: 'categoryInfo',
+        },
       },
-      {   $unwind:"$categoryInfo" },
+      { $unwind: '$categoryInfo' },
       {
-        $lookup : {
-            from: "locations",
-            localField: "location",
-            foreignField: "_id",
-            as: "locationInfo",
-        }
+        $lookup: {
+          from: 'locations',
+          localField: 'location',
+          foreignField: '_id',
+          as: 'locationInfo',
+        },
       },
-      {   $unwind:"$locationInfo" },
+      { $unwind: '$locationInfo' },
       {
         $project: {
           _id: 1,
@@ -57,24 +61,29 @@ export class JobService {
           remote: 1,
           job_type: 1,
           experience_level: 1,
-          category_name : "$categoryInfo.name",
-          location_name : "$locationInfo.name",
+          category_name: '$categoryInfo.name',
+          location_name: '$locationInfo.name',
         },
-      }
+      },
     ];
     const match: any = { $match: {} };
     if (search) {
-      const parsedSearch: JobSearchInterface = parseJson<JobSearchInterface>(search);
+      const parsedSearch: JobSearchInterface =
+        parseJson<JobSearchInterface>(search);
       match.$match.$or = [
-        { name: parsedSearch }, 
-        { description: parsedSearch }
+        { name: parsedSearch },
+        { description: parsedSearch },
       ];
     }
     if (filter) {
-      const parsedFilter: JobFilterInterface = parseJson<JobFilterInterface>(filter);
-      const filters = transformToObjectId(parsedFilter, ["category", "location"]);
-      match.$match = { ...match.$match, ...filters};
-    }    
+      const parsedFilter: JobFilterInterface =
+        parseJson<JobFilterInterface>(filter);
+      const filters = transformToObjectId(parsedFilter, [
+        'category',
+        'location',
+      ]);
+      match.$match = { ...match.$match, ...filters };
+    }
     query.push(match);
     const countQuery: any = [...query];
     countQuery.push({ $count: 'count' });
@@ -146,17 +155,40 @@ export class JobService {
 
   async seeds() {
     for (let index = 0; index < 15; index++) {
-      const category = getRandomEntity(['66066a2f09e9b6a12a7d07f2', '66066a2f09e9b6a12a7d07f4', '66066a2f09e9b6a12a7d07f6', '66066a2f09e9b6a12a7d07f8']);
-      const location = getRandomEntity(['660c3039099633de196aa183', '66102887e9443bf3363a27b8', '66102887e9443bf3363a27ba', '66102887e9443bf3363a27bc']);
+      const category = getRandomEntity([
+        '66217e995636f0d7f77f0da9',
+        '66217e995636f0d7f77f0da7',
+        '66217e995636f0d7f77f0db1',
+        '66217e995636f0d7f77f0dad',
+      ]);
+      const location = getRandomEntity([
+        '66217ec183b28d5b26809381',
+        '66217ec183b28d5b26809383',
+        '66217ec183b28d5b26809385',
+        '66217ec183b28d5b26809387',
+      ]);
       const remote = getRandomEntity(['Remote', 'On-site', 'Hybrid']);
-      const jobType = getRandomEntity(['Full-time', 'Part-time', 'Contract', 'Internship', 'Temporary']);
-      const experienceLevel = getRandomEntity(['Internship', 'Associate', 'Director', 'Entry level', 'Mid-Senior level', 'Executive']);
+      const jobType = getRandomEntity([
+        'Full-time',
+        'Part-time',
+        'Contract',
+        'Internship',
+        'Temporary',
+      ]);
+      const experienceLevel = getRandomEntity([
+        'Internship',
+        'Associate',
+        'Director',
+        'Entry level',
+        'Mid-Senior level',
+        'Executive',
+      ]);
       await this.jobModel.create({
         name: faker.internet.displayName(),
         description: faker.word.words(),
         category: category,
         location: location,
-        user: '66082529899034a393c5a963',
+        user: '66217ee7c4db6dfc5de7b5f1',
         remote: remote,
         job_type: jobType,
         experience_level: experienceLevel,

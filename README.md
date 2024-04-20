@@ -1,6 +1,6 @@
 ### [JoBoard](https://github.com/Nadeera3784/jobboard)
 
-Job board listing application 
+Job listing application 
 
 ## Features
 
@@ -36,3 +36,62 @@ Job board listing application
 - Vitest - Next Generation Testing Framework
 - Lucide React - Beautiful & consistent icons
 - Axios - Promise based HTTP client for the browser and node.js
+
+
+## Installation -  Backend
+
+```bash
+$ docker compose up -d
+$ npm install
+```
+`Kindly make the necessary amendments to the .env file`
+
+## Running The Backend
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+## Running The Backend Seeders
+
+```bash
+# seed categories
+$ npm run cli category:seed 
+# seed locations
+$ npm run cli location:seed
+```
+
+## Running The Backend Cron Worker
+
+```bash
+$ npm run cron
+```
+
+## The Backend Test
+
+```bash
+# unit tests
+$ npm run test
+```
+
+
+## Installation -  Frontend
+
+```bash
+$ npm install
+```
+`Kindly make the necessary amendments to the .env file`
+
+## Running The Frontend
+
+```bash
+# development
+$ npm run dev
+```

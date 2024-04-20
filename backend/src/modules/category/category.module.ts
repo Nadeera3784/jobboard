@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { CategoryService } from './services/category.service';
@@ -11,6 +11,7 @@ import { GetAllCategoriesFeature } from './features/get-all-categories.feature';
 import { GetCategoryByIdFeature } from './features/get-category-by-id.feature';
 import { DatatableFeature } from './features/datatable.feature';
 import { UserModule } from '../user/user.module';
+import { CategorySeedCommand } from './commands';
 
 @Module({
   imports: [
@@ -27,6 +28,8 @@ import { UserModule } from '../user/user.module';
     GetAllCategoriesFeature,
     GetCategoryByIdFeature,
     DatatableFeature,
+    CategorySeedCommand,
+    Logger,
   ],
   controllers: [CategoryController],
   exports: [CategoryService],

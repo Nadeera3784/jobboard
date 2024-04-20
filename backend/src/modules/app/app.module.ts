@@ -15,6 +15,7 @@ import { AppService } from './services/app.service';
 import { CacheService } from './services/cache.service';
 import { AppController } from './controllers/app.controller';
 import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
+import { CommandModule } from '../command';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
     UserModule,
     AuthModule,
     JobModule,
+    CommandModule,
   ],
   controllers: [AppController],
   providers: [AppService, CacheService, GetSharedFiltersFeature],

@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
-import { faker } from '@faker-js/faker';
 
 import { Location } from '../schemas/location.schema';
 import { CreateLocationDto } from '../dtos/create-location.dto';
@@ -71,7 +70,7 @@ export class LocationService {
     filters,
     search: string,
     limit: number,
-    start: number
+    start: number,
   ) {
     try {
       let searchQuery: any = {};
@@ -105,7 +104,7 @@ export class LocationService {
         }
       }
 
-      recordsTotal =  await this.locationModel.countDocuments({});
+      recordsTotal = await this.locationModel.countDocuments({});
 
       recordsFiltered = await this.locationModel.countDocuments(searchQuery);
 
@@ -146,15 +145,6 @@ export class LocationService {
       };
     } catch (error) {
       return error;
-    }
-  }
-
-  async seeds() {
-    for (let index = 0; index < 20; index++) {
-      await this.locationModel.create({
-        name: faker.location.city(),
-        status: 'Active',
-      });
     }
   }
 }

@@ -94,13 +94,13 @@ export class LocationController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async dataTable(
-  @Res() response, 
-  @Body('order') order: any,
-  @Body('columns') columns: any,
-  @Body('filters') filters: any,
-  @Body('search') search: string,
-  @Body('limit') limit: number,
-  @Body('start') start: number,
+    @Res() response,
+    @Body('order') order: any,
+    @Body('columns') columns: any,
+    @Body('filters') filters: any,
+    @Body('search') search: string,
+    @Body('limit') limit: number,
+    @Body('start') start: number,
   ) {
     const { status, response: featureUpResponse } =
       await this.datatableFeature.handle(
@@ -109,7 +109,7 @@ export class LocationController {
         filters,
         search,
         limit,
-        start
+        start,
       );
     return response.status(status).json(featureUpResponse);
   }

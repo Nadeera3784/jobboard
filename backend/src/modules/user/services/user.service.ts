@@ -160,7 +160,7 @@ export class UserService {
     filters,
     search: string,
     limit: number,
-    start: number
+    start: number,
   ) {
     try {
       let searchQuery: any = {};
@@ -208,27 +208,27 @@ export class UserService {
         .limit(Number(limit))
         .sort(sort)
         .exec();
-        results = results.map((result: any) => {
-          return {
-            ...result.toObject(),
-            actions: [
-              {
-                id: 1,
-                label: 'Edit',
-                type: 'link',
-                endpoint: `/admin/users/${result._id}`,
-              },
-              {
-                id: 2,
-                label: 'Delete',
-                type: 'delete',
-                endpoint: `${this.configService.get('app.api_url')}/users/${
-                  result._id
-                }`,
-                confirm_message: 'Are you sure want to delete?',
-              },
-            ],
-          };
+      results = results.map((result: any) => {
+        return {
+          ...result.toObject(),
+          actions: [
+            {
+              id: 1,
+              label: 'Edit',
+              type: 'link',
+              endpoint: `/admin/users/${result._id}`,
+            },
+            {
+              id: 2,
+              label: 'Delete',
+              type: 'delete',
+              endpoint: `${this.configService.get('app.api_url')}/users/${
+                result._id
+              }`,
+              confirm_message: 'Are you sure want to delete?',
+            },
+          ],
+        };
       });
 
       return {

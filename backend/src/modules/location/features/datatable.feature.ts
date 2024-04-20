@@ -15,7 +15,7 @@ export class DatatableFeature extends BaseFeature {
     filters,
     search: string,
     limit: number,
-    start: number
+    start: number,
   ) {
     try {
       const data = await this.locationService.datatable(
@@ -24,7 +24,7 @@ export class DatatableFeature extends BaseFeature {
         filters,
         search,
         limit,
-        start
+        start,
       );
       return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {

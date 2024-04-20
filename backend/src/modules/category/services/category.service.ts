@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { faker } from '@faker-js/faker';
 import { ConfigService } from '@nestjs/config';
 
 import { Category } from '../schemas/category.schema';
@@ -70,10 +69,9 @@ export class CategoryService {
     filters,
     search: string,
     limit: number,
-    start: number
+    start: number,
   ) {
     try {
-
       let searchQuery: any = {};
       let sort: any = { created_at: -1 };
       const whereQuery: any = {};
@@ -87,7 +85,7 @@ export class CategoryService {
         searchQuery = {
           $or: [{ name: regex }],
         };
-      } 
+      }
       /*
       else if (daterange) {
         const date_array = daterange.split('-');
@@ -163,15 +161,6 @@ export class CategoryService {
       };
     } catch (error) {
       return error;
-    }
-  }
-
-  async seeds() {
-    for (let index = 0; index < 20; index++) {
-      await this.categoryModel.create({
-        name: faker.person.firstName(),
-        status: 'Active',
-      });
     }
   }
 }

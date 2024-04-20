@@ -90,8 +90,8 @@ export class CategoryController {
     return response.status(status).json(featureUpResponse);
   }
 
-  @Header('Content-Type', 'application/json')
   @Post('/datatable')
+  @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
   public async dataTable(
     @Res() response,
@@ -109,7 +109,7 @@ export class CategoryController {
         filters,
         search,
         limit,
-        start
+        start,
       );
     return response.status(status).json(featureUpResponse);
   }

@@ -26,10 +26,12 @@ async function bootstrap() {
   );
   app.use(morgan('dev'));
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
+  //TODO: only run on dev env
   const document = JSON.parse(
     (await readFile(join(process.cwd(), 'swagger.json'))).toString('utf-8'),
   );
   SwaggerModule.setup('api-doc', app, document);
+
   const port = process.env.PORT || 3000;
   await app.listen(port);
   return port;

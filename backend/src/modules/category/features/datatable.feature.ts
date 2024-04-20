@@ -9,14 +9,7 @@ export class DatatableFeature extends BaseFeature {
     super();
   }
 
-  public async handle(
-    order,
-    columns,
-    filters,
-    search,
-    limit,
-    start
-  ) {
+  public async handle(order, columns, filters, search, limit, start) {
     try {
       const data = await this.categoryService.datatable(
         order,
@@ -24,7 +17,7 @@ export class DatatableFeature extends BaseFeature {
         filters,
         search,
         limit,
-        start
+        start,
       );
       return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {

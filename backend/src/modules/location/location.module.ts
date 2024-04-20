@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { LocationService } from './services/location.service';
@@ -11,6 +11,7 @@ import { GetLocationByIdFeature } from './features/get-location-by-id.feature';
 import { UpdateLocationFeature } from './features/update-location-feature';
 import { DatatableFeature } from './features/datatable.feature';
 import { UserModule } from '../user/user.module';
+import { LocationSeedCommand } from './commands';
 
 @Module({
   imports: [
@@ -27,6 +28,8 @@ import { UserModule } from '../user/user.module';
     GetLocationByIdFeature,
     UpdateLocationFeature,
     DatatableFeature,
+    LocationSeedCommand,
+    Logger,
   ],
   controllers: [LocationController],
   exports: [LocationService],

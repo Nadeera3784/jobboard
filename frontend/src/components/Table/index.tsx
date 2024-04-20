@@ -50,10 +50,9 @@ export const Table: React.FC<TableProps> = ({ endpoint, per_page, columns, has_r
         order: order,
         columns: columns.filter(column => columnVisibility[column.name]),
         filters: selectedFilters,
-        search: { value: keyword },
+        search: keyword,
         start: (page - 1) * limit,
-        length: limit,
-        draw: currentPage,
+        limit: limit
       });      
       setData(response.data.data.data);
       setTotalItems(response.data.data.recordsTotal);

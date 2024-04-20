@@ -65,22 +65,27 @@ export class LocationService {
     });
   }
 
-  async datatable(request: any) {
+  async datatable(
+    order,
+    columns,
+    filters,
+    search: string,
+    limit: number,
+    start: number
+  ) {
     try {
-      const params = request.body;
-      const order = params.order || [];
-      const columns = params.columns || [];
-      const filters = params.filters || [];
       let searchQuery: any = {};
       let sort: any = { created_at: -1 };
+      let recordsTotal = 0;
+      let recordsFiltered = 0;
       const whereQuery: any = {};
 
       if (filters.status) {
         whereQuery.status = filters.status;
       }
 
-      if (params.search.value) {
-        const regex = new RegExp(params.search.value, 'i');
+      if (search) {
+        const regex = new RegExp(search, 'i');
         searchQuery = {
           $or: [{ name: regex }],
         };
@@ -100,22 +105,15 @@ export class LocationService {
         }
       }
 
-      let recordsTotal = 0;
-      let recordsFiltered = 0;
+      recordsTotal =  await this.locationModel.countDocuments({});
 
-      const all_count = await this.locationModel.countDocuments({});
-      recordsTotal = all_count;
-
-      const filtered_count = await this.locationModel.countDocuments(
-        searchQuery,
-      );
-      recordsFiltered = filtered_count;
+      recordsFiltered = await this.locationModel.countDocuments(searchQuery);
 
       let results = await this.locationModel
         .find(searchQuery, 'name')
         .select('_id name created_at status')
-        .skip(Number(params.start))
-        .limit(Number(params.length))
+        .skip(Number(start))
+        .limit(Number(limit))
         .sort(sort)
         .exec();
       results = results.map((result: any) => {
@@ -141,13 +139,11 @@ export class LocationService {
         };
       });
 
-      const data = {
-        draw: params.draw,
+      return {
         recordsFiltered: recordsFiltered,
         recordsTotal: recordsTotal,
         data: results,
       };
-      return data;
     } catch (error) {
       return error;
     }

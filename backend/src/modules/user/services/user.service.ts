@@ -154,15 +154,19 @@ export class UserService {
     });
   }
 
-  async datatable(request: any) {
+  async datatable(
+    order,
+    columns,
+    filters,
+    search: string,
+    limit: number,
+    start: number
+  ) {
     try {
-      const params = request.body;
-      const order = params.order || [];
-      const columns = params.columns || [];
-      const filters = params.filters || [];
       let searchQuery: any = {};
-      const daterange = params.daterange || '';
       let sort: any = { created_at: -1 };
+      let recordsTotal = 0;
+      let recordsFiltered = 0;
       const whereQuery: any = {};
 
       if (filters.status) {
@@ -173,19 +177,10 @@ export class UserService {
         whereQuery.role = filters.role;
       }
 
-      if (params.search.value) {
-        const regex = new RegExp(params.search.value, 'i');
+      if (search) {
+        const regex = new RegExp(search, 'i');
         searchQuery = {
           $or: [{ name: regex }, { email: regex }],
-        };
-      } else if (daterange) {
-        const date_array = daterange.split('-');
-        const start_date = moment(new Date(date_array[0])).format('YYYY-MM-DD');
-        const end_date = moment(new Date(date_array[1])).format('YYYY-MM-DD');
-        const formatted_start_date = moment.utc(start_date).format();
-        const formatted_end_date = moment.utc(end_date).format();
-        searchQuery = {
-          created_at: { $gt: formatted_start_date, $lt: formatted_end_date },
         };
       }
 
@@ -202,52 +197,45 @@ export class UserService {
         }
       }
 
-      let recordsTotal = 0;
-      let recordsFiltered = 0;
+      recordsTotal = await this.userModel.countDocuments({});
 
-      const all_count = await this.userModel.countDocuments({});
-      recordsTotal = all_count;
-
-      const filtered_count = await this.userModel.countDocuments(searchQuery);
-      recordsFiltered = filtered_count;
+      recordsFiltered = await this.userModel.countDocuments(searchQuery);
 
       let results = await this.userModel
         .find(searchQuery, 'name email')
         .select('_id name email phone role created_at status')
-        .skip(Number(params.start))
-        .limit(Number(params.length))
+        .skip(Number(start))
+        .limit(Number(limit))
         .sort(sort)
         .exec();
-      results = results.map((result: any) => {
-        return {
-          ...result.toObject(),
-          actions: [
-            {
-              id: 1,
-              label: 'Edit',
-              type: 'link',
-              endpoint: `/admin/users/${result._id}`,
-            },
-            {
-              id: 2,
-              label: 'Delete',
-              type: 'delete',
-              endpoint: `${this.configService.get('app.api_url')}/users/${
-                result._id
-              }`,
-              confirm_message: 'Are you sure want to delete?',
-            },
-          ],
-        };
+        results = results.map((result: any) => {
+          return {
+            ...result.toObject(),
+            actions: [
+              {
+                id: 1,
+                label: 'Edit',
+                type: 'link',
+                endpoint: `/admin/users/${result._id}`,
+              },
+              {
+                id: 2,
+                label: 'Delete',
+                type: 'delete',
+                endpoint: `${this.configService.get('app.api_url')}/users/${
+                  result._id
+                }`,
+                confirm_message: 'Are you sure want to delete?',
+              },
+            ],
+          };
       });
 
-      const data = {
-        draw: params.draw,
+      return {
         recordsFiltered: recordsFiltered,
         recordsTotal: recordsTotal,
         data: results,
       };
-      return data;
     } catch (error) {
       return error;
     }

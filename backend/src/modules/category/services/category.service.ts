@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import moment from 'moment';
 import { faker } from '@faker-js/faker';
 import { ConfigService } from '@nestjs/config';
 
@@ -65,14 +64,17 @@ export class CategoryService {
     });
   }
 
-  async datatable(request: any) {
+  async datatable(
+    order,
+    columns,
+    filters,
+    search: string,
+    limit: number,
+    start: number
+  ) {
     try {
-      const params = request.body;
-      const order = params.order || [];
-      const columns = params.columns || [];
-      const filters = params.filters || [];
+
       let searchQuery: any = {};
-      const daterange = params.daterange || '';
       let sort: any = { created_at: -1 };
       const whereQuery: any = {};
 
@@ -80,12 +82,14 @@ export class CategoryService {
         whereQuery.status = filters.status;
       }
 
-      if (params.search.value) {
-        const regex = new RegExp(params.search.value, 'i');
+      if (search) {
+        const regex = new RegExp(search, 'i');
         searchQuery = {
           $or: [{ name: regex }],
         };
-      } else if (daterange) {
+      } 
+      /*
+      else if (daterange) {
         const date_array = daterange.split('-');
         const start_date = moment(new Date(date_array[0])).format('YYYY-MM-DD');
         const end_date = moment(new Date(date_array[1])).format('YYYY-MM-DD');
@@ -95,12 +99,13 @@ export class CategoryService {
           created_at: { $gt: formatted_start_date, $lt: formatted_end_date },
         };
       }
+      */
 
       searchQuery = { ...searchQuery, ...whereQuery };
 
       if (order.length && columns.length) {
         const sortByOrder: any = order.reduce((memo: any, ordr: any) => {
-          const column = columns[ordr.column];
+          columns[ordr.column];
           memo[ordr.name] = ordr.dir === 'asc' ? 1 : -1;
           return memo;
         }, {});
@@ -124,8 +129,8 @@ export class CategoryService {
       let results = await this.categoryModel
         .find(searchQuery, 'name')
         .select('_id name created_at status')
-        .skip(Number(params.start))
-        .limit(Number(params.length))
+        .skip(Number(start))
+        .limit(Number(limit))
         .sort(sort)
         .exec();
       results = results.map((result: any) => {
@@ -151,13 +156,11 @@ export class CategoryService {
         };
       });
 
-      const data = {
-        draw: params.draw,
+      return {
         recordsFiltered: recordsFiltered,
         recordsTotal: recordsTotal,
         data: results,
       };
-      return data;
     } catch (error) {
       return error;
     }

@@ -9,9 +9,23 @@ export class DatatableFeature extends BaseFeature {
     super();
   }
 
-  public async handle(request) {
+  public async handle(
+    order,
+    columns,
+    filters,
+    search: string,
+    limit: number,
+    start: number
+  ) {
     try {
-      const data = await this.locationService.datatable(request);
+      const data = await this.locationService.datatable(
+        order,
+        columns,
+        filters,
+        search,
+        limit,
+        start
+      );
       return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {
       return this.responseError(

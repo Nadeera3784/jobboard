@@ -8,4 +8,9 @@ export type Job = {
     job_type: string;
     experience_level: string;
     user: string;
+    expired_at: string
 };
+
+export type JobCardProps = {
+    job: Job;
+}

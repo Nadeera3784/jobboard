@@ -14,10 +14,8 @@ import {
 } from '../interfaces';
 import {
   parseJson,
-  getRandomEntity,
   transformToObjectId,
 } from '../../app/services/helper.service';
-import { faker } from '@faker-js/faker';
 
 @Injectable()
 export class JobService {
@@ -62,7 +60,7 @@ export class JobService {
           job_type: 1,
           experience_level: 1,
           category_name: '$categoryInfo.name',
-          location_name: '$locationInfo.name',
+          location_name: '$locationInfo.name'
         },
       },
     ];
@@ -151,49 +149,5 @@ export class JobService {
       .cursor({
         batchSize: batchSize,
       });
-  }
-
-  async seeds() {
-    for (let index = 0; index < 15; index++) {
-      const category = getRandomEntity([
-        '66217e995636f0d7f77f0da9',
-        '66217e995636f0d7f77f0da7',
-        '66217e995636f0d7f77f0db1',
-        '66217e995636f0d7f77f0dad',
-      ]);
-      const location = getRandomEntity([
-        '66217ec183b28d5b26809381',
-        '66217ec183b28d5b26809383',
-        '66217ec183b28d5b26809385',
-        '66217ec183b28d5b26809387',
-      ]);
-      const remote = getRandomEntity(['Remote', 'On-site', 'Hybrid']);
-      const jobType = getRandomEntity([
-        'Full-time',
-        'Part-time',
-        'Contract',
-        'Internship',
-        'Temporary',
-      ]);
-      const experienceLevel = getRandomEntity([
-        'Internship',
-        'Associate',
-        'Director',
-        'Entry level',
-        'Mid-Senior level',
-        'Executive',
-      ]);
-      await this.jobModel.create({
-        name: faker.internet.displayName(),
-        description: faker.word.words(),
-        category: category,
-        location: location,
-        user: '66217ee7c4db6dfc5de7b5f1',
-        remote: remote,
-        job_type: jobType,
-        experience_level: experienceLevel,
-        status: 'Active',
-      });
-    }
   }
 }

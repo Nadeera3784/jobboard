@@ -44,6 +44,7 @@ export const SearchPage = () => {
         job_type: '',
         experience_level: '',
         user: '',
+        expired_at: ''
     });
     const { response, process } = useGetFilters();
     const { response: searchReponse, process: processSearch } = useGetSearch();

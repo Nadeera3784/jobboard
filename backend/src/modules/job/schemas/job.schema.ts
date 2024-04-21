@@ -1,6 +1,7 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { Document, SchemaTypes, Types, now } from 'mongoose';
+import * as moment from 'moment'; 
 
 import { Category } from '../../category/schemas/category.schema';
 import { Location } from '../../location/schemas/location.schema';
@@ -55,6 +56,10 @@ export class Job extends Document {
   @Prop({ default: now() })
   @IsOptional()
   created_at: Date;
+
+  @Prop({ default: () => moment().add(1, 'months').toDate() }) 
+  @IsOptional()
+  expired_at: Date;
 }
 
 export const JobSchema = SchemaFactory.createForClass(Job);

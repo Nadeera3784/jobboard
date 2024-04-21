@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 
@@ -12,6 +12,7 @@ import { CreateUserFeature } from './features/create-user.feature';
 import { UpdateUserFeature } from './features/update-user.feature';
 import { DatatableFeature } from './features/datatable.feature';
 import { UserDeletedListener } from './listeners/user-deleted.listener';
+import { UserSeedCommand } from './commands';
 
 @Module({
   imports: [
@@ -27,6 +28,8 @@ import { UserDeletedListener } from './listeners/user-deleted.listener';
     DatatableFeature,
     JwtService,
     UserDeletedListener,
+    UserSeedCommand,
+    Logger
   ],
   controllers: [UserController],
   exports: [UserService, JwtService],

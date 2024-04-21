@@ -28,3 +28,7 @@ export function transformToObjectId<T extends Record<string, string>>(
   }
   return convertedObject;
 }
+
+export function ArrayElementToString<T>(arr: T[], propName: keyof T): string[] {
+  return arr.map(obj => obj[propName].toString());
+}

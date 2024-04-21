@@ -66,6 +66,10 @@ $ npm run start:prod
 $ npm run cli category:seed 
 # seed locations
 $ npm run cli location:seed
+# seed users
+$ npm run cli user:seed
+# seed jobs
+$ npm run cli job:seed
 ```
 
 ## Running The Backend Cron Worker

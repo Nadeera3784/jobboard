@@ -20,7 +20,8 @@ export class UserSeedCommand {
         name: faker.person.fullName(),
         email: faker.internet.email(),
         phone: faker.phone.number(),
-        password: '$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK',
+        password:
+          '$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK',
         email_verified: now(),
         status: 'Active',
       });

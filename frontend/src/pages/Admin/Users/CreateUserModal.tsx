@@ -12,7 +12,7 @@ import {
     FormLabel,
     FormMessage,
 } from "../../../components/Form/Form";
-import { useCreateLocation } from '../../../hooks/Locations/useCreateLocation';
+import { useCreateUser } from '../../../hooks/Users/useCreateUser';
 import { Button } from "../../../components/Form/Button";
 import { Input } from "../../../components/Form/Input"
 import {
@@ -26,12 +26,12 @@ import {
     DialogTrigger,
 } from "../../../components/Dialog/Dialog"
 import { CreateUserSchema } from "../../../schemas";
-import {HttpStatus} from '../../../constants';
+import {HttpStatus, UserStatusConstants, RoleConstants} from '../../../constants';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../../../components/Form/Select";
 
 export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
 
-    const { response, process } = useCreateLocation();
+    const { response, process } = useCreateUser();
 
     const form = useForm<z.infer<typeof CreateUserSchema>>({
         resolver: zodResolver(CreateUserSchema),
@@ -43,7 +43,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
             phone: "",
             status: "",
             role: "",
-            image: "",
+            image: new File([], ""),
         }
     });
 
@@ -54,14 +54,16 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
             toast.warning("Something went wrong, Please try again later");
             return;
         }
-        // await process(validatedFields.data);
-        // if (response.status_code === HttpStatus.OK) {
-        //     form.reset();
-        //     toast.success('Category created successfully!');
-        //     refresh();
-        // } else {
-        //     toast.warning("Something went wrong, Please try again later");
-        // }
+
+        await process(validatedFields.data);
+
+        if (response.status_code === HttpStatus.OK) {
+            form.reset();
+            toast.success('User created successfully!');
+            refresh();
+        } else {
+            toast.warning("Something went wrong, Please try again later");
+        }
     };
 
     return (
@@ -146,7 +148,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
 
                                 <FormField
                                     control={form.control}
-                                    name="status"
+                                    name="role"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>Role</FormLabel>
@@ -154,14 +156,15 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                                                 <Select
                                                     {...field}
                                                     disabled={response.loading}
-                                                    onValueChange={field.onChange} defaultValue={field.value}
+                                                    onValueChange={field.onChange} 
+                                                    defaultValue={field.value}
                                                 >
                                                     <SelectTrigger>
                                                         <SelectValue placeholder="Select Role" />
                                                     </SelectTrigger>
                                                     <SelectContent>
-                                                        <SelectItem value="user">User</SelectItem>
-                                                        <SelectItem value="admin">Admin</SelectItem>
+                                                        <SelectItem value={RoleConstants.USER}>User</SelectItem>
+                                                        <SelectItem value={RoleConstants.ADMIN}>Admin</SelectItem>
                                                     </SelectContent>
                                                 </Select>
                                             </FormControl>
@@ -219,9 +222,11 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                                             <FormLabel>Avatar</FormLabel>
                                             <FormControl>
                                                 <Input
-                                                    {...field}
                                                     disabled={response.loading}
                                                     type="file"
+                                                    onChange={(e) =>
+                                                        field.onChange(e.target.files ? e.target.files[0] : null)
+                                                    }
                                                 />
                                             </FormControl>
                                             <FormMessage
@@ -229,6 +234,34 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                                         </FormItem>
                                     )}
                                 />
+
+                                <FormField
+                                    control={form.control}
+                                    name="status"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Status</FormLabel>
+                                            <FormControl>
+                                                <Select
+                                                    {...field}
+                                                    disabled={response.loading}
+                                                    onValueChange={field.onChange} 
+                                                    defaultValue={field.value}
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select Status" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value={UserStatusConstants.ACTIVE}>Active</SelectItem>
+                                                        <SelectItem value={UserStatusConstants.INACTIVE}>Inactive</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormControl>
+                                            <FormMessage
+                                            />
+                                        </FormItem>
+                                    )}
+                                /> 
 
                             </div>
 

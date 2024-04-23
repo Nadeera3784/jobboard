@@ -56,8 +56,8 @@ export const SearchPage = () => {
     }, [response.status]);
 
     useEffect(() => {
-        const queryString = `?filter=${encodeURIComponent(JSON.stringify(filter))}&search=${encodeURIComponent(JSON.stringify(search))}&order=${encodeURIComponent(JSON.stringify(order))}&limit=${limit}&page=${currentPage}`;
-        processSearch(queryString);
+        const queryURL = `?filter=${encodeURIComponent(JSON.stringify(filter))}&search=${encodeURIComponent(JSON.stringify(search))}&order=${encodeURIComponent(JSON.stringify(order))}&limit=${limit}&page=${currentPage}`;
+        processSearch(queryURL);
     }, [searchReponse.status, currentPage, search, filter, order]);
 
     useEffect(() => {

@@ -31,17 +31,8 @@ export class UserService {
    * @returns A promise that resolves to the created user, or an error if the operation fails.
    */
   public async create(createUserDto: CreateUserDto) {
-    try {
-      const existingUser = await this.getByEmail(createUserDto.email);
-      if (existingUser) {
-        throw new BadRequestException('Email already in use!');
-        return;
-      }
       createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
       return await this.userModel.create(createUserDto);
-    } catch (error) {
-      return error;
-    }
   }
 
   /**

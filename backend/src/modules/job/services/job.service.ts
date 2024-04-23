@@ -60,7 +60,7 @@ export class JobService {
           job_type: 1,
           experience_level: 1,
           category_name: '$categoryInfo.name',
-          location_name: '$locationInfo.name'
+          location_name: '$locationInfo.name',
         },
       },
     ];

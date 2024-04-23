@@ -29,7 +29,7 @@ import { UserSeedCommand } from './commands';
     JwtService,
     UserDeletedListener,
     UserSeedCommand,
-    Logger
+    Logger,
   ],
   controllers: [UserController],
   exports: [UserService, JwtService],

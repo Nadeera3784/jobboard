@@ -1,8 +1,8 @@
 import * as z from "zod";
 
-import { RoleConstants } from '../constants';
+import { RoleConstants, UserStatusConstants} from '../constants';
 
-const MAX_FILE_SIZE = 500000;
+const MAX_FILE_SIZE = 100000;
 const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
 
 export const CreateCategorySchema = z.object({
@@ -24,19 +24,18 @@ export const CreateUserSchema = z.object({
   phone: z.optional(z.string().max(12, {
     message: "Phone number must be 12 characters max"
   })),
-  status: z.optional(z.string()),
-  image: z.optional(
-    z.any()
-    .refine((files) => files?.length == 1, "Image is required.")
-    .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, `Max file size is 5MB.`)
-    .refine(
-      (files) => ACCEPTED_IMAGE_TYPES.includes(files?.[0]?.type),
+  status: z.enum([UserStatusConstants.ACTIVE, UserStatusConstants.INACTIVE]),
+  image: z.instanceof(File)
+    .optional()
+    .refine((file) => file && file?.size <= MAX_FILE_SIZE, `File size must be less than 1MB.`)
+    .refine((file) => 
+      file && ACCEPTED_IMAGE_TYPES.includes(file?.type),
       ".jpg, .jpeg, .png and .webp files are accepted."
-    ),
   ),
   password: z.string().min(6),
   confirmPassword: z.string().min(6),
 })
+
 .refine((data) => {
   if (data.confirmPassword && !data.password) {
     return false;

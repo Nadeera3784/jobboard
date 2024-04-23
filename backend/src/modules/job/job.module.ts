@@ -10,9 +10,9 @@ import {
 } from './features';
 import { JobController } from './controllers/job.controller';
 import { JobSeedCommand } from './commands';
-import { User, UserSchema} from '../user/schemas/user.schema';
-import { Category, CategorySchema} from '../category/schemas/category.schema';
-import { Location, LocationSchema} from '../location/schemas/location.schema';
+import { User, UserSchema } from '../user/schemas/user.schema';
+import { Category, CategorySchema } from '../category/schemas/category.schema';
+import { Location, LocationSchema } from '../location/schemas/location.schema';
 
 @Module({
   imports: [
@@ -20,8 +20,8 @@ import { Location, LocationSchema} from '../location/schemas/location.schema';
       { name: Job.name, schema: JobSchema },
       { name: User.name, schema: UserSchema },
       { name: Category.name, schema: CategorySchema },
-      { name: Location.name, schema: LocationSchema }
-    ])
+      { name: Location.name, schema: LocationSchema },
+    ]),
   ],
   controllers: [JobController],
   providers: [
@@ -30,7 +30,7 @@ import { Location, LocationSchema} from '../location/schemas/location.schema';
     GetAllJobsFeature,
     GetJobByIdFeature,
     JobSeedCommand,
-    Logger
+    Logger,
   ],
 })
 export class JobModule {}

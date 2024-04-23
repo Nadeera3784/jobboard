@@ -5,7 +5,7 @@ export type CreateUser = {
     role?: string;
     status?: string;
     phone?: string;
-    image?: string
+    image?: File;
 }
 
 export type UpdateUser = {
@@ -14,7 +14,7 @@ export type UpdateUser = {
     role?: string;
     status?: string;
     phone?: string;
-    image?: string
+    image?: File | undefined;
 }
 
 export type GetUser = {

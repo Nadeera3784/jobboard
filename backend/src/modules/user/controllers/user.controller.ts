@@ -4,12 +4,15 @@ import {
   Delete,
   Get,
   Header,
+  HttpStatus,
   Param,
+  ParseFilePipeBuilder,
   Post,
   Put,
-  Req,
   Res,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 
 import { CreateUserDto, UpdateUserDto } from '../dtos';
@@ -26,6 +29,7 @@ import { RoleGuard } from '../../auth/guards/role.guard';
 import { Roles } from '../enums';
 import { RolesAllowed } from '../../auth/decorators/role.decorator';
 import { IdDto } from '../../app/dtos/Id.dto';
+import { FileInterceptor } from '@nestjs/platform-express/multer';
 
 @Controller('users')
 //@UseGuards(AuthGuard, RoleGuard)
@@ -60,7 +64,21 @@ export class UserController {
   @Post()
   @Header('Content-Type', 'application/json')
   @RolesAllowed(Roles.ADMIN)
-  public async create(@Res() response, @Body() createUserDto: CreateUserDto) {
+  @UseInterceptors(FileInterceptor('image'))
+  public async create(
+    @Res() response,
+    @UploadedFile(
+      new ParseFilePipeBuilder()
+        .addMaxSizeValidator({ maxSize: 1000000 })
+        .addFileTypeValidator({ fileType: '.(png|jpeg|jpg|webp)' })
+        .build({
+          fileIsRequired: false,
+          errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    )
+    file: Express.Multer.File,
+    @Body() createUserDto: CreateUserDto,
+  ) {
     const { status, response: featureUpResponse } =
       await this.createUserFeature.handle(createUserDto);
     return response.status(status).json(featureUpResponse);

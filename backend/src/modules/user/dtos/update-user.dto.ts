@@ -5,7 +5,9 @@ import {
   IsNotEmpty,
   MaxLength,
   MinLength,
+  IsObject,
 } from 'class-validator';
+import { KeyValueDTO } from './key-value.dto';
 
 export class UpdateUserDto {
   @IsString()
@@ -26,8 +28,8 @@ export class UpdateUserDto {
   phone?: string;
 
   @IsOptional()
-  @IsString()
-  image?: string;
+  @IsObject()
+  image?: KeyValueDTO
 
   @IsString()
   @IsOptional()

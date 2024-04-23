@@ -16,7 +16,7 @@ describe('services/UserService', () => {
     _id: '66082529899034a393c5a963',
     name: 'Dr. Mitchell Skiles',
     email: 'Brown.OKeefe11@hotmail.com',
-    phone: '1-816-907-3655',
+    phone: '0111045783',
     image: null,
     role: Roles.USER,
     status: SharedStatus.ACTIVE,
@@ -56,7 +56,7 @@ describe('services/UserService', () => {
     const payload = {
       name: 'Dr. Mitchell Skiles',
       email: 'Brown.OKeefe11@hotmail.com',
-      phone: '1-816-907-3655',
+      phone: '0111045783',
       image: null,
       role: Roles.USER,
       password: 'password',
@@ -71,15 +71,13 @@ describe('services/UserService', () => {
     const payload = {
       name: 'Dr. Mitchell Skiles',
       email: '',
-      phone: '1-816-907-3655',
+      phone: '0111045783',
       image: null,
       role: Roles.USER,
       password: '',
     };
-    jest
-      .spyOn(userModel, 'create')
-      .mockImplementationOnce(() => Promise.reject(null as any));
-    await expect(userService.create(payload)).resolves.toBeFalsy();
+    jest.spyOn(userModel, 'create').mockImplementationOnce(() => Promise.reject(null as any));
+    await expect(userService.create(payload)).rejects.toBeNull();
   });
 
   it('update success', () => {
@@ -87,7 +85,7 @@ describe('services/UserService', () => {
     const payload = {
       name: 'Dr. Mitchell Skiles',
       email: 'Brown.OKeefe11@hotmail.com',
-      phone: '1-816-907-3655',
+      phone: '0111045783',
       image: null,
       role: Roles.USER,
       password: 'password',
@@ -102,7 +100,7 @@ describe('services/UserService', () => {
     const payload = {
       name: 'Dr. Mitchell Skiles',
       email: 'Brown.OKeefe11@hotmail.com',
-      phone: '1-816-907-3655',
+      phone: '0111045783',
       image: null,
       role: Roles.USER,
       password: 'password',

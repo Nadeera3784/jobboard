@@ -12,6 +12,18 @@ export class CreateUserFeature extends BaseFeature {
 
   public async handle(createUserDto: CreateUserDto) {
     try {
+      const existingUser = await this.userService.getByEmail(createUserDto.email);
+      if (existingUser) {
+        return this.responseError(
+          HttpStatus.BAD_REQUEST,
+          'Email already in use!',
+          null,
+        );
+      }
+      createUserDto.image = {
+         key: "boom",
+         value: "horizon"
+      };
       await this.userService.create(createUserDto);
       return this.responseSuccess(
         HttpStatus.OK,

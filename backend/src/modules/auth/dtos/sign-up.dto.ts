@@ -28,10 +28,6 @@ export class SignupDto {
   @IsOptional()
   phone: string;
 
-  @IsOptional()
-  @IsString()
-  image: string;
-
   @IsString()
   @IsOptional()
   role: string;

@@ -173,7 +173,8 @@ describe('controllers/UserController', () => {
       image: null,
     };
     const payload = plainToInstance(CreateUserDto, input);
-    await userController.create(responseMock, payload);
+    const file:Express.Multer.File = null;
+    await userController.create(responseMock, file, payload);
     expect(spyOn).toHaveBeenCalled();
     expect(responseMock.json).toHaveBeenCalledWith({
       data: null,

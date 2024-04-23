@@ -21,6 +21,7 @@ describe('features/CreateUserFeature', () => {
           provide: UserService,
           useValue: {
             create: jest.fn(),
+            getByEmail: jest.fn()
           },
         },
       ],

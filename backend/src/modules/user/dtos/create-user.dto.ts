@@ -3,10 +3,12 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  Length,
+  IsObject,
   MaxLength,
   MinLength,
 } from 'class-validator';
+
+import { KeyValueDTO } from './key-value.dto';
 
 export class CreateUserDto {
   @IsString()
@@ -24,8 +26,8 @@ export class CreateUserDto {
   phone: string;
 
   @IsOptional()
-  @IsString()
-  image: string;
+  @IsObject()
+  image?: KeyValueDTO
 
   @IsString()
   @IsOptional()

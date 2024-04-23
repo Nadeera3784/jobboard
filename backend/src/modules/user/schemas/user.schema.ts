@@ -3,6 +3,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
+  IsObject,
   MaxLength,
   IsOptional,
 } from 'class-validator';
@@ -35,10 +36,16 @@ export class User extends Document {
   @Exclude()
   password: string;
 
-  @Prop({ default: null })
-  @IsString()
+  @Prop({
+    type: { _id: false, key: { type: String }, value: { type: String } },
+    default: null,
+  })
+  @IsObject()
   @IsOptional()
-  image: string;
+  image?: {
+    key: string;
+    value: string;
+  };
 
   @Prop({ enum: Roles, default: Roles.USER })
   @IsOptional()

@@ -20,10 +20,15 @@ export class SignUpFeature extends BaseFeature {
 
   public async handle(signupDto: SignupDto) {
     try {
-      const isRegistered = await this.userService.create(signupDto);
-      if (isRegistered instanceof BadRequestException) {
-        return this.responseError(HttpStatus.BAD_REQUEST, isRegistered.message);
+      const existingUser = await this.userService.getByEmail(signupDto.email);
+      if (existingUser) {
+        return this.responseError(
+          HttpStatus.BAD_REQUEST,
+          'Email already in use!',
+          null,
+        );
       }
+      const isRegistered = await this.userService.create(signupDto);
       await this.dispatchEvent(isRegistered);
       return this.responseSuccess(
         HttpStatus.OK,

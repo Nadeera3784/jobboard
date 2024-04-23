@@ -1,4 +1,4 @@
-export const RoleConstants =  {
-    USER : 'user',
-    ADMIN : 'admin',
-}
+export const RoleConstants = {
+  USER: 'user',
+  ADMIN: 'admin',
+};

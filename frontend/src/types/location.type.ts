@@ -1,17 +1,16 @@
-export type updateLocation  = {
-    name: string;
-    status?: string;
-}
+export type updateLocationType = {
+  name: string;
+  status?: string;
+};
 
-export type GetLocation = {
-    id: string;
-}
+export type GetLocationType = {
+  id: string;
+};
 
-export type DeleteLocation = {
-    endpoint: string;
-}
+export type DeleteLocationType = {
+  endpoint: string;
+};
 
-export type CreateLocation= {
-    name: string;
-}
-  
+export type CreateLocationType = {
+  name: string;
+};

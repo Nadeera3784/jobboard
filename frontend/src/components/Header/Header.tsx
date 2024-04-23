@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
   return (
@@ -26,7 +26,6 @@ export const Header = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-
                   </a>
                   <div className="-mr-2 flex items-center md:hidden">
                     <button
@@ -164,7 +163,7 @@ export const Header = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Header;

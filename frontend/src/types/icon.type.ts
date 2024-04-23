@@ -1,5 +1,3 @@
 export type Icon = {
-    className: string;
-}
-
-  
+  className: string;
+};

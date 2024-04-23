@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export const ForgotPasswordPage = () => {
   return (
@@ -19,9 +19,7 @@ export const ForgotPasswordPage = () => {
           </svg>
           <span>JobBoard</span>
         </h1>
-        <p className="text-gray-500">
-        Don't worry, we've got your back!
-        </p>
+        <p className="text-gray-500">Don't worry, we've got your back!</p>
       </div>
       {/* END Header */}
       {/* Sign In Form */}
@@ -30,10 +28,7 @@ export const ForgotPasswordPage = () => {
           <div className="sm:p-5 lg:px-10 lg:py-8">
             <form className="space-y-6">
               <div className="space-y-1">
-                <label
-                  htmlFor="tk-pages-sign-in-email"
-                  className="font-medium"
-                >
+                <label htmlFor="tk-pages-sign-in-email" className="font-medium">
                   Email
                 </label>
                 <input
@@ -60,7 +55,8 @@ export const ForgotPasswordPage = () => {
             className="font-medium text-black hover:text-gray-400"
             to="/auth/register"
           >
-           {" "} Join us today
+            {' '}
+            Join us today
           </Link>
         </div>
       </div>
@@ -73,8 +69,8 @@ export const ForgotPasswordPage = () => {
           target="_blank"
         >
           JobBoard
-        </a>{" "}
-        by{" "}
+        </a>{' '}
+        by{' '}
         <a
           className="font-medium text-black hover:text-indigo-400"
           href="https://google.com"

@@ -1,7 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 export const LoginPage = () => {
-
   return (
     <div className="py-6 lg:py-0 w-full md:w-8/12 lg:w-6/12 xl:w-4/12 relative">
       <div className="mb-8 text-center">
@@ -31,10 +30,7 @@ export const LoginPage = () => {
           <div className="sm:p-5 lg:px-10 lg:py-8">
             <form className="space-y-6">
               <div className="space-y-1">
-                <label
-                  htmlFor="tk-pages-sign-in-email"
-                  className="font-medium"
-                >
+                <label htmlFor="tk-pages-sign-in-email" className="font-medium">
                   Email
                 </label>
                 <input
@@ -90,7 +86,8 @@ export const LoginPage = () => {
             className="font-medium text-black hover:text-gray-400"
             to="register"
           >
-           {" "} Join us today
+            {' '}
+            Join us today
           </Link>
         </div>
       </div>
@@ -103,8 +100,8 @@ export const LoginPage = () => {
           target="_blank"
         >
           JobBoard
-        </a>{" "}
-        by{" "}
+        </a>{' '}
+        by{' '}
         <a
           className="font-medium text-black hover:text-indigo-400"
           href="https://google.com"

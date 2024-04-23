@@ -1,18 +1,16 @@
-export type updateCategory  = {
-    name: string;
-    status?: string;
-}
+export type updateCategoryType = {
+  name: string;
+  status?: string;
+};
 
-export type GetCategory = {
-    id: string;
-}
+export type GetCategoryType = {
+  id: string;
+};
 
-export type DeleteCategory = {
-    endpoint: string;
-}
+export type DeleteCategoryType = {
+  endpoint: string;
+};
 
-export type CreateCategory = {
-    name: string;
-}
-
-  
+export type CreateCategoryType = {
+  name: string;
+};

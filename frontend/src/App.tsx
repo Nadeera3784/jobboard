@@ -1,13 +1,13 @@
 import { Toaster } from 'sonner';
-import { AppRouter } from "./router/AppRouter";
+import { AppRouter } from './router/AppRouter';
 
 function App() {
   return (
     <>
       <AppRouter />
-      <Toaster position="top-right" closeButton/>
+      <Toaster position="top-right" closeButton />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

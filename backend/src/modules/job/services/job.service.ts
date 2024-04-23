@@ -49,6 +49,15 @@ export class JobService {
       },
       { $unwind: '$locationInfo' },
       {
+        $lookup: {
+          from: 'users',
+          localField: 'user',
+          foreignField: '_id',
+          as: 'userInfo',
+        },
+      },
+      { $unwind: '$userInfo' },
+      {
         $project: {
           _id: 1,
           name: 1,
@@ -61,6 +70,8 @@ export class JobService {
           experience_level: 1,
           category_name: '$categoryInfo.name',
           location_name: '$locationInfo.name',
+          company_name: '$userInfo.name',
+          company_logo: '$userInfo.image',
         },
       },
     ];

@@ -221,17 +221,21 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                 <FormField
                   control={form.control}
                   name="image"
-                  render={({ field }) => (
+                  render={({ field: { value, onChange, ...fieldProps } }) => (
                     <FormItem>
                       <FormLabel>Avatar</FormLabel>
                       <FormControl>
                         <Input
+                          {...fieldProps}
                           disabled={response.loading}
                           type="file"
-                          onChange={e =>
-                            field.onChange(
-                              e.target.files ? e.target.files[0] : null,
-                            )
+                          // onChange={e =>
+                          //   field.onChange(
+                          //     e.target.files ? e.target.files[0] : null,
+                          //   )
+                          // }
+                          onChange={(event) =>
+                            onChange(event.target.files && event.target.files[0])
                           }
                         />
                       </FormControl>

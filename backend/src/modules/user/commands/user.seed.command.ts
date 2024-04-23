@@ -21,9 +21,12 @@ export class UserSeedCommand {
         name: faker.person.fullName(),
         email: faker.internet.email(),
         phone: faker.phone.number(),
-        password:
-          '$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK',
+        password: '$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK',
         email_verified: now(),
+        image: {
+          key: faker.hacker.verb(),
+          value: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+        },
         status: 'Active',
       });
     }

@@ -36,13 +36,15 @@ export const CreateUserSchema = z
     image: z
       .instanceof(File)
       .optional()
-      .refine(
-        file => file && file?.size <= MAX_FILE_SIZE,
-        `File size must be less than 1MB.`,
+      .refine(file => file && file?.size <= MAX_FILE_SIZE,
+        {
+          message: `File size must be less than 1MB.`,
+        }
       )
-      .refine(
-        file => file && ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        '.jpg, .jpeg, .png and .webp files are accepted.',
+      .refine((file) => file && ACCEPTED_IMAGE_TYPES.includes(file?.type),
+        {
+          message: '.jpg, .jpeg, .png and .webp files are accepted.',
+        }
       ),
     password: z.string().min(6),
     confirmPassword: z.string().min(6),

@@ -15,7 +15,7 @@ import {
 import {
   parseJson,
   transformToObjectId,
-} from '../../app/services/helper.service';
+} from '../../app/services';
 
 @Injectable()
 export class JobService {

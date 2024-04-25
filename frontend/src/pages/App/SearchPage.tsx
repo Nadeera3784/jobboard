@@ -39,6 +39,8 @@ export const SearchPage = () => {
     job_type: '',
     experience_level: '',
   });
+
+
   const [appliedFilters, setAppliedFilters] = useState({});
   const [selectedJob, setSelectedJob] = useState<Job>({
     _id: '',

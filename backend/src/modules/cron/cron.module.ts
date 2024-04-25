@@ -10,7 +10,7 @@ import { UserInactivityDetectionCron } from '../user/cron';
 import { DetectInactiveUsersFeature } from '../user/features';
 import { DeleteExpiredJobsFeature } from '../job/features';
 import { InactivityReminderQueue } from '../user/queues';
-import { EmailService } from '../app/services/email.service';
+import { EmailService } from '../app/services';
 import { UserService } from '../user/services/user.service';
 import { JobService } from '../job/services';
 import { User, UserSchema } from '../user/schemas/user.schema';

@@ -38,10 +38,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../../components/Form/Select';
+import { useRef } from 'react';
 
 export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
   const { response, process } = useCreateUser();
-
+  const inputAvatarPhoto = useRef<HTMLInputElement>(null);
   const form = useForm<z.infer<typeof CreateUserSchema>>({
     resolver: zodResolver(CreateUserSchema),
     defaultValues: {
@@ -68,6 +69,9 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
 
     if (response.status_code === HttpStatus.OK) {
       form.reset();
+      if(inputAvatarPhoto.current){
+        inputAvatarPhoto.current.value = ''; 
+      }
       toast.success('User created successfully!');
       refresh();
     } else {
@@ -229,11 +233,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                           {...fieldProps}
                           disabled={response.loading}
                           type="file"
-                          // onChange={e =>
-                          //   field.onChange(
-                          //     e.target.files ? e.target.files[0] : null,
-                          //   )
-                          // }
+                          ref={inputAvatarPhoto}
                           onChange={(event) =>
                             onChange(event.target.files && event.target.files[0])
                           }

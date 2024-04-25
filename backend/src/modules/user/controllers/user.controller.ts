@@ -80,7 +80,7 @@ export class UserController {
     @Body() createUserDto: CreateUserDto,
   ) {
     const { status, response: featureUpResponse } =
-      await this.createUserFeature.handle(createUserDto);
+      await this.createUserFeature.handle(createUserDto, file);
     return response.status(status).json(featureUpResponse);
   }
 

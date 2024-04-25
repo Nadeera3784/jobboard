@@ -13,6 +13,7 @@ import { UpdateUserFeature } from './features/update-user.feature';
 import { DatatableFeature } from './features/datatable.feature';
 import { UserDeletedListener } from './listeners/user-deleted.listener';
 import { UserSeedCommand } from './commands';
+import { FilesystemService } from '../app/services/filesystem.service';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UserSeedCommand } from './commands';
     UserDeletedListener,
     UserSeedCommand,
     Logger,
+    FilesystemService
   ],
   controllers: [UserController],
   exports: [UserService, JwtService],

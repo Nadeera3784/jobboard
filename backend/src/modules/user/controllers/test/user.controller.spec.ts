@@ -17,6 +17,7 @@ import { SharedStatus } from '../../../app/enums/shared-status.enum';
 import { HttpStatus } from '@nestjs/common';
 import { IdDto } from '../../../app/dtos/Id.dto';
 import { CreateUserDto, UpdateUserDto } from '../../dtos';
+import { FilesystemService } from '../../../app/services';
 
 describe('controllers/UserController', () => {
   let getAllUsersFeature: GetAllUsersFeature;
@@ -78,6 +79,12 @@ describe('controllers/UserController', () => {
           provide: UserService,
           useValue: {
             create: jest.fn(),
+          },
+        },
+        {
+          provide: FilesystemService,
+          useValue: {
+            put: jest.fn(),
           },
         },
         DatatableFeature,

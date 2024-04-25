@@ -19,7 +19,7 @@ import { VerificationMailQueue } from './queues/verification-email.queue';
 import { PasswordResetMailQueue } from './queues/password-reset-email.queue';
 import { AuthService } from './services/auth.service';
 import { AuthController } from './controllers/auth.controller';
-import { EmailService } from '../app/services/email.service';
+import { EmailService } from '../app/services';
 import { VerificationTokenService } from './services/verification-token.service';
 import { VerifyEmailFeature } from '../auth/features/verify-email.feature';
 import { PasswordResetTokenService } from './services/password-reset-token.service';

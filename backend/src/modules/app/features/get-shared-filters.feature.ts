@@ -4,7 +4,7 @@ import { BaseFeature } from './base-feature';
 import { AppService } from '../services/app.service';
 import { LocationService } from '../../location/services/location.service';
 import { CategoryService } from '../../category/services/category.service';
-import { CacheService } from '../services/cache.service';
+import { CacheService } from '../services';
 
 @Injectable()
 export class GetSharedFiltersFeature extends BaseFeature {

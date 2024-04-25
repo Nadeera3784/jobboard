@@ -7,7 +7,7 @@ import {
 } from '@nestjs/bull';
 import { Job } from 'bull';
 
-import { EmailService } from '../../app/services/email.service';
+import { EmailService } from '../../app/services';
 import { Logger } from '@nestjs/common';
 
 @Processor('inactivity-reminder-email')

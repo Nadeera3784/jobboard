@@ -11,7 +11,7 @@ import { Location } from '../../location/schemas/location.schema';
 import {
   ArrayElementToString,
   getRandomEntity,
-} from '../../app/services/helper.service';
+} from '../../app/services';
 
 @Injectable()
 export class JobSeedCommand {

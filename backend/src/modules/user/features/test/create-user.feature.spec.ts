@@ -9,6 +9,7 @@ import { UserService } from '../../services/user.service';
 import { Roles } from '../../enums';
 import { CreateUserDto } from '../../dtos/create-user.dto';
 import { stringified } from '../../../../../test/mock-helper';
+import { FilesystemService } from '../../../app/services';
 
 describe('features/CreateUserFeature', () => {
   let userService: UserService;
@@ -22,6 +23,12 @@ describe('features/CreateUserFeature', () => {
           useValue: {
             create: jest.fn(),
             getByEmail: jest.fn()
+          },
+        },
+        {
+          provide: FilesystemService,
+          useValue: {
+            put: jest.fn(),
           },
         },
       ],

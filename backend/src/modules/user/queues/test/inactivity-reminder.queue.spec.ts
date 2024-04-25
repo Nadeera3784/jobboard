@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { EmailService } from '../../../app/services/email.service';
+import { EmailService } from '../../../app/services';
 import { InactivityReminderQueue } from '../inactivity-reminder.queue';
 import { getQueueToken } from '@nestjs/bull';
 import { mockBullQueue } from './jest-mocks';

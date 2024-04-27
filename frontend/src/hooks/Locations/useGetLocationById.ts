@@ -14,10 +14,7 @@ export const useGetLocationById = () => {
     message: '',
   });
 
-  const process = async (
-    params: GetLocationType,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (params: GetLocationType) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -45,10 +42,6 @@ export const useGetLocationById = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

@@ -14,7 +14,7 @@ export const useGetFilters = () => {
     message: '',
   });
 
-  const process = async (finallyCallback?: (response: any) => void) => {
+  const process = async () => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -42,10 +42,6 @@ export const useGetFilters = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

@@ -10,13 +10,10 @@ export const useDeleteLocation = () => {
     loading: false,
     errored: false,
     data: {},
-    status_code: HttpStatus.OK,
+    status_code: null,
     message: '',
   });
-  const process = async (
-    params: DeleteLocationType,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (params: DeleteLocationType) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -44,10 +41,6 @@ export const useDeleteLocation = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

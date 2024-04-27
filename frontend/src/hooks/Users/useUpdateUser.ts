@@ -14,11 +14,7 @@ export const useUpdateUser = () => {
     message: '',
   });
 
-  const process = async (
-    params: UpdateUserType,
-    id: string,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (params: UpdateUserType, id: string) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -47,10 +43,6 @@ export const useUpdateUser = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

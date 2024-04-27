@@ -14,11 +14,7 @@ export const useUpdateCategory = () => {
     message: '',
   });
 
-  const process = async (
-    params: updateCategoryType,
-    id: string,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (params: updateCategoryType, id: string) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -47,10 +43,6 @@ export const useUpdateCategory = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

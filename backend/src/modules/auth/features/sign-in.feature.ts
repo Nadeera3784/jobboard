@@ -54,12 +54,14 @@ export class SignInFeature extends BaseFeature {
 
         return this.responseSuccess(HttpStatus.OK, 'Login successfully', {
           type: 'Bearer',
-          accessToken: accessToken,
+          access_token: accessToken,
+          redirect_identifier: existingUser.role,
         });
       }
 
       return this.responseError(HttpStatus.BAD_REQUEST, 'Invalid credentials');
     } catch (error) {
+      console.log('error', error);
       return this.responseError(
         HttpStatus.BAD_REQUEST,
         'Something went wrong, Please try again later',

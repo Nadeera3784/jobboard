@@ -12,7 +12,7 @@ export const Header = () => {
             >
               <div className="flex items-center flex-1 md:absolute md:inset-y-0 md:left-0">
                 <div className="flex items-center justify-between w-full md:w-auto">
-                  <a href="#">
+                  <Link to="/">
                     <span className="sr-only">Workflow</span>
                     <svg
                       className="hi-solid hi-cube-transparent inline-block w-8 h-8  sm:h-10 text-black"
@@ -26,7 +26,7 @@ export const Header = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                  </a>
+                  </Link>
                   <div className="-mr-2 flex items-center md:hidden">
                     <button
                       type="button"
@@ -55,29 +55,23 @@ export const Header = () => {
                 </div>
               </div>
               <div className="hidden md:flex md:space-x-10">
+                <Link
+                  to="/"
+                  className="font-medium text-gray-500 hover:text-gray-900"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/search"
+                  className="font-medium text-gray-500 hover:text-gray-900"
+                >
+                  Explore
+                </Link>
                 <a
                   href="#"
                   className="font-medium text-gray-500 hover:text-gray-900"
                 >
-                  Product
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-gray-500 hover:text-gray-900"
-                >
-                  Features
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-gray-500 hover:text-gray-900"
-                >
-                  Marketplace
-                </a>
-                <a
-                  href="#"
-                  className="font-medium text-gray-500 hover:text-gray-900"
-                >
-                  Company
+                  Blog
                 </a>
               </div>
               <div className="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-0">

@@ -1,37 +1,25 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { ApiResponse, ResponseState } from '../../types';
-import { HttpStatus, AppConstants } from '../../constants';
+import { ApiResponse, ResponseState } from '../types';
+import { HttpStatus } from '../constants';
 
-export const useCreateUser = () => {
+export const useSharedDelete = () => {
   const [response, setResponse] = useState<ResponseState>({
     status: false,
     loading: false,
     errored: false,
     data: {},
-    status_code: HttpStatus.OK,
+    status_code: null,
     message: '',
   });
-
-  const process = async (data: any) => {
+  const process = async (endpoint: string) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
     }));
-    const ENDPOINT = `${AppConstants.API_URL}/users`;
-
     try {
-      let formData = new FormData();
-      const keys = Object.keys(data);
-
-      if (typeof data == 'object' && keys.length > 0) {
-        keys.forEach(key => {
-          formData.append(key, data[key]);
-        });
-      }
-
-      const apiResponse = await axios.post<ApiResponse>(ENDPOINT, formData);
+      const apiResponse = await axios.delete<ApiResponse>(endpoint);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

@@ -14,10 +14,7 @@ export const useGetJobById = () => {
     message: '',
   });
 
-  const process = async (
-    id: string,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (id: string) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -45,10 +42,6 @@ export const useGetJobById = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

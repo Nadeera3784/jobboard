@@ -4,4 +4,4 @@ export type Icon = {
 
 export type PlaceholderAvatarType = {
   name: string;
-}
+};

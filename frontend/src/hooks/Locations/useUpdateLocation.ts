@@ -14,11 +14,7 @@ export const useUpdateLocation = () => {
     message: '',
   });
 
-  const process = async (
-    params: updateLocationType,
-    id: string,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (params: updateLocationType, id: string) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -48,10 +44,6 @@ export const useUpdateLocation = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

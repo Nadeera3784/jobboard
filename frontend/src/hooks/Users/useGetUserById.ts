@@ -14,10 +14,7 @@ export const useGetUserById = () => {
     message: '',
   });
 
-  const process = async (
-    params: GetUserType,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (params: GetUserType) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -45,10 +42,6 @@ export const useGetUserById = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

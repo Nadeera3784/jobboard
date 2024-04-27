@@ -8,10 +8,7 @@ import { Job } from '../schemas/job.schema';
 import { User } from '../../user/schemas/user.schema';
 import { Category } from '../../category/schemas/category.schema';
 import { Location } from '../../location/schemas/location.schema';
-import {
-  ArrayElementToString,
-  getRandomEntity,
-} from '../../app/services';
+import { ArrayElementToString, getRandomEntity } from '../../app/services';
 
 @Injectable()
 export class JobSeedCommand {

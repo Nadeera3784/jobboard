@@ -14,10 +14,7 @@ export const useCreateLocation = () => {
     message: '',
   });
 
-  const process = async (
-    params: CreateLocationType,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (params: CreateLocationType) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -46,10 +43,6 @@ export const useCreateLocation = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

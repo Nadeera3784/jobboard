@@ -40,7 +40,6 @@ export const SearchPage = () => {
     experience_level: '',
   });
 
-
   const [appliedFilters, setAppliedFilters] = useState({});
   const [selectedJob, setSelectedJob] = useState<Job>({
     _id: '',
@@ -358,7 +357,7 @@ export const SearchPage = () => {
                       <div className="flex items-center px-4 py-4 sm:px-6">
                         <div className="min-w-0 flex-1 flex items-start">
                           <div className="flex-shrink-0">
-                          {job?.company_logo && job?.company_logo?.value ? (
+                            {job?.company_logo && job?.company_logo?.value ? (
                               <img
                                 className="h-12 w-12 rounded-full"
                                 src={job.company_logo.value}

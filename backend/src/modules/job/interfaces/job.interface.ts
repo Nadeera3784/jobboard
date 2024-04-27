@@ -16,5 +16,5 @@ export interface JobInterface {
   company_logo: {
     key: string;
     value: string;
-  }
+  };
 }

@@ -14,10 +14,7 @@ export const useGetSearch = () => {
     message: '',
   });
 
-  const process = async (
-    query: string,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (query: string) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -45,10 +42,6 @@ export const useGetSearch = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

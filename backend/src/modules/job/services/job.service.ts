@@ -12,10 +12,7 @@ import {
   JobSearchInterface,
   JobInterface,
 } from '../interfaces';
-import {
-  parseJson,
-  transformToObjectId,
-} from '../../app/services';
+import { parseJson, transformToObjectId } from '../../app/services';
 
 @Injectable()
 export class JobService {

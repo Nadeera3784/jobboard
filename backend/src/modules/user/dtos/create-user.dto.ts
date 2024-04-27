@@ -27,7 +27,7 @@ export class CreateUserDto {
 
   @IsOptional()
   @IsObject()
-  image?: KeyValueDTO
+  image?: KeyValueDTO;
 
   @IsString()
   @IsOptional()

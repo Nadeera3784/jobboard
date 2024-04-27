@@ -31,7 +31,7 @@ import { FilesystemService } from '../app/services/filesystem.service';
     UserDeletedListener,
     UserSeedCommand,
     Logger,
-    FilesystemService
+    FilesystemService,
   ],
   controllers: [UserController],
   exports: [UserService, JwtService],

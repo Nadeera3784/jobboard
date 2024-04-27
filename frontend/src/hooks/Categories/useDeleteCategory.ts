@@ -13,10 +13,7 @@ export const useDeleteCategory = () => {
     status_code: HttpStatus.OK,
     message: '',
   });
-  const process = async (
-    params: DeleteCategoryType,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (params: DeleteCategoryType) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -44,10 +41,6 @@ export const useDeleteCategory = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

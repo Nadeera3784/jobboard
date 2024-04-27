@@ -31,7 +31,7 @@ export class User extends Document {
   @IsOptional()
   phone: string;
 
-  @Prop({ select: false })
+  @Prop()
   @IsNotEmpty()
   @Exclude()
   password: string;
@@ -55,7 +55,7 @@ export class User extends Document {
   @IsOptional()
   status: string;
 
-  @Prop({ default: null, select: false })
+  @Prop({ default: null })
   @IsOptional()
   email_verified: Date;
 

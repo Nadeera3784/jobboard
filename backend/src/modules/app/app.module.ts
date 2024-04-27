@@ -11,7 +11,7 @@ import { LocationModule } from '../location/location.module';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { JobModule } from '../job/job.module';
-import { AppService , CacheService} from './services';
+import { AppService, CacheService } from './services';
 import { AppController } from './controllers/app.controller';
 import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
 import { CommandModule } from '../command';

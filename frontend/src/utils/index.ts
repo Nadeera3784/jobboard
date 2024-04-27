@@ -6,10 +6,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getInitials(name: string): string {
-  const words: string[] = name.split(" ");
-  let initials: string = "";
+  const words: string[] = name.split(' ');
+  let initials: string = '';
   for (const word of words) {
-      initials += word[0];
+    initials += word[0];
   }
   return initials;
 }

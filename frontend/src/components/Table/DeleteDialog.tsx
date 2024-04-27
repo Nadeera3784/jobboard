@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import {
@@ -11,8 +11,7 @@ import {
   AlertDialogTitle,
 } from '../Dialog/AlertDialog';
 import { DeleteDialogProps } from '../../types';
-import { useDeleteCategory } from '../../hooks/Categories/useDeleteCategory';
-import { HttpStatus } from '../../constants';
+import { useSharedDelete } from '../../hooks/useSharedDelete';
 
 export const DeleteDialog: React.FC<DeleteDialogProps> = ({
   open,
@@ -22,20 +21,21 @@ export const DeleteDialog: React.FC<DeleteDialogProps> = ({
   loading,
   refresh,
 }) => {
-  const { response, process } = useDeleteCategory();
+  const { response, process } = useSharedDelete();
+
+  useEffect(() => {
+    if (response.status) {
+      onClose();
+      toast.warning(response?.message || 'Deleted Successfully!');
+      refresh();
+    }
+  }, [response.status]);
 
   const onClickDelete = async () => {
     if (action && action.endpoint) {
       response.loading = loading;
-      await process({ endpoint: action.endpoint });
-      response.loading = loading;
-      if (response.status_code === HttpStatus.OK) {
-        onClose();
-        toast.warning(response?.message || 'Deleted Successfully!');
-        refresh();
-      } else {
-        toast.warning('Something went wrong, Please try again later');
-      }
+      process(action.endpoint);
+      response.loading = false;
     }
   };
 

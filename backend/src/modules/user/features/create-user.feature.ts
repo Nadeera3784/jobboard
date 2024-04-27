@@ -9,14 +9,19 @@ import { FilesystemService } from '../../app/services';
 export class CreateUserFeature extends BaseFeature {
   constructor(
     private readonly userService: UserService,
-    private readonly filesystemService: FilesystemService
+    private readonly filesystemService: FilesystemService,
   ) {
     super();
   }
 
-  public async handle(createUserDto: CreateUserDto, file?: Express.Multer.File) {
+  public async handle(
+    createUserDto: CreateUserDto,
+    file?: Express.Multer.File,
+  ) {
     try {
-      const existingUser = await this.userService.getByEmail(createUserDto.email);
+      const existingUser = await this.userService.getByEmail(
+        createUserDto.email,
+      );
       if (existingUser) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,
@@ -24,16 +29,17 @@ export class CreateUserFeature extends BaseFeature {
           null,
         );
       }
-      if(file){
-          const uploadedFile = await this.filesystemService.put(
-            file.originalname, 
-            file.buffer, {
-            mimeType: file.mimetype
-            }
+      if (file) {
+        const uploadedFile = await this.filesystemService.put(
+          file.originalname,
+          file.buffer,
+          {
+            mimeType: file.mimetype,
+          },
         );
         createUserDto.image = {
-         key: uploadedFile.path,
-         value: uploadedFile.url
+          key: uploadedFile.path,
+          value: uploadedFile.url,
         };
       }
 

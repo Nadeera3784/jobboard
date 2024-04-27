@@ -14,10 +14,7 @@ export const useCreateCategory = () => {
     message: '',
   });
 
-  const process = async (
-    params: CreateCategoryType,
-    finallyCallback?: (response: any) => void,
-  ) => {
+  const process = async (params: CreateCategoryType) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -46,10 +43,6 @@ export const useCreateCategory = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

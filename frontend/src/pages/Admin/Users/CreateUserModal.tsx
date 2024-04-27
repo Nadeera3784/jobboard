@@ -69,8 +69,8 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
 
     if (response.status_code === HttpStatus.OK) {
       form.reset();
-      if(inputAvatarPhoto.current){
-        inputAvatarPhoto.current.value = ''; 
+      if (inputAvatarPhoto.current) {
+        inputAvatarPhoto.current.value = '';
       }
       toast.success('User created successfully!');
       refresh();
@@ -234,8 +234,10 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                           disabled={response.loading}
                           type="file"
                           ref={inputAvatarPhoto}
-                          onChange={(event) =>
-                            onChange(event.target.files && event.target.files[0])
+                          onChange={event =>
+                            onChange(
+                              event.target.files && event.target.files[0],
+                            )
                           }
                         />
                       </FormControl>

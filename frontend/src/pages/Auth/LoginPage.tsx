@@ -1,6 +1,58 @@
-import { Link } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../../components/Form/Form';
+import { LoginSchema } from '../../schemas';
+import { Input } from '../../components/Form/Input';
+import { Button } from '../../components/Form/Button';
+import { useSharedPost } from '../../hooks/useSharedPost';
+import { HttpStatus } from '../../constants';
+import { Spinner } from '../../components/Icons';
+import { useAppContext } from '../../contexts/AppContext';
 
 export const LoginPage = () => {
+  const { response, process } = useSharedPost();
+  const { setPermission, setToken } = useAppContext();
+  const navigate = useNavigate();
+
+  const form = useForm<z.infer<typeof LoginSchema>>({
+    resolver: zodResolver(LoginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+    const validatedFields = LoginSchema.safeParse(values);
+
+    if (!validatedFields.success) {
+      toast.warning('Something went wrong, Please try again later');
+      return;
+    }
+
+    process('auth/signin', validatedFields.data);
+
+    if (response.status_code == HttpStatus.BAD_REQUEST) {
+      toast.warning('The email address or password is incorrect. Please retry');
+    }
+
+    setPermission(response?.data?.redirect_identifier);
+    setToken(response?.data?.access_token);
+
+    navigate(`/admin`);
+  };
+
   return (
     <div className="py-6 lg:py-0 w-full md:w-8/12 lg:w-6/12 xl:w-4/12 relative">
       <div className="mb-8 text-center">
@@ -23,61 +75,79 @@ export const LoginPage = () => {
           Welcome, please sign in to your dashboard
         </p>
       </div>
-      {/* END Header */}
-      {/* Sign In Form */}
       <div className="flex flex-col rounded shadow-sm bg-white overflow-hidden">
         <div className="p-5 lg:p-6 flex-grow w-full">
           <div className="sm:p-5 lg:px-10 lg:py-8">
-            <form className="space-y-6">
-              <div className="space-y-1">
-                <label htmlFor="tk-pages-sign-in-email" className="font-medium">
-                  Email
-                </label>
-                <input
-                  className="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-black focus:ring-none focus-visible:outline-none"
-                  type="email"
-                  id="tk-pages-sign-in-email"
-                  placeholder="Enter your email"
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={response.loading}
+                          type="email"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div className="space-y-1">
-                <label
-                  htmlFor="tk-pages-sign-in-password"
-                  className="font-medium"
-                >
-                  Password
-                </label>
-                <input
-                  className="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-black focus:ring-none focus-visible:outline-none"
-                  type="password"
-                  id="tk-pages-sign-in-password"
-                  placeholder="Enter your password"
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={response.loading}
+                          type="password"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div>
-                <button
-                  type="submit"
-                  className="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none w-full px-4 py-3 leading-6 rounded border-black bg-black text-white hover:text-white hover:bg-gray-800 hover:border-gray-800 active:bg-black active:border-black focus-visible:outline-none"
-                >
-                  Sign In
-                </button>
-                <div className="space-y-2 sm:flex sm:items-center sm:justify-between sm:space-x-2 sm:space-y-0 mt-4">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      className="border border-gray-200 rounded h-4 w-4 text-black focus:ring-none focus-visible:outline-non"
-                    />
-                    <span className="ml-2">Remember me</span>
-                  </label>
-                  <Link
-                    to="forgot-password"
-                    className="inline-block text-black hover:text-gray-600"
+                <div>
+                  <Button
+                    type="submit"
+                    variant="default"
+                    size="lg"
+                    className="w-full px-4 py-4 leading-6  space-x-2 font-semibold"
+                    disabled={response.loading}
                   >
-                    Forgot Password?
-                  </Link>
+                    Sign In
+                    {response.loading && (
+                      <Spinner className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                  </Button>
+                  <div className="space-y-2 sm:flex sm:items-center sm:justify-between sm:space-x-2 sm:space-y-0 mt-4">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        className="border border-gray-200 rounded h-4 w-4 text-black focus:ring-none focus-visible:outline-non"
+                      />
+                      <span className="ml-2">Remember me</span>
+                    </label>
+                    <Link
+                      to="forgot-password"
+                      className="inline-block text-black hover:text-gray-600"
+                    >
+                      Forgot Password?
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </Form>
           </div>
         </div>
         <div className="py-4 px-5 lg:px-6 w-full text-sm text-center bg-gray-50">
@@ -91,8 +161,6 @@ export const LoginPage = () => {
           </Link>
         </div>
       </div>
-      {/* END Sign In Form */}
-      {/* Footer */}
       <div className="text-sm text-gray-500 text-center mt-6">
         <a
           className="font-medium text-black hover:text-indigo-400"

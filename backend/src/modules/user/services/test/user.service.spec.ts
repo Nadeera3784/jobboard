@@ -76,7 +76,9 @@ describe('services/UserService', () => {
       role: Roles.USER,
       password: '',
     };
-    jest.spyOn(userModel, 'create').mockImplementationOnce(() => Promise.reject(null as any));
+    jest
+      .spyOn(userModel, 'create')
+      .mockImplementationOnce(() => Promise.reject(null as any));
     await expect(userService.create(payload)).rejects.toBeNull();
   });
 

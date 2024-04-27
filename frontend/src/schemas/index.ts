@@ -3,6 +3,7 @@ import * as z from 'zod';
 import { RoleConstants, UserStatusConstants } from '../constants';
 
 const MAX_FILE_SIZE = 100000;
+
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
   'image/jpg',
@@ -36,16 +37,12 @@ export const CreateUserSchema = z
     image: z
       .instanceof(File)
       .optional()
-      .refine(file => file && file?.size <= MAX_FILE_SIZE,
-        {
-          message: `File size must be less than 1MB.`,
-        }
-      )
-      .refine((file) => file && ACCEPTED_IMAGE_TYPES.includes(file?.type),
-        {
-          message: '.jpg, .jpeg, .png and .webp files are accepted.',
-        }
-      ),
+      .refine(file => file && file?.size <= MAX_FILE_SIZE, {
+        message: `File size must be less than 1MB.`,
+      })
+      .refine(file => file && ACCEPTED_IMAGE_TYPES.includes(file?.type), {
+        message: '.jpg, .jpeg, .png and .webp files are accepted.',
+      }),
     password: z.string().min(6),
     confirmPassword: z.string().min(6),
   })
@@ -92,4 +89,16 @@ export const UpdateUserSchema = z.object({
   ),
   status: z.optional(z.string()),
   image: z.optional(z.any()),
+});
+
+export const LoginSchema = z.object({
+  email: z
+    .string()
+    .min(1, {
+      message: 'Email is required',
+    })
+    .email('This is not a valid email.'),
+  password: z.string().min(1, {
+    message: 'Password is required',
+  }),
 });

@@ -31,8 +31,8 @@ export class UserService {
    * @returns A promise that resolves to the created user, or an error if the operation fails.
    */
   public async create(createUserDto: CreateUserDto) {
-      createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
-      return await this.userModel.create(createUserDto);
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+    return await this.userModel.create(createUserDto);
   }
 
   /**

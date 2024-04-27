@@ -1,37 +1,28 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { ApiResponse, ResponseState } from '../../types';
-import { HttpStatus, AppConstants } from '../../constants';
+import { ApiResponse, ResponseState } from '../types';
+import { HttpStatus, AppConstants } from '../constants';
 
-export const useCreateUser = () => {
+export const useSharedPost = () => {
   const [response, setResponse] = useState<ResponseState>({
     status: false,
     loading: false,
     errored: false,
     data: {},
-    status_code: HttpStatus.OK,
+    status_code: null,
     message: '',
   });
 
-  const process = async (data: any) => {
-    setResponse(prevResponse => ({
+  const process = async (endpoint: string, params: any) => {
+    setResponse((prevResponse: any) => ({
       ...prevResponse,
       loading: true,
     }));
-    const ENDPOINT = `${AppConstants.API_URL}/users`;
+    const URL = `${AppConstants.API_URL}/${endpoint}`;
 
     try {
-      let formData = new FormData();
-      const keys = Object.keys(data);
-
-      if (typeof data == 'object' && keys.length > 0) {
-        keys.forEach(key => {
-          formData.append(key, data[key]);
-        });
-      }
-
-      const apiResponse = await axios.post<ApiResponse>(ENDPOINT, formData);
+      const apiResponse = await axios.post<ApiResponse>(URL, params);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

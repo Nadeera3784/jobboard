@@ -25,16 +25,16 @@ import {
 import { Input } from '../../../components/Form/Input';
 import { Button } from '../../../components/Form/Button';
 import { CreateCategorySchema as UpdateCategorySchema } from '../../../schemas';
-import { useGetCategoryById } from '../../../hooks/Categories/useGetCategoryById';
-import { useUpdateCategory } from '../../../hooks/Categories/useUpdateCategory';
+import { useSharedGetApi } from '../../../hooks/useSharedGetAPI';
+import { useSharedPutApi } from '../../../hooks/useSharedPutApi';
 import { HttpStatus } from '../../../constants';
 
 export const EditCategoryPage = () => {
   let { id } = useParams<{ id: string }>();
 
-  const { response, process } = useGetCategoryById();
+  const { response, process } = useSharedGetApi();
   const { response: updateResponse, process: processUpdateCategory } =
-    useUpdateCategory();
+    useSharedPutApi();
 
   const form = useForm<z.infer<typeof UpdateCategorySchema>>({
     resolver: zodResolver(UpdateCategorySchema),
@@ -46,7 +46,7 @@ export const EditCategoryPage = () => {
 
   const onInit = async () => {
     if (id !== undefined) {
-      await process({ id: id });
+      await process(`categories/${id}`);
       form.reset({
         name: response?.data?.name || '',
         status: response?.data?.status || '',
@@ -65,10 +65,10 @@ export const EditCategoryPage = () => {
       return;
     }
     if (id) {
-      await processUpdateCategory(
-        { name: values.name, status: values.status },
-        id,
-      );
+      await processUpdateCategory(`categories/${id}`, {
+        name: values.name,
+        status: values.status,
+      });
     }
 
     if (updateResponse.status || updateResponse.status_code === HttpStatus.OK) {

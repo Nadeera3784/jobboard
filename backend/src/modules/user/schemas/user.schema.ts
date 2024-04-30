@@ -6,6 +6,7 @@ import {
   IsObject,
   MaxLength,
   IsOptional,
+  IsBoolean,
 } from 'class-validator';
 import { Document, now } from 'mongoose';
 import { Roles } from '../enums/roles.enum';
@@ -58,6 +59,11 @@ export class User extends Document {
   @Prop({ default: null })
   @IsOptional()
   email_verified: Date;
+
+  @Prop({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  is_two_factor_authentication_enabled: Boolean;
 
   @Prop({ default: now(), select: false })
   @IsOptional()

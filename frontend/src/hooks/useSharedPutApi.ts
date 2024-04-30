@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { ApiResponse, ResponseState, updateLocationType } from '../../types';
-import { HttpStatus, AppConstants } from '../../constants';
+import { ApiResponse, ResponseState } from '../types';
+import { HttpStatus, AppConstants } from '../constants';
 
-export const useUpdateLocation = () => {
+export const useSharedPutApi = () => {
   const [response, setResponse] = useState<ResponseState>({
     status: false,
     loading: false,
@@ -14,16 +14,16 @@ export const useUpdateLocation = () => {
     message: '',
   });
 
-  const process = async (params: updateLocationType, id: string) => {
+  const process = async (endpoint: string, params: any) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
     }));
 
-    const ENDPOINT = `${AppConstants.API_URL}/locations/${id}`;
+    const URL = `${AppConstants.API_URL}/${endpoint}`;
 
     try {
-      const apiResponse = await axios.put<ApiResponse>(ENDPOINT, params);
+      const apiResponse = await axios.put<ApiResponse>(URL, params);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

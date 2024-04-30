@@ -6,7 +6,8 @@ import { UserService } from '../../user/services/user.service';
 import { BaseFeature } from '../../app/features/base-feature';
 import { ForgotPasswordDto } from '../dtos';
 import { ResetPasswordEvent } from '../events/reset-password.event';
-import { Events } from '../enums/events.enum';
+import { RESET_PASSWORD } from '../constants';
+import { User } from '../../user/schemas/user.schema';
 
 @Injectable()
 export class ForgotPasswordFeature extends BaseFeature {
@@ -43,7 +44,7 @@ export class ForgotPasswordFeature extends BaseFeature {
     }
   }
 
-  private async publishEvents(user) {
+  private async publishEvents(user: User) {
     const resetPasswordEvent = new ResetPasswordEvent();
     const verificationToken =
       await this.passwordResetTokenService.generatePasswordResetToken(
@@ -51,6 +52,6 @@ export class ForgotPasswordFeature extends BaseFeature {
       );
     resetPasswordEvent.token = verificationToken.token;
     resetPasswordEvent.email = verificationToken.email;
-    this.eventEmitter.emit(Events.RESET_PASSWORD, resetPasswordEvent);
+    this.eventEmitter.emit(RESET_PASSWORD, resetPasswordEvent);
   }
 }

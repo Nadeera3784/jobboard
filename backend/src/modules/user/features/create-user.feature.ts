@@ -49,7 +49,6 @@ export class CreateUserFeature extends BaseFeature {
         'User has been created successfully',
       );
     } catch (error) {
-      console.log('ERROR', error);
       return this.responseError(
         HttpStatus.BAD_REQUEST,
         'Something went wrong, Please try again later',

@@ -4,7 +4,7 @@ import { Queue } from 'bull';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
-export class AuthService {
+export class AuthenticationService {
   constructor(
     @InjectQueue('verification-email') private verificationEmailQueue: Queue,
     @InjectQueue('reset-password-email') private resetPasswordEmailQueue: Queue,

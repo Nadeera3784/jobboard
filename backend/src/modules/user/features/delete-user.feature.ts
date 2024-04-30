@@ -4,7 +4,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter';
 import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../services/user.service';
 import { UserDeletedEvent } from '../events/user-deleted.event';
-import { Events } from '../enums/events.enum';
+import { USER_DELETED } from '../constants';
 
 @Injectable()
 export class DeleteUserFeature extends BaseFeature {
@@ -35,6 +35,6 @@ export class DeleteUserFeature extends BaseFeature {
   private async dispatchEvent(id: string) {
     const event = new UserDeletedEvent();
     event.id = id;
-    this.eventEmitter.emit(Events.USER_DELETED, event);
+    this.eventEmitter.emit(USER_DELETED, event);
   }
 }

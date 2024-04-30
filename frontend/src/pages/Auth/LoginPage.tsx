@@ -1,4 +1,4 @@
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -15,13 +15,13 @@ import {
 import { LoginSchema } from '../../schemas';
 import { Input } from '../../components/Form/Input';
 import { Button } from '../../components/Form/Button';
-import { useSharedPost } from '../../hooks/useSharedPost';
+import { useSharedPostApi } from '../../hooks/useSharedPostApi';
 import { HttpStatus } from '../../constants';
 import { Spinner } from '../../components/Icons';
 import { useAppContext } from '../../contexts/AppContext';
 
 export const LoginPage = () => {
-  const { response, process } = useSharedPost();
+  const { response, process } = useSharedPostApi();
   const { setPermission, setToken } = useAppContext();
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ export const LoginPage = () => {
       return;
     }
 
-    process('auth/signin', validatedFields.data);
+    process('authentication/signin', validatedFields.data);
 
     if (response.status_code == HttpStatus.BAD_REQUEST) {
       toast.warning('The email address or password is incorrect. Please retry');

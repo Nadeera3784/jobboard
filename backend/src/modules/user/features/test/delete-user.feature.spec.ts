@@ -5,7 +5,7 @@ import { HttpStatus } from '@nestjs/common';
 import { DeleteUserFeature } from '../delete-user.feature';
 import { UserService } from '../../services/user.service';
 import { UserDeletedEvent } from '../../events';
-import { Events } from '../../enums';
+import { USER_DELETED } from '../../constants';
 
 describe('features/DeleteUserFeature', () => {
   let userService: UserService;
@@ -65,7 +65,7 @@ describe('features/DeleteUserFeature', () => {
     event.id = id;
     expect(eventEmitter.emit).toHaveBeenCalled();
     expect(eventEmitter.emit).toHaveBeenCalledTimes(1);
-    expect(eventEmitter.emit).toHaveBeenCalledWith(Events.USER_DELETED, event);
+    expect(eventEmitter.emit).toHaveBeenCalledWith(USER_DELETED, event);
   });
 
   it('GetUserByIdFeature handle fail', async () => {

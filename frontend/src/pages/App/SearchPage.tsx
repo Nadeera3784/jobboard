@@ -1,8 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { useGetFilters } from '../../hooks/Search/useGetFilters';
 import { useGetSearch } from '../../hooks/Search/useGetSearch';
-import { useGetJobById } from '../../hooks/Search/useGetJobById';
+import { useSharedGetApi } from '../../hooks/useSharedGetAPI';
 import {
   Select,
   SelectContent,
@@ -53,12 +52,12 @@ export const SearchPage = () => {
     user: '',
     expired_at: '',
   });
-  const { response, process } = useGetFilters();
+  const { response, process } = useSharedGetApi();
   const { response: searchReponse, process: processSearch } = useGetSearch();
-  const { response: jobReponse, process: processGetById } = useGetJobById();
+  const { response: jobReponse, process: processGetById } = useSharedGetApi();
 
   useEffect(() => {
-    process();
+    process('app/shared/filters');
   }, [response.status]);
 
   useEffect(() => {
@@ -67,7 +66,7 @@ export const SearchPage = () => {
   }, [searchReponse.status, currentPage, search, filter, order]);
 
   useEffect(() => {
-    processGetById(selectedJob._id);
+    processGetById(`jobs/${selectedJob._id}`);
   }, [selectedJob]);
 
   const onPageChange = (page: number) => {

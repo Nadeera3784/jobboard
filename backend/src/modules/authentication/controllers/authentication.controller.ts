@@ -20,10 +20,10 @@ import { VerifyEmailFeature } from '../features/verify-email.feature';
 import { ForgotPasswordFeature } from '../features/forgot-password.feature';
 import { ResetPasswordFeature } from '../features/reset-password.feature';
 import { MeFeature } from '../features/me.feature';
-import { AuthGuard } from '../../auth/guards/auth.guard';
+import { AuthenticationGuard } from '../guards/authentication.guard';
 
-@Controller('auth')
-export class AuthController {
+@Controller('authentication')
+export class AuthenticationController {
   constructor(
     private readonly signUpFeature: SignUpFeature,
     private readonly verifyEmailFeature: VerifyEmailFeature,
@@ -82,7 +82,7 @@ export class AuthController {
 
   @Get('/me')
   @Header('Content-Type', 'application/json')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthenticationGuard)
   public async me(@Req() request, @Res() response) {
     const { status, response: featureUpResponse } = await this.meFeature.handle(
       request.user.id,

@@ -6,7 +6,7 @@ import { UserRegisterdEvent } from '../events/user-registerd.event';
 import { VerificationTokenService } from '../services';
 import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../../user/services/user.service';
-import { Events } from '../../user/enums/events.enum';
+import { USER_REGISTERED } from '../../user/constants';
 
 @Injectable()
 export class SignUpFeature extends BaseFeature {
@@ -49,6 +49,6 @@ export class SignUpFeature extends BaseFeature {
       await this.verificationTokenService.generateVerificationToken(user.email);
     event.token = verificationToken.token;
     event.email = verificationToken.email;
-    this.eventEmitter.emit(Events.USER_REGISTERED, event);
+    this.eventEmitter.emit(USER_REGISTERED, event);
   }
 }

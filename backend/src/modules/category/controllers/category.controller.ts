@@ -20,14 +20,14 @@ import {
   UpdateCategorynFeature,
 } from '../features';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
-import { RolesAllowed } from '../../auth/decorators/role.decorator';
-import { AuthGuard } from '../../auth/guards/auth.guard';
-import { RoleGuard } from '../../auth/guards/role.guard';
+import { RolesAllowed } from '../../authentication/decorators/role.decorator';
+import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
+import { RoleGuard } from '../../authentication/guards/role.guard';
 import { Roles } from '../../user/enums/roles.enum';
 import { IdDto } from '../../app/dtos/Id.dto';
 
 @Controller('categories')
-//@UseGuards(AuthGuard, RoleGuard)
+//@UseGuards(AuthenticationGuard, RoleGuard)
 export class CategoryController {
   constructor(
     private readonly createCategoryFeature: CreateCategoryFeature,

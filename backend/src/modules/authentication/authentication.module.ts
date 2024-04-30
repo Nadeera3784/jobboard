@@ -17,16 +17,16 @@ import { UserRegisterdListener } from './listeners/user-registerd.listener';
 import { ResetPasswordListener } from './listeners/reset-password.listener';
 import { VerificationMailQueue } from './queues/verification-email.queue';
 import { PasswordResetMailQueue } from './queues/password-reset-email.queue';
-import { AuthService } from './services/auth.service';
-import { AuthController } from './controllers/auth.controller';
+import { AuthenticationService } from './services/authentication.service';
+import { AuthenticationController } from './controllers/authentication.controller';
 import { EmailService } from '../app/services';
 import { VerificationTokenService } from './services/verification-token.service';
-import { VerifyEmailFeature } from '../auth/features/verify-email.feature';
+import { VerifyEmailFeature } from './features/verify-email.feature';
 import { PasswordResetTokenService } from './services/password-reset-token.service';
-import { ForgotPasswordFeature } from '../auth/features/forgot-password.feature';
-import { SignUpFeature } from '../auth/features/sign-up.feature';
-import { ResetPasswordFeature } from '../auth/features/reset-password.feature';
-import { SignInFeature } from '../auth/features/sign-in.feature';
+import { ForgotPasswordFeature } from './features/forgot-password.feature';
+import { SignUpFeature } from './features/sign-up.feature';
+import { ResetPasswordFeature } from './features/reset-password.feature';
+import { SignInFeature } from './features/sign-in.feature';
 import { MeFeature } from './features/me.feature';
 import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
 
@@ -56,7 +56,7 @@ import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
     UserModule,
   ],
   providers: [
-    AuthService,
+    AuthenticationService,
     VerificationTokenService,
     EmailService,
     SignUpFeature,
@@ -72,6 +72,6 @@ import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
     MeFeature,
     UserUpdatedListener,
   ],
-  controllers: [AuthController],
+  controllers: [AuthenticationController],
 })
-export class AuthModule {}
+export class AuthenticationModule {}

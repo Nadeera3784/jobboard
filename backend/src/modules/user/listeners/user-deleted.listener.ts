@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 
 import { UserDeletedEvent } from '../events';
-import { Events } from '../enums/events.enum';
+import { USER_DELETED } from '../constants';
 
 @Injectable()
 export class UserDeletedListener {
   constructor() {}
 
-  @OnEvent(Events.USER_DELETED)
+  @OnEvent(USER_DELETED)
   async handleUserDeletedEvent(event: UserDeletedEvent) {}
 }

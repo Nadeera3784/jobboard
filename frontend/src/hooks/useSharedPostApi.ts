@@ -1,28 +1,28 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { ApiResponse, ResponseState, updateCategoryType } from '../../types';
-import { HttpStatus, AppConstants } from '../../constants';
+import { ApiResponse, ResponseState } from '../types';
+import { HttpStatus, AppConstants } from '../constants';
 
-export const useUpdateCategory = () => {
+export const useSharedPostApi = () => {
   const [response, setResponse] = useState<ResponseState>({
     status: false,
     loading: false,
     errored: false,
     data: {},
-    status_code: HttpStatus.OK,
+    status_code: null,
     message: '',
   });
 
-  const process = async (params: updateCategoryType, id: string) => {
-    setResponse(prevResponse => ({
+  const process = async (endpoint: string, params: any) => {
+    setResponse((prevResponse: any) => ({
       ...prevResponse,
       loading: true,
     }));
-    const ENDPOINT = `${AppConstants.API_URL}/categories/${id}`;
+    const URL = `${AppConstants.API_URL}/${endpoint}`;
 
     try {
-      const apiResponse = await axios.put<ApiResponse>(ENDPOINT, params);
+      const apiResponse = await axios.post<ApiResponse>(URL, params);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

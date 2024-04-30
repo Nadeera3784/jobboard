@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-import { ApiResponse, ResponseState } from '../../types';
-import { HttpStatus, AppConstants } from '../../constants';
+import { ApiResponse, ResponseState } from '../types';
+import { HttpStatus, AppConstants } from '../constants';
 
-export const useGetJobById = () => {
+export const useSharedGetApi = () => {
   const [response, setResponse] = useState<ResponseState>({
     status: false,
     loading: false,
@@ -14,12 +14,12 @@ export const useGetJobById = () => {
     message: '',
   });
 
-  const process = async (id: string) => {
+  const process = async (params: string) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
     }));
-    const ENDPOINT = `${AppConstants.API_URL}/jobs/${id}`;
+    const ENDPOINT = `${AppConstants.API_URL}/${params}`;
     try {
       const apiResponse = await axios.get<ApiResponse>(ENDPOINT);
       setResponse({

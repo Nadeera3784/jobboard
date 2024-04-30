@@ -24,15 +24,15 @@ import {
   GetUserByIdFeature,
   UpdateUserFeature,
 } from '../features';
-import { AuthGuard } from '../../auth/guards/auth.guard';
-import { RoleGuard } from '../../auth/guards/role.guard';
+import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
+import { RoleGuard } from '../../authentication/guards/role.guard';
 import { Roles } from '../enums';
-import { RolesAllowed } from '../../auth/decorators/role.decorator';
+import { RolesAllowed } from '../../authentication/decorators/role.decorator';
 import { IdDto } from '../../app/dtos/Id.dto';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 
 @Controller('users')
-//@UseGuards(AuthGuard, RoleGuard)
+//@UseGuards(AuthenticationGuard, RoleGuard)
 export class UserController {
   constructor(
     private readonly deleteUserFeature: DeleteUserFeature,

@@ -16,16 +16,18 @@ import {
 } from '../features';
 import { Roles } from '../../user/enums';
 import { CreateJobDto } from '../dtos';
-import { RolesAllowed } from '../../auth/decorators/role.decorator';
+import { RolesAllowed } from '../../authentication/decorators/role.decorator';
 import {
   JobFilterInterface,
   JobOrderInterface,
   JobSearchInterface,
 } from '../interfaces';
 import { IdDto } from '../../app/dtos/Id.dto';
+import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
+import { RoleGuard } from '../../authentication/guards/role.guard';
 
 @Controller('jobs')
-//@UseGuards(AuthGuard, RoleGuard)
+//@UseGuards(AuthenticationGuard, RoleGuard)
 export class JobController {
   constructor(
     private readonly createJobFeature: CreateJobFeature,

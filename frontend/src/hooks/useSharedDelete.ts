@@ -13,7 +13,10 @@ export const useSharedDelete = () => {
     status_code: null,
     message: '',
   });
-  const process = async (endpoint: string) => {
+  const process = async (
+    endpoint: string,
+    finallyCallback?: (response: any) => void,
+  ) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
@@ -40,6 +43,10 @@ export const useSharedDelete = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
+    } finally {
+      if (typeof finallyCallback === 'function') {
+        finallyCallback(response);
+      }
     }
   };
 

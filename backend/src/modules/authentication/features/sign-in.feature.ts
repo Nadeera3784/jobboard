@@ -4,17 +4,21 @@ import { JwtService } from '@nestjs/jwt';
 
 import { SignInDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
-import { AuthService } from '../services/auth.service';
+import { AuthenticationService } from '../services/authentication.service';
 import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../../user/services/user.service';
-import { Events } from '../../user/enums/events.enum';
+import {
+  USER_REGISTERED,
+  USER_UPDATED,
+  USER_DATE_SYNC,
+} from '../../user/constants';
 import { VerificationTokenService } from '../services';
 import { UserUpdatedEvent } from '../../user/events';
 
 @Injectable()
 export class SignInFeature extends BaseFeature {
   constructor(
-    private readonly authService: AuthService,
+    private readonly authenticationService: AuthenticationService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly verificationTokenService: VerificationTokenService,
@@ -38,7 +42,7 @@ export class SignInFeature extends BaseFeature {
         await this.dispatchVerificationEvent(existingUser.email);
       }
 
-      const isPasswordMatch = await this.authService.signIn(
+      const isPasswordMatch = await this.authenticationService.signIn(
         signInDto.password,
         existingUser.password,
       );
@@ -76,13 +80,13 @@ export class SignInFeature extends BaseFeature {
       await this.verificationTokenService.generateVerificationToken(email);
     event.token = verificationToken.token;
     event.email = verificationToken.email;
-    this.eventEmitter.emit(Events.USER_REGISTERED, event);
+    this.eventEmitter.emit(USER_REGISTERED, event);
   }
 
   private async dispatchDateSyncEvent(id: string) {
     const event = new UserUpdatedEvent();
-    event.type = Events.USER_DATE_SYNC;
+    event.type = USER_DATE_SYNC;
     event.id = id;
-    this.eventEmitter.emit(Events.USER_UPDATED, event);
+    this.eventEmitter.emit(USER_UPDATED, event);
   }
 }

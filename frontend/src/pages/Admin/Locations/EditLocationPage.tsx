@@ -25,16 +25,16 @@ import {
 import { Input } from '../../../components/Form/Input';
 import { Button } from '../../../components/Form/Button';
 import { CreateCategorySchema as UpdateCategorySchema } from '../../../schemas';
-import { useGetLocationById } from '../../../hooks/Locations/useGetLocationById';
-import { useUpdateLocation } from '../../../hooks/Locations/useUpdateLocation';
+import { useSharedGetApi } from '../../../hooks/useSharedGetAPI';
+import { useSharedPutApi } from '../../../hooks/useSharedPutApi';
 import { HttpStatus } from '../../../constants';
 
 export const EditLocationPage = () => {
   let { id } = useParams<{ id: string }>();
 
-  const { response, process } = useGetLocationById();
+  const { response, process } = useSharedGetApi();
   const { response: updateResponse, process: processUpdateCategory } =
-    useUpdateLocation();
+    useSharedPutApi();
 
   const form = useForm<z.infer<typeof UpdateCategorySchema>>({
     resolver: zodResolver(UpdateCategorySchema),
@@ -46,7 +46,7 @@ export const EditLocationPage = () => {
 
   const onInit = async () => {
     if (id !== undefined) {
-      await process({ id: id });
+      await process(`locations/${id}`);
       form.reset({
         name: response?.data?.name || '',
         status: response?.data?.status || '',
@@ -65,12 +65,11 @@ export const EditLocationPage = () => {
       return;
     }
     if (id) {
-      await processUpdateCategory(
-        { name: values.name, status: values.status },
-        id,
-      );
+      await processUpdateCategory(`locations/${id}`, {
+        name: values.name,
+        status: values.status,
+      });
     }
-
     if (updateResponse.status || updateResponse.status_code === HttpStatus.OK) {
       toast.success('Category updated successfully!');
     } else {

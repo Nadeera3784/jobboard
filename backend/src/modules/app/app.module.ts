@@ -9,7 +9,7 @@ import configuration from '../../config/configuration';
 import { CategoryModule } from '../category/category.module';
 import { LocationModule } from '../location/location.module';
 import { UserModule } from '../user/user.module';
-import { AuthModule } from '../auth/auth.module';
+import { AuthenticationModule } from '../authentication/authentication.module';
 import { JobModule } from '../job/job.module';
 import { AppService, CacheService } from './services';
 import { AppController } from './controllers/app.controller';
@@ -53,7 +53,7 @@ import { CommandModule } from '../command';
     CategoryModule,
     LocationModule,
     UserModule,
-    AuthModule,
+    AuthenticationModule,
     JobModule,
     CommandModule,
   ],

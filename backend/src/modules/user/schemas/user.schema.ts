@@ -9,7 +9,7 @@ import {
   IsBoolean,
 } from 'class-validator';
 import { Document, now } from 'mongoose';
-import { Roles } from '../enums/roles.enum';
+import { Roles , UserStatus} from '../enums';
 import { Exclude } from 'class-transformer';
 
 @Schema({
@@ -52,7 +52,7 @@ export class User extends Document {
   @IsOptional()
   role: string;
 
-  @Prop({ default: 'Active' })
+  @Prop({ default: UserStatus.ACTIVE })
   @IsOptional()
   status: string;
 

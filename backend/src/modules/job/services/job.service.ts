@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import mongoose, { Model } from 'mongoose';
+import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import * as moment from 'moment';
 
 import { Job } from '../schemas/job.schema';
 import { CreateJobDto, UpdateJobDto } from '../dtos';
-import { Status } from '../enums';
+import { JobStatus } from '../enums';
 import {
   JobFilterInterface,
   JobOrderInterface,
@@ -26,7 +26,7 @@ export class JobService {
     page: number,
   ): Promise<{ data: JobInterface[]; count: number }> {
     const query: any[] = [
-      { $match: { status: 'Active' } },
+      { $match: { status: JobStatus.ACTIVE } },
       {
         $lookup: {
           from: 'categories',
@@ -129,7 +129,7 @@ export class JobService {
       .aggregate([
         {
           $match: {
-            status: Status.EXPIRED,
+            status: JobStatus.EXPIRED,
           },
         },
         {

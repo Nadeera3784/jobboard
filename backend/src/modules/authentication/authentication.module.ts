@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bull';
 import { JwtModule } from '@nestjs/jwt';
@@ -19,7 +19,6 @@ import { VerificationMailQueue } from './queues/verification-email.queue';
 import { PasswordResetMailQueue } from './queues/password-reset-email.queue';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthenticationController } from './controllers/authentication.controller';
-import { EmailService } from '../app/services';
 import { VerificationTokenService } from './services/verification-token.service';
 import { VerifyEmailFeature } from './features/verify-email.feature';
 import { PasswordResetTokenService } from './services/password-reset-token.service';
@@ -29,6 +28,7 @@ import { ResetPasswordFeature } from './features/reset-password.feature';
 import { SignInFeature } from './features/sign-in.feature';
 import { MeFeature } from './features/me.feature';
 import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
+import { AppModule } from '../app/app.module';
 
 @Module({
   imports: [
@@ -53,12 +53,12 @@ import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
       }),
       inject: [ConfigService],
     }),
+    forwardRef(() => AppModule),
     UserModule,
   ],
   providers: [
     AuthenticationService,
     VerificationTokenService,
-    EmailService,
     SignUpFeature,
     VerificationMailQueue,
     UserRegisterdListener,

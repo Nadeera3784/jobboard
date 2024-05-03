@@ -19,20 +19,20 @@ export class GetSharedFiltersFeature extends BaseFeature {
 
   public async handle() {
     try {
-      const cacheKey = 'shared:filters';
       const filters = this.appService.getFilters();
       const locations = await this.locationService.getAll();
       const categories = await this.categoryService.getAll();
-      const cachedData = await this.cacheService.get(cacheKey);
-      if (cachedData) {
-        return this.responseSuccess(HttpStatus.OK, null, cachedData);
-      }
-      const data = {
-        locations: locations,
-        categories: categories,
-        ...filters,
-      };
-      await this.cacheService.set(cacheKey, 60, data);
+      const data = await this.cacheService.remember(
+        'shared:filters',
+        3600,
+        async () => {
+          return {
+            locations: locations,
+            categories: categories,
+            ...filters,
+          };
+        },
+      );
       return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {
       return this.responseError(

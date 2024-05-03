@@ -1,4 +1,4 @@
-export enum Status {
+export enum JobStatus {
   EXPIRED = 'Expired',
   ACTIVE = 'Active',
 }

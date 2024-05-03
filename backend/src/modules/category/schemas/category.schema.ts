@@ -2,6 +2,8 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { Document, now } from 'mongoose';
 
+import { CategoryStatus } from '../enums';
+
 @Schema({
   versionKey: false,
 })
@@ -11,7 +13,7 @@ export class Category extends Document {
   @IsNotEmpty()
   name: string;
 
-  @Prop({ default: 'Active' })
+  @Prop({ default: CategoryStatus.ACTIVE })
   @IsOptional()
   status: string;
 
@@ -21,3 +23,5 @@ export class Category extends Document {
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
+
+CategorySchema.index({ name: 1 });

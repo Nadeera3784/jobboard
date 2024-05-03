@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Logger, Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 
@@ -13,11 +13,12 @@ import { UpdateUserFeature } from './features/update-user.feature';
 import { DatatableFeature } from './features/datatable.feature';
 import { UserDeletedListener } from './listeners/user-deleted.listener';
 import { UserSeedCommand } from './commands';
-import { FilesystemService } from '../app/services/filesystem.service';
+import { AppModule } from '../app/app.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    forwardRef(() => AppModule),
   ],
   providers: [
     UserService,
@@ -31,9 +32,8 @@ import { FilesystemService } from '../app/services/filesystem.service';
     UserDeletedListener,
     UserSeedCommand,
     Logger,
-    FilesystemService,
   ],
   controllers: [UserController],
-  exports: [UserService, JwtService],
+  exports: [UserService],
 })
 export class UserModule {}

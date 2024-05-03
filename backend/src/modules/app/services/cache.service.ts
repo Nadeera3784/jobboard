@@ -14,18 +14,27 @@ export class CacheService {
     this.client = new redis(options);
   }
 
-  public async get(key: string, type = 'JSON') {
+  public async get(key: string) {
     const value = await this.client.get(key);
-    if (type === 'JSON') {
-      return JSON.parse(value);
-    }
-    return value;
+    return JSON.parse(value);
   }
 
-  public async set(key: string, time: number, value: any, type = 'JSON') {
-    if (type === 'JSON') {
-      value = JSON.stringify(value);
+  public async set(key: string, time: number, value: any) {
+    await this.client.setex(key, time, JSON.stringify(value));
+  }
+
+  public async remember<T>(
+    key: string,
+    time: number,
+    callback: () => Promise<T>,
+  ): Promise<T> {
+    const cachedValue = await this.get(key);
+    if (cachedValue) {
+      return cachedValue;
+    } else {
+      const freshValue = await callback();
+      await this.set(key, time, freshValue);
+      return freshValue;
     }
-    await this.client.setex(key, time, value);
   }
 }

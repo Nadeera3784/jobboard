@@ -15,6 +15,7 @@ import { UsersPage } from '../pages/Admin/Users/UsersPage';
 import { EditUserPage } from '../pages/Admin/Users/EditUserPage';
 import { SearchPage } from '../pages/App/SearchPage';
 import { TestPage } from '../pages/Admin/TestPage';
+import { SettingPage } from '../pages/Admin/SettingPage';
 
 export const AppRouter = () => {
   return (
@@ -37,6 +38,7 @@ export const AppRouter = () => {
           <Route path="locations/:id" element={<EditLocationPage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="users/:id" element={<EditUserPage />} />
+          <Route path="settings" element={<SettingPage />} />
           <Route path="test" element={<TestPage />} />
         </Route>
       </Routes>

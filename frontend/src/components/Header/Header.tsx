@@ -78,7 +78,7 @@ export const Header = () => {
                 <span className="inline-flex rounded-md shadow">
                   <Link
                     to="auth"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-gray-50"
                   >
                     Log in
                   </Link>
@@ -148,7 +148,7 @@ export const Header = () => {
               </div>
               <Link
                 to="/auth"
-                className="block w-full px-5 py-3 text-center font-medium text-indigo-600 bg-gray-50 hover:bg-gray-100"
+                className="block w-full px-5 py-3 text-center font-medium text-black bg-black hover:bg-gray-100"
               >
                 Log in
               </Link>

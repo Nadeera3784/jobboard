@@ -1,4 +1,4 @@
-import { MapPinned, Users, Wallet } from 'lucide-react';
+import { MapPinned, Users } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
@@ -78,8 +78,8 @@ export const AdminLayout = () => {
                 <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
                   Manage
                 </div>
-                <Link
-                  to="/admin"
+                <a
+                  href=""
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
                   <span className="flex-none flex items-center">
@@ -99,7 +99,7 @@ export const AdminLayout = () => {
                     </svg>
                   </span>
                   <span className="py-2 flex-grow">Dashboard</span>
-                </Link>
+                </a>
                 <a
                   href=""
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
@@ -178,21 +178,34 @@ export const AdminLayout = () => {
                   </span>
                   <span className="py-2 flex-grow">Subscription</span>
                 </a>
-                <a
-                  href="#"
-                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
-                >
-                  <span className="flex-none flex items-center">
-                    <Wallet className="inline-block w-5 h-5" />
-                  </span>
 
-                  <span className="py-2 flex-grow">Payments</span>
-                </a>
                 <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
                   Account
                 </div>
-                <Link
-                  to="/admin/settings"
+                <a
+                  href=""
+                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
+                >
+                  <span className="flex-none flex items-center opacity-50">
+                    <svg
+                      className="hi-outline hi-user inline-block w-5 h-5"
+                      stroke="currentColor"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                  </span>
+                  <span className="py-2 grow">Profile</span>
+                </a>
+                <a
+                  href=""
                   className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
                 >
                   <span className="flex-none flex items-center opacity-50">
@@ -218,7 +231,7 @@ export const AdminLayout = () => {
                     </svg>
                   </span>
                   <span className="py-2 grow">Settings</span>
-                </Link>
+                </a>
                 <button
                   type="button"
                   onClick={onClickSignOut}

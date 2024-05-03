@@ -26,7 +26,7 @@ const LatestJobList = () => {
         <div className="flex flex-wrap -m-4">
           {searchReponse?.data?.data &&
             (searchReponse.data.data as any[]).map((job, key) => (
-              <JobCardBasic key={key} />
+              <JobCardBasic key={key} job={job} />
             ))}
         </div>
       </div>

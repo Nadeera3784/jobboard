@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import LatestJobList from '../../components/Home/LatestJobList';
 
 export const HomePage = () => {
@@ -81,7 +82,7 @@ export const HomePage = () => {
               <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
                 <span className="block xl:inline">Find and become a </span>
                 <br />
-                <span className="block text-indigo-600 xl:inline">
+                <span className="block text-gray-600 xl:inline">
                   Professional with passion
                 </span>
               </h1>
@@ -91,20 +92,20 @@ export const HomePage = () => {
               </p>
               <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
                 <div className="rounded-md shadow">
-                  <a
-                    href="#"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10"
+                  <Link
+                    to="/search"
+                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-900 md:py-4 md:text-lg md:px-10"
                   >
                     Get started
-                  </a>
+                  </Link>
                 </div>
                 <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
-                  <a
-                    href="#"
-                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+                  <Link
+                    to="/auth"
+                    className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
                   >
-                    Live demo
-                  </a>
+                    Sign up
+                  </Link>
                 </div>
               </div>
             </div>
@@ -112,7 +113,27 @@ export const HomePage = () => {
         </div>
       </div>
       <div className="container xl:max-w-7xl mx-auto px-4 py-16 lg:px-8 lg:py-32">
+        <div className="text-center">
+          <h1 className="text-5xl tracking-tight font-extrabold text-gray-900 mb-2">
+            Latest job vacancies
+          </h1>
+          <p className="text-lg">
+            Search and find your dream job is easier than ever. Just browse a{' '}
+            <br /> job and apply if you need to. They are waiting for your
+            skills.
+          </p>
+        </div>
         <LatestJobList />
+        <div className="text-center">
+          <div className="inline-flex rounded-md shadow">
+            <Link
+              to="/search"
+              className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-900"
+            >
+              Browse All Jobs
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );

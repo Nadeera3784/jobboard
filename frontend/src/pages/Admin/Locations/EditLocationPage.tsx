@@ -25,7 +25,7 @@ import {
 import { Input } from '../../../components/Form/Input';
 import { Button } from '../../../components/Form/Button';
 import { CreateCategorySchema as UpdateCategorySchema } from '../../../schemas';
-import { useSharedGetApi } from '../../../hooks/useSharedGetAPI';
+import { useSharedGetApi } from '../../../hooks/useSharedGetApi';
 import { useSharedPutApi } from '../../../hooks/useSharedPutApi';
 import { HttpStatus } from '../../../constants';
 

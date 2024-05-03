@@ -9,6 +9,12 @@ export type Job = {
   experience_level: string;
   user: string;
   expired_at: string;
+  company_name: string;
+  company_logo?: {
+    key: string;
+    value: string;
+  };
+  location_name?: string;
 };
 
 export type JobCardProps = {

@@ -13,3 +13,15 @@ export function getInitials(name: string): string {
   }
   return initials;
 }
+
+export function limitString(input: string, maxLength: number): string {
+  if (input.length <= maxLength) {
+    return input;
+  } else {
+    return input.slice(0, maxLength) + '...';
+  }
+}
+
+export function removeHtmlTags(input: string): string {
+  return input.replace(/<[^>]*>/g, '');
+}

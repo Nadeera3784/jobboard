@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import { useGetSearch } from '../../hooks/Search/useGetSearch';
-import { useSharedGetApi } from '../../hooks/useSharedGetAPI';
+import { useSharedGetApi } from '../../hooks/useSharedGetApi';
 import {
   Select,
   SelectContent,
@@ -40,21 +40,13 @@ export const SearchPage = () => {
   });
 
   const [appliedFilters, setAppliedFilters] = useState({});
-  const [selectedJob, setSelectedJob] = useState<Job>({
+  const [selectedJob, setSelectedJob] = useState({
     _id: '',
-    name: '',
-    description: '',
-    category: '',
-    location: '',
-    remote: '',
-    job_type: '',
-    experience_level: '',
-    user: '',
-    expired_at: '',
   });
   const { response, process } = useSharedGetApi();
   const { response: searchReponse, process: processSearch } = useGetSearch();
   const { response: jobReponse, process: processGetById } = useSharedGetApi();
+  let jobid = new URLSearchParams(window.location.search).get('jobid');
 
   useEffect(() => {
     process('app/shared/filters');
@@ -68,6 +60,12 @@ export const SearchPage = () => {
   useEffect(() => {
     processGetById(`jobs/${selectedJob._id}`);
   }, [selectedJob]);
+
+  useEffect(() => {
+    if (jobid) {
+      setSelectedJob({ _id: jobid });
+    }
+  }, [jobid]);
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);

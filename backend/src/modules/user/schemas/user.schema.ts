@@ -9,7 +9,7 @@ import {
   IsBoolean,
 } from 'class-validator';
 import { Document, now } from 'mongoose';
-import { Roles , UserStatus} from '../enums';
+import { Roles, UserStatus } from '../enums';
 import { Exclude } from 'class-transformer';
 
 @Schema({

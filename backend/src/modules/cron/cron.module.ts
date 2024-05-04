@@ -15,7 +15,7 @@ import { UserService } from '../user/services/user.service';
 import { JobService } from '../job/services';
 import { User, UserSchema } from '../user/schemas/user.schema';
 import { Job, JobSchema } from '../job/schemas/job.schema';
-import { DeleteExpiredJobsCron } from '../job/cron';
+import { DeleteExpiredJobsCron, UpdateExpireJobsCron } from '../job/cron';
 
 @Module({
   imports: [
@@ -61,6 +61,7 @@ import { DeleteExpiredJobsCron } from '../job/cron';
     DeleteExpiredJobsFeature,
     JobService,
     DeleteExpiredJobsCron,
+    UpdateExpireJobsCron,
   ],
   exports: [],
 })

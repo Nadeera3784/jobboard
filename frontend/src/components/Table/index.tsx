@@ -27,6 +27,7 @@ import {
 } from '../Dialog/DropdownMenu';
 import { Button } from '../Form/Button';
 import { DeleteDialog } from './DeleteDialog';
+import httpClient from '../../utils/http-client';
 
 export const Table: React.FC<TableProps> = ({
   endpoint,

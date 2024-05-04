@@ -1,8 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, now } from 'mongoose';
+import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
-import { faker } from '@faker-js/faker';
 import * as moment from 'moment';
 import { ConfigService } from '@nestjs/config';
 
@@ -229,20 +228,6 @@ export class UserService {
       };
     } catch (error) {
       return error;
-    }
-  }
-
-  async seeds() {
-    for (let index = 0; index < 20; index++) {
-      await this.userModel.create({
-        name: faker.person.fullName(),
-        email: faker.internet.email(),
-        phone: faker.phone.number(),
-        password:
-          '$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK',
-        email_verified: now(),
-        status: 'Active',
-      });
     }
   }
 }

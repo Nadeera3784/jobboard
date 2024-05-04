@@ -118,13 +118,33 @@ export class JobService {
     return await this.jobModel.findByIdAndUpdate({ _id: id }, updateJobDto);
   }
 
+  public async updateStatus(id: string, status: JobStatus) {
+    return await this.jobModel.findByIdAndUpdate(
+      { _id: id },
+      { status: status },
+    );
+  }
+
   public async delete(id: string) {
     return await this.jobModel.deleteOne({
       _id: id,
     });
   }
 
-  public async getExpiredJobs(duration = 1, batchSize = 50) {
+  public async getActiveExpireJobs(batchSize = 50) {
+    return await this.jobModel
+      .aggregate([
+        {
+          $match: {
+            status: JobStatus.ACTIVE,
+            expired_at: { $lt: moment().toDate() },
+          },
+        },
+      ])
+      .cursor({ batchSize: batchSize });
+  }
+
+  public async getExpiredJobs(duration = 2, batchSize = 50) {
     return await this.jobModel
       .aggregate([
         {

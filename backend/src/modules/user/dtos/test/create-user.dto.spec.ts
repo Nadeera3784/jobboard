@@ -1,8 +1,8 @@
-import { Roles } from '../../enums';
-import { SharedStatus } from '../../../app/enums/shared-status.enum';
-import { CreateUserDto } from '../create-user.dto';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
+
+import { RolesEnum, UserStatusEnum } from '../../enums';
+import { CreateUserDto } from '../create-user.dto';
 import { stringified } from '../../../../../test/mock-helper';
 
 describe('dtos/CreateUserDto', () => {
@@ -11,9 +11,9 @@ describe('dtos/CreateUserDto', () => {
     email: 'Brown.OKeefe11@hotmail.com',
     phone: '011103456',
     image: null,
-    role: Roles.USER,
+    role: RolesEnum.USER,
     password: '123232',
-    status: SharedStatus.ACTIVE,
+    status: UserStatusEnum.ACTIVE,
   };
 
   it('CreateUserDto should be defined', () => {

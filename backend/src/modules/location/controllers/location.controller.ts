@@ -23,11 +23,11 @@ import {
 import { RolesAllowed } from '../../authentication/decorators/role.decorator';
 import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
 import { RoleGuard } from '../../authentication/guards/role.guard';
-import { Roles } from '../../user/enums/roles.enum';
+import { RolesEnum } from '../../user/enums';
 import { IdDto } from '../../app/dtos/Id.dto';
 
 @Controller('locations')
-//@UseGuards(AuthenticationGuard, RoleGuard)
+@UseGuards(AuthenticationGuard, RoleGuard)
 export class LocationController {
   constructor(
     private readonly createLocationFeature: CreateLocationFeature,
@@ -40,7 +40,7 @@ export class LocationController {
 
   @Get()
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async getAll(@Res() response) {
     const { status, response: featureUpResponse } =
       await this.getAllLocationsFeature.handle();
@@ -49,7 +49,7 @@ export class LocationController {
 
   @Get('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async getById(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getLocationByIdFeature.handle(id);
@@ -58,7 +58,7 @@ export class LocationController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async create(
     @Res() response,
     @Body() createLocationDto: CreateLocationDto,
@@ -70,7 +70,7 @@ export class LocationController {
 
   @Put('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async update(
     @Res() response,
     @Param() { id }: IdDto,
@@ -83,7 +83,7 @@ export class LocationController {
 
   @Delete('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async delete(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.deleteLocationFeature.handle(id);
@@ -92,7 +92,7 @@ export class LocationController {
 
   @Post('/datatable')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async dataTable(
     @Res() response,
     @Body('order') order: any,

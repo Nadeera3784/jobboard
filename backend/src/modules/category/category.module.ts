@@ -1,5 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { JwtService } from '@nestjs/jwt';
 
 import { CategoryService } from './services/category.service';
 import { CategoryController } from './controllers/category.controller';
@@ -30,6 +31,7 @@ import { CategorySeedCommand } from './commands';
     DatatableFeature,
     CategorySeedCommand,
     Logger,
+    JwtService,
   ],
   controllers: [CategoryController],
   exports: [CategoryService],

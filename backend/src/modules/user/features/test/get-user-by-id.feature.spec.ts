@@ -3,8 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 
 import { GetUserByIdFeature } from '../get-user-by-id.feature';
 import { UserService } from '../../services/user.service';
-import { Roles } from '../../enums';
-import { SharedStatus } from '../../../app/enums/shared-status.enum';
+import { RolesEnum, UserStatusEnum } from '../../enums';
 
 describe('features/GetUserByIdFeature', () => {
   let userService: UserService;
@@ -16,8 +15,8 @@ describe('features/GetUserByIdFeature', () => {
     email: 'Brown.OKeefe11@hotmail.com',
     phone: '011103456',
     image: null,
-    role: Roles.USER,
-    status: SharedStatus.ACTIVE,
+    role: RolesEnum.USER,
+    status: UserStatusEnum.ACTIVE,
   };
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

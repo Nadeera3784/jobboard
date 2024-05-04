@@ -1,4 +1,4 @@
-export enum LoctionStatus {
+export enum LoctionStatusEnum {
   ACTIVE = 'Active',
   INACTIVE = 'InActive',
 }

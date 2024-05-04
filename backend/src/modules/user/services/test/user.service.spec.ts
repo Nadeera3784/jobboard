@@ -6,9 +6,9 @@ import { getModelToken } from '@nestjs/mongoose';
 import { SharedStatus } from '../../../app/enums/shared-status.enum';
 import { User } from '../../schemas/user.schema';
 import { UserService } from '../../services/user.service';
-import { Roles } from '../../enums';
+import { RolesEnum } from '../../enums';
 
-describe('services/UserService', () => {
+describe('user/services/UserService', () => {
   let userService: UserService;
   let userModel: Model<User>;
 
@@ -18,7 +18,7 @@ describe('services/UserService', () => {
     email: 'Brown.OKeefe11@hotmail.com',
     phone: '0111045783',
     image: null,
-    role: Roles.USER,
+    role: RolesEnum.USER,
     status: SharedStatus.ACTIVE,
   };
 
@@ -58,7 +58,7 @@ describe('services/UserService', () => {
       email: 'Brown.OKeefe11@hotmail.com',
       phone: '0111045783',
       image: null,
-      role: Roles.USER,
+      role: RolesEnum.USER,
       password: 'password',
     };
     jest
@@ -73,7 +73,7 @@ describe('services/UserService', () => {
       email: '',
       phone: '0111045783',
       image: null,
-      role: Roles.USER,
+      role: RolesEnum.USER,
       password: '',
     };
     jest
@@ -89,7 +89,7 @@ describe('services/UserService', () => {
       email: 'Brown.OKeefe11@hotmail.com',
       phone: '0111045783',
       image: null,
-      role: Roles.USER,
+      role: RolesEnum.USER,
       password: 'password',
       status: SharedStatus.ACTIVE,
     };
@@ -104,7 +104,7 @@ describe('services/UserService', () => {
       email: 'Brown.OKeefe11@hotmail.com',
       phone: '0111045783',
       image: null,
-      role: Roles.USER,
+      role: RolesEnum.USER,
       password: 'password',
       status: SharedStatus.ACTIVE,
     };

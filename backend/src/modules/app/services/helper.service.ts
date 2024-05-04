@@ -32,3 +32,7 @@ export function transformToObjectId<T extends Record<string, string>>(
 export function ArrayElementToString<T>(arr: T[], propName: keyof T): string[] {
   return arr.map((obj) => obj[propName].toString());
 }
+
+export function isValidString(str: string): boolean {
+  return str && !!str.trim();
+}

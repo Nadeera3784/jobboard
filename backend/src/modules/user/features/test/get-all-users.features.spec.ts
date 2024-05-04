@@ -3,7 +3,7 @@ import { HttpStatus } from '@nestjs/common';
 
 import { GetAllUsersFeature } from '../get-all-users.features';
 import { UserService } from '../../services/user.service';
-import { Roles } from '../../enums';
+import { RolesEnum } from '../../enums';
 import { SharedStatus } from '../../../app/enums/shared-status.enum';
 
 describe('features/GetAllUsersFeature', () => {
@@ -16,7 +16,7 @@ describe('features/GetAllUsersFeature', () => {
     email: 'Brown.OKeefe11@hotmail.com',
     phone: '011103456',
     image: null,
-    role: Roles.USER,
+    role: RolesEnum.USER,
     status: SharedStatus.ACTIVE,
   };
 

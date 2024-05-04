@@ -11,7 +11,7 @@ import { AppModule } from './modules/app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  app.enableCors({ origin: true, credentials: true, maxAge: 3600 });
   app.setGlobalPrefix('api/v1');
   app.enableShutdownHooks();
   app.useGlobalPipes(

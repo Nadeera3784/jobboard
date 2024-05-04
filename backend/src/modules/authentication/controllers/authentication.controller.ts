@@ -10,16 +10,20 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { SignupDto } from '../dtos/sign-up.dto';
-import { SignInDto } from '../dtos/sign-in.dto';
-import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
-import { ResetPasswordDto } from '../dtos/reset-password.dto';
-import { SignUpFeature } from '../features/sign-up.feature';
-import { SignInFeature } from '../features/sign-in.feature';
-import { VerifyEmailFeature } from '../features/verify-email.feature';
-import { ForgotPasswordFeature } from '../features/forgot-password.feature';
-import { ResetPasswordFeature } from '../features/reset-password.feature';
-import { MeFeature } from '../features/me.feature';
+import {
+  ResetPasswordDto,
+  ForgotPasswordDto,
+  SignInDto,
+  SignupDto,
+} from '../dtos';
+import {
+  MeFeature,
+  ResetPasswordFeature,
+  ForgotPasswordFeature,
+  VerifyEmailFeature,
+  SignInFeature,
+  SignUpFeature,
+} from '../features';
 import { AuthenticationGuard } from '../guards/authentication.guard';
 
 @Controller('authentication')

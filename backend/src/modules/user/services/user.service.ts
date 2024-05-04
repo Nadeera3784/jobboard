@@ -7,7 +7,7 @@ import { ConfigService } from '@nestjs/config';
 
 import { CreateUserDto, UpdateUserDto } from '../dtos';
 import { User } from '../schemas/user.schema';
-import { Roles } from '../enums';
+import { RolesEnum } from '../enums';
 
 @Injectable()
 export class UserService {
@@ -97,7 +97,7 @@ export class UserService {
   public async getInactivityUsers(
     duration = 6,
     batchSize = 20,
-    roles: string[] = [Roles.USER, Roles.COMPANY],
+    roles: string[] = [RolesEnum.USER, RolesEnum.COMPANY],
   ) {
     return await this.userModel
       .aggregate([

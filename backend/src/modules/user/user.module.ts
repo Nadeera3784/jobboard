@@ -12,7 +12,7 @@ import { CreateUserFeature } from './features/create-user.feature';
 import { UpdateUserFeature } from './features/update-user.feature';
 import { DatatableFeature } from './features/datatable.feature';
 import { UserDeletedListener } from './listeners/user-deleted.listener';
-import { UserSeedCommand } from './commands';
+import { UserSeedCommand, AdminSeedCommand } from './commands';
 import { AppModule } from '../app/app.module';
 
 @Module({
@@ -31,6 +31,7 @@ import { AppModule } from '../app/app.module';
     JwtService,
     UserDeletedListener,
     UserSeedCommand,
+    AdminSeedCommand,
     Logger,
   ],
   controllers: [UserController],

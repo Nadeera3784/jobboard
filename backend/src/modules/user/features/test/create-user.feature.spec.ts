@@ -6,7 +6,7 @@ import { validate } from 'class-validator';
 
 import { CreateUserFeature } from '../create-user.feature';
 import { UserService } from '../../services/user.service';
-import { Roles } from '../../enums';
+import { RolesEnum } from '../../enums';
 import { CreateUserDto } from '../../dtos/create-user.dto';
 import { stringified } from '../../../../../test/mock-helper';
 import { FilesystemService } from '../../../app/services';
@@ -51,7 +51,7 @@ describe('features/CreateUserFeature', () => {
       email: faker.internet.email(),
       phone: '0111034673',
       password: 'password',
-      role: Roles.USER,
+      role: RolesEnum.USER,
       image: null,
     };
     const payload = plainToInstance(CreateUserDto, input);
@@ -79,7 +79,7 @@ describe('features/CreateUserFeature', () => {
       email: 'johngmail.com',
       phone: faker.phone.number(),
       password: '',
-      role: Roles.USER,
+      role: RolesEnum.USER,
       image: null,
     };
     const payload = plainToInstance(CreateUserDto, input);

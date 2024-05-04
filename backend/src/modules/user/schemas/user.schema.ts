@@ -9,7 +9,7 @@ import {
   IsBoolean,
 } from 'class-validator';
 import { Document, now } from 'mongoose';
-import { Roles, UserStatus } from '../enums';
+import { RolesEnum, UserStatusEnum } from '../enums';
 import { Exclude } from 'class-transformer';
 
 @Schema({
@@ -48,11 +48,11 @@ export class User extends Document {
     value: string;
   };
 
-  @Prop({ enum: Roles, default: Roles.USER })
+  @Prop({ enum: RolesEnum, default: RolesEnum.USER })
   @IsOptional()
   role: string;
 
-  @Prop({ default: UserStatus.ACTIVE })
+  @Prop({ default: UserStatusEnum.ACTIVE })
   @IsOptional()
   status: string;
 
@@ -77,5 +77,5 @@ export class User extends Document {
 export const UserSchema = SchemaFactory.createForClass(User);
 
 UserSchema.method('isAdmin', function (this: User): boolean {
-  return !!this?.role && this.role === Roles.ADMIN;
+  return !!this?.role && this.role === RolesEnum.ADMIN;
 });

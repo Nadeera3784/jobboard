@@ -26,13 +26,13 @@ import {
 } from '../features';
 import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
 import { RoleGuard } from '../../authentication/guards/role.guard';
-import { Roles } from '../enums';
+import { RolesEnum } from '../enums';
 import { RolesAllowed } from '../../authentication/decorators/role.decorator';
 import { IdDto } from '../../app/dtos/Id.dto';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 
 @Controller('users')
-//@UseGuards(AuthenticationGuard, RoleGuard)
+@UseGuards(AuthenticationGuard, RoleGuard)
 export class UserController {
   constructor(
     private readonly deleteUserFeature: DeleteUserFeature,
@@ -45,7 +45,7 @@ export class UserController {
 
   @Get()
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async getAll(@Res() response) {
     const { status, response: featureUpResponse } =
       await this.getAllUsersFeature.handle();
@@ -54,7 +54,7 @@ export class UserController {
 
   @Get('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async getById(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getUserByIdFeature.handle(id);
@@ -63,7 +63,7 @@ export class UserController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   @UseInterceptors(FileInterceptor('image'))
   public async create(
     @Res() response,
@@ -86,7 +86,7 @@ export class UserController {
 
   @Put('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async update(
     @Res() response,
     @Param() { id }: IdDto,
@@ -99,7 +99,7 @@ export class UserController {
 
   @Delete('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async delete(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.deleteUserFeature.handle(id);
@@ -108,7 +108,7 @@ export class UserController {
 
   @Post('/datatable')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async dataTable(
     @Res() response,
     @Body('order') order: any,

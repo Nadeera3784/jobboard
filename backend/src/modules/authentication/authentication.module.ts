@@ -20,13 +20,15 @@ import { PasswordResetMailQueue } from './queues/password-reset-email.queue';
 import { AuthenticationService } from './services/authentication.service';
 import { AuthenticationController } from './controllers/authentication.controller';
 import { VerificationTokenService } from './services/verification-token.service';
-import { VerifyEmailFeature } from './features/verify-email.feature';
 import { PasswordResetTokenService } from './services/password-reset-token.service';
-import { ForgotPasswordFeature } from './features/forgot-password.feature';
-import { SignUpFeature } from './features/sign-up.feature';
-import { ResetPasswordFeature } from './features/reset-password.feature';
-import { SignInFeature } from './features/sign-in.feature';
-import { MeFeature } from './features/me.feature';
+import {
+  ResetPasswordFeature,
+  SignInFeature,
+  MeFeature,
+  VerifyEmailFeature,
+  SignUpFeature,
+  ForgotPasswordFeature,
+} from './features';
 import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
 import { AppModule } from '../app/app.module';
 

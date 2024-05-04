@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { plainToInstance } from 'class-transformer';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { JwtService } from '@nestjs/jwt';
 
 import {
   CreateUserFeature,
@@ -12,12 +13,13 @@ import {
 } from '../../features';
 import { UserController } from '../user.controller';
 import { UserService } from '../../services/user.service';
-import { Roles } from '../../enums';
-import { SharedStatus } from '../../../app/enums/shared-status.enum';
+import { RolesEnum, UserStatusEnum } from '../../enums';
 import { HttpStatus } from '@nestjs/common';
 import { IdDto } from '../../../app/dtos/Id.dto';
 import { CreateUserDto, UpdateUserDto } from '../../dtos';
 import { FilesystemService } from '../../../app/services';
+import { AuthenticationGuard } from '../../../authentication/guards/authentication.guard';
+import { ConfigService } from '@nestjs/config';
 
 describe('controllers/UserController', () => {
   let getAllUsersFeature: GetAllUsersFeature;
@@ -33,8 +35,8 @@ describe('controllers/UserController', () => {
     email: 'Brown.OKeefe11@hotmail.com',
     phone: '011103456',
     image: null,
-    role: Roles.USER,
-    status: SharedStatus.ACTIVE,
+    role: RolesEnum.USER,
+    status: UserStatusEnum.ACTIVE,
   };
 
   beforeEach(async () => {
@@ -92,6 +94,25 @@ describe('controllers/UserController', () => {
           provide: UserService,
           useValue: {
             datatable: jest.fn(),
+          },
+        },
+        AuthenticationGuard,
+        {
+          provide: JwtService,
+          useValue: {
+            verifyAsync: jest.fn(),
+          },
+        },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: jest.fn(),
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
+            getById: jest.fn().mockResolvedValue(mockData),
           },
         },
       ],
@@ -176,7 +197,7 @@ describe('controllers/UserController', () => {
       email: 'Brown.OKeefe11@hotmail.com',
       phone: '011103456',
       password: 'password',
-      role: Roles.USER,
+      role: RolesEnum.USER,
       image: null,
     };
     const payload = plainToInstance(CreateUserDto, input);
@@ -211,8 +232,8 @@ describe('controllers/UserController', () => {
       email: 'Brown.OKeefe11@hotmail.com',
       phone: '0064534123',
       image: null,
-      role: Roles.USER,
-      status: SharedStatus.ACTIVE,
+      role: RolesEnum.USER,
+      status: UserStatusEnum.ACTIVE,
     };
     const payload = plainToInstance(UpdateUserDto, input);
     await userController.update(responseMock, idto, payload);

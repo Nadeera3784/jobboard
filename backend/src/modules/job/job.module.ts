@@ -1,5 +1,6 @@
 import { Logger, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { JwtService } from '@nestjs/jwt';
 
 import { JobSchema, Job } from './schemas/job.schema';
 import { JobService } from './services';
@@ -13,6 +14,7 @@ import { JobSeedCommand } from './commands';
 import { User, UserSchema } from '../user/schemas/user.schema';
 import { Category, CategorySchema } from '../category/schemas/category.schema';
 import { Location, LocationSchema } from '../location/schemas/location.schema';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -22,6 +24,7 @@ import { Location, LocationSchema } from '../location/schemas/location.schema';
       { name: Category.name, schema: CategorySchema },
       { name: Location.name, schema: LocationSchema },
     ]),
+    UserModule,
   ],
   controllers: [JobController],
   providers: [
@@ -30,6 +33,7 @@ import { Location, LocationSchema } from '../location/schemas/location.schema';
     GetAllJobsFeature,
     GetJobByIdFeature,
     JobSeedCommand,
+    JwtService,
     Logger,
   ],
 })

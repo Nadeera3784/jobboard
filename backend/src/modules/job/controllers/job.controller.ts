@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 
 import {
@@ -14,7 +15,7 @@ import {
   GetAllJobsFeature,
   GetJobByIdFeature,
 } from '../features';
-import { Roles } from '../../user/enums';
+import { RolesEnum } from '../../user/enums';
 import { CreateJobDto } from '../dtos';
 import { RolesAllowed } from '../../authentication/decorators/role.decorator';
 import {
@@ -27,7 +28,6 @@ import { AuthenticationGuard } from '../../authentication/guards/authentication.
 import { RoleGuard } from '../../authentication/guards/role.guard';
 
 @Controller('jobs')
-//@UseGuards(AuthenticationGuard, RoleGuard)
 export class JobController {
   constructor(
     private readonly createJobFeature: CreateJobFeature,
@@ -37,7 +37,7 @@ export class JobController {
 
   @Get()
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async getAll(
     @Res() response,
     @Query('filter') filter: JobFilterInterface,
@@ -59,7 +59,7 @@ export class JobController {
 
   @Get('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async getById(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getJobByIdFeature.handle(id);
@@ -68,7 +68,8 @@ export class JobController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @UseGuards(AuthenticationGuard, RoleGuard)
+  @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY)
   public async create(@Res() response, @Body() createJobDto: CreateJobDto) {
     const { status, response: featureUpResponse } =
       await this.createJobFeature.handle(createJobDto);

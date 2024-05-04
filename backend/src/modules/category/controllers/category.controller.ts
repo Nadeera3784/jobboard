@@ -23,11 +23,11 @@ import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
 import { RolesAllowed } from '../../authentication/decorators/role.decorator';
 import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
 import { RoleGuard } from '../../authentication/guards/role.guard';
-import { Roles } from '../../user/enums/roles.enum';
+import { RolesEnum } from '../../user/enums';
 import { IdDto } from '../../app/dtos/Id.dto';
 
 @Controller('categories')
-//@UseGuards(AuthenticationGuard, RoleGuard)
+@UseGuards(AuthenticationGuard, RoleGuard)
 export class CategoryController {
   constructor(
     private readonly createCategoryFeature: CreateCategoryFeature,
@@ -40,7 +40,7 @@ export class CategoryController {
 
   @Get()
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async getAll(@Res() response) {
     const { status, response: featureUpResponse } =
       await this.getAllCategoriesFeature.handle();
@@ -49,7 +49,7 @@ export class CategoryController {
 
   @Get('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async getById(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getCategoryByIdFeature.handle(id);
@@ -58,7 +58,7 @@ export class CategoryController {
 
   @Post()
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async create(
     @Res() response,
     @Body() createCategoryDto: CreateCategoryDto,
@@ -70,7 +70,7 @@ export class CategoryController {
 
   @Put('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async update(
     @Res() response,
     @Param() { id }: IdDto,
@@ -83,7 +83,7 @@ export class CategoryController {
 
   @Delete('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async delete(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.deleteCategoryFeature.handle(id);
@@ -92,7 +92,7 @@ export class CategoryController {
 
   @Post('/datatable')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(Roles.ADMIN)
+  @RolesAllowed(RolesEnum.ADMIN)
   public async dataTable(
     @Res() response,
     @Body('order') order: any,

@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
-import { Roles } from '../../user/enums/roles.enum';
+import { RolesEnum } from '../../user/enums';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
@@ -9,7 +9,7 @@ export class RoleGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const roles =
-      this.reflector.getAllAndMerge<Roles[]>('roles', [
+      this.reflector.getAllAndMerge<RolesEnum[]>('roles', [
         context.getClass(),
         context.getHandler(),
       ]) || [];

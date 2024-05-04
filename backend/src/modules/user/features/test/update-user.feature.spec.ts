@@ -5,8 +5,7 @@ import { validate } from 'class-validator';
 
 import { UpdateUserFeature } from '../update-user.feature';
 import { UserService } from '../../services/user.service';
-import { Roles } from '../../enums';
-import { SharedStatus } from '../../../app/enums/shared-status.enum';
+import { RolesEnum, UserStatusEnum } from '../../enums';
 import { UpdateUserDto } from '../../dtos';
 
 describe('features/UpdateUserFeature', () => {
@@ -19,8 +18,8 @@ describe('features/UpdateUserFeature', () => {
     email: 'Brown.OKeefe11@hotmail.com',
     phone: '011103456',
     image: null,
-    role: Roles.USER,
-    status: SharedStatus.ACTIVE,
+    role: RolesEnum.USER,
+    status: UserStatusEnum.ACTIVE,
   };
 
   beforeEach(async () => {
@@ -55,8 +54,8 @@ describe('features/UpdateUserFeature', () => {
       email: 'Brown.OKeefe11@hotmail.com',
       phone: '0064534123',
       image: null,
-      role: Roles.USER,
-      status: SharedStatus.ACTIVE,
+      role: RolesEnum.USER,
+      status: UserStatusEnum.ACTIVE,
     };
     const payload = plainToInstance(UpdateUserDto, input);
     const errors = await validate(payload);

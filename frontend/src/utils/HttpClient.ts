@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import { AppConstants } from '../constants';
+import { getJWTToken } from '../utils';
 
 const httpClient = axios.create({
   baseURL: AppConstants.API_URL,
@@ -8,9 +9,9 @@ const httpClient = axios.create({
 
 httpClient.interceptors.request.use(
   async function (config) {
-    const token = localStorage.getItem('auth-app-key');
+    const token = getJWTToken();
     if (token) {
-      config.headers.common['Authorization'] = `Bearer ${token}`;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
@@ -24,7 +25,7 @@ httpClient.interceptors.response.use(
     return Promise.resolve(response);
   },
   function (error) {
-    if (error.response.status === 401) {
+    if (error.response.status === 401 || error.response.status === 403) {
       window.location.href = '/auth';
     }
     return Promise.reject(error);
@@ -33,4 +34,6 @@ httpClient.interceptors.response.use(
 
 //http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-export default httpClient;
+export  {
+  httpClient
+};

@@ -1,11 +1,14 @@
 import { MapPinned, Users, Wallet } from 'lucide-react';
 import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
+
+import { deleteJWTToken } from '../utils';
 
 export const AdminLayout = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(true);
+  const navigate = useNavigate();
 
   const onClickDropDownToggle = function () {
     setUserDropdownOpen(!userDropdownOpen);
@@ -21,7 +24,10 @@ export const AdminLayout = () => {
     setDesktopSidebarOpen(!mobileSidebarOpen);
   };
 
-  const onClickSignOut = () => {};
+  const onClickSignOut = () => {
+    deleteJWTToken();
+    navigate(`/auth`);
+  };
 
   return (
     <>
@@ -221,7 +227,7 @@ export const AdminLayout = () => {
                 </Link>
                 <button
                   type="button"
-                  onClick={onClickSignOut}
+                  onClick={() => onClickSignOut()}
                   className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
                 >
                   <span className="flex-none flex items-center opacity-50">
@@ -349,6 +355,7 @@ export const AdminLayout = () => {
                       <button
                         type="button"
                         role="menuitem"
+                        onClick={() => onClickSignOut()}
                         className="w-full text-left flex items-center space-x-2 rounded py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gray-700"
                       >
                         <svg

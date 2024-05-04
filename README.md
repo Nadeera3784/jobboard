@@ -68,6 +68,7 @@ $ npm run cli category:seed
 $ npm run cli location:seed
 # seed users
 $ npm run cli user:seed
+$ npm run cli admin:seed
 # seed jobs
 $ npm run cli job:seed
 ```

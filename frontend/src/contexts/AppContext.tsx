@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
+
 import { AppContextType, ProviderType } from '../types';
+import { cacheJwtToken } from '../utils';
 
 export const AppContext = createContext<AppContextType>({} as AppContextType);
 
@@ -21,7 +23,9 @@ export const AppProvider = ({ children }: ProviderType) => {
   };
 
   useEffect(() => {
-    localStorage.setItem('auth-app-key', token);
+    if(token){
+      cacheJwtToken(token);
+    }
   }, [token]);
 
   return (

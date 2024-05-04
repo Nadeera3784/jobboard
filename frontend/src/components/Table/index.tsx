@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { ArrowDownAZ, ArrowUpZA, ChevronDownIcon } from 'lucide-react';
 
 import { TextColumn } from './TextColumn';
@@ -27,7 +26,7 @@ import {
 } from '../Dialog/DropdownMenu';
 import { Button } from '../Form/Button';
 import { DeleteDialog } from './DeleteDialog';
-import httpClient from '../../utils/http-client';
+import { httpClient } from '../../utils';
 
 export const Table: React.FC<TableProps> = ({
   endpoint,
@@ -64,7 +63,7 @@ export const Table: React.FC<TableProps> = ({
   ) => {
     setLoading(true);
     try {
-      const response = await axios.post(endpoint, {
+      const response = await httpClient.post(endpoint, {
         order: order,
         columns: columns.filter(column => columnVisibility[column.name]),
         filters: selectedFilters,

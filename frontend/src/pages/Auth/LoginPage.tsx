@@ -19,6 +19,7 @@ import { useSharedPostApi } from '../../hooks/useSharedPostApi';
 import { HttpStatus } from '../../constants';
 import { Spinner } from '../../components/Icons';
 import { useAppContext } from '../../contexts/AppContext';
+import { useEffect } from 'react';
 
 export const LoginPage = () => {
   const { response, process } = useSharedPostApi();
@@ -33,6 +34,17 @@ export const LoginPage = () => {
     },
   });
 
+  useEffect(() => {
+    const { data, status } = response ?? {};
+  
+    if (status && data && data?.access_token.length > 0) {
+      const { redirect_identifier, access_token } = data;
+      setPermission(redirect_identifier);
+      setToken(access_token);
+      navigate(`/${redirect_identifier}`);
+    }
+  }, [response?.status]);
+
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     const validatedFields = LoginSchema.safeParse(values);
 
@@ -41,16 +53,12 @@ export const LoginPage = () => {
       return;
     }
 
-    process('authentication/signin', validatedFields.data);
+    await process('authentication/signin', validatedFields.data);
 
     if (response.status_code == HttpStatus.BAD_REQUEST) {
       toast.warning('The email address or password is incorrect. Please retry');
     }
-
-    setPermission(response?.data?.redirect_identifier);
-    setToken(response?.data?.access_token);
-
-    navigate(`/admin`);
+    
   };
 
   return (

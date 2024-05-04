@@ -1,8 +1,7 @@
-import { MapPinned, Users } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
-export const UserLayout = () => {
+export const CompanyLayout = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(true);
@@ -78,8 +77,8 @@ export const UserLayout = () => {
                 <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
                   Manage
                 </div>
-                <a
-                  href=""
+                <Link
+                  to="/company"
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
                   <span className="flex-none flex items-center">
@@ -99,111 +98,80 @@ export const UserLayout = () => {
                     </svg>
                   </span>
                   <span className="py-2 flex-grow">Dashboard</span>
-                </a>
-                <a
-                  href=""
+                </Link>
+                <Link
+                  to="/company/jobs"
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
                   <span className="flex-none flex items-center">
-                    <svg
-                      className="hi-outline hi-chart-square-bar inline-block w-6 h-6"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
+                  <svg
+                  className="text-gray-400 group-hover:text-gray-500 flex-shrink-0 h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
                   </span>
-                  <span className="py-2 flex-grow">Analytics</span>
-                </a>
+                  <span className="py-2 flex-grow">Jobs</span>
+                </Link>
                 <Link
-                  to="/admin/users"
+                  to="/company"
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
                   <span className="flex-none flex items-center">
-                    <Users className="hi-outline hi-clipboard-list inline-block w-5 h-5" />
+                  <svg
+                  className="text-gray-400 group-hover:text-gray-500 flex-shrink-0 h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"
+                  />
+                </svg>
                   </span>
-                  <span className="py-2 flex-grow">Users</span>
+                  <span className="py-2 flex-grow">Applications</span>
                 </Link>
                 <Link
-                  to="/admin/categories"
+                  to="/company"
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
                   <span className="flex-none flex items-center">
-                    <svg
-                      className="hi-outline hi-clipboard-list inline-block w-5 h-5"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
-                      />
-                    </svg>
-                  </span>
-                  <span className="py-2 flex-grow">Categories</span>
-                </Link>
-                <Link
-                  to="/admin/locations"
-                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
+                  <svg
+                  className="text-gray-400 group-hover:text-gray-500 flex-shrink-0 h-6 w-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  aria-hidden="true"
                 >
-                  <span className="flex-none flex items-center">
-                    <MapPinned className="hi-outline hi-clipboard-list inline-block w-5 h-5" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                  />
+                </svg>
                   </span>
-                  <span className="py-2 flex-grow">Locations</span>
+                  <span className="py-2 flex-grow">Team</span>
                 </Link>
-                <a
-                  href="#"
-                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
-                >
-                  <span className="flex-none flex items-center">
-                    <svg
-                      className="hi-solid hi-collection inline-block w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
-                    </svg>
-                  </span>
-                  <span className="py-2 flex-grow">Subscription</span>
-                </a>
 
                 <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
                   Account
                 </div>
-                <a
-                  href=""
-                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
-                >
-                  <span className="flex-none flex items-center opacity-50">
-                    <svg
-                      className="hi-outline hi-user inline-block w-5 h-5"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                  </span>
-                  <span className="py-2 grow">Profile</span>
-                </a>
                 <a
                   href=""
                   className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"

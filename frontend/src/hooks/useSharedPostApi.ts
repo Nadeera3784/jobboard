@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import axios from 'axios';
 
 import { ApiResponse, ResponseState } from '../types';
-import { HttpStatus, AppConstants } from '../constants';
+import { HttpStatus } from '../constants';
+import { httpClient } from '../utils';
 
 export const useSharedPostApi = () => {
   const [response, setResponse] = useState<ResponseState>({
@@ -19,10 +19,10 @@ export const useSharedPostApi = () => {
       ...prevResponse,
       loading: true,
     }));
-    const URL = `${AppConstants.API_URL}/${endpoint}`;
+    const URL = `/${endpoint}`;
 
     try {
-      const apiResponse = await axios.post<ApiResponse>(URL, params);
+      const apiResponse = await httpClient.post<ApiResponse>(URL, params);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

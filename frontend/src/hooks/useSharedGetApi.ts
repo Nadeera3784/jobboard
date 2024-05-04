@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import axios from 'axios';
 
 import { ApiResponse, ResponseState } from '../types';
-import { HttpStatus, AppConstants } from '../constants';
+import { HttpStatus } from '../constants';
+import { httpClient } from '../utils';
 
 export const useSharedGetApi = () => {
   const [response, setResponse] = useState<ResponseState>({
@@ -19,9 +19,9 @@ export const useSharedGetApi = () => {
       ...prevResponse,
       loading: true,
     }));
-    const ENDPOINT = `${AppConstants.API_URL}/${params}`;
+    const URL = `/${params}`;
     try {
-      const apiResponse = await axios.get<ApiResponse>(ENDPOINT);
+      const apiResponse = await httpClient.get<ApiResponse>(URL);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

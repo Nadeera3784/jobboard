@@ -16,6 +16,12 @@ import { EditUserPage } from '../pages/Admin/Users/EditUserPage';
 import { SearchPage } from '../pages/App/SearchPage';
 import { TestPage } from '../pages/Admin/TestPage';
 import { SettingPage } from '../pages/Admin/SettingPage';
+import { UserLayout } from '../layouts/UserLayout';
+import { DashboardPage as UserDashboardPage } from '../pages/User/DashboardPage';
+import { CompanyLayout } from '../layouts/CompanyLayout';
+import { DashboardPage as CompanyDashboardPage } from '../pages/Company/DashboardPage';
+import { JobPage as CompanyJobPage } from '../pages/Company/Jobs/JobPage';
+import { CreateJobPage as CompanyCreateJobPage } from '../pages/Company/Jobs/CreateJobPage';
 
 export const AppRouter = () => {
   return (
@@ -29,6 +35,14 @@ export const AppRouter = () => {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="search" element={<SearchPage />} />
+        </Route>
+        <Route path="/user" element={<UserLayout />}>
+          <Route index element={<UserDashboardPage />} />
+        </Route>
+        <Route path="/company" element={<CompanyLayout />}>
+          <Route index element={<CompanyDashboardPage />} />
+          <Route path="jobs" element={<CompanyJobPage />} />
+          <Route path="jobs/create" element={<CompanyCreateJobPage />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} />

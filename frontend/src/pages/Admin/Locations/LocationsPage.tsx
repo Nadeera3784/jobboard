@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 
 import { CreateLocationModal } from './CreateLocationModal';
 import { Table } from '../../../components/Table';
-import { AppConstants } from '../../../constants/AppConstants';
 
 export const LocationsPage = () => {
   const [refresh, setRefresh] = useState(false);
@@ -30,7 +29,7 @@ export const LocationsPage = () => {
           <div className="space-y-4 lg:space-y-8">
             <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">
               <Table
-                endpoint={`${AppConstants.API_URL}/locations/datatable`}
+                endpoint={`/locations/datatable`}
                 per_page={10}
                 has_row_buttons={true}
                 has_multiselect={false}

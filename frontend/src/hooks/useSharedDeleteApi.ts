@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import axios from 'axios';
 
 import { ApiResponse, ResponseState } from '../types';
 import { HttpStatus } from '../constants';
+import { httpClient } from '../utils';
 
-export const useSharedDelete = () => {
+export const useSharedDeleteApi = () => {
   const [response, setResponse] = useState<ResponseState>({
     status: false,
     loading: false,
@@ -14,15 +14,14 @@ export const useSharedDelete = () => {
     message: '',
   });
   const process = async (
-    endpoint: string,
-    finallyCallback?: (response: any) => void,
+    endpoint: string
   ) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,
     }));
     try {
-      const apiResponse = await axios.delete<ApiResponse>(endpoint);
+      const apiResponse = await httpClient.delete<ApiResponse>(endpoint);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,
@@ -43,10 +42,6 @@ export const useSharedDelete = () => {
         status_code: error.response?.status || HttpStatus.BAD_REQUEST,
         loading: false,
       });
-    } finally {
-      if (typeof finallyCallback === 'function') {
-        finallyCallback(response);
-      }
     }
   };
 

@@ -14,7 +14,9 @@ import {
   MAX_LOGIN_FAILURES,
   MAX_REGISTER_ATTEMPTS_NEXT,
   THREE_HOURS,
+  TWENTY_MINUTES,
 } from '../constants/bruteforce';
+import { MAX_BAN_COUNT } from '../constants/ban-reasons';
 
 @Injectable()
 export class SuspiciousActivityService {
@@ -31,6 +33,7 @@ export class SuspiciousActivityService {
     @InjectModel(User.name) private readonly employeeModel: Model<User>,
   ) {}
 
+
   private async isRegisterBruteforced(ipAddress?: string): Promise<boolean> {
     if (!ipAddress) {
       return true;
@@ -39,6 +42,23 @@ export class SuspiciousActivityService {
       .countDocuments({ ipAddress })
       .exec();
     return registerAttempts > MAX_REGISTER_ATTEMPTS_NEXT;
+  }
+
+
+  private async isLoginBruteforced(userId?: string): Promise<boolean> {
+    const loginAttempts: LoginAttempt[] = await this.loginAttemptModel.find({ user: userId }).exec();
+
+    let ipAddress: string;
+    for (const loginAttempt of loginAttempts) {
+      if (loginAttempt.ip_address) {
+        if (ipAddress && ipAddress !== loginAttempt.ip_address) {
+          return true;
+        }
+        ipAddress = loginAttempt.ip_address;
+      }
+    }
+
+    return false;
   }
 
   private async isSecurityQuestionBruteforced(
@@ -58,6 +78,8 @@ export class SuspiciousActivityService {
     }
     return false;
   }
+
+  
 
   private async clearAllLoginFailures(): Promise<void> {
     await this.loginAttemptModel.deleteMany({});

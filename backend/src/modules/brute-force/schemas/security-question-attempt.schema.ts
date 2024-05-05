@@ -3,7 +3,7 @@ import { IsString, IsOptional, IsBoolean, IsNotEmpty } from 'class-validator';
 import { Document, SchemaTypes, now } from 'mongoose';
 
 import { User } from '../../user/schemas/user.schema';
-import { TWENTY_MINUTES_IN_SECONDS } from '../constants/bruteforce';
+import { TWENTY_MINUTES_IN_SECONDS } from '../constants/bruteforce.constants';
 
 @Schema({
   versionKey: false,

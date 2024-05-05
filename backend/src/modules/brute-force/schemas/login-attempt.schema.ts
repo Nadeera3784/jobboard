@@ -9,7 +9,7 @@ import {
 import { Document, SchemaTypes, now } from 'mongoose';
 
 import { User } from '../../user/schemas/user.schema';
-import { TWENTY_MINUTES_IN_SECONDS } from '../constants/bruteforce';
+import { TWENTY_MINUTES_IN_SECONDS } from '../constants/bruteforce.constants';
 
 @Schema({
   versionKey: false,
@@ -37,21 +37,3 @@ export class LoginAttempt extends Document {
 export const LoginAttemptSchema = SchemaFactory.createForClass(LoginAttempt);
 
 LoginAttemptSchema.index({ user: 1 });
-
-LoginAttemptSchema.statics.logAttempt = async function (
-  userId: string,
-  ipAddress: string,
-  success: boolean,
-): Promise<any> {
-  return this.create({ user: userId, success, ipAddress });
-};
-
-LoginAttemptSchema.statics.clearLoginFailures = async function (
-  userId: string,
-  ipAddress: string,
-): Promise<void> {
-  return this.deleteMany({
-    success: false,
-    $or: [{ ipAddress }, { user: userId }],
-  });
-};

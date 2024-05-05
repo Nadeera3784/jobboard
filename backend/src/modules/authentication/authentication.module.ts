@@ -31,6 +31,7 @@ import {
 } from './features';
 import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
 import { AppModule } from '../app/app.module';
+import { BruteForceModule } from '../brute-force/brute-force.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { AppModule } from '../app/app.module';
     }),
     forwardRef(() => AppModule),
     UserModule,
+    BruteForceModule,
   ],
   providers: [
     AuthenticationService,

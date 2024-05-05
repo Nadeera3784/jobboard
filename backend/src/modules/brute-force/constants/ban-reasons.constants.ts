@@ -1,5 +1,5 @@
-import { BanReasonsEnum } from '../enums/ban-reasons';
-import { BanRegistrationsEnum } from '../enums/ban-register';
+import { BanReasonsEnum } from '../enums/ban-reasons.enum';
+import { BanRegistrationsEnum } from '../enums/ban-register.enum';
 
 const REASON_NO_CAPTCHA: string = 'auth.error.reason.no_captcha';
 const REASON_TWENTY_MINUTES_BAN: string =

@@ -1,5 +1,6 @@
 import mongoose, { Types } from 'mongoose';
 import { JobFilterInterface } from '../../job/interfaces';
+import * as crypto from 'crypto';
 
 export function parseJson<T>(input: any): T {
   return JSON.parse(input) as T;
@@ -35,4 +36,15 @@ export function ArrayElementToString<T>(arr: T[], propName: keyof T): string[] {
 
 export function isValidString(str: string): boolean {
   return str && !!str.trim();
+}
+
+export function encodeUsersIpAddress(
+  ipAddress: string,
+  userEmail: string,
+): string {
+  if (!ipAddress) {
+    return '';
+  }
+  const hashedValue: string = userEmail ? ipAddress + userEmail : ipAddress;
+  return crypto.createHash('md5').update(hashedValue).digest('hex');
 }

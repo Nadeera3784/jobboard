@@ -3,7 +3,7 @@ import { IsString, IsOptional } from 'class-validator';
 import { Document, SchemaTypes, now } from 'mongoose';
 
 import { User } from '../../user/schemas/user.schema';
-import { TWENTY_MINUTES_IN_SECONDS } from '../constants/bruteforce';
+import { TWENTY_MINUTES_IN_SECONDS } from '../constants/bruteforce.constants';
 
 @Schema({
   versionKey: false,
@@ -29,25 +29,3 @@ export const RegisterAttemptSchema =
 RegisterAttemptSchema.index({
   ip_address: 1,
 });
-
-RegisterAttemptSchema.statics.logAttempt = async function (
-  userId: string,
-  ipAddress: string,
-): Promise<any> {
-  return this.create({ user: userId, ipAddress });
-};
-
-RegisterAttemptSchema.statics.clearRegisterAttemptsByIpAddress =
-  async function (ipAddress: string): Promise<void> {
-    return this.deleteMany({
-      ipAddress,
-    });
-  };
-
-RegisterAttemptSchema.statics.clearRegisterAttemptsByUserId = async function (
-  userId: string,
-): Promise<void> {
-  return this.deleteMany({
-    userId,
-  });
-};

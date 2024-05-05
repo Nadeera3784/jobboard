@@ -4,6 +4,8 @@ export default () => ({
     api_url: process.env.API_URL,
     environment: process.env.ENV,
     jwt_key: process.env.APP_JWT_KEY,
+    enable_bruteforce_protection:
+      process.env.APP_ENABLE_BRUTEFORCE_PROTECTION || false,
   },
   database: {
     mongodb: {

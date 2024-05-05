@@ -17,7 +17,7 @@ export class CategoryService {
    * Retrieves all categories.
    * @returns A promise that resolves to an array of all categories.
    */
-  async getAll() {
+  public async getAll() {
     return await this.categoryModel.find({ status: 'Active' });
   }
 
@@ -26,7 +26,7 @@ export class CategoryService {
    * @param CreateCategoryDto - Data for creating a new category.
    * @returns A promise that resolves to the created category, or an error if the operation fails.
    */
-  async create(createCategoryDto: CreateCategoryDto) {
+  public async create(createCategoryDto: CreateCategoryDto) {
     return await this.categoryModel.create(createCategoryDto);
   }
 
@@ -35,7 +35,7 @@ export class CategoryService {
    * @param id - The unique identifier of the category to retrieve.
    * @returns A promise that resolves to the category with the specified ID, or null if not found.
    */
-  async getById(id: string) {
+  public async getById(id: string) {
     return await this.categoryModel.findById(id);
   }
 
@@ -45,7 +45,7 @@ export class CategoryService {
    * @param UpdateCategoryDto - Data for updating the category.
    * @returns A promise that resolves to the updated category, or null if the category with the specified ID is not found.
    */
-  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+  public async update(id: string, updateCategoryDto: UpdateCategoryDto) {
     return await this.categoryModel.findByIdAndUpdate(
       { _id: id },
       updateCategoryDto,
@@ -57,13 +57,13 @@ export class CategoryService {
    * @param id - The unique identifier of the category to delete.
    * @returns A promise that resolves to a deletion result indicating success or failure.
    */
-  async delete(id: string) {
+  public async delete(id: string) {
     return await this.categoryModel.deleteOne({
       _id: id,
     });
   }
 
-  async datatable(
+  public async datatable(
     order,
     columns,
     filters,

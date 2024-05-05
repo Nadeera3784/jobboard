@@ -1,6 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
-import { REGISTER_ERROR_REASONS } from '../constants/ban-reasons';
-import { BanRegistrationsEnum } from '../enums/ban-register';
+import { REGISTER_ERROR_REASONS } from '../constants/ban-reasons.constants';
+import { BanRegistrationsEnum } from '../enums/ban-register.enum';
 
 export class RegisterBlockedException extends UnauthorizedException {
   public readonly reason: BanRegistrationsEnum;

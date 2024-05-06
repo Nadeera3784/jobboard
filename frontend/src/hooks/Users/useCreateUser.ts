@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import axios from 'axios';
 
 import { ApiResponse, ResponseState } from '../../types';
 import { HttpStatus, AppConstants } from '../../constants';
+import { httpClient } from '../../utils';
 
 export const useCreateUser = () => {
   const [response, setResponse] = useState<ResponseState>({
@@ -31,7 +31,7 @@ export const useCreateUser = () => {
         });
       }
 
-      const apiResponse = await axios.post<ApiResponse>(ENDPOINT, formData);
+      const apiResponse = await httpClient.post<ApiResponse>(ENDPOINT, formData);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

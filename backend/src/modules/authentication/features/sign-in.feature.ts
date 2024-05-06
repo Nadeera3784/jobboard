@@ -14,6 +14,8 @@ import {
 } from '../../user/constants';
 import { VerificationTokenService } from '../services';
 import { UserUpdatedEvent } from '../../user/events';
+import { SuspiciousActivityService } from '../../brute-force/services/suspicious-activity.service';
+import { User } from '../../user/schemas/user.schema';
 
 @Injectable()
 export class SignInFeature extends BaseFeature {
@@ -22,6 +24,7 @@ export class SignInFeature extends BaseFeature {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly verificationTokenService: VerificationTokenService,
+    private readonly suspiciousActivityService: SuspiciousActivityService,
     private eventEmitter: EventEmitter2,
   ) {
     super();
@@ -40,6 +43,10 @@ export class SignInFeature extends BaseFeature {
 
       if (!existingUser.email_verified) {
         await this.dispatchVerificationEvent(existingUser.email);
+        return this.responseError(
+          HttpStatus.UNAUTHORIZED,
+          'Please verify your account',
+        );
       }
 
       const isPasswordMatch = await this.authenticationService.signIn(
@@ -56,14 +63,22 @@ export class SignInFeature extends BaseFeature {
 
         await this.dispatchDateSyncEvent(existingUser._id);
 
+        await this.suspiciousActivityService.removeUserFromBlockList(
+          existingUser._id,
+        );
+
+        await this.suspiciousActivityService.clearLoginFailures(
+          existingUser._id,
+          null,
+        );
+
         return this.responseSuccess(HttpStatus.OK, 'Login successfully', {
           type: 'Bearer',
           access_token: accessToken,
           redirect_identifier: existingUser.role,
         });
       }
-
-      return this.responseError(HttpStatus.BAD_REQUEST, 'Invalid credentials');
+      return this.responseError(HttpStatus.UNAUTHORIZED, 'Invalid credentials');
     } catch (error) {
       console.log('error', error);
       return this.responseError(
@@ -89,4 +104,6 @@ export class SignInFeature extends BaseFeature {
     event.id = id;
     this.eventEmitter.emit(USER_UPDATED, event);
   }
+
+  private async dispatchLoginEvent(user: User) {}
 }

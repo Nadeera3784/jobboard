@@ -8,7 +8,7 @@ import { Job } from '../schemas/job.schema';
 import { User } from '../../user/schemas/user.schema';
 import { Category } from '../../category/schemas/category.schema';
 import { Location } from '../../location/schemas/location.schema';
-import { ArrayElementToString, getRandomEntity } from '../../app/services';
+import { UtilityService } from '../../app/services';
 
 @Injectable()
 export class JobSeedCommand {
@@ -30,16 +30,20 @@ export class JobSeedCommand {
     };
 
     for (let index = 0; index < 15; index++) {
-      const remote = getRandomEntity(['Remote', 'On-site', 'Hybrid']);
+      const remote = UtilityService.getRandomEntity([
+        'Remote',
+        'On-site',
+        'Hybrid',
+      ]);
 
-      const jobType = getRandomEntity([
+      const jobType = UtilityService.getRandomEntity([
         'Full-time',
         'Part-time',
         'Contract',
         'Internship',
         'Temporary',
       ]);
-      const experienceLevel = getRandomEntity([
+      const experienceLevel = UtilityService.getRandomEntity([
         'Internship',
         'Associate',
         'Director',
@@ -54,7 +58,9 @@ export class JobSeedCommand {
         error.message = 'Users seeder needs be ran before run this command';
         break;
       }
-      const userId = getRandomEntity(ArrayElementToString(users, '_id'));
+      const userId = UtilityService.getRandomEntity(
+        UtilityService.ArrayElementToString(users, '_id'),
+      );
 
       const categories = await this.categoryModel
         .find({})
@@ -65,8 +71,8 @@ export class JobSeedCommand {
         error.message = 'Category seeder needs be ran before run this command';
         break;
       }
-      const categoryId = getRandomEntity(
-        ArrayElementToString(categories, '_id'),
+      const categoryId = UtilityService.getRandomEntity(
+        UtilityService.ArrayElementToString(categories, '_id'),
       );
 
       const locations = await this.locationModel
@@ -78,8 +84,8 @@ export class JobSeedCommand {
         error.message = 'Location seeder needs be ran before run this command';
         break;
       }
-      const locationId = getRandomEntity(
-        ArrayElementToString(locations, '_id'),
+      const locationId = UtilityService.getRandomEntity(
+        UtilityService.ArrayElementToString(locations, '_id'),
       );
 
       await this.jobModel.create({

@@ -12,7 +12,7 @@ import {
   JobSearchInterface,
   JobInterface,
 } from '../interfaces';
-import { parseJson, transformToObjectId } from '../../app/services';
+import { UtilityService } from '../../app/services';
 
 @Injectable()
 export class JobService {
@@ -75,7 +75,7 @@ export class JobService {
     const match: any = { $match: {} };
     if (search) {
       const parsedSearch: JobSearchInterface =
-        parseJson<JobSearchInterface>(search);
+        UtilityService.parseJson<JobSearchInterface>(search);
       match.$match.$or = [
         { name: parsedSearch },
         { description: parsedSearch },
@@ -83,8 +83,8 @@ export class JobService {
     }
     if (filter) {
       const parsedFilter: JobFilterInterface =
-        parseJson<JobFilterInterface>(filter);
-      const filters = transformToObjectId(parsedFilter, [
+        UtilityService.parseJson<JobFilterInterface>(filter);
+      const filters = UtilityService.transformToObjectId(parsedFilter, [
         'category',
         'location',
       ]);
@@ -93,7 +93,8 @@ export class JobService {
     query.push(match);
     const countQuery: any = [...query];
     countQuery.push({ $count: 'count' });
-    const parsedOrder: JobOrderInterface = parseJson<JobOrderInterface>(order);
+    const parsedOrder: JobOrderInterface =
+      UtilityService.parseJson<JobOrderInterface>(order);
     query.push({ $sort: parsedOrder });
     query.push({ $skip: limit * (page - 1) });
     query.push({ $limit: limit });

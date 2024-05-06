@@ -55,7 +55,7 @@ export const LoginPage = () => {
 
     await process('authentication/signin', validatedFields.data);
 
-    if (response.status_code == HttpStatus.BAD_REQUEST) {
+    if (response.status_code == HttpStatus.UNAUTHORIZED) {
       toast.warning('The email address or password is incorrect. Please retry');
     }
     

@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Command } from '../../command';
 import { faker } from '@faker-js/faker';
-import { Location } from '../schemas/location.schema';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+
+import { Location } from '../schemas/location.schema';
+import { Command } from '../../command';
 
 @Injectable()
 export class LocationSeedCommand {

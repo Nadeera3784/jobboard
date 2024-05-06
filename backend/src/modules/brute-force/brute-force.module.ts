@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 
-import { UserModule } from '../user/user.module';
 import {
   BlockList,
   BlockListSchema,
@@ -21,6 +20,7 @@ import {
   SuspiciousActivityService,
 } from './services';
 import { User, UserSchema } from '../user/schemas/user.schema';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [

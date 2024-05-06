@@ -24,18 +24,21 @@ import {
   THREE_HOURS,
   TWENTY_MINUTES,
 } from '../constants/bruteforce.constants';
-import { MAX_BAN_COUNT, SECURITY_QUESTION_BAN } from '../constants/ban-reasons.constants';
 import {
-  encodeUsersIpAddress,
-  isValidString,
-} from '../../../modules/app/services';
+  MAX_BAN_COUNT,
+  SECURITY_QUESTION_BAN,
+} from '../constants/ban-reasons.constants';
+import { UtilityService } from '../../../modules/app/services';
 import { User } from '../../user/schemas/user.schema';
 import {
   BanRegistrationsEnum,
   getRegistrationBanFromCount,
 } from '../enums/ban-register.enum';
 import { BlockedException, RegisterBlockedException } from '../exceptions';
-import { BanReasonsEnum, getReasonFromBanCount } from '../enums/ban-reasons.enum';
+import {
+  BanReasonsEnum,
+  getReasonFromBanCount,
+} from '../enums/ban-reasons.enum';
 import { UserStatusEnum } from '../../user/enums';
 
 @Injectable()
@@ -147,7 +150,7 @@ export class SuspiciousActivityService {
 
   public async blockIp(userIp: string): Promise<void> {
     const blockedModel: BlockList = await this.blockListModel.findOneAndUpdate(
-      { ip_address: encodeUsersIpAddress(userIp, '') },
+      { ip_address: UtilityService.encodeUsersIpAddress(userIp, '') },
       {
         $inc: { ban_count: 1 },
         $set: {
@@ -160,22 +163,28 @@ export class SuspiciousActivityService {
       await this.blockListModel.create({
         ban_count: 1,
         blocked_to_date: new Date(),
-        ip_address: encodeUsersIpAddress(userIp, ''),
+        ip_address: UtilityService.encodeUsersIpAddress(userIp, ''),
         permanently: true,
       });
     }
   }
 
   public async unblockUser(userId?: string, userIp?: string): Promise<void> {
-    if (isValidString(userIp) && isValidString(userId)) {
+    if (
+      UtilityService.isValidString(userIp) &&
+      UtilityService.isValidString(userId)
+    ) {
       const user: User = await this.userService.getById(userId);
       const email: string = user.email;
-      const encodedIp: string = encodeUsersIpAddress(userIp, email);
+      const encodedIp: string = UtilityService.encodeUsersIpAddress(
+        userIp,
+        email,
+      );
       await this.clearUserActivities(userId, encodedIp);
-    } else if (isValidString(userId)) {
+    } else if (UtilityService.isValidString(userId)) {
       await this.clearUserActivitiesById(userId);
-    } else if (isValidString(userIp)) {
-      const encodedIp: string = encodeUsersIpAddress(userIp, '');
+    } else if (UtilityService.isValidString(userIp)) {
+      const encodedIp: string = UtilityService.encodeUsersIpAddress(userIp, '');
       await this.clearUserActivitiesByIp(encodedIp);
     }
   }
@@ -189,7 +198,7 @@ export class SuspiciousActivityService {
 
   public async isIpBlockedPermanently(ipAddress: string): Promise<boolean> {
     return !!(await this.blockListModel.findOne({
-      ip_address: encodeUsersIpAddress(ipAddress, ''),
+      ip_address: UtilityService.encodeUsersIpAddress(ipAddress, ''),
       permanently: true,
     }));
   }

@@ -9,6 +9,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { Request } from 'express';
 
 import {
   ResetPasswordDto,
@@ -47,9 +48,13 @@ export class AuthenticationController {
 
   @Post('/signin')
   @Header('Content-Type', 'application/json')
-  public async signIn(@Res() response, @Body() signInDto: SignInDto) {
+  public async signIn(
+    @Req() request: Request,
+    @Res() response,
+    @Body() signInDto: SignInDto,
+  ) {
     const { status, response: featureUpResponse } =
-      await this.signInFeature.handle(signInDto);
+      await this.signInFeature.handle(request, signInDto);
     return response.status(status).json(featureUpResponse);
   }
 

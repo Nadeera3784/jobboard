@@ -9,5 +9,5 @@ export class UserDeletedListener {
   constructor() {}
 
   @OnEvent(USER_DELETED)
-  async handleUserDeletedEvent(event: UserDeletedEvent) {}
+  async onUserDeletedEvent(event: UserDeletedEvent) {}
 }

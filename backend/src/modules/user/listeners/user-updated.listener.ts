@@ -10,7 +10,7 @@ export class UserUpdatedListener {
   constructor(private readonly userService: UserService) {}
 
   @OnEvent(USER_UPDATED)
-  async handleUserUpdateddEvent(event: UserUpdatedEvent) {
+  async onUserUpdateddEvent(event: UserUpdatedEvent) {
     if (event.type === USER_DATE_SYNC) {
       await this.userService.refreshUpdatedDate(event.id);
     }

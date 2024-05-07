@@ -17,7 +17,7 @@ export class BlockListService {
   ): Promise<boolean> {
     return (
       (await this.loginAttemptModel.countDocuments({
-        $or: [{ ipAddress }, { user: userId }],
+        $or: [{ ip_address: ipAddress }, { user: userId }],
         permanently: true,
       })) > 0
     );
@@ -26,7 +26,7 @@ export class BlockListService {
   public async isIpBlocked(ipAddress: string): Promise<boolean> {
     return (
       (await this.loginAttemptModel.countDocuments({
-        ipAddress,
+        ip_address: ipAddress,
         permanently: true,
       })) > 0
     );
@@ -39,7 +39,7 @@ export class BlockListService {
     const filters: any = [];
 
     if (ipAddress) {
-      filters.push({ ipAddress });
+      filters.push({ ipAddress: ipAddress });
     }
 
     if (userId) {
@@ -64,7 +64,7 @@ export class BlockListService {
   ): Promise<number> {
     const maxBlock: BlockList = await this.loginAttemptModel.findOne(
       {
-        $or: [{ ipAddress }, { user: userId }],
+        $or: [{ ip_address: ipAddress }, { user: userId }],
         created_at: { $gte: new Date().getTime() - TWENTY_FOUR_HOURS },
       },
       null,

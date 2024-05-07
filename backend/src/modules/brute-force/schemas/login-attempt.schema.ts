@@ -1,11 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import {
-  IsNotEmpty,
-  IsString,
-  IsOptional,
-  IsBoolean,
-  IsNumber,
-} from 'class-validator';
+import { IsNotEmpty, IsString, IsOptional, IsBoolean } from 'class-validator';
 import { Document, SchemaTypes, now } from 'mongoose';
 
 import { User } from '../../user/schemas/user.schema';

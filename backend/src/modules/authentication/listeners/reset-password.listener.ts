@@ -10,7 +10,7 @@ export class ResetPasswordListener {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
   @OnEvent(RESET_PASSWORD)
-  async handleUserRegisterdEvent(event: ResetPasswordEvent) {
+  async onUserRegisterdEvent(event: ResetPasswordEvent) {
     await this.authenticationService.sendResetPasswordMail(event);
   }
 }

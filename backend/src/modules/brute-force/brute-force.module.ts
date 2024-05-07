@@ -21,6 +21,7 @@ import {
 } from './services';
 import { User, UserSchema } from '../user/schemas/user.schema';
 import { UserModule } from '../user/user.module';
+import { UserLoginListener } from './listeners/user-login.listener';
 
 @Module({
   imports: [
@@ -55,6 +56,7 @@ import { UserModule } from '../user/user.module';
     RegisterAttemptService,
     BlockListService,
     ConfigService,
+    UserLoginListener,
   ],
   exports: [SuspiciousActivityService],
 })

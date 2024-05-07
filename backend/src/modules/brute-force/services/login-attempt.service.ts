@@ -16,16 +16,20 @@ export class LoginAttemptService {
     ipAddress: string,
     success: boolean,
   ): Promise<any> {
-    return this.loginAttemptModel.create({ user: userId, success, ipAddress });
+    return await this.loginAttemptModel.create({
+      user: userId,
+      success: success,
+      ip_address: ipAddress,
+    });
   }
 
   public async clearLoginFailures(
     userId: string,
     ipAddress: string,
   ): Promise<any> {
-    return this.loginAttemptModel.deleteMany({
+    return await this.loginAttemptModel.deleteMany({
       success: false,
-      $or: [{ ipAddress }, { user: userId }],
+      $or: [{ ip_address: ipAddress }, { user: userId }],
     });
   }
 }

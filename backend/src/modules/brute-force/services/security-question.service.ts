@@ -18,8 +18,8 @@ export class SecurityQuestionService {
   ): Promise<any> {
     return this.securityQuestionAttemptModel.create({
       user: userId,
-      success,
-      ipAddress,
+      success: success,
+      ip_address: ipAddress,
     });
   }
 
@@ -29,7 +29,7 @@ export class SecurityQuestionService {
   ): Promise<void> {
     await this.securityQuestionAttemptModel.deleteMany({
       success: false,
-      $or: [{ ipAddress }, { user: userId }],
+      $or: [{ ip_address: ipAddress }, { user: userId }],
     });
   }
 }

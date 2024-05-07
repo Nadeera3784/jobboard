@@ -208,7 +208,7 @@ export class SuspiciousActivityService {
     ipAddress: string,
   ): Promise<number> {
     const query: any = {
-      ipAddress,
+      ip_address: ipAddress,
       success: false,
     };
     if (userId) {
@@ -254,8 +254,8 @@ export class SuspiciousActivityService {
     if (nextBlock === MAX_BAN_COUNT) {
       return this.blockListModel.create({
         ban_count: nextBlock,
-        blockedToDate,
-        ipAddress,
+        blocked_to_date: blockedToDate,
+        ip_address: ipAddress,
         permanently: true,
         user: userId,
       });
@@ -263,8 +263,8 @@ export class SuspiciousActivityService {
 
     return this.blockListModel.create({
       ban_count: nextBlock,
-      blockedToDate,
-      ipAddress,
+      blocked_to_date: blockedToDate,
+      ip_address: ipAddress,
       user: userId,
     });
   }
@@ -291,7 +291,7 @@ export class SuspiciousActivityService {
   ): Promise<number> {
     const ipAddressFailures: number = await this.registerAttemptModel
       .countDocuments({
-        ipAddress,
+        ip_address: ipAddress,
       })
       .exec();
 
@@ -324,17 +324,17 @@ export class SuspiciousActivityService {
     }
     if (nextBlock === MAX_BAN_COUNT) {
       return this.blockListModel.create({
-        banCount: nextBlock,
-        blockedToDate,
-        ipAddress,
+        ban_count: nextBlock,
+        blocked_to_date: blockedToDate,
+        ip_address: ipAddress,
         permanently: true,
       });
     }
 
     return this.blockListModel.create({
-      banCount: nextBlock,
-      blockedToDate,
-      ipAddress,
+      ban_count: nextBlock,
+      blocked_to_date: blockedToDate,
+      ip_address: ipAddress,
     });
   }
 

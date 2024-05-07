@@ -18,7 +18,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({ origin: true, credentials: true, maxAge: 3600 });
   app.setGlobalPrefix('api/v1');
-  app.enableShutdownHooks();
   app.useGlobalPipes(
     new ValidationPipe({
       exceptionFactory: (errors: ValidationError[]) =>
@@ -35,6 +34,7 @@ async function bootstrap() {
   );
   app.use(morgan('dev'));
   app.use(requestIp.mw());
+  app.enableShutdownHooks();
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   //TODO: only run on dev env
   const document = JSON.parse(

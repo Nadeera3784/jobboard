@@ -10,7 +10,7 @@ export class UserRegisterdListener {
   constructor(private readonly authenticationService: AuthenticationService) {}
 
   @OnEvent(USER_REGISTERED)
-  async handleUserRegisterdEvent(event: UserRegisterdEvent) {
+  async onUserRegisterdEvent(event: UserRegisterdEvent) {
     await this.authenticationService.sendVerificationMail(event);
   }
 }

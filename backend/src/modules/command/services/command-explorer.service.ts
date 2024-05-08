@@ -8,8 +8,8 @@ import {
   CommandParamMetadata,
   CommandParamMetadataItem,
   CommandParamTypes,
-} from './CommandDecorator';
-import { CommandService } from './CommandService';
+} from '../decorators/command.decorator';
+import { CommandService } from './command.service';
 import { CommandModule } from 'yargs';
 
 @Injectable()
@@ -18,13 +18,13 @@ export class CommandExplorerService {
     private readonly modulesContainer: ModulesContainer,
     private readonly metadataScanner: MetadataScanner,
     private readonly commandService: CommandService,
-  ) {}
+  ) { }
 
   explore(): CommandModule[] {
     const components = [...this.modulesContainer.values()].map(
-      (module) => module.components,
+      (module) => module.providers,
     );
-    return _.flattenDeep(
+    return this.flattenDeep(
       components.map((component) =>
         [...component.values()]
           .filter((x) => x.instance)
@@ -33,6 +33,10 @@ export class CommandExplorerService {
           ),
       ),
     );
+  }
+
+  flattenDeep(array) {
+    return array.reduce((acc: string | any[], val: any) => Array.isArray(val) ? acc.concat(this.flattenDeep(val)) : acc.concat(val), []);
   }
 
   protected filterCommands(instance: any, metatype: any): any {
@@ -83,9 +87,14 @@ export class CommandExplorerService {
     params: CommandParamMetadata<any>,
     callback: (item: CommandParamMetadataItem<any>, key: string) => void,
   ): any {
-    _.each(params, (param, key) => {
-      _.each(param, (metadata) => callback(metadata, key));
-    });
+    for (const key in params) {
+      if (params.hasOwnProperty(key)) {
+        const element = params[key];
+        for (const metadata of element) {
+          callback(metadata, key);
+        }
+      }
+    }
   }
 
   private generateCommandHandlerParams(

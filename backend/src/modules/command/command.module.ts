@@ -1,7 +1,6 @@
 import { Module, OnModuleInit } from '@nestjs/common';
 import { MetadataScanner } from '@nestjs/core/metadata-scanner';
-import { CommandExplorerService } from './CommandExplorerService';
-import { CommandService } from './CommandService';
+import { CommandExplorerService, CommandService} from './services';
 
 @Module({
   providers: [CommandService, CommandExplorerService, MetadataScanner],

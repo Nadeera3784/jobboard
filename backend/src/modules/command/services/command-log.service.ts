@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CommandService } from './CommandService';
+import { CommandService } from './command.service';
 
 @Injectable()
 export class CommandLogService {

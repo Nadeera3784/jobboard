@@ -17,8 +17,8 @@ import { VerificationTokenService } from '../services';
 import { UserUpdatedEvent } from '../../user/events';
 import { SuspiciousActivityService } from '../../brute-force/services/suspicious-activity.service';
 import { User } from '../../user/schemas/user.schema';
-import { RequestFingerprint } from '../interfaces/request-fingerprint.interface';
-import { RequestParser } from '../services/request-parser.service';
+import { RequestFingerprint } from '../../app/interfaces/request-fingerprint.interface';
+import { RequestParser } from '../../app/services/request-parser.service';
 import { UserLoginEvent } from '../events/user-login-event';
 import { USER_LOGIN_EVENT } from '../constants';
 

@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { faker } from '@faker-js/faker';
 
-import { Command } from '../../command';
+import { Command } from '../../core/command';
 import { Job } from '../schemas/job.schema';
 import { User } from '../../user/schemas/user.schema';
 import { Category } from '../../category/schemas/category.schema';

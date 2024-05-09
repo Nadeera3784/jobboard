@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Command } from '../../command';
+import { Command } from '../../core/command';
 import { faker } from '@faker-js/faker';
 import { Model, now } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';

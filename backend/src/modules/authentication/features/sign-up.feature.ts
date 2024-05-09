@@ -1,5 +1,5 @@
-import { Injectable, BadRequestException, HttpStatus } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { Injectable, HttpStatus } from '@nestjs/common';
+import { EventDispatcher } from '../../core/event-dispatcher';
 
 import { SignupDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
@@ -13,7 +13,7 @@ export class SignUpFeature extends BaseFeature {
   constructor(
     private readonly verificationTokenService: VerificationTokenService,
     private readonly userService: UserService,
-    private eventEmitter: EventEmitter2,
+    private eventDispatcher: EventDispatcher,
   ) {
     super();
   }
@@ -44,11 +44,8 @@ export class SignUpFeature extends BaseFeature {
   }
 
   private async dispatchEvent(user) {
-    const event = new UserRegisterdEvent();
-    const verificationToken =
-      await this.verificationTokenService.generateVerificationToken(user.email);
-    event.token = verificationToken.token;
-    event.email = verificationToken.email;
-    this.eventEmitter.emit(USER_REGISTERED, event);
+    const verificationToken = await this.verificationTokenService.generateVerificationToken(user.email);
+    const event: UserRegisterdEvent = {token: verificationToken.token, email: verificationToken.email};
+    this.eventDispatcher.dispatch(USER_REGISTERED, event);
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EventDispatcher } from '../../core/event-dispatcher';
 
 import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../services/user.service';
@@ -10,7 +10,7 @@ import { USER_DELETED } from '../constants';
 export class DeleteUserFeature extends BaseFeature {
   constructor(
     private readonly userService: UserService,
-    private eventEmitter: EventEmitter2,
+    private eventDispatcher: EventDispatcher,
   ) {
     super();
   }
@@ -33,8 +33,7 @@ export class DeleteUserFeature extends BaseFeature {
   }
 
   private async dispatchEvent(id: string) {
-    const event = new UserDeletedEvent();
-    event.id = id;
-    this.eventEmitter.emit(USER_DELETED, event);
+    const event: UserDeletedEvent = {id: id};
+    this.eventDispatcher.dispatch(USER_DELETED, event);
   }
 }

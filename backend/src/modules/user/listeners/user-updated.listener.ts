@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventListener } from '../..//core/event-dispatcher';
 
 import { UserUpdatedEvent } from '../events';
 import { USER_DATE_SYNC, USER_UPDATED } from '../constants';
@@ -9,7 +9,10 @@ import { UserService } from '../services/user.service';
 export class UserUpdatedListener {
   constructor(private readonly userService: UserService) {}
 
-  @OnEvent(USER_UPDATED)
+  @EventListener({
+    eventName: USER_UPDATED,
+    priority: 90,
+  })
   async onUserUpdateddEvent(event: UserUpdatedEvent) {
     if (event.type === USER_DATE_SYNC) {
       await this.userService.refreshUpdatedDate(event.id);

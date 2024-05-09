@@ -4,6 +4,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { EventDispatcherModule } from '../core/event-dispatcher';
 
 import configuration from '../../config/configuration';
 import { CategoryModule } from '../category/category.module';
@@ -19,7 +20,7 @@ import {
 } from './services';
 import { AppController } from './controllers/app.controller';
 import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
-import { CommandModule } from '../command';
+import { CommandModule } from '../core/command';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { CommandModule } from '../command';
     AuthenticationModule,
     JobModule,
     CommandModule,
+    EventDispatcherModule
   ],
   controllers: [AppController],
   providers: [

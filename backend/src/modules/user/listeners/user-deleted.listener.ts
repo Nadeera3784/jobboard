@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventListener } from '../..//core/event-dispatcher';
 
 import { UserDeletedEvent } from '../events';
 import { USER_DELETED } from '../constants';
@@ -8,6 +8,9 @@ import { USER_DELETED } from '../constants';
 export class UserDeletedListener {
   constructor() {}
 
-  @OnEvent(USER_DELETED)
+  @EventListener({
+    eventName: USER_DELETED,
+    priority: 90,
+  })
   async onUserDeletedEvent(event: UserDeletedEvent) {}
 }

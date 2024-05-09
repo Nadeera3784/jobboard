@@ -1,7 +1,7 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { EventDispatcher } from '../../core/event-dispatcher';
 
 import { SignInDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
@@ -16,7 +16,6 @@ import {
 import { VerificationTokenService } from '../services';
 import { UserUpdatedEvent } from '../../user/events';
 import { SuspiciousActivityService } from '../../brute-force/services/suspicious-activity.service';
-import { User } from '../../user/schemas/user.schema';
 import { RequestFingerprint } from '../../app/interfaces/request-fingerprint.interface';
 import { RequestParser } from '../../app/services/request-parser.service';
 import { UserLoginEvent } from '../events/user-login-event';
@@ -30,7 +29,7 @@ export class SignInFeature extends BaseFeature {
     private readonly jwtService: JwtService,
     private readonly verificationTokenService: VerificationTokenService,
     private readonly suspiciousActivityService: SuspiciousActivityService,
-    private eventDispatcher: EventEmitter2,
+    private eventDispatcher: EventDispatcher,
   ) {
     super();
   }
@@ -66,7 +65,7 @@ export class SignInFeature extends BaseFeature {
         isValidPassword,
       };
 
-      this.eventDispatcher.emit(USER_LOGIN_EVENT, loginEvent);
+      this.eventDispatcher.dispatch(USER_LOGIN_EVENT, loginEvent);
 
       if (isValidPassword) {
         const payload = {
@@ -106,13 +105,11 @@ export class SignInFeature extends BaseFeature {
       token: verificationToken.token,
       email: verificationToken.email,
     };
-    this.eventDispatcher.emit(USER_REGISTERED, event);
+    this.eventDispatcher.dispatch(USER_REGISTERED, event);
   }
 
   private async dispatchDateSyncEvent(id: string) {
     const event: UserUpdatedEvent = { type: USER_DATE_SYNC, id: id };
-    this.eventDispatcher.emit(USER_UPDATED, event);
+    this.eventDispatcher.dispatch(USER_UPDATED, event);
   }
-
-  private async dispatchLoginEvent(user: User) {}
 }

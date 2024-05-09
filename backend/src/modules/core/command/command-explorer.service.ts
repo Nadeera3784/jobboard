@@ -8,7 +8,7 @@ import {
   CommandParamMetadata,
   CommandParamMetadataItem,
   CommandParamTypes,
-} from '../decorators/command.decorator';
+} from './command.decorator';
 import { CommandService } from './command.service';
 import { CommandModule } from 'yargs';
 

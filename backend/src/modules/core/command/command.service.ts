@@ -17,7 +17,6 @@ export class CommandService {
   exec(): void {
     this.yargs.demandCommand(1);
     this.yargs.help('h').alias('h', 'help').alias('v', 'version');
-    //  Do not remove it.
     //  yargs process commands in property getter
     this.yargs.argv;
   }

@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Location } from '../schemas/location.schema';
-import { Command } from '../../command';
+import { Command } from '../../core/command';
 
 @Injectable()
 export class LocationSeedCommand {

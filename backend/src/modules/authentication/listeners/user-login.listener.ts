@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { OnEvent } from '@nestjs/event-emitter';
+import { EventListener } from '../..//core/event-dispatcher';
 
 import { USER_LOGIN_EVENT } from '../../authentication/constants';
 import { UserLoginEvent } from '../../authentication/events/user-login-event';
 
 @Injectable()
 export class UserLoginListener {
-  @OnEvent(USER_LOGIN_EVENT)
+  
+  @EventListener({
+    eventName: USER_LOGIN_EVENT,
+    priority: 90,
+  })
   async onUserLogInEvent(data: UserLoginEvent): Promise<void> {}
 }

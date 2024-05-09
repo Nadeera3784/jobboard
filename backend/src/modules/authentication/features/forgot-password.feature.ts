@@ -1,5 +1,5 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
-import { EventEmitter2 } from '@nestjs/event-emitter';
+import { EventDispatcher } from '../../core/event-dispatcher';
 
 import { PasswordResetTokenService } from '../services';
 import { UserService } from '../../user/services/user.service';
@@ -14,7 +14,7 @@ export class ForgotPasswordFeature extends BaseFeature {
   constructor(
     private readonly passwordResetTokenService: PasswordResetTokenService,
     private readonly userService: UserService,
-    private eventEmitter: EventEmitter2,
+    private eventDispatcher: EventDispatcher,
   ) {
     super();
   }
@@ -45,13 +45,8 @@ export class ForgotPasswordFeature extends BaseFeature {
   }
 
   private async publishEvents(user: User) {
-    const resetPasswordEvent = new ResetPasswordEvent();
-    const verificationToken =
-      await this.passwordResetTokenService.generatePasswordResetToken(
-        user.email,
-      );
-    resetPasswordEvent.token = verificationToken.token;
-    resetPasswordEvent.email = verificationToken.email;
-    this.eventEmitter.emit(RESET_PASSWORD, resetPasswordEvent);
+    const verificationToken = await this.passwordResetTokenService.generatePasswordResetToken(user.email);
+    const event: ResetPasswordEvent = {token: verificationToken.token, email: verificationToken.email}
+    this.eventDispatcher.dispatch(RESET_PASSWORD, event);
   }
 }

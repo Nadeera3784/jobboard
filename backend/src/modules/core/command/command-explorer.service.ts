@@ -18,7 +18,7 @@ export class CommandExplorerService {
     private readonly modulesContainer: ModulesContainer,
     private readonly metadataScanner: MetadataScanner,
     private readonly commandService: CommandService,
-  ) { }
+  ) {}
 
   explore(): CommandModule[] {
     const components = [...this.modulesContainer.values()].map(
@@ -36,7 +36,13 @@ export class CommandExplorerService {
   }
 
   flattenDeep(array) {
-    return array.reduce((acc: string | any[], val: any) => Array.isArray(val) ? acc.concat(this.flattenDeep(val)) : acc.concat(val), []);
+    return array.reduce(
+      (acc: string | any[], val: any) =>
+        Array.isArray(val)
+          ? acc.concat(this.flattenDeep(val))
+          : acc.concat(val),
+      [],
+    );
   }
 
   protected filterCommands(instance: any, metatype: any): any {

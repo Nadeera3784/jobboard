@@ -33,7 +33,7 @@ export class DeleteUserFeature extends BaseFeature {
   }
 
   private async dispatchEvent(id: string) {
-    const event: UserDeletedEvent = {id: id};
+    const event: UserDeletedEvent = { id: id };
     this.eventDispatcher.dispatch(USER_DELETED, event);
   }
 }

@@ -9,7 +9,7 @@ export type InterfaceChecker = (serviceInstance: any) => boolean;
 export class InterfaceExplorer {
   static collect(
     discoveredList: DiscoveredService[],
-    interfaceChecker: InterfaceChecker
+    interfaceChecker: InterfaceChecker,
   ): any[] {
     const services: any[] = [];
     for (const service of discoveredList) {

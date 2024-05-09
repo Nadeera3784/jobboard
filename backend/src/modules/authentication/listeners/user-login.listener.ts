@@ -6,7 +6,6 @@ import { UserLoginEvent } from '../../authentication/events/user-login-event';
 
 @Injectable()
 export class UserLoginListener {
-  
   @EventListener({
     eventName: USER_LOGIN_EVENT,
     priority: 90,

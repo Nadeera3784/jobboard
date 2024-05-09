@@ -1,31 +1,31 @@
 import { Abstract, Type } from '@nestjs/common';
 
 export interface DiscoveredModule {
-    name: string;
-    instance: {};
-    injectType?: Type<any> | Abstract<any>;
-    dependencyType: Type<{}>;
+  name: string;
+  instance: {};
+  injectType?: Type<any> | Abstract<any>;
+  dependencyType: Type<{}>;
 }
 export interface DiscoveredClass extends DiscoveredModule {
-    parentModule: DiscoveredModule;
+  parentModule: DiscoveredModule;
 }
 
 export interface DiscoveredMethod {
-    handler: Function;
-    methodName: string;
-    parentClass: DiscoveredClass;
+  handler: Function;
+  methodName: string;
+  parentClass: DiscoveredClass;
 }
 
 export interface DiscoveredMethodWithMeta<T> {
-    discoveredMethod: DiscoveredMethod;
-    meta: T;
+  discoveredMethod: DiscoveredMethod;
+  meta: T;
 }
 export interface DiscoveredClassWithMeta<T> {
-    discoveredClass: DiscoveredClass;
-    meta: T;
+  discoveredClass: DiscoveredClass;
+  meta: T;
 }
 
 export interface MetaData {
-    discoveredMethod: DiscoveredMethod;
-    meta: any;
+  discoveredMethod: DiscoveredMethod;
+  meta: any;
 }

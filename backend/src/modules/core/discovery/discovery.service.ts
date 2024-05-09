@@ -1,9 +1,14 @@
-import { Injectable, Scope } from "@nestjs/common";
-import { DiscoveredClass, DiscoveredClassWithMeta, DiscoveredMethod, MetaData } from "./discovery.interfaces";
-import { MetadataScanner, ModulesContainer} from "@nestjs/core";
+import { Injectable, Scope } from '@nestjs/common';
+import {
+  DiscoveredClass,
+  DiscoveredClassWithMeta,
+  DiscoveredMethod,
+  MetaData,
+} from './discovery.interfaces';
+import { MetadataScanner, ModulesContainer } from '@nestjs/core';
 import { some, uniqBy, flatMap, get } from 'lodash';
-import { PATH_METADATA } from "@nestjs/common/constants";
-import {STATIC_CONTEXT} from "@nestjs/core/injector/constants";
+import { PATH_METADATA } from '@nestjs/common/constants';
+import { STATIC_CONTEXT } from '@nestjs/core/injector/constants';
 
 @Injectable()
 export class DiscoveryService {
@@ -38,7 +43,9 @@ export class DiscoveryService {
    *
    * @param filter
    */
-  async providers(filter: (component: DiscoveredClass) => boolean): Promise<DiscoveredClass[]> {
+  async providers(
+    filter: (component: DiscoveredClass) => boolean,
+  ): Promise<DiscoveredClass[]> {
     return (await this.discoveredProviders).filter((x) => filter(x));
   }
 
@@ -79,7 +86,9 @@ export class DiscoveryService {
    *
    * @param metaKey The metakey to scan for
    */
-  async providersWithMetaAtKey<T>(metaKey: string): Promise<Array<DiscoveredClassWithMeta<T>>> {
+  async providersWithMetaAtKey<T>(
+    metaKey: string,
+  ): Promise<Array<DiscoveredClassWithMeta<T>>> {
     const providers = await this.providers(this.withMetaAtKey(metaKey));
     return providers.map((x) => ({
       discoveredClass: x,
@@ -92,7 +101,9 @@ export class DiscoveryService {
    *
    * @param filter
    */
-  async controllers(filter: (component: DiscoveredClass) => boolean): Promise<DiscoveredClass[]> {
+  async controllers(
+    filter: (component: DiscoveredClass) => boolean,
+  ): Promise<DiscoveredClass[]> {
     return (await this.discoveredControllers).filter((x) => filter(x));
   }
 
@@ -102,7 +113,9 @@ export class DiscoveryService {
    *
    * @param metaKey The metakey to scan for
    */
-  async controllersWithMetaAtKey<T>(metaKey: string): Promise<Array<DiscoveredClassWithMeta<T>>>{
+  async controllersWithMetaAtKey<T>(
+    metaKey: string,
+  ): Promise<Array<DiscoveredClassWithMeta<T>>> {
     const controllers = await this.controllers(this.withMetaAtKey(metaKey));
     return controllers.map((x) => ({
       discoveredClass: x,
@@ -216,7 +229,7 @@ export class DiscoveryService {
       return Reflect.getMetadata(key, component.injectType);
     }
   }
-  
+
   /**
    * A filter that can be used to search for DiscoveredClasses in an App that contain meta attached to a
    * certain key
@@ -230,5 +243,4 @@ export class DiscoveryService {
     ].filter((x) => x !== null && x !== undefined);
     return some(metaTargets, (x) => Reflect.getMetadata(key, x));
   };
-
 }

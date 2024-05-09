@@ -35,7 +35,7 @@ export class UserLoginListener {
       data.isValidPassword,
     );
   }
-  
+
   @EventListener({
     eventName: USER_LOGIN_EVENT,
     priority: 70,

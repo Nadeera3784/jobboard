@@ -44,8 +44,12 @@ export class SignUpFeature extends BaseFeature {
   }
 
   private async dispatchEvent(user) {
-    const verificationToken = await this.verificationTokenService.generateVerificationToken(user.email);
-    const event: UserRegisterdEvent = {token: verificationToken.token, email: verificationToken.email};
+    const verificationToken =
+      await this.verificationTokenService.generateVerificationToken(user.email);
+    const event: UserRegisterdEvent = {
+      token: verificationToken.token,
+      email: verificationToken.email,
+    };
     this.eventDispatcher.dispatch(USER_REGISTERED, event);
   }
 }

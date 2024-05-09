@@ -45,8 +45,14 @@ export class ForgotPasswordFeature extends BaseFeature {
   }
 
   private async publishEvents(user: User) {
-    const verificationToken = await this.passwordResetTokenService.generatePasswordResetToken(user.email);
-    const event: ResetPasswordEvent = {token: verificationToken.token, email: verificationToken.email}
+    const verificationToken =
+      await this.passwordResetTokenService.generatePasswordResetToken(
+        user.email,
+      );
+    const event: ResetPasswordEvent = {
+      token: verificationToken.token,
+      email: verificationToken.email,
+    };
     this.eventDispatcher.dispatch(RESET_PASSWORD, event);
   }
 }

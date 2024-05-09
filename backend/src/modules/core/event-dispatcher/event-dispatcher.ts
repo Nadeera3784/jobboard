@@ -1,7 +1,7 @@
-import { Global, Injectable } from "@nestjs/common";
-import { DiscoveryService } from "../discovery";
-import { EVENT_LISTENER_METADATA } from "./event.constants";
-import { MethodCallObj } from "./event.interfaces";
+import { Global, Injectable } from '@nestjs/common';
+import { DiscoveryService } from '../discovery';
+import { EVENT_LISTENER_METADATA } from './event.constants';
+import { MethodCallObj } from './event.interfaces';
 
 @Injectable()
 @Global()
@@ -12,7 +12,16 @@ export class EventDispatcher {
     this.listeners = new Map();
   }
 
-  async dispatch(params: string | { eventName: string; onDetachedHandlersResolved?: () => void; onDetachedHandlersRejected?: () => void }, ...args: any[]): Promise<any[]> {
+  async dispatch(
+    params:
+      | string
+      | {
+          eventName: string;
+          onDetachedHandlersResolved?: () => void;
+          onDetachedHandlersRejected?: () => void;
+        },
+    ...args: any[]
+  ): Promise<any[]> {
     const eventName = typeof params === 'string' ? params : params.eventName;
     const listeners = await this.getListeners(eventName);
     const tasksMap: { [priority: number]: MethodCallObj[] } = {
@@ -49,14 +58,20 @@ export class EventDispatcher {
         return item.instance[item.method](...item.args);
       });
 
-      Promise.all(tasks).then(params.onDetachedHandlersResolved).catch(params.onDetachedHandlersRejected);
+      Promise.all(tasks)
+        .then(params.onDetachedHandlersResolved)
+        .catch(params.onDetachedHandlersRejected);
     }
 
     return results.filter((f) => f !== undefined && f !== null);
   }
 
-  private async runByPriorities(tasksMap: { [priority: number]: MethodCallObj[] }): Promise<any[]> {
-    const priorities = Object.keys(tasksMap).map((priority) => parseInt(priority, 10));
+  private async runByPriorities(tasksMap: {
+    [priority: number]: MethodCallObj[];
+  }): Promise<any[]> {
+    const priorities = Object.keys(tasksMap).map((priority) =>
+      parseInt(priority, 10),
+    );
     priorities.sort((a, b) => b - a);
 
     let results: any[] = [];
@@ -67,10 +82,7 @@ export class EventDispatcher {
       });
 
       const priorityResults = await Promise.all(tasks);
-      results = [
-        ...results,
-        ...priorityResults,
-      ];
+      results = [...results, ...priorityResults];
     }
 
     return results;
@@ -80,7 +92,9 @@ export class EventDispatcher {
     let listeners = this.listeners.get(event);
 
     if (undefined === listeners) {
-      const methods = await this.discovery.providerMethodsWithMetaAtKey(EVENT_LISTENER_METADATA);
+      const methods = await this.discovery.providerMethodsWithMetaAtKey(
+        EVENT_LISTENER_METADATA,
+      );
 
       listeners = methods.filter((method) => {
         if (typeof method.meta === 'string') {

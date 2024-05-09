@@ -62,7 +62,7 @@ import { CommandModule } from '../core/command';
     AuthenticationModule,
     JobModule,
     CommandModule,
-    EventDispatcherModule
+    EventDispatcherModule,
   ],
   controllers: [AppController],
   providers: [

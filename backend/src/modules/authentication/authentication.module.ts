@@ -58,7 +58,7 @@ import { BruteForceModule } from '../brute-force/brute-force.module';
     }),
     forwardRef(() => AppModule),
     UserModule,
-    BruteForceModule
+    BruteForceModule,
   ],
   providers: [
     AuthenticationService,

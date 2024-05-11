@@ -1,5 +1,6 @@
 import mongoose, { Types } from 'mongoose';
 import * as crypto from 'crypto';
+import PasswordValidator = require('password-validator');
 
 import { JobFilterInterface } from '../../job/interfaces';
 
@@ -50,4 +51,24 @@ export class UtilityService {
     const hashedValue: string = userEmail ? ipAddress + userEmail : ipAddress;
     return crypto.createHash('md5').update(hashedValue).digest('hex');
   }
+
+  public static passwordSchema = () => {
+    const passwordSchema: any = new PasswordValidator();
+    return passwordSchema
+      .is()
+      .min(6)
+      .is()
+      .max(32)
+      .has()
+      .uppercase()
+      .has()
+      .lowercase()
+      .has()
+      .symbols()
+      .has()
+      .digits()
+      .has()
+      .not()
+      .spaces();
+  };
 }

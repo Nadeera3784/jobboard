@@ -3,9 +3,11 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
-  Length,
   MaxLength,
+  MinLength,
 } from 'class-validator';
+
+import { IsPasswordNotPwned, IsPasswordStrong } from '../constraints';
 
 export class SignupDto {
   @IsString()
@@ -19,9 +21,12 @@ export class SignupDto {
 
   @IsString()
   @IsNotEmpty()
-  @Length(6, 20, {
+  @MinLength(6, {
     message: 'Password must be between 6 and 20 characters',
   })
+  @MaxLength(32)
+  @IsPasswordStrong()
+  @IsPasswordNotPwned()
   password: string;
 
   @MaxLength(10)

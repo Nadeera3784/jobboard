@@ -22,7 +22,7 @@ export class SignupDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(6, {
-    message: 'Password must be between 6 and 20 characters',
+    message: 'Password must be at least 6 characters long',
   })
   @MaxLength(32)
   @IsPasswordStrong()

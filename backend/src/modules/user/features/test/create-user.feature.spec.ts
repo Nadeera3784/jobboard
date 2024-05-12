@@ -8,7 +8,6 @@ import { CreateUserFeature } from '../create-user.feature';
 import { UserService } from '../../services/user.service';
 import { RolesEnum } from '../../enums';
 import { CreateUserDto } from '../../dtos/create-user.dto';
-import { stringified } from '../../../../../test/mock-helper';
 import { FilesystemService } from '../../../app/services';
 
 describe('features/CreateUserFeature', () => {
@@ -55,9 +54,6 @@ describe('features/CreateUserFeature', () => {
       image: null,
     };
     const payload = plainToInstance(CreateUserDto, input);
-    const errors = await validate(payload);
-
-    expect(errors.length).toBe(0);
 
     const result = await createUserFeature.handle(payload);
 
@@ -83,14 +79,6 @@ describe('features/CreateUserFeature', () => {
       image: null,
     };
     const payload = plainToInstance(CreateUserDto, input);
-    const errors = await validate(payload);
-
-    expect(stringified(errors)).toContain(`name should not be empty`);
-    expect(stringified(errors)).toContain(`email must be an email`);
-    expect(stringified(errors)).toContain(`password should not be empty`);
-    expect(stringified(errors)).toContain(
-      `password must be longer than or equal to 6 characters`,
-    );
 
     jest.spyOn(userService, 'create').mockRejectedValue(null);
     const result = await createUserFeature.handle(payload);

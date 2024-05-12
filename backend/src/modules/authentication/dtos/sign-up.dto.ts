@@ -7,7 +7,11 @@ import {
   MinLength,
 } from 'class-validator';
 
-import { IsPasswordNotPwned, IsPasswordStrong } from '../constraints';
+import {
+  IsPasswordNotPwned,
+  IsPasswordStrong,
+  IsEmailUnique,
+} from '../constraints';
 
 export class SignupDto {
   @IsString()
@@ -17,6 +21,7 @@ export class SignupDto {
   @IsEmail()
   @IsString()
   @IsNotEmpty()
+  @IsEmailUnique()
   email: string;
 
   @IsString()

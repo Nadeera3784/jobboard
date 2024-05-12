@@ -1,5 +1,3 @@
-import * as mongoose from 'mongoose';
-
 export interface JobInterface {
   _id: string;
   name: string;

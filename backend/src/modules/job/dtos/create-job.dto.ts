@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class CreateJobDto {
   @IsString()
@@ -33,4 +33,8 @@ export class CreateJobDto {
   @IsString()
   @IsNotEmpty()
   experience_level: string;
+
+  @IsString()
+  @IsOptional()
+  status?: string;
 }

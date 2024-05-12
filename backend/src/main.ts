@@ -23,7 +23,7 @@ async function bootstrap() {
       exceptionFactory: (errors: ValidationError[]) =>
         new HttpException(
           getCustomValidationError(getAllConstraints(errors)),
-          HttpStatus.BAD_REQUEST,
+          HttpStatus.UNPROCESSABLE_ENTITY,
         ),
     }),
   );

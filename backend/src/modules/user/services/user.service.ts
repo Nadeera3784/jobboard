@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -31,8 +31,6 @@ export class UserService {
    * TODO:update with genSalt
    */
   public async create(createUserDto: CreateUserDto) {
-    //const salt = await bcrypt.genSalt();
-    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
     return await this.userModel.create(createUserDto);
   }
 

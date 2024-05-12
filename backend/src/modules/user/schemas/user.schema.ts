@@ -11,6 +11,7 @@ import {
 import { Document, now } from 'mongoose';
 import { RolesEnum, UserStatusEnum } from '../enums';
 import { Exclude } from 'class-transformer';
+import * as bcrypt from 'bcrypt';
 
 @Schema({
   versionKey: false,
@@ -75,6 +76,20 @@ export class User extends Document {
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
+
+UserSchema.pre<User>('save', function (next: Function) {
+  const user = this;
+  if (user.password) {
+    bcrypt.genSalt(10, function (err, salt) {
+      if (err) return next(err);
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        if (err) return next(err);
+        user.password = hash;
+        next();
+      });
+    });
+  }
+});
 
 UserSchema.method('isAdmin', function (this: User): boolean {
   return !!this?.role && this.role === RolesEnum.ADMIN;

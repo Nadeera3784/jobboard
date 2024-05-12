@@ -32,6 +32,7 @@ import {
 import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
 import { AppModule } from '../app/app.module';
 import { BruteForceModule } from '../brute-force/brute-force.module';
+import { EmailIsUnique } from './constraints';
 
 @Module({
   imports: [
@@ -75,6 +76,7 @@ import { BruteForceModule } from '../brute-force/brute-force.module';
     SignInFeature,
     MeFeature,
     UserUpdatedListener,
+    EmailIsUnique,
   ],
   controllers: [AuthenticationController],
 })

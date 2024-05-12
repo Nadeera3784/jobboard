@@ -27,7 +27,7 @@ export class SignInFeature extends BaseFeature {
     private readonly authenticationService: AuthenticationService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly verificationTokenService: VerificationTokenService,
+    private readonly tokenService: VerificationTokenService,
     private readonly suspiciousActivityService: SuspiciousActivityService,
     private eventDispatcher: EventDispatcher,
   ) {
@@ -99,8 +99,9 @@ export class SignInFeature extends BaseFeature {
   }
 
   private async dispatchVerificationEvent(email: string) {
-    const verificationToken =
-      await this.verificationTokenService.generateVerificationToken(email);
+    const verificationToken = await this.tokenService.generateVerificationToken(
+      email,
+    );
     const event: UserRegisterdEvent = {
       token: verificationToken.token,
       email: verificationToken.email,

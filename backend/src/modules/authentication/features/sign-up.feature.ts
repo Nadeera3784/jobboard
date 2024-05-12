@@ -7,11 +7,12 @@ import { VerificationTokenService } from '../services';
 import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../../user/services/user.service';
 import { USER_REGISTERED } from '../../user/constants';
+import { User } from '../../user/schemas/user.schema';
 
 @Injectable()
 export class SignUpFeature extends BaseFeature {
   constructor(
-    private readonly verificationTokenService: VerificationTokenService,
+    private readonly tokenService: VerificationTokenService,
     private readonly userService: UserService,
     private eventDispatcher: EventDispatcher,
   ) {
@@ -20,16 +21,8 @@ export class SignUpFeature extends BaseFeature {
 
   public async handle(signupDto: SignupDto) {
     try {
-      const existingUser = await this.userService.getByEmail(signupDto.email);
-      if (existingUser) {
-        return this.responseError(
-          HttpStatus.BAD_REQUEST,
-          'Email already in use!',
-          null,
-        );
-      }
-      const isRegistered = await this.userService.create(signupDto);
-      await this.dispatchEvent(isRegistered);
+      const user = await this.userService.create(signupDto);
+      await this.dispatchEvent(user);
       return this.responseSuccess(
         HttpStatus.OK,
         'User has been created successfully',
@@ -43,9 +36,10 @@ export class SignUpFeature extends BaseFeature {
     }
   }
 
-  private async dispatchEvent(user) {
-    const verificationToken =
-      await this.verificationTokenService.generateVerificationToken(user.email);
+  private async dispatchEvent(user: User) {
+    const verificationToken = await this.tokenService.generateVerificationToken(
+      user.email,
+    );
     const event: UserRegisterdEvent = {
       token: verificationToken.token,
       email: verificationToken.email,

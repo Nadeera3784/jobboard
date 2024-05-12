@@ -19,16 +19,6 @@ export class CreateUserFeature extends BaseFeature {
     file?: Express.Multer.File,
   ) {
     try {
-      const existingUser = await this.userService.getByEmail(
-        createUserDto.email,
-      );
-      if (existingUser) {
-        return this.responseError(
-          HttpStatus.BAD_REQUEST,
-          'Email already in use!',
-          null,
-        );
-      }
       if (file) {
         const uploadedFile = await this.filesystemService.put(
           file.originalname,

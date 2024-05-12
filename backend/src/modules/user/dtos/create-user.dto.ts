@@ -9,6 +9,11 @@ import {
 } from 'class-validator';
 
 import { KeyValueDTO } from './key-value.dto';
+import {
+  IsEmailUnique,
+  IsPasswordNotPwned,
+  IsPasswordStrong,
+} from '../../authentication/constraints';
 
 export class CreateUserDto {
   @IsString()
@@ -19,6 +24,7 @@ export class CreateUserDto {
   @IsEmail()
   @IsString()
   @IsNotEmpty()
+  @IsEmailUnique()
   email: string;
 
   @MaxLength(10)
@@ -36,5 +42,7 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(6)
+  @IsPasswordStrong()
+  @IsPasswordNotPwned()
   password: string;
 }

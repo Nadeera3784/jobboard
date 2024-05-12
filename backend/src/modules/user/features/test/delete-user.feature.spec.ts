@@ -1,7 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { HttpStatus } from '@nestjs/common';
-import { EventDispatcherModule, EventDispatcher } from '../../../core/event-dispatcher';
+import {
+  EventDispatcherModule,
+  EventDispatcher,
+} from '../../../core/event-dispatcher';
 
 import { DeleteUserFeature } from '../delete-user.feature';
 import { UserService } from '../../services/user.service';

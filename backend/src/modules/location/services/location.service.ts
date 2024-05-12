@@ -4,8 +4,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 
 import { Location } from '../schemas/location.schema';
-import { CreateLocationDto } from '../dtos/create-location.dto';
-import { UpdateLocationDto } from '../dtos/update-location.dto';
+import { CreateLocationDto, UpdateLocationDto} from '../dtos';
+import { LocationStatusEnum } from '../enums';
 
 @Injectable()
 export class LocationService {
@@ -19,7 +19,7 @@ export class LocationService {
    * @returns A promise that resolves to an array of all locations.
    */
   async getAll() {
-    return await this.locationModel.find({ status: 'Active' });
+    return await this.locationModel.find({ status: LocationStatusEnum.ACTIVE });
   }
 
   /**

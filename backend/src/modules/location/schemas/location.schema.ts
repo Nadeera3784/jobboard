@@ -2,7 +2,7 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 import { IsNotEmpty, IsString, IsOptional } from 'class-validator';
 import { Document, now } from 'mongoose';
 
-import { LoctionStatusEnum } from '../enums';
+import { LocationStatusEnum } from '../enums';
 
 @Schema({
   versionKey: false,
@@ -13,7 +13,7 @@ export class Location extends Document {
   @IsNotEmpty()
   name: string;
 
-  @Prop({ default: LoctionStatusEnum.ACTIVE })
+  @Prop({ default: LocationStatusEnum.ACTIVE })
   @IsOptional()
   status: string;
 

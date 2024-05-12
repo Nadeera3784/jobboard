@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
+import { EventDispatcher } from '../../../core/event-dispatcher';
 
 import { UpdateUserFeature } from '../update-user.feature';
 import { UserService } from '../../services/user.service';
@@ -30,6 +31,12 @@ describe('features/UpdateUserFeature', () => {
           provide: UserService,
           useValue: {
             update: jest.fn(),
+          },
+        },
+        {
+          provide: EventDispatcher,
+          useValue: {
+            dispatch: jest.fn(),
           },
         },
       ],

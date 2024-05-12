@@ -20,6 +20,7 @@ import { CreateUserDto, UpdateUserDto } from '../../dtos';
 import { FilesystemService } from '../../../app/services';
 import { AuthenticationGuard } from '../../../authentication/guards/authentication.guard';
 import { ConfigService } from '@nestjs/config';
+import { EventDispatcher } from '../../../core/event-dispatcher';
 
 describe('controllers/UserController', () => {
   let getAllUsersFeature: GetAllUsersFeature;
@@ -71,9 +72,9 @@ describe('controllers/UserController', () => {
           },
         },
         {
-          provide: EventEmitter2,
+          provide: EventDispatcher,
           useValue: {
-            emit: jest.fn(),
+            dispatch: jest.fn(),
           },
         },
         CreateUserFeature,

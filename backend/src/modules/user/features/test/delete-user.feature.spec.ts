@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { HttpStatus } from '@nestjs/common';
+import { EventDispatcherModule, EventDispatcher } from '../../../core/event-dispatcher';
 
 import { DeleteUserFeature } from '../delete-user.feature';
 import { UserService } from '../../services/user.service';
@@ -10,7 +11,7 @@ import { USER_DELETED } from '../../constants';
 describe('features/DeleteUserFeature', () => {
   let userService: UserService;
   let deleteUserFeature: DeleteUserFeature;
-  let eventEmitter: EventEmitter2;
+  let eventDispatcher: EventDispatcher;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,9 +24,9 @@ describe('features/DeleteUserFeature', () => {
           },
         },
         {
-          provide: EventEmitter2,
+          provide: EventDispatcher,
           useValue: {
-            emit: jest.fn(),
+            dispatch: jest.fn(),
           },
         },
       ],
@@ -33,7 +34,7 @@ describe('features/DeleteUserFeature', () => {
     await module.init();
     userService = module.get<UserService>(UserService);
     deleteUserFeature = module.get<DeleteUserFeature>(DeleteUserFeature);
-    eventEmitter = module.get<EventEmitter2>(EventEmitter2);
+    eventDispatcher = module.get<EventDispatcher>(EventDispatcher);
   });
 
   afterEach(() => {
@@ -63,9 +64,9 @@ describe('features/DeleteUserFeature', () => {
 
     const event = new UserDeletedEvent();
     event.id = id;
-    expect(eventEmitter.emit).toHaveBeenCalled();
-    expect(eventEmitter.emit).toHaveBeenCalledTimes(1);
-    expect(eventEmitter.emit).toHaveBeenCalledWith(USER_DELETED, event);
+    expect(eventDispatcher.dispatch).toHaveBeenCalled();
+    expect(eventDispatcher.dispatch).toHaveBeenCalledTimes(1);
+    expect(eventDispatcher.dispatch).toHaveBeenCalledWith(USER_DELETED, event);
   });
 
   it('GetUserByIdFeature handle fail', async () => {

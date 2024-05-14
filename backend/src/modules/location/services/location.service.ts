@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { ConfigService } from '@nestjs/config';
 
 import { Location } from '../schemas/location.schema';
-import { CreateLocationDto, UpdateLocationDto} from '../dtos';
+import { CreateLocationDto, UpdateLocationDto } from '../dtos';
 import { LocationStatusEnum } from '../enums';
 
 @Injectable()

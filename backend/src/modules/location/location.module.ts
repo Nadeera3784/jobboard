@@ -1,4 +1,4 @@
-import { Logger, Module, forwardRef } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 
@@ -30,7 +30,6 @@ import { LocationSeedCommand } from './commands';
     UpdateLocationFeature,
     DatatableFeature,
     LocationSeedCommand,
-    Logger,
     JwtService,
   ],
   controllers: [LocationController],

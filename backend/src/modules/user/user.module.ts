@@ -1,4 +1,4 @@
-import { Logger, Module, forwardRef } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 
@@ -32,7 +32,6 @@ import { AppModule } from '../app/app.module';
     UserDeletedListener,
     UserSeedCommand,
     AdminSeedCommand,
-    Logger,
   ],
   controllers: [UserController],
   exports: [UserService],

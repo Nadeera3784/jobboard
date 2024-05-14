@@ -12,7 +12,7 @@ import { Logger } from '@nestjs/common';
 
 @Processor('verification-email')
 export class VerificationMailQueue {
-  private readonly logger = new Logger(EmailService.name);
+  private readonly logger = new Logger(VerificationMailQueue.name);
 
   constructor(private readonly mailService: EmailService) {}
 

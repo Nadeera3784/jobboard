@@ -9,12 +9,11 @@ import { InjectModel } from '@nestjs/mongoose';
 export class CategorySeedCommand {
   constructor(
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
-    private readonly logger: Logger,
   ) {}
 
   @Command({ command: 'category:seed', describe: 'Seed category collection' })
   public async run(): Promise<void> {
-    this.logger.log({ message: `Category seeding started` });
+    Logger.log({ message: `Category seeding started` });
 
     for (let index = 0; index < 20; index++) {
       await this.categoryModel.create({
@@ -23,6 +22,6 @@ export class CategorySeedCommand {
       });
     }
 
-    this.logger.log({ message: `Category seeding completed` });
+    Logger.log({ message: `Category seeding completed` });
   }
 }

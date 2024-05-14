@@ -17,12 +17,11 @@ export class JobSeedCommand {
     @InjectModel(User.name) private readonly userModel: Model<User>,
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
     @InjectModel(Location.name) private readonly locationModel: Model<Location>,
-    private readonly logger: Logger,
   ) {}
 
   @Command({ command: 'job:seed', describe: 'Seed job collection' })
   public async run(): Promise<void> {
-    this.logger.log({ message: `Job seeding started` });
+    Logger.log({ message: `Job seeding started` });
 
     const error = {
       status: false,
@@ -102,9 +101,9 @@ export class JobSeedCommand {
     }
 
     if (error.status) {
-      this.logger.error({ message: error.message });
+      Logger.error({ message: error.message });
     }
 
-    this.logger.log({ message: `Job seeding completed` });
+    Logger.log({ message: `Job seeding completed` });
   }
 }

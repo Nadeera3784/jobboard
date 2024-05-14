@@ -1,4 +1,4 @@
-import { Logger, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 
@@ -30,7 +30,6 @@ import { CategorySeedCommand } from './commands';
     GetCategoryByIdFeature,
     DatatableFeature,
     CategorySeedCommand,
-    Logger,
     JwtService,
   ],
   controllers: [CategoryController],

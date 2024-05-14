@@ -12,7 +12,7 @@ import { Logger } from '@nestjs/common';
 
 @Processor('reset-password-email')
 export class PasswordResetMailQueue {
-  private readonly logger = new Logger(EmailService.name);
+  private readonly logger = new Logger(PasswordResetMailQueue.name);
 
   constructor(private readonly mailService: EmailService) {}
 

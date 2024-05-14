@@ -7,7 +7,7 @@ import { DetectInactiveUsersFeature } from '../features';
 @Injectable()
 export class UserInactivityDetectionCron {
   constructor(
-    private readonly logger: Logger,
+    private readonly logger = new Logger(UserInactivityDetectionCron.name),
     private readonly detectInactiveUsersFeature: DetectInactiveUsersFeature,
   ) {}
 

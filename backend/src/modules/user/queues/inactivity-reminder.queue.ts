@@ -12,7 +12,7 @@ import { Logger } from '@nestjs/common';
 
 @Processor('inactivity-reminder-email')
 export class InactivityReminderQueue {
-  private readonly logger = new Logger(EmailService.name);
+  private readonly logger = new Logger(InactivityReminderQueue.name);
 
   constructor(private readonly mailService: EmailService) {}
 

@@ -7,7 +7,7 @@ import { UpdateExpireJobsFeature } from '../features';
 @Injectable()
 export class UpdateExpireJobsCron {
   constructor(
-    private readonly logger: Logger,
+    private readonly logger = new Logger(UpdateExpireJobsCron.name),
     private readonly updateExpireJobsFeature: UpdateExpireJobsFeature,
   ) {}
 

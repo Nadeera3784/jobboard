@@ -10,12 +10,11 @@ import { Command } from '../../core/command';
 export class LocationSeedCommand {
   constructor(
     @InjectModel(Location.name) private readonly locationModel: Model<Location>,
-    private readonly logger: Logger,
   ) {}
 
   @Command({ command: 'location:seed', describe: 'Seed location collection' })
   public async run(): Promise<void> {
-    this.logger.log({ message: `Location seeding started` });
+    Logger.log({ message: `Location seeding started` });
 
     for (let index = 0; index < 20; index++) {
       await this.locationModel.create({
@@ -24,6 +23,6 @@ export class LocationSeedCommand {
       });
     }
 
-    this.logger.log({ message: `Location seeding completed` });
+    Logger.log({ message: `Location seeding completed` });
   }
 }

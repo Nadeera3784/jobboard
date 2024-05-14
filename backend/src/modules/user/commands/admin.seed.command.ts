@@ -11,12 +11,11 @@ import { RolesEnum } from '../enums';
 export class AdminSeedCommand {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    private readonly logger: Logger,
   ) {}
 
   @Command({ command: 'admin:seed', describe: 'Seed user collection' })
   public async run(): Promise<void> {
-    this.logger.log({ message: `Admin seeding started` });
+    Logger.log({ message: `Admin seeding started` });
     await this.userModel.create([
       {
         name: 'John Doe',
@@ -51,6 +50,6 @@ export class AdminSeedCommand {
         is_two_factor_authentication_enabled: false,
       },
     ]);
-    this.logger.log({ message: `Admin seeding completed` });
+    Logger.log({ message: `Admin seeding completed` });
   }
 }

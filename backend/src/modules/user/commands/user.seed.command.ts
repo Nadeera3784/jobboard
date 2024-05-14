@@ -10,12 +10,11 @@ import { User } from '../schemas/user.schema';
 export class UserSeedCommand {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    private readonly logger: Logger,
   ) {}
 
   @Command({ command: 'user:seed', describe: 'Seed user collection' })
   public async run(): Promise<void> {
-    this.logger.log({ message: `User seeding started` });
+    Logger.log({ message: `User seeding started` });
     for (let index = 0; index < 20; index++) {
       await this.userModel.create({
         name: faker.person.fullName(),
@@ -33,6 +32,6 @@ export class UserSeedCommand {
         is_two_factor_authentication_enabled: false,
       });
     }
-    this.logger.log({ message: `User seeding completed` });
+    Logger.log({ message: `User seeding completed` });
   }
 }

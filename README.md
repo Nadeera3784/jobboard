@@ -73,6 +73,12 @@ $ npm run cli admin:seed
 $ npm run cli job:seed
 ```
 
+## Bull Dashboard
+
+```bash
+$ http://127.0.0.1:3000/api/v1/queues
+```
+
 ## Running The Backend Cron Worker
 
 ```bash

@@ -4,6 +4,8 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { BullModule } from '@nestjs/bull';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule } from '@nestjs/throttler';
+import { BullBoardModule } from "@bull-board/nestjs";
+import { ExpressAdapter } from "@bull-board/express";
 import { EventDispatcherModule } from '../core/event-dispatcher';
 
 import configuration from '../../config/configuration';
@@ -56,6 +58,10 @@ import { CommandModule } from '../core/command';
       ],
     }),
     EventEmitterModule.forRoot(),
+    BullBoardModule.forRoot({
+      route: '/queues',
+      adapter: ExpressAdapter
+    }),
     CategoryModule,
     LocationModule,
     UserModule,

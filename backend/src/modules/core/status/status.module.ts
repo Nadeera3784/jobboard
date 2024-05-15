@@ -1,24 +1,21 @@
-import { DynamicModule, Logger } from '@nestjs/common';
+import { DynamicModule, Logger, Provider, Type } from '@nestjs/common';
 import { StatusAppFactory } from './status-app.factory';
 import { StatusConfigService } from './status-config.service';
-import { StatusOptionsInterface } from './status-options.interface';
+import { StatusOptions } from './status-options.interface';
 
 export class StatusModule {
-  static forRoot(config?: StatusOptionsInterface): DynamicModule {
-    let providers: any[] = [];
-    if (config) {
-      providers = [
-        Logger,
-        StatusAppFactory,
-        {
-          provide: StatusConfigService,
-          useValue: new StatusConfigService(config),
-        },
-      ];
-    }
+  static forRoot(config: StatusOptions): DynamicModule;
+
+  static forRoot(config: StatusOptions): DynamicModule {
+    const sharedStatusConfigProvider: Provider = {
+      provide: StatusConfigService,
+      useValue: new StatusConfigService(config),
+    };
     return {
+      global: false,
       module: StatusModule,
-      providers: providers,
+      providers: [Logger, StatusAppFactory, sharedStatusConfigProvider],
+      exports: [sharedStatusConfigProvider],
     };
   }
 }

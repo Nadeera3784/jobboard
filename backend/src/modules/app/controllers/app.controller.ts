@@ -10,8 +10,8 @@ export class AppController {
   @Get('/shared/filters')
   @Header('Content-Type', 'application/json')
   public async getFilters(@Res() response) {
-    const { status, response: featureUpResponse } =
+    const { status, response: featureResponse } =
       await this.getSharedFiltersFeature.handle();
-    return response.status(status).json(featureUpResponse);
+    return response.status(status).json(featureResponse);
   }
 }

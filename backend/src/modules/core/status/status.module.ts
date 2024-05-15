@@ -1,4 +1,4 @@
-import { DynamicModule, Logger, Provider, Type } from '@nestjs/common';
+import { DynamicModule, Logger, Provider } from '@nestjs/common';
 import { StatusAppFactory } from './status-app.factory';
 import { StatusConfigService } from './status-config.service';
 import { StatusOptions } from './status-options.interface';

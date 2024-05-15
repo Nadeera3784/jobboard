@@ -1,15 +1,19 @@
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+const env: NodeJS.ProcessEnv = process.env;
+
 export default () => ({
   app: {
-    app_port: process.env.APP_PORT,
-    api_url: process.env.API_URL,
-    environment: process.env.ENV,
-    jwt_key: process.env.APP_JWT_KEY,
-    enable_bruteforce_protection:
-      process.env.APP_ENABLE_BRUTEFORCE_PROTECTION || false,
+    app_port: env.APP_PORT,
+    api_url: env.API_URL,
+    environment: env.APP_ENV,
+    jwt_key: env.APP_JWT_KEY,
+    enable_bruteforce_protection: env.APP_ENABLE_BRUTEFORCE_PROTECTION || false,
   },
   database: {
     mongodb: {
-      uri: process.env.MONGODB_URI,
+      uri: env.MONGODB_URI,
     },
   },
   filesystem: {
@@ -17,27 +21,27 @@ export default () => ({
     disks: {
       s3: {
         driver: 's3',
-        bucket: process.env.AWS_S3_BUCKET,
-        key: process.env.AWS_S3_KEY_ID,
-        secret: process.env.AWS_S3_KEY_SECRET,
-        region: process.env.AWS_S3_REGION,
+        bucket: env.AWS_S3_BUCKET,
+        key: env.AWS_S3_KEY_ID,
+        secret: env.AWS_S3_KEY_SECRET,
+        region: env.AWS_S3_REGION,
       },
     },
   },
   mail: {
     resend: {
-      key: process.env.RESEND_KEY,
-      from: process.env.MAIL_FROM,
+      key: env.RESEND_KEY,
+      from: env.MAIL_FROM,
     },
   },
   cache: {
     redis: {
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT,
+      host: env.REDIS_HOST,
+      port: env.REDIS_PORT,
     },
   },
   throttler: {
-    ttl: process.env.THROTTLER_TTL,
-    limit: process.env.THROTTLER_LIMIT,
+    ttl: env.THROTTLER_TTL,
+    limit: env.THROTTLER_LIMIT,
   },
 });

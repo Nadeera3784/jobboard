@@ -7,8 +7,8 @@ import { TerminusModule } from '@nestjs/terminus';
 @Module({
   controllers: [ApiStatusHttpController],
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/jobboard'),
     /*
+    MongooseModule.forRoot('mongodb://localhost:27017/jobboard'),
     MongooseModule.forRootAsync({
       useFactory: (configService: StatusConfigService) => ({
          uri:  configService.get().mongodbUrl

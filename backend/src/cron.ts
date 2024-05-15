@@ -1,9 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { CronModule } from './modules/core/cron/cron.module';
+import {
+  ExpressAdapter,
+  NestExpressApplication,
+} from '@nestjs/platform-express';
+import configuration from './config/configuration';
 
 async function bootstrap() {
-  const app = await NestFactory.create(CronModule);
-  const port = process.env.PORT || 3000;
+  const app: NestExpressApplication = await NestFactory.create(
+    CronModule,
+    new ExpressAdapter(),
+  );
+  const port = configuration().app.app_port || 3000;
   await app.listen(port);
   return port;
 }

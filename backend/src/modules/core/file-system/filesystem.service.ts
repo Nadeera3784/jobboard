@@ -1,27 +1,32 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
 import { S3 } from 'aws-sdk';
+import { HeadObjectRequest, PutObjectRequest } from 'aws-sdk/clients/s3';
+
 import {
   FileOptions,
   StorageDriver$FileMetadataResponse,
   StorageDriver$PutFileResponse,
   StorageDriver$RenameFileResponse,
-} from '../interfaces';
-import { HeadObjectRequest, PutObjectRequest } from 'aws-sdk/clients/s3';
+  FileSystemModuleOptions,
+} from './interfaces';
+import { FILE_SYSTEM_MODULE_OPTIONS_TOKEN } from './filesystem.constants';
 
 @Injectable()
 export class FilesystemService {
   private client;
   private config;
-  constructor(configService: ConfigService) {
+  constructor(
+    @Inject(FILE_SYSTEM_MODULE_OPTIONS_TOKEN)
+    fileSystemOptions: FileSystemModuleOptions,
+  ) {
     const options = {
-      accessKeyId: configService.get('filesystem.disks.s3.key'),
-      secretAccessKey: configService.get('filesystem.disks.s3.secret'),
-      region: configService.get('filesystem.disks.s3.region'),
+      accessKeyId: fileSystemOptions.accessKeyId,
+      secretAccessKey: fileSystemOptions.secretAccessKey,
+      region: fileSystemOptions.region,
     };
     this.config = {
       ...options,
-      bucket: configService.get('filesystem.disks.s3.bucket'),
+      bucket: fileSystemOptions.bucket,
     };
 
     this.client = new S3(options);

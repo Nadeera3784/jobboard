@@ -14,15 +14,11 @@ import { LocationModule } from '../location/location.module';
 import { UserModule } from '../user/user.module';
 import { AuthenticationModule } from '../authentication/authentication.module';
 import { JobModule } from '../job/job.module';
-import {
-  AppService,
-  CacheService,
-  FilesystemService,
-  EmailService,
-} from './services';
+import { AppService, CacheService, EmailService } from './services';
 import { AppController } from './controllers/app.controller';
 import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
 import { CommandModule } from '../core/command';
+import { FileSystemModule } from '../core/file-system';
 
 @Module({
   imports: [
@@ -62,6 +58,18 @@ import { CommandModule } from '../core/command';
       route: '/queues',
       adapter: ExpressAdapter,
     }),
+    FileSystemModule.forRootAsync(FileSystemModule, {
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          accessKeyId: configService.get('filesystem.disks.s3.key'),
+          secretAccessKey: configService.get('filesystem.disks.s3.secret'),
+          region: configService.get('filesystem.disks.s3.region'),
+          bucket: configService.get('filesystem.disks.s3.bucket'),
+        };
+      },
+    }),
     CategoryModule,
     LocationModule,
     UserModule,
@@ -71,13 +79,7 @@ import { CommandModule } from '../core/command';
     EventDispatcherModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    CacheService,
-    FilesystemService,
-    EmailService,
-    GetSharedFiltersFeature,
-  ],
-  exports: [AppService, CacheService, EmailService, FilesystemService],
+  providers: [AppService, CacheService, EmailService, GetSharedFiltersFeature],
+  exports: [AppService, CacheService, EmailService],
 })
 export class AppModule {}

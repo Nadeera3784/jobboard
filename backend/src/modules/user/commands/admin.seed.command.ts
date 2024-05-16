@@ -21,8 +21,7 @@ export class AdminSeedCommand {
         name: 'John Doe',
         email: 'admin@gmail.com',
         phone: '0011034673',
-        password:
-          '$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK',
+        password: 'password',
         email_verified: now(),
         image: {
           key: faker.hacker.verb(),
@@ -37,8 +36,7 @@ export class AdminSeedCommand {
         name: 'Mike Smith',
         email: 'mike@gmail.com',
         phone: '0034034688',
-        password:
-          '$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK',
+        password: 'password',
         email_verified: now(),
         image: {
           key: faker.hacker.verb(),

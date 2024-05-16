@@ -20,8 +20,7 @@ export class UserSeedCommand {
         name: faker.person.fullName(),
         email: faker.internet.email(),
         phone: faker.phone.number(),
-        password:
-          '$2b$10$a0g4BDaC/WPUWqGpg4PpveJY52wcdq9AyilBVfnkXijfCddczqDBK',
+        password: 'password',
         email_verified: now(),
         image: {
           key: faker.hacker.verb(),

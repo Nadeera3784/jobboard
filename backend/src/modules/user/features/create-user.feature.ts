@@ -3,7 +3,7 @@ import { Injectable, HttpStatus } from '@nestjs/common';
 import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../services/user.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
-import { FilesystemService } from '../../app/services';
+import { FilesystemService } from '../../core/file-system';
 
 @Injectable()
 export class CreateUserFeature extends BaseFeature {
@@ -39,6 +39,7 @@ export class CreateUserFeature extends BaseFeature {
         'User has been created successfully',
       );
     } catch (error) {
+      console.log('ERROR', error);
       return this.responseError(
         HttpStatus.BAD_REQUEST,
         'Something went wrong, Please try again later',

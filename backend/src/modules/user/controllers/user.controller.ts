@@ -62,7 +62,6 @@ export class UserController {
   }
 
   @Post()
-  @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   @UseInterceptors(FileInterceptor('image'))
   public async create(

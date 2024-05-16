@@ -16,6 +16,9 @@ export default () => ({
       uri: env.MONGODB_URI,
     },
   },
+  ai:{
+    google_generative_key: env.GOOGLE_GENERATIVE_KEY
+  },
   filesystem: {
     default: 's3',
     disks: {

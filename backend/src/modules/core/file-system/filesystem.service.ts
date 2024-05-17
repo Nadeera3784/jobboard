@@ -38,15 +38,16 @@ export class FilesystemService {
     options?: FileOptions,
   ): Promise<StorageDriver$PutFileResponse> {
     const { mimeType } = options || {};
+    const file = `${Date.now().toString()}-${path}`;
     const params = {
       Bucket: this.config.bucket,
-      Key: path,
+      Key: file,
       Body: fileContent,
-      ContentType: mimeType ? mimeType : this.getMimeFromExtension(path),
+      ContentType: mimeType ? mimeType : this.getMimeFromExtension(file),
+      ACL: 'public-read',
     } as PutObjectRequest;
-
-    const res = await this.client.upload(params).promise();
-    return { url: this.url(path), path };
+    const reponse = await this.client.upload(params).promise();
+    return { url: this.url(file), path: file };
   }
 
   /**

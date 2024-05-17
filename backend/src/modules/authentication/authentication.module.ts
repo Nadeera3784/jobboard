@@ -5,13 +5,24 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 import {
+  ResetPasswordFeature,
+  SignInFeature,
+  MeFeature,
+  VerifyEmailFeature,
+  SignUpFeature,
+  ForgotPasswordFeature,
+  GenerateTwoFactorSecretFeature,
+  GenerateTwoFactorTokenFeature,
+  SignInTwoFactorTokenFeature,
+} from './features';
+import {
   PasswordResetTokenSchema,
   PasswordResetToken,
-} from './schemas/passwordResetToken.schema';
-import {
   VerificationTokenSchema,
   VerificationToken,
-} from './schemas/verificationToken.schema';
+  twoFactorAuthenticationToken,
+  TwoFactorAuthenticationTokenSchema,
+} from './schemas';
 import { UserModule } from '../user/user.module';
 import { UserRegisterdListener } from './listeners/user-registerd.listener';
 import { ResetPasswordListener } from './listeners/reset-password.listener';
@@ -21,24 +32,21 @@ import { AuthenticationService } from './services/authentication.service';
 import { AuthenticationController } from './controllers/authentication.controller';
 import { VerificationTokenService } from './services/verification-token.service';
 import { PasswordResetTokenService } from './services/password-reset-token.service';
-import {
-  ResetPasswordFeature,
-  SignInFeature,
-  MeFeature,
-  VerifyEmailFeature,
-  SignUpFeature,
-  ForgotPasswordFeature,
-} from './features';
 import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
 import { AppModule } from '../app/app.module';
 import { BruteForceModule } from '../brute-force/brute-force.module';
 import { EmailIsUnique } from './constraints';
+import { TwoFactorAuthenticationTokenService } from './services/two-factor-authentication.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: PasswordResetToken.name, schema: PasswordResetTokenSchema },
       { name: VerificationToken.name, schema: VerificationTokenSchema },
+      {
+        name: twoFactorAuthenticationToken.name,
+        schema: TwoFactorAuthenticationTokenSchema,
+      },
     ]),
     BullModule.registerQueue(
       {
@@ -75,8 +83,12 @@ import { EmailIsUnique } from './constraints';
     ResetPasswordFeature,
     SignInFeature,
     MeFeature,
+    GenerateTwoFactorSecretFeature,
+    GenerateTwoFactorTokenFeature,
+    SignInTwoFactorTokenFeature,
     UserUpdatedListener,
     EmailIsUnique,
+    TwoFactorAuthenticationTokenService,
   ],
   controllers: [AuthenticationController],
 })

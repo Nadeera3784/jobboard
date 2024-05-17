@@ -5,19 +5,21 @@ const env: NodeJS.ProcessEnv = process.env;
 
 export default () => ({
   app: {
+    app_name: env.APP_NAME,
     app_port: env.APP_PORT,
     api_url: env.API_URL,
     environment: env.APP_ENV,
     jwt_key: env.APP_JWT_KEY,
     enable_bruteforce_protection: env.APP_ENABLE_BRUTEFORCE_PROTECTION || false,
+    enable_2fa: env.APP_ENABLE_2FA || false,
   },
   database: {
     mongodb: {
       uri: env.MONGODB_URI,
     },
   },
-  ai:{
-    google_generative_key: env.GOOGLE_GENERATIVE_KEY
+  ai: {
+    google_generative_key: env.GOOGLE_GENERATIVE_KEY,
   },
   filesystem: {
     default: 's3',

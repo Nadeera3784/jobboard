@@ -5,9 +5,9 @@ import { EventDispatcher } from '../../core/event-dispatcher';
 
 import { SignInDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
-import { AuthenticationService } from '../services/authentication.service';
 import { BaseFeature } from '../../app/features/base-feature';
 import { UserService } from '../../user/services/user.service';
+import { UtilityService } from '../../app/services';
 import {
   USER_REGISTERED,
   USER_UPDATED,
@@ -24,7 +24,6 @@ import { USER_LOGIN_EVENT } from '../constants';
 @Injectable()
 export class SignInFeature extends BaseFeature {
   constructor(
-    private readonly authenticationService: AuthenticationService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly tokenService: VerificationTokenService,
@@ -53,7 +52,7 @@ export class SignInFeature extends BaseFeature {
         );
       }
 
-      const isValidPassword = await this.authenticationService.signIn(
+      const isValidPassword = await UtilityService.isPasswordValid(
         signInDto.password,
         user.password,
       );
@@ -68,9 +67,15 @@ export class SignInFeature extends BaseFeature {
       this.eventDispatcher.dispatch(USER_LOGIN_EVENT, loginEvent);
 
       if (isValidPassword) {
-        const payload = {
-          id: user._id,
-        };
+
+        /*
+        TODO:add two factor authentication reponse
+        if(user.is_two_factor_authentication_enabled){
+
+        }
+        */
+        
+        const payload = {id: user._id };
 
         const accessToken = this.jwtService.sign(payload);
 

@@ -1,6 +1,7 @@
 import mongoose, { Types } from 'mongoose';
 import * as crypto from 'crypto';
 import PasswordValidator = require('password-validator');
+import * as bcrypt from 'bcrypt';
 
 import { JobFilterInterface } from '../../job/interfaces';
 
@@ -71,4 +72,9 @@ export class UtilityService {
       .not()
       .spaces();
   };
+
+  public static async isPasswordValid(password: string, hash: string): Promise<boolean> {
+    return await bcrypt.compare(password, hash);
+  }
+  
 }

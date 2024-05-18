@@ -38,11 +38,11 @@ export class AuthenticationController {
     private readonly verifyEmailFeature: VerifyEmailFeature,
     private readonly forgotPasswordFeature: ForgotPasswordFeature,
     private readonly resetPasswordFeature: ResetPasswordFeature,
-    private readonly signInFeature: SignInFeature,
-    private readonly meFeature: MeFeature,
     private readonly generateTwoFactorSecretFeature: GenerateTwoFactorSecretFeature,
     private readonly generateTwoFactorTokenFeature: GenerateTwoFactorTokenFeature,
     private readonly signInTwoFactorTokenFeature: SignInTwoFactorTokenFeature,
+    private readonly signInFeature: SignInFeature,
+    private readonly meFeature: MeFeature,
   ) {}
 
   @Post('/signup')

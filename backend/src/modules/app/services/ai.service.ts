@@ -23,7 +23,8 @@ export class AiService {
 
   public async jobMatcher(job: string, resume: string) {
     const prompt = `Match The Following Job Description:\n\n${job}\n\nWith Candidate Resume:\n\n${resume} then return the percentage`;
-    const response = (await this.generativeModel.generateContent(prompt)).response;
+    const response = (await this.generativeModel.generateContent(prompt))
+      .response;
     return response.text();
   }
 

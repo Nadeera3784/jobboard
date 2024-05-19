@@ -25,6 +25,9 @@ class StatusModuleOptions {
 
   @IsBoolean()
   databaseCheck: boolean;
+
+  @IsIn(['json', 'html'])
+  type: string;
 }
 
 export { StatusModuleOptions };

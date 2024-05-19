@@ -81,6 +81,7 @@ import { StatusModule } from '../core/status';
           port: Number(configService.get('app.app_port')),
           environment: configService.get('app.environment'),
           databaseCheck: true,
+          type: 'html',
         };
       },
     }),

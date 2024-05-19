@@ -56,6 +56,6 @@ export class StatusController {
         loadAverage: OS.loadavg(),
       },
     };
-    return this.render(data);
+    return this.statusModuleOptions.type == 'json' ? data : this.render(data);
   }
 }

@@ -2,9 +2,10 @@ import { Controller, Get, Inject } from '@nestjs/common';
 import { MongooseHealthIndicator } from '@nestjs/terminus';
 import * as OS from 'node:os';
 import { debugPort, version } from 'node:process';
+import * as Handlebars from 'handlebars';
+
 import { StatusModuleOptions } from './dto/status-module-options.dto';
 import { MODULE_OPTIONS_TOKEN } from './status.module-definition';
-import * as Handlebars from 'handlebars';
 
 @Controller('status')
 export class StatusController {
@@ -24,8 +25,13 @@ export class StatusController {
   }
 
   @Get()
-  async status() {
-    const data = {
+  public async status() {
+    const data = await this.getStatusData();
+    return this.statusModuleOptions.type == 'json' ? data : this.render(data);
+  }
+
+  private async getStatusData(){
+    return  {
       app_status: 'Up',
       database_status: this.statusModuleOptions.databaseCheck
         ? JSON.stringify(await this.mongoIndicator.pingCheck('mongodb'))
@@ -56,6 +62,5 @@ export class StatusController {
         loadAverage: OS.loadavg(),
       },
     };
-    return this.statusModuleOptions.type == 'json' ? data : this.render(data);
   }
 }

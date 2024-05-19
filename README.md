@@ -15,6 +15,8 @@ Job listing application
 - Account inactivity reminder email 
 - Automated job expiration
 - Role base access
+- Two-factor authentication (2FA) 
+- Application status check via UI
 
 ## Tech
 
@@ -77,6 +79,12 @@ $ npm run cli job:seed
 
 ```bash
 $ http://127.0.0.1:3000/api/v1/queues
+```
+
+## Health Status
+
+```bash
+$ http://127.0.0.1:3000/api/v1/status
 ```
 
 ## Running The Backend Cron Worker

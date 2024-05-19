@@ -10,7 +10,6 @@ export class AuthenticationService {
     @InjectQueue('reset-password-email') private resetPasswordEmailQueue: Queue,
   ) {}
 
-
   public async sendResetPasswordMail(payload) {
     await this.resetPasswordEmailQueue.add(
       'send-reset-password-email',

@@ -67,15 +67,14 @@ export class SignInFeature extends BaseFeature {
       this.eventDispatcher.dispatch(USER_LOGIN_EVENT, loginEvent);
 
       if (isValidPassword) {
-
         /*
         TODO:add two factor authentication reponse
         if(user.is_two_factor_authentication_enabled){
 
         }
         */
-        
-        const payload = {id: user._id };
+
+        const payload = { id: user._id };
 
         const accessToken = this.jwtService.sign(payload);
 

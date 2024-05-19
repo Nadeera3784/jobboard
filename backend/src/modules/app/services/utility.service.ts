@@ -73,8 +73,10 @@ export class UtilityService {
       .spaces();
   };
 
-  public static async isPasswordValid(password: string, hash: string): Promise<boolean> {
+  public static async isPasswordValid(
+    password: string,
+    hash: string,
+  ): Promise<boolean> {
     return await bcrypt.compare(password, hash);
   }
-  
 }

@@ -1,21 +1,10 @@
-import { DynamicModule, Logger, Provider } from '@nestjs/common';
-import { StatusAppFactory } from './status-app.factory';
-import { StatusConfigService } from './status-config.service';
-import { StatusOptions } from './status-options.interface';
+import { Module } from '@nestjs/common';
+import { StatusController } from './status.controller';
+import { ConfigurableModuleClass } from './status.module-definition';
+import { TerminusModule } from '@nestjs/terminus';
 
-export class StatusModule {
-  static forRoot(config: StatusOptions): DynamicModule;
-
-  static forRoot(config: StatusOptions): DynamicModule {
-    const sharedStatusConfigProvider: Provider = {
-      provide: StatusConfigService,
-      useValue: new StatusConfigService(config),
-    };
-    return {
-      global: false,
-      module: StatusModule,
-      providers: [Logger, StatusAppFactory, sharedStatusConfigProvider],
-      exports: [sharedStatusConfigProvider],
-    };
-  }
-}
+@Module({
+  controllers: [StatusController],
+  imports: [TerminusModule],
+})
+export class StatusModule extends ConfigurableModuleClass {}

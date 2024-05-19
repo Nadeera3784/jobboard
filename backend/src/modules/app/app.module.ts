@@ -19,6 +19,7 @@ import { AppController } from './controllers/app.controller';
 import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
 import { CommandModule } from '../core/command';
 import { FileSystemModule } from '../core/file-system';
+import { StatusModule } from '../core/status';
 
 @Module({
   imports: [
@@ -67,6 +68,19 @@ import { FileSystemModule } from '../core/file-system';
           secretAccessKey: configService.get('filesystem.disks.s3.secret'),
           region: configService.get('filesystem.disks.s3.region'),
           bucket: configService.get('filesystem.disks.s3.bucket'),
+        };
+      },
+    }),
+    StatusModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        return {
+          name: configService.get('app.app_name'),
+          version: '1.0.0',
+          port: Number(configService.get('app.app_port')),
+          environment: configService.get('app.environment'),
+          databaseCheck: true,
         };
       },
     }),

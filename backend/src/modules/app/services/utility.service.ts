@@ -79,4 +79,15 @@ export class UtilityService {
   ): Promise<boolean> {
     return await bcrypt.compare(password, hash);
   }
+
+  static generateHash(word: string): string | undefined {
+    if (!word) {
+      return;
+    }
+    const salt: string = '64bf4dc3-96a7-4484-9744-d368b972e50e';
+    return crypto
+      .createHash('sha256')
+      .update(salt + word)
+      .digest('hex');
+  }
 }

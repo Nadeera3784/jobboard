@@ -30,8 +30,8 @@ export class StatusController {
     return this.statusModuleOptions.type == 'json' ? data : this.render(data);
   }
 
-  private async getStatusData(){
-    return  {
+  private async getStatusData() {
+    return {
       app_status: 'Up',
       database_status: this.statusModuleOptions.databaseCheck
         ? JSON.stringify(await this.mongoIndicator.pingCheck('mongodb'))

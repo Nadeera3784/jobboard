@@ -23,7 +23,7 @@ export const AppProvider = ({ children }: ProviderType) => {
   };
 
   useEffect(() => {
-    if(token){
+    if (token) {
       cacheJwtToken(token);
     }
   }, [token]);

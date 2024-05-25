@@ -21,9 +21,7 @@ export const CreateJobPage = () => {
           </div>
         </div>
         <div className="space-y-4 lg:space-y-8">
-          <div className="space-y-4 lg:space-y-8">
- 
-          </div>
+          <div className="space-y-4 lg:space-y-8"></div>
         </div>
       </div>
     </div>

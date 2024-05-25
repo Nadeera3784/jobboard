@@ -34,6 +34,4 @@ httpClient.interceptors.response.use(
 
 //http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-export  {
-  httpClient
-};
+export { httpClient };

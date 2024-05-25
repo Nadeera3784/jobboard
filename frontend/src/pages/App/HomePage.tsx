@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import LatestJobList from '../../components/Home/LatestJobList';
+import Testimonial from '../../components/Home/Testimonial';
 
 export const HomePage = () => {
   return (
@@ -135,6 +136,7 @@ export const HomePage = () => {
           </div>
         </div>
       </div>
+      <Testimonial />
     </section>
   );
 };

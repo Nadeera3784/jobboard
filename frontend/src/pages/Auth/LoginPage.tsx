@@ -36,7 +36,7 @@ export const LoginPage = () => {
 
   useEffect(() => {
     const { data, status } = response ?? {};
-  
+
     if (status && data && data?.access_token.length > 0) {
       const { redirect_identifier, access_token } = data;
       setPermission(redirect_identifier);
@@ -58,7 +58,6 @@ export const LoginPage = () => {
     if (response.status_code == HttpStatus.UNAUTHORIZED) {
       toast.warning('The email address or password is incorrect. Please retry');
     }
-    
   };
 
   return (

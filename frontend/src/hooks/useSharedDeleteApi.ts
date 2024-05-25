@@ -13,9 +13,7 @@ export const useSharedDeleteApi = () => {
     status_code: null,
     message: '',
   });
-  const process = async (
-    endpoint: string
-  ) => {
+  const process = async (endpoint: string) => {
     setResponse(prevResponse => ({
       ...prevResponse,
       loading: true,

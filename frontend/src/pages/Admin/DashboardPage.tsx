@@ -1,4 +1,4 @@
-import { PlusCircle } from "lucide-react";
+import { PlusCircle } from 'lucide-react';
 
 export const DashboardPage = () => {
   return (
@@ -9,7 +9,7 @@ export const DashboardPage = () => {
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             <div className="flex items-center space-x-2">
               <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-black text-white shadow hover:bg-gray-600 h-9 px-4 py-2">
-                <PlusCircle className="mr-2 h-4 w-4"/>
+                <PlusCircle className="mr-2 h-4 w-4" />
                 New Category
               </button>
             </div>

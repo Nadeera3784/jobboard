@@ -27,11 +27,11 @@ export const DeleteDialog: React.FC<DeleteDialogProps> = ({
       try {
         const response = await httpClient.delete(action.endpoint);
         if (response.status === HttpStatus.OK) {
-            onClose();
-            toast.warning(response?.data?.message || 'Deleted Successfully!');
-            refresh();
+          onClose();
+          toast.warning(response?.data?.message || 'Deleted Successfully!');
+          refresh();
         } else {
-            toast.warning('Something went wrong, Please try again later');
+          toast.warning('Something went wrong, Please try again later');
         }
       } catch (error) {
         toast.warning('Something went wrong, Please try again later');

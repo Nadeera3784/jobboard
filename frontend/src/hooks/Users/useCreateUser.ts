@@ -31,7 +31,10 @@ export const useCreateUser = () => {
         });
       }
 
-      const apiResponse = await httpClient.post<ApiResponse>(ENDPOINT, formData);
+      const apiResponse = await httpClient.post<ApiResponse>(
+        ENDPOINT,
+        formData,
+      );
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

@@ -3,10 +3,10 @@ name: CI Workflow
 on:
   push:
     branches:
-      - main
+      - '**'
   pull_request:
     branches:
-      - main
+      - '**'
 
 jobs:
   install-and-test:
@@ -24,6 +24,8 @@ jobs:
     - name: Install npm
       run: npm install -g npm@9.5.0
 
+    - name: Create target directory
+      run: mkdir -p /user/src/app
 
     - name: Copy project files
       run: |

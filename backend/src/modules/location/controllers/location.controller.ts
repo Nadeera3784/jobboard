@@ -10,6 +10,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { CreateLocationDto, UpdateLocationDto } from '../dtos';
 import {
@@ -41,7 +42,7 @@ export class LocationController {
   @Get()
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async getAll(@Res() response) {
+  public async getAll(@Res() response: Response) {
     const { status, response: featureUpResponse } =
       await this.getAllLocationsFeature.handle();
     return response.status(status).json(featureUpResponse);
@@ -50,7 +51,7 @@ export class LocationController {
   @Get('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async getById(@Res() response, @Param() { id }: IdDto) {
+  public async getById(@Res() response: Response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getLocationByIdFeature.handle(id);
     return response.status(status).json(featureUpResponse);
@@ -60,7 +61,7 @@ export class LocationController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async create(
-    @Res() response,
+    @Res() response: Response,
     @Body() createLocationDto: CreateLocationDto,
   ) {
     const { status, response: featureUpResponse } =
@@ -72,7 +73,7 @@ export class LocationController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async update(
-    @Res() response,
+    @Res() response: Response,
     @Param() { id }: IdDto,
     @Body() updateLocationDto: UpdateLocationDto,
   ) {
@@ -84,7 +85,7 @@ export class LocationController {
   @Delete('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async delete(@Res() response, @Param() { id }: IdDto) {
+  public async delete(@Res() response: Response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.deleteLocationFeature.handle(id);
     return response.status(status).json(featureUpResponse);
@@ -94,7 +95,7 @@ export class LocationController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async dataTable(
-    @Res() response,
+    @Res() response: Response,
     @Body('order') order: any,
     @Body('columns') columns: any,
     @Body('filters') filters: any,

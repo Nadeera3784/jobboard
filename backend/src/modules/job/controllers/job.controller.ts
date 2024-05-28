@@ -9,6 +9,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import {
   CreateJobFeature,
@@ -39,7 +40,7 @@ export class JobController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async getAll(
-    @Res() response,
+    @Res() response: Response,
     @Query('filter') filter: JobFilterInterface,
     @Query('search') search: JobSearchInterface,
     @Query('order') order: JobOrderInterface,
@@ -60,7 +61,7 @@ export class JobController {
   @Get('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async getById(@Res() response, @Param() { id }: IdDto) {
+  public async getById(@Res() response: Response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getJobByIdFeature.handle(id);
     return response.status(status).json(featureUpResponse);
@@ -70,7 +71,10 @@ export class JobController {
   @Header('Content-Type', 'application/json')
   @UseGuards(AuthenticationGuard, RoleGuard)
   @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY)
-  public async create(@Res() response, @Body() createJobDto: CreateJobDto) {
+  public async create(
+    @Res() response: Response,
+    @Body() createJobDto: CreateJobDto,
+  ) {
     const { status, response: featureUpResponse } =
       await this.createJobFeature.handle(createJobDto);
     return response.status(status).json(featureUpResponse);

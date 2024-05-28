@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { plainToInstance } from 'class-transformer';
 import { JwtService } from '@nestjs/jwt';
+import { MockResponse, createResponse } from 'node-mocks-http';
+import { Response } from 'express';
 
 import {
   CreateUserFeature,
@@ -16,7 +18,7 @@ import { RolesEnum, UserStatusEnum } from '../../enums';
 import { HttpStatus } from '@nestjs/common';
 import { IdDto } from '../../../app/dtos/Id.dto';
 import { CreateUserDto, UpdateUserDto } from '../../dtos';
-import { FilesystemService } from '../../../app/services';
+import { FilesystemService } from '../../../core/file-system';
 import { AuthenticationGuard } from '../../../authentication/guards/authentication.guard';
 import { ConfigService } from '@nestjs/config';
 import { EventDispatcher } from '../../../core/event-dispatcher';
@@ -28,6 +30,8 @@ describe('controllers/UserController', () => {
   let updateUserFeature: UpdateUserFeature;
   let deleteUserFeature: DeleteUserFeature;
   let userController: UserController;
+  let response: MockResponse<Response>;
+
 
   const mockData = {
     _id: '66082529899034a393c5a963',
@@ -124,6 +128,7 @@ describe('controllers/UserController', () => {
     updateUserFeature = module.get<UpdateUserFeature>(UpdateUserFeature);
     deleteUserFeature = module.get<DeleteUserFeature>(DeleteUserFeature);
     userController = module.get<UserController>(UserController);
+    response = createResponse();
   });
 
   it('UserController should be defined', () => {
@@ -140,13 +145,10 @@ describe('controllers/UserController', () => {
       },
       status: HttpStatus.OK,
     });
-    const responseMock = {
-      json: jest.fn().mockReturnThis(),
-      status: jest.fn().mockReturnThis(),
-    };
-    await userController.getAll(responseMock);
+    mockRepnonse();
+    await userController.getAll(response);
     expect(spyOn).toHaveBeenCalled();
-    expect(responseMock.json).toHaveBeenCalledWith({
+    expect(response.json).toHaveBeenCalledWith({
       data: [mockData],
       message: null,
       statusCode: HttpStatus.OK,
@@ -163,15 +165,12 @@ describe('controllers/UserController', () => {
       },
       status: HttpStatus.OK,
     });
-    const responseMock = {
-      json: jest.fn().mockReturnThis(),
-      status: jest.fn().mockReturnThis(),
-    };
+    mockRepnonse();
     const idto = new IdDto();
     idto.id = '66082529899034a393c5a963';
-    await userController.getById(responseMock, idto);
+    await userController.getById(response, idto);
     expect(spyOn).toHaveBeenCalled();
-    expect(responseMock.json).toHaveBeenCalledWith({
+    expect(response.json).toHaveBeenCalledWith({
       data: mockData,
       message: null,
       statusCode: HttpStatus.OK,
@@ -188,10 +187,7 @@ describe('controllers/UserController', () => {
       },
       status: HttpStatus.OK,
     });
-    const responseMock = {
-      json: jest.fn().mockReturnThis(),
-      status: jest.fn().mockReturnThis(),
-    };
+    mockRepnonse();
     const input = {
       name: 'Dr. Mitchell Skiles',
       email: 'Brown.OKeefe11@hotmail.com',
@@ -202,9 +198,9 @@ describe('controllers/UserController', () => {
     };
     const payload = plainToInstance(CreateUserDto, input);
     const file: Express.Multer.File = null;
-    await userController.create(responseMock, file, payload);
+    await userController.create(response, file, payload);
     expect(spyOn).toHaveBeenCalled();
-    expect(responseMock.json).toHaveBeenCalledWith({
+    expect(response.json).toHaveBeenCalledWith({
       data: null,
       message: 'User has been created successfully',
       statusCode: HttpStatus.OK,
@@ -221,10 +217,7 @@ describe('controllers/UserController', () => {
       },
       status: HttpStatus.OK,
     });
-    const responseMock = {
-      json: jest.fn().mockReturnThis(),
-      status: jest.fn().mockReturnThis(),
-    };
+    mockRepnonse();
     const idto = new IdDto();
     idto.id = '66082529899034a393c5a963';
     const input = {
@@ -236,9 +229,9 @@ describe('controllers/UserController', () => {
       status: UserStatusEnum.ACTIVE,
     };
     const payload = plainToInstance(UpdateUserDto, input);
-    await userController.update(responseMock, idto, payload);
+    await userController.update(response, idto, payload);
     expect(spyOn).toHaveBeenCalled();
-    expect(responseMock.json).toHaveBeenCalledWith({
+    expect(response.json).toHaveBeenCalledWith({
       data: null,
       message: 'User has been updated successfully',
       statusCode: HttpStatus.OK,
@@ -255,18 +248,21 @@ describe('controllers/UserController', () => {
       },
       status: HttpStatus.OK,
     });
-    const responseMock = {
-      json: jest.fn().mockReturnThis(),
-      status: jest.fn().mockReturnThis(),
-    };
+    mockRepnonse();
     const idto = new IdDto();
     idto.id = '66082529899034a393c5a963';
-    await userController.delete(responseMock, idto);
+    await userController.delete(response, idto);
     expect(spyOn).toHaveBeenCalled();
-    expect(responseMock.json).toHaveBeenCalledWith({
+    expect(response.json).toHaveBeenCalledWith({
       data: null,
       message: 'User has been deleted successfully',
       statusCode: HttpStatus.OK,
     });
   });
+
+  const mockRepnonse = () => {
+    response.json = jest.fn().mockReturnThis();
+    response.status = jest.fn().mockReturnThis();
+  }
+
 });

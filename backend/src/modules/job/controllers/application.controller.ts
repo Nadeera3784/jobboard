@@ -1,4 +1,5 @@
 import { Body, Controller, Header, Param, Post, Res } from '@nestjs/common';
+import { Response } from 'express';
 
 import { IdDto } from '../../app/dtos/Id.dto';
 import { RolesAllowed } from '../../authentication/decorators/role.decorator';
@@ -16,7 +17,7 @@ export class ApplicationController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.USER)
   public async create(
-    @Res() response,
+    @Res() response: Response,
     @Body() createApplicationDto: CreateApplicationDto,
     @Param() { id }: IdDto,
   ) {

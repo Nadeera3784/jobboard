@@ -9,7 +9,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
-import { Request } from 'express';
+import { Response, Request } from 'express';
 
 import {
   ResetPasswordDto,
@@ -47,7 +47,7 @@ export class AuthenticationController {
 
   @Post('/signup')
   @Header('Content-Type', 'application/json')
-  public async signUp(@Res() response, @Body() signupDto: SignupDto) {
+  public async signUp(@Res() response: Response, @Body() signupDto: SignupDto) {
     const { status, response: featureUpResponse } =
       await this.signUpFeature.handle(signupDto);
     return response.status(status).json(featureUpResponse);
@@ -56,8 +56,8 @@ export class AuthenticationController {
   @Post('/signin')
   @Header('Content-Type', 'application/json')
   public async signIn(
+    @Res() response: Response,
     @Req() request: Request,
-    @Res() response,
     @Body() signInDto: SignInDto,
   ) {
     const { status, response: featureUpResponse } =
@@ -67,7 +67,10 @@ export class AuthenticationController {
 
   @Post('/verify-email/:token')
   @Header('Content-Type', 'application/json')
-  public async verifyEmai(@Res() response, @Param('token') token: string) {
+  public async verifyEmai(
+    @Res() response: Response,
+    @Param('token') token: string,
+  ) {
     const { status, response: featureUpResponse } =
       await this.verifyEmailFeature.handle(token);
     return response.status(status).json(featureUpResponse);
@@ -76,7 +79,7 @@ export class AuthenticationController {
   @Post('/forgot')
   @Header('Content-Type', 'application/json')
   public async forgotPassword(
-    @Res() response,
+    @Res() response: Response,
     @Body() forgotPasswordDto: ForgotPasswordDto,
   ) {
     const { status, response: featureUpResponse } =
@@ -87,7 +90,7 @@ export class AuthenticationController {
   @Post('/reset/:token')
   @Header('Content-Type', 'application/json')
   public async resetPassword(
-    @Res() response,
+    @Res() response: Response,
     @Param('token') token: string,
     @Body() resetPasswordDto: ResetPasswordDto,
   ) {
@@ -99,7 +102,7 @@ export class AuthenticationController {
   @Get('/me')
   @Header('Content-Type', 'application/json')
   @UseGuards(AuthenticationGuard)
-  public async me(@Req() request, @Res() response) {
+  public async me(@Req() request, @Res() response: Response) {
     const { status, response: featureUpResponse } = await this.meFeature.handle(
       request.user.id,
     );
@@ -109,7 +112,7 @@ export class AuthenticationController {
   @Post('2fa/token')
   @Header('Content-Type', 'application/json')
   @UseGuards(AuthenticationGuard)
-  async generateToken(@Res() response, @Req() request) {
+  async generateToken(@Res() response: Response, @Req() request) {
     const { status, response: featureUpResponse } =
       await this.generateTwoFactorTokenFeature.handle(request.user.id);
     return response.status(status).json(featureUpResponse);
@@ -118,7 +121,7 @@ export class AuthenticationController {
   @Post('2fa/generate')
   @Header('Content-Type', 'application/json')
   @UseGuards(AuthenticationGuard)
-  async generateSecret(@Res() response, @Req() request) {
+  async generateSecret(@Res() response: Response, @Req() request) {
     const { status, response: featureUpResponse } =
       await this.generateTwoFactorSecretFeature.handle(request.user.id);
     return response.status(status).json(featureUpResponse);
@@ -128,7 +131,7 @@ export class AuthenticationController {
   @Header('Content-Type', 'application/json')
   @UseGuards(AuthenticationGuard)
   async authenticate(
-    @Res() response,
+    @Res() response: Response,
     @Req() request,
     @Body() authenticateTwoFactorTokenDto: AuthenticateTwoFactorTokenDto,
   ) {

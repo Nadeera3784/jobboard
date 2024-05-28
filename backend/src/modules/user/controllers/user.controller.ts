@@ -14,6 +14,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import { CreateUserDto, UpdateUserDto } from '../dtos';
 import {
@@ -46,7 +47,7 @@ export class UserController {
   @Get()
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async getAll(@Res() response) {
+  public async getAll(@Res() response: Response) {
     const { status, response: featureUpResponse } =
       await this.getAllUsersFeature.handle();
     return response.status(status).json(featureUpResponse);
@@ -55,7 +56,7 @@ export class UserController {
   @Get('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async getById(@Res() response, @Param() { id }: IdDto) {
+  public async getById(@Res() response: Response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getUserByIdFeature.handle(id);
     return response.status(status).json(featureUpResponse);
@@ -65,7 +66,7 @@ export class UserController {
   @RolesAllowed(RolesEnum.ADMIN)
   @UseInterceptors(FileInterceptor('image'))
   public async create(
-    @Res() response,
+    @Res() response: Response,
     @UploadedFile(
       new ParseFilePipeBuilder()
         .addMaxSizeValidator({ maxSize: 1000000 })
@@ -87,7 +88,7 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async update(
-    @Res() response,
+    @Res() response: Response,
     @Param() { id }: IdDto,
     @Body() updateUserDto: UpdateUserDto,
   ) {
@@ -99,7 +100,7 @@ export class UserController {
   @Delete('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async delete(@Res() response, @Param() { id }: IdDto) {
+  public async delete(@Res() response: Response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.deleteUserFeature.handle(id);
     return response.status(status).json(featureUpResponse);
@@ -109,7 +110,7 @@ export class UserController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async dataTable(
-    @Res() response,
+    @Res() response: Response,
     @Body('order') order: any,
     @Body('columns') columns: any,
     @Body('filters') filters: any,

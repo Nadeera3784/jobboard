@@ -1,0 +1,39 @@
+name: CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  install-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20
+
+    - name: Install npm
+      run: npm install -g npm@9.5.0
+
+
+    - name: Copy project files
+      run: |
+        cp backend/package.json backend/package-lock.json /user/src/app/
+        cp -r backend/* /user/src/app/
+
+    - name: Install dependencies
+      run: npm ci
+      working-directory: /user/src/app
+
+    - name: Run tests
+      run: npm run test
+      working-directory: /user/src/app

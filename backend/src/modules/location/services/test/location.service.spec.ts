@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 
-import { LoctionStatusEnum } from '../../enums';
+import { LocationStatusEnum } from '../../enums';
 import { Location } from '../../schemas/location.schema';
 import { LocationService } from '../../services/location.service';
 
@@ -14,7 +14,7 @@ describe('location/services/UserService', () => {
   const mockData = {
     _id: '66082529899034a393c5a963',
     name: 'Melbourne',
-    status: LoctionStatusEnum.ACTIVE,
+    status: LocationStatusEnum.ACTIVE,
   };
 
   beforeEach(async () => {
@@ -71,7 +71,7 @@ describe('location/services/UserService', () => {
     const id = '66082529899034a393c5a963';
     const payload = {
       name: 'Perth',
-      status: LoctionStatusEnum.ACTIVE,
+      status: LocationStatusEnum.ACTIVE,
     };
     jest.spyOn(locationModel, 'findByIdAndUpdate').mockResolvedValue(mockData);
     expect(locationService.update(id, payload)).resolves.toEqual(mockData);
@@ -81,7 +81,7 @@ describe('location/services/UserService', () => {
     const id = '';
     const payload = {
       name: '',
-      status: LoctionStatusEnum.ACTIVE,
+      status: LocationStatusEnum.ACTIVE,
     };
     jest.spyOn(locationModel, 'findByIdAndUpdate').mockRejectedValue(null);
     expect(locationService.update(id, payload)).rejects.toBeFalsy();

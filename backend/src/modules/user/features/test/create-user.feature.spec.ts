@@ -8,7 +8,7 @@ import { CreateUserFeature } from '../create-user.feature';
 import { UserService } from '../../services/user.service';
 import { RolesEnum } from '../../enums';
 import { CreateUserDto } from '../../dtos/create-user.dto';
-import { FilesystemService } from '../../../app/services';
+import { FilesystemService } from '../../../core/file-system';
 
 describe('features/CreateUserFeature', () => {
   let userService: UserService;

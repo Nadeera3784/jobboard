@@ -10,6 +10,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { Response } from 'express';
 
 import {
   CreateCategoryFeature,
@@ -41,7 +42,7 @@ export class CategoryController {
   @Get()
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async getAll(@Res() response) {
+  public async getAll(@Res() response: Response) {
     const { status, response: featureUpResponse } =
       await this.getAllCategoriesFeature.handle();
     return response.status(status).json(featureUpResponse);
@@ -50,7 +51,7 @@ export class CategoryController {
   @Get('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async getById(@Res() response, @Param() { id }: IdDto) {
+  public async getById(@Res() response: Response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.getCategoryByIdFeature.handle(id);
     return response.status(status).json(featureUpResponse);
@@ -60,7 +61,7 @@ export class CategoryController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async create(
-    @Res() response,
+    @Res() response: Response,
     @Body() createCategoryDto: CreateCategoryDto,
   ) {
     const { status, response: featureUpResponse } =
@@ -72,7 +73,7 @@ export class CategoryController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async update(
-    @Res() response,
+    @Res() response: Response,
     @Param() { id }: IdDto,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
@@ -84,7 +85,7 @@ export class CategoryController {
   @Delete('/:id')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async delete(@Res() response, @Param() { id }: IdDto) {
+  public async delete(@Res() response: Response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.deleteCategoryFeature.handle(id);
     return response.status(status).json(featureUpResponse);
@@ -94,7 +95,7 @@ export class CategoryController {
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async dataTable(
-    @Res() response,
+    @Res() response: Response,
     @Body('order') order: any,
     @Body('columns') columns: any,
     @Body('filters') filters: any,

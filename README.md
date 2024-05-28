@@ -2,6 +2,8 @@
 
 Job listing application 
 
+![CI](https://github.com/Nadeera3784/jobboard/actions/workflows/main.yml/badge.svg?branch=main)
+
 ## Features
 
 - Login

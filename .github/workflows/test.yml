@@ -24,18 +24,15 @@ jobs:
     - name: Install npm
       run: npm install -g npm@9.5.0
 
-    - name: Create target directory
-      run: mkdir -p /usr/src/app
-
     - name: Copy project files
       run: |
-        cp backend/package.json backend/package-lock.json /usr/src/app/
-        cp -r backend/* /usr/src/app/
+        mkdir -p usr/app &&  cp backend/package.json backend/package-lock.json usr/app
+        cp -r backend/* usr/app
 
     - name: Install dependencies
       run: npm ci
-      working-directory: /usr/src/app
+      working-directory: usr/app
 
     - name: Run tests
       run: npm run test
-      working-directory: /usr/src/app
+      working-directory: usr/app

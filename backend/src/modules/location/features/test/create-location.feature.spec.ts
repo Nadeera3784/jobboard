@@ -8,6 +8,7 @@ import { LocationService } from '../../services/location.service';
 import { LocationStatusEnum } from '../../enums';
 import { CreateLocationDto } from '../../dtos/index';
 import { validate } from 'class-validator';
+import { UtilityService } from '../../../app/services';
 
 describe('features/CreateLocationFeature', () => {
   let locationService: LocationService;
@@ -66,6 +67,13 @@ describe('features/CreateLocationFeature', () => {
     const payload = plainToInstance(CreateLocationDto, input);
 
     const errors = await validate(payload);
+
+    expect(UtilityService.stringFied(errors)).toContain(
+      `name should not be empty`,
+    );
+    expect(UtilityService.stringFied(errors)).toContain(
+      `name must be longer than or equal to 1 characters`,
+    );
 
     jest.spyOn(locationService, 'create').mockRejectedValue(null);
 

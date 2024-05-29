@@ -4,6 +4,7 @@ import PasswordValidator = require('password-validator');
 import * as bcrypt from 'bcrypt';
 
 import { JobFilterInterface } from '../../job/interfaces';
+import { ValidationError } from 'class-validator';
 
 export class UtilityService {
   public static parseJson<T>(input: any): T {
@@ -89,5 +90,9 @@ export class UtilityService {
       .createHash('sha256')
       .update(salt + word)
       .digest('hex');
+  }
+
+  static stringFied(errors: ValidationError[]): string {
+    return JSON.stringify(errors);
   }
 }

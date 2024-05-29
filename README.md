@@ -86,8 +86,15 @@ $ http://127.0.0.1:3000/api/v1/queues
 ## Health Status
 
 ```bash
-$ http://127.0.0.1:3000/api/v1/status
+$ http://127.0.0.1:3000/status
 ```
+
+## Swagger Doc
+
+```bash
+$ http://127.0.0.1:3000/api-doc
+```
+
 
 ## Running The Backend Cron Worker
 

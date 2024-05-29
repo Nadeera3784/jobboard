@@ -2,7 +2,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { faker } from '@faker-js/faker';
 import { HttpStatus } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
-import { validate } from 'class-validator';
 
 import { CreateUserFeature } from '../create-user.feature';
 import { UserService } from '../../services/user.service';

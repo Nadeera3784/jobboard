@@ -7,6 +7,7 @@ import { UpdateLocationFeature } from '../update-location-feature';
 import { LocationService } from '../../services/location.service';
 import { LocationStatusEnum } from '../../enums';
 import { UpdateLocationDto } from '../../dtos';
+import { UtilityService } from '../../../app/services/utility.service';
 
 describe('features/UpdateLocationFeature', () => {
   let locationService: LocationService;
@@ -85,6 +86,12 @@ describe('features/UpdateLocationFeature', () => {
     const errors = await validate(payload);
 
     expect(errors.length).toBe(1);
+    expect(UtilityService.stringFied(errors)).toContain(
+      `name should not be empty`,
+    );
+    expect(UtilityService.stringFied(errors)).toContain(
+      `name must be longer than or equal to 1 characters`,
+    );
 
     jest.spyOn(locationService, 'update').mockRejectedValueOnce(null);
 

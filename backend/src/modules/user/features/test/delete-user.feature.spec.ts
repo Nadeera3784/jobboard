@@ -72,7 +72,7 @@ describe('features/DeleteUserFeature', () => {
     expect(eventDispatcher.dispatch).toHaveBeenCalledWith(USER_DELETED, event);
   });
 
-  it('GetUserByIdFeature handle fail', async () => {
+  it('DeleteUserFeature handle fail', async () => {
     const id = '';
     jest.spyOn(userService, 'delete').mockRejectedValue(null);
     const result = await deleteUserFeature.handle(id);

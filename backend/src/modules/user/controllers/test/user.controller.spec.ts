@@ -32,7 +32,6 @@ describe('controllers/UserController', () => {
   let userController: UserController;
   let response: MockResponse<Response>;
 
-
   const mockData = {
     _id: '66082529899034a393c5a963',
     name: 'Dr. Mitchell Skiles',
@@ -263,6 +262,5 @@ describe('controllers/UserController', () => {
   const mockRepnonse = () => {
     response.json = jest.fn().mockReturnThis();
     response.status = jest.fn().mockReturnThis();
-  }
-
+  };
 });

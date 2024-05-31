@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import LatestJobList from '../../components/Home/LatestJobList';
 import Testimonial from '../../components/Home/Testimonial';
+import { MoveRight } from 'lucide-react';
 
 export const HomePage = () => {
   return (
@@ -131,7 +132,7 @@ export const HomePage = () => {
               to="/search"
               className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-black hover:bg-gray-900"
             >
-              Browse All Jobs
+              Browse All Jobs <MoveRight className="ml-3" />
             </Link>
           </div>
         </div>

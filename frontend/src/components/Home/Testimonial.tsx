@@ -2,6 +2,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Star } from 'lucide-react';
+import UserAvatar from '../../assets/images/user_1.jpg';
 
 const Testimonial = () => {
   var settings = {
@@ -101,13 +102,12 @@ const Testimonial = () => {
                   </div>
                   <div className="text-center mt-5">
                     <img
-                      src="http://d2ji2mue1p384z.cloudfront.net/img/480x360/220048.jpg"
+                      src={UserAvatar}
                       className="size-14 rounded-full shadow-md mx-auto"
-                      alt=""
+                      alt="user_avatar"
                     />
                     <h6 className="mt-2 font-semibold"> {feedback.name}</h6>
                     <span className="text-slate-400 text-sm">
-                      {' '}
                       {feedback.title}
                     </span>
                   </div>

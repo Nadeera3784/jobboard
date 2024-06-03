@@ -10,8 +10,6 @@ volumes:
     name: jobboard_redis-data
   mongodb-data:
     name: jobboard_mongodb-data
-  minio-data:
-    driver: local
 
 services:
 
@@ -39,17 +37,3 @@ services:
       - mongodb-data:/data:delegated
     networks:
       - jobboard-network
-
-  minio:
-    image: docker.io/bitnami/minio:2024
-    ports:
-      - '9000:9000'
-      - '9001:9001'
-    networks:
-      - jobboard-network
-    volumes:
-      - 'minio-data:/data:delegated'
-    environment:
-      - MINIO_ROOT_USER=miniuser
-      - MINIO_ROOT_PASSWORD=minipassword
-      - MINIO_DEFAULT_BUCKETS=avatars3bucket

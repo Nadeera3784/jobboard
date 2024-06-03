@@ -26,8 +26,8 @@ jobs:
 
     - name: Copy project files
       run: |
-        mkdir -p usr/app &&  cp backend/package.json backend/package-lock.json usr/app
-        cp -r backend/* usr/app
+        mkdir -p usr/app &&  cp apps/backend/package.json apps/backend/package-lock.json usr/app
+        cp -r apps/backend/* usr/app
 
     - name: Install dependencies
       run: npm ci

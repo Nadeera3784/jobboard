@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { JwtService } from '@nestjs/jwt';
 
 import { AnalyticController } from './controllers';
 import { Analytic, AnalyticSchema } from './schemas';
@@ -9,14 +10,17 @@ import {
   GetAnalyticByIdFeature,
   UpdateAnalyticCountFeature,
 } from './features';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: Analytic.name, schema: AnalyticSchema },
     ]),
+    UserModule
   ],
   providers: [
+    JwtService,
     AnalyticService,
     DeleteAnalyticFeature,
     GetAnalyticByIdFeature,

@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { IdDto } from '../../app/dtos/Id.dto';
 import {
@@ -15,6 +16,9 @@ import {
   UpdateAnalyticCountFeature,
 } from '../features';
 import { UpdateCountDto } from '../dtos';
+import { AuthenticationGuard, RoleGuard } from '../../authentication/guards';
+import { RolesAllowed } from '../../authentication/decorators/role.decorator';
+import { RolesEnum } from '../../user/enums';
 
 @Controller('analytics')
 export class AnalyticController {
@@ -45,6 +49,8 @@ export class AnalyticController {
 
   @Delete('/:id')
   @Header('Content-Type', 'application/json')
+  @UseGuards(AuthenticationGuard, RoleGuard)
+  @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY)
   public async delete(@Res() response, @Param() { id }: IdDto) {
     const { status, response: featureUpResponse } =
       await this.deleteAnalyticFeature.handle(id);

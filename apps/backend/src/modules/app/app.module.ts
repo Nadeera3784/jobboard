@@ -20,6 +20,7 @@ import { GetSharedFiltersFeature } from './features/get-shared-filters.feature';
 import { CommandModule } from '../core/command';
 import { FileSystemModule } from '../core/file-system';
 import { StatusModule } from '../core/status';
+import { AnalyticModule } from '../analytic/analytic.module';
 
 @Module({
   imports: [
@@ -92,6 +93,7 @@ import { StatusModule } from '../core/status';
     JobModule,
     CommandModule,
     EventDispatcherModule,
+    AnalyticModule,
   ],
   controllers: [AppController],
   providers: [AppService, CacheService, EmailService, GetSharedFiltersFeature],

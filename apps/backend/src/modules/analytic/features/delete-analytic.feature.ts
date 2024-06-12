@@ -1,20 +1,20 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 import { BaseFeature } from '../../app/features/base-feature';
-import { CategoryService } from '../services/category.service';
+import { AnalyticService } from '../services';
 
 @Injectable()
-export class DeleteCategoryFeature extends BaseFeature {
-  constructor(private readonly categoryService: CategoryService) {
+export class DeleteAnalyticFeature extends BaseFeature {
+  constructor(private readonly analyticService: AnalyticService) {
     super();
   }
 
   public async handle(id: string) {
     try {
-      await this.categoryService.delete(id);
+      await this.analyticService.delete(id);
       return this.responseSuccess(
         HttpStatus.OK,
-        'Category has been deleted successfully',
+        'Analytic has been deleted successfully',
       );
     } catch (error) {
       return this.responseError(

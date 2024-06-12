@@ -12,7 +12,7 @@ export class UpdateCategorynFeature extends BaseFeature {
 
   public async handle(id: string, updateCategoryDto: UpdateCategoryDto) {
     try {
-      await await this.categoryService.update(id, updateCategoryDto);
+      await this.categoryService.update(id, updateCategoryDto);
       return this.responseSuccess(
         HttpStatus.OK,
         'Category has been updated successfully',

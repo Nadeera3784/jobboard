@@ -11,7 +11,14 @@ import {
 } from './features';
 import { JobController, ApplicationController } from './controllers';
 import { JobSeedCommand } from './commands';
-import { JobSchema, Job, Application, ApplicationSchema } from './schemas';
+import {
+  JobSchema,
+  Job,
+  Application,
+  ApplicationSchema,
+  Analytic,
+  AnalyticSchema,
+} from './schemas';
 import { User, UserSchema } from '../user/schemas/user.schema';
 import { Category, CategorySchema } from '../category/schemas/category.schema';
 import { Location, LocationSchema } from '../location/schemas/location.schema';
@@ -25,6 +32,7 @@ import { UserModule } from '../user/user.module';
       { name: Category.name, schema: CategorySchema },
       { name: Location.name, schema: LocationSchema },
       { name: Application.name, schema: ApplicationSchema },
+      { name: Analytic.name, schema: AnalyticSchema },
     ]),
     UserModule,
   ],

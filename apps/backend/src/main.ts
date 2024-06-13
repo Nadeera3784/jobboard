@@ -38,11 +38,7 @@ async function bootstrap() {
         ),
     }),
   );
-  app.use(
-    helmet({
-      contentSecurityPolicy: false,
-    }),
-  );
+  app.use(helmet({contentSecurityPolicy: false}));
   app.use(morgan('dev'));
   app.use(requestIp.mw());
   app.enableShutdownHooks();

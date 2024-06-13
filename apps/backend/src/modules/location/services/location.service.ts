@@ -6,13 +6,16 @@ import { ConfigService } from '@nestjs/config';
 import { Location } from '../schemas/location.schema';
 import { CreateLocationDto, UpdateLocationDto } from '../dtos';
 import { LocationStatusEnum } from '../enums';
+import { ModelService } from '../../app/services';
 
 @Injectable()
-export class LocationService {
+export class LocationService extends ModelService<Location>{
   constructor(
     @InjectModel(Location.name) private readonly locationModel: Model<Location>,
     private configService: ConfigService,
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * Retrieves all locations.

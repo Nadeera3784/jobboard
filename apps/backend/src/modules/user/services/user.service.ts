@@ -8,13 +8,16 @@ import { ConfigService } from '@nestjs/config';
 import { CreateUserDto, UpdateUserDto } from '../dtos';
 import { User } from '../schemas/user.schema';
 import { RolesEnum } from '../enums';
+import { ModelService } from '../../app/services';
 
 @Injectable()
-export class UserService {
+export class UserService extends ModelService<User> {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
     private configService: ConfigService,
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * Retrieves all users.

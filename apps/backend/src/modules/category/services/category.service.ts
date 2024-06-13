@@ -5,13 +5,16 @@ import { ConfigService } from '@nestjs/config';
 
 import { Category } from '../schemas/category.schema';
 import { CreateCategoryDto, UpdateCategoryDto } from '../dtos';
+import { ModelService } from '../../app/services';
 
 @Injectable()
-export class CategoryService {
+export class CategoryService extends ModelService<Category> {
   constructor(
     @InjectModel(Category.name) private readonly categoryModel: Model<Category>,
     private configService: ConfigService,
-  ) {}
+  ) {
+    super();
+  }
 
   /**
    * Retrieves all categories.

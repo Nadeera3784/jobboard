@@ -1,6 +1,6 @@
-### [JoBoard](https://github.com/Nadeera3784/jobboard)
+### [JobBoard](https://github.com/Nadeera3784/jobboard)
 
-Job listing application 
+The JobBoard is a robust platform designed to streamline the process of job management for both employers and job seekers. Packed with essential features, this application facilitates seamless login, registration, and password reset functionalities, ensuring secure access for all users. Employers can effortlessly create, update, and delete job postings, while job seekers can easily apply for available positions. With advanced features like automated job expiration, role-based access, and two-factor authentication, this platform ensures both efficiency and security. Additionally, users can conveniently track the status of their applications through the intuitive user interface. Overall, the JobBoard provides a reliable solution for effective job management in today's dynamic employment landscape.
 
 ![Backend CI](https://github.com/Nadeera3784/jobboard/actions/workflows/main.yml/badge.svg?branch=main)
 

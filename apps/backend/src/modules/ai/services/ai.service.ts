@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ChatCompletionCreateParamsNonStreaming, ChatCompletionMessageParam } from 'openai/resources';
 
-import { AssociativeObject , GPTResult, Outcome} from '../interfaces/ai.constants';
+import { AssociativeObject , GPTResult, Outcome} from '../interfaces';
 import { OpenAIService } from './open-ai-service';
 import configuration from '../../../config/configuration';
 

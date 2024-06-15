@@ -20,6 +20,11 @@ export default () => ({
   },
   ai: {
     google_generative_key: env.GOOGLE_GENERATIVE_KEY,
+    openai_api_key: env.OPENAI_API_KEY ?? '',
+    model: {
+      gpt: 'gpt-3.5-turbo',
+      gpt4_0: 'gpt-4o',
+    }
   },
   filesystem: {
     default: 's3',

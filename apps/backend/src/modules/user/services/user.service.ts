@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import * as bcrypt from 'bcrypt';
 import * as moment from 'moment';
 import { ConfigService } from '@nestjs/config';
 
@@ -88,11 +87,10 @@ export class UserService extends ModelService<User> {
   }
 
   public async updatePassword(id: string, password: string) {
-    const newPassword = await bcrypt.hash(password, 10);
     return await this.userModel.findByIdAndUpdate(
       { _id: id },
       {
-        password: newPassword,
+        password: password,
       },
     );
   }

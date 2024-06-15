@@ -9,7 +9,7 @@ import { LocationStatusEnum } from '../enums';
 import { ModelService } from '../../app/services';
 
 @Injectable()
-export class LocationService extends ModelService<Location>{
+export class LocationService extends ModelService<Location> {
   constructor(
     @InjectModel(Location.name) private readonly locationModel: Model<Location>,
     private configService: ConfigService,

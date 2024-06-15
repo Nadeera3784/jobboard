@@ -17,7 +17,7 @@ import { UserModule } from '../user/user.module';
     MongooseModule.forFeature([
       { name: Analytic.name, schema: AnalyticSchema },
     ]),
-    UserModule
+    UserModule,
   ],
   providers: [
     JwtService,

@@ -1,12 +1,12 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 import { PasswordResetTokenService } from '../services';
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { UserService } from '../../user/services/user.service';
 import { ResetPasswordDto } from '../dtos';
 
 @Injectable()
-export class ResetPasswordFeature extends BaseFeature {
+export class ResetPasswordFeature extends Feature {
   constructor(
     private readonly userService: UserService,
     private readonly passwordResetTokenService: PasswordResetTokenService,

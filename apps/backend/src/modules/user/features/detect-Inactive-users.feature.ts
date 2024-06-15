@@ -2,12 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { UserService } from '../services/user.service';
 import { UserInterface } from '../interfaces';
 
 @Injectable()
-export class DetectInactiveUsersFeature extends BaseFeature {
+export class DetectInactiveUsersFeature extends Feature {
   constructor(
     private readonly userService: UserService,
     @InjectQueue('inactivity-reminder-email')

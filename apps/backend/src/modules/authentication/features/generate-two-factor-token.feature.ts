@@ -1,10 +1,10 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { TwoFactorAuthenticationTokenService } from '../services';
 
 @Injectable()
-export class GenerateTwoFactorTokenFeature extends BaseFeature {
+export class GenerateTwoFactorTokenFeature extends Feature {
   constructor(
     private readonly twoFactorAuthenticationTokenService: TwoFactorAuthenticationTokenService,
   ) {

@@ -1,11 +1,11 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { AnalyticService } from '../services/analytic.service';
 import { UpdateCountDto } from '../dtos';
 
 @Injectable()
-export class UpdateAnalyticCountFeature extends BaseFeature {
+export class UpdateAnalyticCountFeature extends Feature {
   constructor(private readonly analyticService: AnalyticService) {
     super();
   }

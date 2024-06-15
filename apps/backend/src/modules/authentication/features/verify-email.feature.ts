@@ -1,11 +1,11 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 import { VerificationTokenService } from '../services';
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { UserService } from '../../user/services/user.service';
 
 @Injectable()
-export class VerifyEmailFeature extends BaseFeature {
+export class VerifyEmailFeature extends Feature {
   constructor(
     private readonly userService: UserService,
     private readonly verificationTokenService: VerificationTokenService,

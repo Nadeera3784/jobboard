@@ -1,13 +1,13 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
-import { BaseFeature } from './base-feature';
+import { Feature } from './feature';
 import { AppService } from '../services/app.service';
 import { LocationService } from '../../location/services/location.service';
 import { CategoryService } from '../../category/services/category.service';
 import { CacheService } from '../services';
 
 @Injectable()
-export class GetSharedFiltersFeature extends BaseFeature {
+export class GetSharedFiltersFeature extends Feature {
   constructor(
     private readonly appService: AppService,
     private readonly locationService: LocationService,

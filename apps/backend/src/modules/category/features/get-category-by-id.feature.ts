@@ -1,10 +1,10 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { CategoryService } from '../services/category.service';
 
 @Injectable()
-export class GetCategoryByIdFeature extends BaseFeature {
+export class GetCategoryByIdFeature extends Feature {
   constructor(private readonly categoryService: CategoryService) {
     super();
   }

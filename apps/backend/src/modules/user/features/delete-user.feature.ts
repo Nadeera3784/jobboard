@@ -1,13 +1,13 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { EventDispatcher } from '../../core/event-dispatcher';
 
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { UserService } from '../services/user.service';
 import { UserDeletedEvent } from '../events/user-deleted.event';
 import { USER_DELETED } from '../constants';
 
 @Injectable()
-export class DeleteUserFeature extends BaseFeature {
+export class DeleteUserFeature extends Feature {
   constructor(
     private readonly userService: UserService,
     private eventDispatcher: EventDispatcher,

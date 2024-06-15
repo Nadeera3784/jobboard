@@ -4,13 +4,13 @@ import { EventDispatcher } from '../../core/event-dispatcher';
 import { SignupDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
 import { VerificationTokenService } from '../services';
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { UserService } from '../../user/services/user.service';
 import { USER_REGISTERED } from '../../user/constants';
 import { User } from '../../user/schemas/user.schema';
 
 @Injectable()
-export class SignUpFeature extends BaseFeature {
+export class SignUpFeature extends Feature {
   constructor(
     private readonly tokenService: VerificationTokenService,
     private readonly userService: UserService,

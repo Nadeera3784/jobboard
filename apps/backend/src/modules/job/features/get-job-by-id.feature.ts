@@ -1,10 +1,10 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { JobService } from '../services/job.service';
 
 @Injectable()
-export class GetJobByIdFeature extends BaseFeature {
+export class GetJobByIdFeature extends Feature {
   constructor(private readonly jobService: JobService) {
     super();
   }

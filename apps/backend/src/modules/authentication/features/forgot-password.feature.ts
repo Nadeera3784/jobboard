@@ -3,14 +3,14 @@ import { EventDispatcher } from '../../core/event-dispatcher';
 
 import { PasswordResetTokenService } from '../services';
 import { UserService } from '../../user/services/user.service';
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { ForgotPasswordDto } from '../dtos';
 import { ResetPasswordEvent } from '../events/reset-password.event';
 import { RESET_PASSWORD } from '../constants';
 import { User } from '../../user/schemas/user.schema';
 
 @Injectable()
-export class ForgotPasswordFeature extends BaseFeature {
+export class ForgotPasswordFeature extends Feature {
   constructor(
     private readonly passwordResetTokenService: PasswordResetTokenService,
     private readonly userService: UserService,

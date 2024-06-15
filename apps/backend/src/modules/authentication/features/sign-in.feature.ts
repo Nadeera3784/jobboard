@@ -5,7 +5,7 @@ import { EventDispatcher } from '../../core/event-dispatcher';
 
 import { SignInDto } from '../dtos';
 import { UserRegisterdEvent } from '../events/user-registerd.event';
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { UserService } from '../../user/services/user.service';
 import { UtilityService } from '../../app/services';
 import {
@@ -22,7 +22,7 @@ import { UserLoginEvent } from '../events/user-login-event';
 import { USER_LOGIN_EVENT } from '../constants';
 
 @Injectable()
-export class SignInFeature extends BaseFeature {
+export class SignInFeature extends Feature {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
@@ -93,7 +93,6 @@ export class SignInFeature extends BaseFeature {
 
       return this.responseError(HttpStatus.UNAUTHORIZED, 'Invalid credentials');
     } catch (error) {
-      console.log('error', error);
       return this.responseError(
         HttpStatus.BAD_REQUEST,
         'Something went wrong, Please try again later',

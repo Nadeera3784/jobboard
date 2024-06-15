@@ -1,10 +1,10 @@
 import { Injectable, BadRequestException, HttpStatus } from '@nestjs/common';
 
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { UserService } from '../../user/services/user.service';
 
 @Injectable()
-export class MeFeature extends BaseFeature {
+export class MeFeature extends Feature {
   constructor(private readonly userService: UserService) {
     super();
   }

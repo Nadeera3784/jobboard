@@ -1,7 +1,9 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
-export class BaseFeature {
+export class Feature {
+  protected loggable: boolean = false;
+
   protected async responseSuccess(
     status: number = HttpStatus.OK,
     message = 'Operation successful',
@@ -22,6 +24,7 @@ export class BaseFeature {
     message = 'Something went wrong, Please try again later',
     data: any = null,
   ) {
+    this.setLogger(data);
     return {
       status: status,
       response: {
@@ -30,5 +33,11 @@ export class BaseFeature {
         data: data,
       },
     };
+  }
+
+  protected setLogger(error: any): void {
+    if (this.loggable) {
+      Logger.debug(error);
+    }
   }
 }

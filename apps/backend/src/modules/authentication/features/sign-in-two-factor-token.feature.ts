@@ -1,13 +1,13 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { AuthenticateTwoFactorTokenDto } from '../dtos';
 import { TwoFactorAuthenticationTokenService } from '../services';
 import { UserService } from '../../user/services/user.service';
 
 @Injectable()
-export class SignInTwoFactorTokenFeature extends BaseFeature {
+export class SignInTwoFactorTokenFeature extends Feature {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,

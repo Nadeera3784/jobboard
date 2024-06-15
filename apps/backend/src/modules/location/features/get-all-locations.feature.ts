@@ -1,10 +1,10 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
-import { BaseFeature } from '../../app/features/base-feature';
+import { Feature } from '../../app/features/feature';
 import { LocationService } from '../services/location.service';
 
 @Injectable()
-export class GetAllLocationsFeature extends BaseFeature {
+export class GetAllLocationsFeature extends Feature {
   constructor(private readonly locationService: LocationService) {
     super();
   }

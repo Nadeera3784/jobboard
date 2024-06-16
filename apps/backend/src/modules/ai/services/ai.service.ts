@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { ChatCompletionCreateParamsNonStreaming, ChatCompletionMessageParam } from 'openai/resources';
+import {
+  ChatCompletionCreateParamsNonStreaming,
+  ChatCompletionMessageParam,
+} from 'openai/resources';
 
-import { AssociativeObject , GPTResult, Outcome} from '../interfaces';
-import { OpenAIService } from './open-ai-service';
+import { AssociativeObject, GPTResult, Outcome } from '../interfaces';
+import { OpenAIService } from './open-ai.service';
 import configuration from '../../../config/configuration';
 
 @Injectable()
@@ -15,7 +18,9 @@ export abstract class AIService {
     return this.getOutcomeFromResult(result);
   }
 
-  protected async getResult(input: AssociativeObject): Promise<GPTResult | Error> {
+  protected async getResult(
+    input: AssociativeObject,
+  ): Promise<GPTResult | Error> {
     try {
       const promptMessages = this.promptMessages(input);
 
@@ -24,7 +29,11 @@ export abstract class AIService {
       let result = this.pickBestGPTResult(contents, input);
 
       if (this.shouldConfirmResult(result, input)) {
-        const confirmPromptMessages = this.confirmPromptMessages(promptMessages, result, input);
+        const confirmPromptMessages = this.confirmPromptMessages(
+          promptMessages,
+          result,
+          input,
+        );
 
         const contents = await this.requestOpenAI(confirmPromptMessages);
 
@@ -39,7 +48,9 @@ export abstract class AIService {
     }
   }
 
-  protected promptMessages(input: AssociativeObject): ChatCompletionMessageParam[] {
+  protected promptMessages(
+    input: AssociativeObject,
+  ): ChatCompletionMessageParam[] {
     return [
       {
         role: 'system',
@@ -56,7 +67,10 @@ export abstract class AIService {
 
   protected abstract userMessage(input: AssociativeObject): string;
 
-  protected abstract shouldConfirmResult(result: GPTResult, input: AssociativeObject): boolean;
+  protected abstract shouldConfirmResult(
+    result: GPTResult,
+    input: AssociativeObject,
+  ): boolean;
 
   protected confirmPromptMessages(
     promptMessages: ChatCompletionMessageParam[],
@@ -81,9 +95,15 @@ export abstract class AIService {
   protected async requestOpenAI(messages: ChatCompletionMessageParam[]) {
     const options = this.chatCompletionOptions();
 
-    const response = await this.openAIService.chatCompletion(this.chatCompletionModel(), messages, options);
+    const response = await this.openAIService.chatCompletion(
+      this.chatCompletionModel(),
+      messages,
+      options,
+    );
 
-    return response.map((val) => this.parseContentToObject(val?.message?.content));
+    return response.map((val) =>
+      this.parseContentToObject(val?.message?.content),
+    );
   }
 
   protected chatCompletionOptions(): Partial<ChatCompletionCreateParamsNonStreaming> {
@@ -101,13 +121,15 @@ export abstract class AIService {
   protected parseContentToObject(content: string): GPTResult {
     try {
       const jsonIndex = content.indexOf('<output>');
-      const jsonString = content.substring(jsonIndex + 8, content.lastIndexOf('</output>')).replace(/\n/g, '');
+      const jsonString = content
+        .substring(jsonIndex + 8, content.lastIndexOf('</output>'))
+        .replace(/\n/g, '');
       const data = JSON.parse(jsonString) as AssociativeObject;
 
-      const notes = content;
-        // .substring(0, jsonIndex)
-        // .replaceAll(/<\/note>\n+<note>/g, '\n')
-        // .replaceAll(/\n+/g, '\n');
+      const notes = content
+        .substring(0, jsonIndex)
+        .replace(/<\/note>\n+<note>/g, '\n')
+        .replace(/\n+/g, '\n');
 
       return {
         data,
@@ -120,7 +142,10 @@ export abstract class AIService {
     }
   }
 
-  protected pickBestGPTResult(results: GPTResult[], metadata: AssociativeObject): GPTResult {
+  protected pickBestGPTResult(
+    results: GPTResult[],
+    metadata: AssociativeObject,
+  ): GPTResult {
     if (results.length === 0) {
       throw new Error('Empty results');
     }
@@ -135,15 +160,24 @@ export abstract class AIService {
     return filteredResults.shift();
   }
 
-  protected filterGPTResults(results: GPTResult[], metadata: AssociativeObject): GPTResult[] {
+  protected filterGPTResults(
+    results: GPTResult[],
+    metadata: AssociativeObject,
+  ): GPTResult[] {
     return results;
   }
 
-  protected sortGPTResults(results: GPTResult[], metadata: AssociativeObject): GPTResult[] {
+  protected sortGPTResults(
+    results: GPTResult[],
+    metadata: AssociativeObject,
+  ): GPTResult[] {
     return results;
   }
 
-  protected combineGPTResults(result1: GPTResult, result2: GPTResult): GPTResult {
+  protected combineGPTResults(
+    result1: GPTResult,
+    result2: GPTResult,
+  ): GPTResult {
     const data1 = result1.data;
     const data1comment = (data1.comment as string) ?? '';
 
@@ -165,5 +199,7 @@ export abstract class AIService {
     };
   }
 
-  protected abstract getOutcomeFromResult(result: GPTResult | Error | null): Outcome;
+  protected abstract getOutcomeFromResult(
+    result: GPTResult | Error | null,
+  ): Outcome;
 }

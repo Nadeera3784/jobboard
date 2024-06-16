@@ -24,7 +24,7 @@ export default () => ({
     model: {
       gpt: 'gpt-3.5-turbo',
       gpt4_0: 'gpt-4o',
-    }
+    },
   },
   filesystem: {
     default: 's3',

@@ -21,7 +21,7 @@ export const UserLayout = () => {
     setDesktopSidebarOpen(!mobileSidebarOpen);
   };
 
-  const onClickSignOut = () => {};
+  const onClickSignOut = () => { };
 
   return (
     <>
@@ -104,37 +104,7 @@ export const UserLayout = () => {
                   href=""
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
-                  <span className="flex-none flex items-center">
-                    <svg
-                      className="hi-outline hi-chart-square-bar inline-block w-6 h-6"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </span>
-                  <span className="py-2 flex-grow">Analytics</span>
-                </a>
-                <Link
-                  to="/admin/users"
-                  className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
-                >
-                  <span className="flex-none flex items-center">
-                    <Users className="hi-outline hi-clipboard-list inline-block w-5 h-5" />
-                  </span>
-                  <span className="py-2 flex-grow">Users</span>
-                </Link>
-                <Link
-                  to="/admin/categories"
-                  className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
-                >
+
                   <span className="flex-none flex items-center">
                     <svg
                       className="hi-outline hi-clipboard-list inline-block w-5 h-5"
@@ -151,44 +121,15 @@ export const UserLayout = () => {
                       />
                     </svg>
                   </span>
-                  <span className="py-2 flex-grow">Categories</span>
-                </Link>
-                <Link
-                  to="/admin/locations"
-                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
-                >
-                  <span className="flex-none flex items-center">
-                    <MapPinned className="hi-outline hi-clipboard-list inline-block w-5 h-5" />
-                  </span>
-                  <span className="py-2 flex-grow">Locations</span>
-                </Link>
-                <a
-                  href="#"
-                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
-                >
-                  <span className="flex-none flex items-center">
-                    <svg
-                      className="hi-solid hi-collection inline-block w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
-                    </svg>
-                  </span>
-                  <span className="py-2 flex-grow">Subscription</span>
+                  <span className="py-2 flex-grow">Application</span>
                 </a>
-
-                <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Account
-                </div>
-                <a
-                  href=""
-                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
+                <Link
+                  to="/admin/categories"
+                  className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
-                  <span className="flex-none flex items-center opacity-50">
+                  <span className="flex-none flex items-center">
                     <svg
-                      className="hi-outline hi-user inline-block w-5 h-5"
+                      className="hi-outline hi-chart-square-bar inline-block w-6 h-6"
                       stroke="currentColor"
                       fill="none"
                       viewBox="0 0 24 24"
@@ -197,18 +138,19 @@ export const UserLayout = () => {
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                        strokeWidth="2"
+                        d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                       />
                     </svg>
                   </span>
-                  <span className="py-2 grow">Profile</span>
-                </a>
+                  <span className="py-2 flex-grow">Statistics</span>
+                </Link>
+
                 <a
                   href=""
                   className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
                 >
-                  <span className="flex-none flex items-center opacity-50">
+                  <span className="flex-none flex items-center">
                     <svg
                       className="hi-outline hi-cog inline-block w-5 h-5"
                       stroke="currentColor"
@@ -232,29 +174,7 @@ export const UserLayout = () => {
                   </span>
                   <span className="py-2 grow">Settings</span>
                 </a>
-                <button
-                  type="button"
-                  onClick={onClickSignOut}
-                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
-                >
-                  <span className="flex-none flex items-center opacity-50">
-                    <svg
-                      className="hi-outline hi-lock-open inline-block w-5 h-5"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </span>
-                  <span className="py-2 grow">Log out</span>
-                </button>
+
               </nav>
             </div>
           </div>

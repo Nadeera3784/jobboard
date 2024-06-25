@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module, OnApplicationShutdown } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { BullModule } from '@nestjs/bull';
@@ -99,4 +99,8 @@ import { AnalyticModule } from '../analytic/analytic.module';
   providers: [AppService, CacheService, EmailService, GetSharedFiltersFeature],
   exports: [AppService, CacheService, EmailService],
 })
-export class AppModule {}
+export class AppModule implements OnApplicationShutdown {
+  onApplicationShutdown(signal: string): void {
+    Logger.debug(`Application shut down (signal: ${signal})`);
+  }
+}

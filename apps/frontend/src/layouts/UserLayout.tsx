@@ -1,4 +1,3 @@
-import { MapPinned, Users } from 'lucide-react';
 import { useState } from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
@@ -20,8 +19,6 @@ export const UserLayout = () => {
     setMobileSidebarOpen(!mobileSidebarOpen);
     setDesktopSidebarOpen(!mobileSidebarOpen);
   };
-
-  const onClickSignOut = () => { };
 
   return (
     <>

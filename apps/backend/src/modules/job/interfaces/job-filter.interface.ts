@@ -1,7 +1,12 @@
+export interface FilterOption {
+  _id: string;
+  name: string;
+}
+
 export interface JobFilterInterface {
-  category?: RegExp;
-  location?: RegExp;
-  remote?: RegExp;
-  job_type?: RegExp;
-  experience_level?: RegExp;
+  category?: FilterOption;
+  location?: FilterOption;
+  remote?: FilterOption;
+  job_type?: FilterOption;
+  experience_level?: FilterOption;
 }

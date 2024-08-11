@@ -3,12 +3,26 @@ import * as crypto from 'crypto';
 import PasswordValidator = require('password-validator');
 import * as bcrypt from 'bcrypt';
 
-import { JobFilterInterface } from '../../job/interfaces';
+import { FilterOption, JobFilterInterface } from '../../job/interfaces';
 import { ValidationError } from 'class-validator';
 
 export class UtilityService {
   public static parseJson<T>(input: any): T {
     return JSON.parse(input) as T;
+  }
+
+  public static processSearchFilter(
+    filter: JobFilterInterface,
+  ): Partial<JobFilterInterface> {
+    const processedFilter: Partial<JobFilterInterface> = {};
+    for (const [key, value] of Object.entries(filter)) {
+      if (value && typeof value === 'object') {
+        processedFilter[key] = this.processFilterOption(value as FilterOption);
+      } else {
+        processedFilter[key] = value;
+      }
+    }
+    return processedFilter;
   }
 
   public static getRandomEntity(data: string[]): string | undefined {
@@ -81,18 +95,25 @@ export class UtilityService {
     return await bcrypt.compare(password, hash);
   }
 
-  static generateHash(word: string): string | undefined {
+  public static generateHash(word: string): string | undefined {
     if (!word) {
       return;
     }
-    const salt: string = '64bf4dc3-96a7-4484-9744-d368b972e50e';
+    const salt = '64bf4dc3-96a7-4484-9744-d368b972e50e';
     return crypto
       .createHash('sha256')
       .update(salt + word)
       .digest('hex');
   }
 
-  static stringFied(errors: ValidationError[]): string {
+  public static stringFied(errors: ValidationError[]): string {
     return JSON.stringify(errors);
+  }
+
+  public static processFilterOption(option: FilterOption): FilterOption {
+    return {
+      _id: option._id,
+      name: option.name,
+    };
   }
 }

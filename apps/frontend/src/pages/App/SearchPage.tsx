@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from '../../components/Form/Select';
 import { Input } from '../../components/Form/Input';
-import { Filters, Job } from '../../types';
+import { FilterOption, Filters, Job } from '../../types';
 import Pagination from '../../components/Search/Pagination';
 import JobDetailsCard from '../../components/Search/JobDetailsCard';
 import EmptyDetails from '../../components/Search/EmptyDetails';
@@ -32,17 +32,25 @@ export const SearchPage = () => {
     $options: 'i',
   });
   const [filter, setFilter] = useState<Filters>({
-    category: '',
-    location: '',
-    remote: '',
-    job_type: '',
-    experience_level: '',
+    category: null,
+    location: null,
+    remote: null,
+    job_type: null,
+    experience_level: null,
   });
 
-  const [appliedFilters, setAppliedFilters] = useState({});
+  const [appliedFilters, setAppliedFilters] = useState<Filters>({
+    category: null,
+    location: null,
+    remote: null,
+    job_type: null,
+    experience_level: null,
+  });
+
   const [selectedJob, setSelectedJob] = useState({
     _id: '',
   });
+
   const { response, process } = useSharedGetApi();
   const { response: searchReponse, process: processSearch } = useGetSearch();
   const { response: jobReponse, process: processGetById } = useSharedGetApi();
@@ -75,7 +83,10 @@ export const SearchPage = () => {
     setSearch({ $regex: event.currentTarget.value, $options: 'i' });
   };
 
-  const updateFilter = (filterKey: string, value: string) => {
+  const updateFilter = (
+    filterKey: keyof Filters,
+    value: FilterOption | null,
+  ) => {
     setFilter(prevFilter => ({
       ...prevFilter,
       [filterKey]: value,
@@ -87,36 +98,27 @@ export const SearchPage = () => {
     setCurrentPage(1);
   };
 
-  const onRemoveFilter = (filterKey: string) => {
-    const { [filterKey]: removedFilter, ...rest } = appliedFilters as {
-      [key: string]: string;
-    };
-    setAppliedFilters(rest);
+  const onRemoveFilter = (filterKey: keyof Filters) => {
+    setAppliedFilters(prevFilters => ({
+      ...prevFilters,
+      [filterKey]: null,
+    }));
     setFilter(prevFilter => ({
       ...prevFilter,
-      [filterKey]: '',
+      [filterKey]: null,
     }));
   };
 
-  const onChangeRemoteType = (value: string) => {
-    updateFilter('remote', value);
-  };
-
-  const onChangeJobType = (value: string) => {
-    updateFilter('job_type', value);
-  };
-
-  const onChangeExperienceLevel = (value: string) => {
-    updateFilter('experience_level', value);
-  };
-
-  const onChangeLocation = (value: string) => {
-    updateFilter('location', value);
-  };
-
-  const onChangeCategory = (value: string) => {
-    updateFilter('category', value);
-  };
+const onChangeFilter = (filterKey: keyof Filters) => (value: string) => {
+  if (value === "") {
+    onRemoveFilter(filterKey);
+  } else {
+    const selectedOption = response.data[`${filterKey}`].find(
+      (option: FilterOption) => option._id === value,
+    );
+    updateFilter(filterKey, selectedOption || null);
+  }
+};
 
   const onOrderChange = (value: string) => {
     const [propertyName, direction] = value.split('-');
@@ -183,106 +185,44 @@ export const SearchPage = () => {
               <div className="hidden sm:block">
                 <div className="flow-root">
                   <div className="-mx-4 flex items-center divide-x divide-gray-200">
-                    <div className="px-4 relative inline-block text-left">
-                      <Select
-                        disabled={response.loading}
-                        onValueChange={onChangeLocation}
+                    {[
+                      'location',
+                      'category',
+                      'job_type',
+                      'experience_level',
+                      'remote',
+                    ].map(filterKey => (
+                      <div
+                        key={filterKey}
+                        className="px-4 relative inline-block text-left"
                       >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Location" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {response?.data?.locations &&
-                            (response.data.locations as any[]).map(
-                              (location, key) => (
-                                <SelectItem key={key} value={location._id}>
-                                  {location.name}
+                        <Select
+                          disabled={response.loading}
+                          onValueChange={onChangeFilter(
+                            filterKey as keyof Filters,
+                          )}
+                          value={appliedFilters[filterKey as keyof Filters]?._id || ""}
+                        >
+                          <SelectTrigger>
+                            <SelectValue
+                              placeholder={
+                                filterKey.charAt(0).toUpperCase() +
+                                filterKey.slice(1)
+                              }
+                            />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {response?.data?.[`${filterKey}`]?.map(
+                              (option: FilterOption) => (
+                                <SelectItem key={option._id} value={option._id}>
+                                  {option.name}
                                 </SelectItem>
                               ),
                             )}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="px-4 relative inline-block text-left">
-                      <Select
-                        disabled={response.loading}
-                        onValueChange={onChangeCategory}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {response?.data?.categories &&
-                            (response.data.categories as any[]).map(
-                              (category, key) => (
-                                <SelectItem key={key} value={category._id}>
-                                  {category.name}
-                                </SelectItem>
-                              ),
-                            )}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="px-4 relative inline-block text-left">
-                      <Select
-                        disabled={response.loading}
-                        onValueChange={onChangeJobType}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {response?.data.job_types &&
-                            (response.data.job_types as any[]).map(
-                              (type, key) => (
-                                <SelectItem key={key} value={type}>
-                                  {type}
-                                </SelectItem>
-                              ),
-                            )}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="px-4 relative inline-block text-left">
-                      <Select
-                        disabled={response.loading}
-                        onValueChange={onChangeExperienceLevel}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Experience Level" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {response?.data.experience_level &&
-                            (response.data.experience_level as any[]).map(
-                              (el, key) => (
-                                <SelectItem key={key} value={el}>
-                                  {el}
-                                </SelectItem>
-                              ),
-                            )}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="px-4 relative inline-block text-left">
-                      <Select
-                        disabled={response.loading}
-                        onValueChange={onChangeRemoteType}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Remote" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {response?.data.remote &&
-                            (response.data.remote as any[]).map(
-                              (remote, key) => (
-                                <SelectItem key={key} value={remote}>
-                                  {remote}
-                                </SelectItem>
-                              ),
-                            )}
-                        </SelectContent>
-                      </Select>
-                    </div>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -301,21 +241,21 @@ export const SearchPage = () => {
               />
               <div className="mt-2 sm:mt-0 sm:ml-4">
                 <div className="-m-1 flex flex-wrap items-center">
-                  {Object.entries(filter).map(
+                  {Object.entries(appliedFilters).map(
                     ([key, value]) =>
                       value && (
                         <span
                           key={key}
                           className="m-1 inline-flex rounded-full border border-gray-200 items-center py-1.5 pl-3 pr-2 text-sm font-medium bg-white text-gray-900"
                         >
-                          <span>{value}</span>
+                          <span>{value.name}</span>
                           <button
                             type="button"
-                            onClick={() => onRemoveFilter(key)}
+                            onClick={() => onRemoveFilter(key as keyof Filters)}
                             className="flex-shrink-0 ml-1 h-4 w-4 p-1 rounded-full inline-flex text-gray-400 hover:bg-gray-200 hover:text-gray-500"
                           >
                             <span className="sr-only">
-                              Remove filter for Objects
+                              Remove filter for {key}
                             </span>
                             <svg
                               className="h-2 w-2"

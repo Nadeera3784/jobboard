@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-
 import {
   Form,
   FormControl,
@@ -15,14 +14,14 @@ import {
 import { LoginSchema } from '../../schemas';
 import { Input } from '../../components/Form/Input';
 import { Button } from '../../components/Form/Button';
-import { useSharedPostApi } from '../../hooks/useSharedPostApi';
 import { HttpStatus } from '../../constants';
 import { Spinner } from '../../components/Icons';
 import { useAppContext } from '../../contexts/AppContext';
-import { useEffect } from 'react';
+import { useState } from 'react';
+import { httpClient } from '../../utils';
 
 export const LoginPage = () => {
-  const { response, process } = useSharedPostApi();
+  const [loading, setLoading] = useState(false);
   const { setPermission, setToken } = useAppContext();
   const navigate = useNavigate();
 
@@ -34,29 +33,21 @@ export const LoginPage = () => {
     },
   });
 
-  useEffect(() => {
-    const { data, status } = response ?? {};
-
-    if (status && data && data?.access_token.length > 0) {
-      const { redirect_identifier, access_token } = data;
-      setPermission(redirect_identifier);
-      setToken(access_token);
-      navigate(`/${redirect_identifier}`);
-    }
-  }, [response?.status]);
-
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-    const validatedFields = LoginSchema.safeParse(values);
-
-    if (!validatedFields.success) {
-      toast.warning('Something went wrong, Please try again later');
-      return;
-    }
-
-    await process('authentication/signin', validatedFields.data);
-
-    if (response.status_code == HttpStatus.UNAUTHORIZED) {
-      toast.warning('The email address or password is incorrect. Please retry');
+    setLoading(true);
+    try {
+      const response = await httpClient.post('authentication/signin', values);
+      if (response.status === HttpStatus.OK) {
+        const { redirect_identifier, access_token } = response.data.data;
+        setPermission(redirect_identifier);
+        setToken(access_token);
+        navigate(`/${redirect_identifier}`);
+        setLoading(false);
+      }
+    } catch (error) {
+      toast.error('The email address or password is incorrect. Please retry');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -97,11 +88,7 @@ export const LoginPage = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          disabled={response.loading}
-                          type="email"
-                        />
+                        <Input {...field} disabled={loading} type="email" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -114,11 +101,7 @@ export const LoginPage = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input
-                          {...field}
-                          disabled={response.loading}
-                          type="password"
-                        />
+                        <Input {...field} disabled={loading} type="password" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -130,10 +113,10 @@ export const LoginPage = () => {
                     variant="default"
                     size="lg"
                     className="w-full px-4 py-4 leading-6  space-x-2 font-semibold"
-                    disabled={response.loading}
+                    disabled={loading}
                   >
                     Sign In
-                    {response.loading && (
+                    {loading && (
                       <Spinner className="mr-2 h-4 w-4 animate-spin" />
                     )}
                   </Button>
@@ -163,7 +146,6 @@ export const LoginPage = () => {
             className="font-medium text-black hover:text-gray-400"
             to="register"
           >
-            {' '}
             Join us today
           </Link>
         </div>

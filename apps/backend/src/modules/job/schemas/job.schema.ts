@@ -60,8 +60,6 @@ export class Job extends Document {
   @Prop({ default: () => moment().add(1, 'months').toDate() })
   @IsOptional()
   expired_at: Date;
-
-  countAppliedJobs: Function;
 }
 
 export const JobSchema = SchemaFactory.createForClass(Job);

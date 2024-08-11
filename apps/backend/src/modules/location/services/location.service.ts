@@ -97,7 +97,6 @@ export class LocationService extends ModelService<Location> {
 
       if (order.length && columns.length) {
         const sortByOrder: any = order.reduce((memo: any, ordr: any) => {
-          const column = columns[ordr.column];
           memo[ordr.name] = ordr.dir === 'asc' ? 1 : -1;
           return memo;
         }, {});

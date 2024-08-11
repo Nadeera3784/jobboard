@@ -75,8 +75,8 @@ export const UserLayout = () => {
                 <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
                   Manage
                 </div>
-                <a
-                  href=""
+                <Link
+                  to="/user"
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
                   <span className="flex-none flex items-center">
@@ -96,12 +96,11 @@ export const UserLayout = () => {
                     </svg>
                   </span>
                   <span className="py-2 flex-grow">Dashboard</span>
-                </a>
-                <a
-                  href=""
+                </Link>
+                <Link
+                  to="/user/applications"
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
-
                   <span className="flex-none flex items-center">
                     <svg
                       className="hi-outline hi-clipboard-list inline-block w-5 h-5"
@@ -118,10 +117,10 @@ export const UserLayout = () => {
                       />
                     </svg>
                   </span>
-                  <span className="py-2 flex-grow">Application</span>
-                </a>
+                  <span className="py-2 flex-grow">Applications</span>
+                </Link>
                 <Link
-                  to="/admin/categories"
+                  to="/user/statistics"
                   className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
                 >
                   <span className="flex-none flex items-center">
@@ -143,8 +142,8 @@ export const UserLayout = () => {
                   <span className="py-2 flex-grow">Statistics</span>
                 </Link>
 
-                <a
-                  href=""
+                <Link
+                  to="/user/settings"
                   className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
                 >
                   <span className="flex-none flex items-center">
@@ -170,8 +169,7 @@ export const UserLayout = () => {
                     </svg>
                   </span>
                   <span className="py-2 grow">Settings</span>
-                </a>
-
+                </Link>
               </nav>
             </div>
           </div>

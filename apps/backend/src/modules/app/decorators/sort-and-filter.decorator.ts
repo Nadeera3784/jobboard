@@ -9,7 +9,7 @@ export const SortAndFilter = createParamDecorator<SortAndFilterConfig>(
   (config: SortAndFilterConfig, ctx: ExecutionContext): SortAndFilterParams => {
     const request = ctx.switchToHttp().getRequest();
 
-    let sort: { [key: string]: 'asc' | 'desc' } = {};
+    const sort: { [key: string]: 'asc' | 'desc' } = {};
     if (request.query.sort) {
       request.query.sort
         .split(',')
@@ -32,7 +32,8 @@ export const SortAndFilter = createParamDecorator<SortAndFilterConfig>(
         });
     }
 
-    let filter: { [key: string]: { value: string; op: SearchOptionEnum } } = {};
+    const filter: { [key: string]: { value: string; op: SearchOptionEnum } } =
+      {};
     if (request.query.filter) {
       request.query.filter.split(',').forEach((filterColumn: string) => {
         const splits = filterColumn.split(':');

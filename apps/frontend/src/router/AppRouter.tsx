@@ -18,6 +18,9 @@ import { TestPage } from '../pages/Admin/TestPage';
 import { SettingPage } from '../pages/Admin/SettingPage';
 import { UserLayout } from '../layouts/UserLayout';
 import { DashboardPage as UserDashboardPage } from '../pages/User/DashboardPage';
+import { ApplicationPage as UserApplicationPage } from '../pages/User/ApplicationPage';
+import { StatisticsPage as UserStatisticsPage } from '../pages/User/StatisticsPage';
+import { SettingsPage as UserSettingsPage } from '../pages/User/SettingsPage';
 import { CompanyLayout } from '../layouts/CompanyLayout';
 import { DashboardPage as CompanyDashboardPage } from '../pages/Company/DashboardPage';
 import { JobPage as CompanyJobPage } from '../pages/Company/Jobs/JobPage';
@@ -38,6 +41,9 @@ export const AppRouter = () => {
         </Route>
         <Route path="/user" element={<UserLayout />}>
           <Route index element={<UserDashboardPage />} />
+          <Route path="applications" element={<UserApplicationPage />} />
+          <Route path="statistics" element={<UserStatisticsPage />} />
+          <Route path="settings" element={<UserSettingsPage />} />
         </Route>
         <Route path="/company" element={<CompanyLayout />}>
           <Route index element={<CompanyDashboardPage />} />

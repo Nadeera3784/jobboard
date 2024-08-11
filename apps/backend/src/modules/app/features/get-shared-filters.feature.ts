@@ -27,8 +27,8 @@ export class GetSharedFiltersFeature extends Feature {
         3600,
         async () => {
           return {
-            locations: locations,
-            categories: categories,
+            location: locations,
+            category: categories,
             ...filters,
           };
         },

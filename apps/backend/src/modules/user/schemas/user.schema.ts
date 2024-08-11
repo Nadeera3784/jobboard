@@ -64,7 +64,7 @@ export class User extends Document {
   @Prop({ default: false })
   @IsOptional()
   @IsBoolean()
-  is_two_factor_authentication_enabled: Boolean;
+  is_two_factor_authentication_enabled: boolean;
 
   @Prop({ default: now(), select: false })
   @IsOptional()

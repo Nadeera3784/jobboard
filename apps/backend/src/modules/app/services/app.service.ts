@@ -8,7 +8,7 @@ export class AppService {
     const sharedFilters = SharedFilters();
     return {
       remote: sharedFilters.remote,
-      job_types: sharedFilters.job_types,
+      job_type: sharedFilters.job_type,
       experience_level: sharedFilters.experience_level,
     };
   }

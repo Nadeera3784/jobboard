@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import * as moment from 'moment';
 
@@ -82,13 +82,28 @@ export class JobService {
       ];
     }
     if (filter) {
-      const parsedFilter: JobFilterInterface =
+      const jsonFilter: JobFilterInterface =
         UtilityService.parseJson<JobFilterInterface>(filter);
-      const filters = UtilityService.transformToObjectId(parsedFilter, [
-        'category',
-        'location',
-      ]);
-      match.$match = { ...match.$match, ...filters };
+      const parsedFilter = UtilityService.processSearchFilter(jsonFilter);
+      if (parsedFilter.category) {
+        match.$match['category'] = new Types.ObjectId(
+          parsedFilter.category._id,
+        );
+      }
+      if (parsedFilter.location) {
+        match.$match['location'] = new Types.ObjectId(
+          parsedFilter.location._id,
+        );
+      }
+      if (parsedFilter.remote) {
+        match.$match['remote'] = parsedFilter.remote._id;
+      }
+      if (parsedFilter.job_type) {
+        match.$match['job_type'] = parsedFilter.job_type._id;
+      }
+      if (parsedFilter.experience_level) {
+        match.$match['experience_level'] = parsedFilter.experience_level._id;
+      }
     }
     query.push(match);
     const countQuery: any = [...query];

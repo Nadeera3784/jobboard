@@ -39,4 +39,13 @@ export class ApplicationService {
       _id: id,
     });
   }
+
+  public async isApplied(jobId: string, userId: string): Promise<boolean> {
+    const application = await this.applicationModel.findOne({
+      job: jobId,
+      user: userId,
+    });
+    return !!application;
+  }
+  
 }

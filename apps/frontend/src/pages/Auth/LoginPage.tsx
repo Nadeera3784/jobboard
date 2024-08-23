@@ -16,13 +16,11 @@ import { Input } from '../../components/Form/Input';
 import { Button } from '../../components/Form/Button';
 import { HttpStatus } from '../../constants';
 import { Spinner } from '../../components/Icons';
-import { useAppContext } from '../../contexts/AppContext';
 import { useState } from 'react';
-import { httpClient } from '../../utils';
+import { httpClient, cacheJwtToken} from '../../utils';
 
 export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
-  const { setPermission, setToken } = useAppContext();
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -39,8 +37,7 @@ export const LoginPage = () => {
       const response = await httpClient.post('authentication/signin', values);
       if (response.status === HttpStatus.OK) {
         const { redirect_identifier, access_token } = response.data.data;
-        setPermission(redirect_identifier);
-        setToken(access_token);
+        cacheJwtToken(access_token);
         navigate(`/${redirect_identifier}`);
         setLoading(false);
       }

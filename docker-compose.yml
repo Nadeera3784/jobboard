@@ -7,10 +7,7 @@ networks:
 
 volumes:
   redis-data:
-    name: jobboard_redis-data
   mongodb-data:
-    name: jobboard_mongodb-data
-    external: true
 
 services:
 
@@ -61,6 +58,6 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - mongodb-data:/data
+      - mongodb-data:/data/db
     networks:
       - jobboard-network

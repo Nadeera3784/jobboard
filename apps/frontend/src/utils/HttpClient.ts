@@ -26,6 +26,7 @@ httpClient.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 401 || error.response.status === 403) {
+      localStorage.clear();
       window.location.href = '/auth';
     }
     return Promise.reject(error);

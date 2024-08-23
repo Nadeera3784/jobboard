@@ -1,6 +1,12 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import appStateStore from '../../store';
+
 export const Header = () => {
+
+  const { user } = appStateStore((state) => state);
+
   return (
     <div className="relative bg-gray-50 overflow-hidden">
       <div className="relative pt-6 pb-16 sm:pb-24">
@@ -76,12 +82,35 @@ export const Header = () => {
               </div>
               <div className="hidden md:absolute md:flex md:items-center md:justify-end md:inset-y-0 md:right-0">
                 <span className="inline-flex rounded-md shadow">
-                  <Link
-                    to="auth"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-gray-50"
-                  >
-                    Log in
-                  </Link>
+                  <>
+                    {user?.name ? (
+                      <Link
+                        to={'/' + user?.role}
+                      >
+                        <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 text-gray-300">
+                          <svg
+                            className="hi-solid hi-user inline-block w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                      </Link>
+                    ) : (
+                      <Link
+                        to="/auth"
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-base font-medium rounded-md text-black bg-white hover:bg-gray-50"
+                      >
+                        Log in
+                      </Link>
+                    )}
+                  </>
                 </span>
               </div>
             </nav>
@@ -146,6 +175,7 @@ export const Header = () => {
                   Company
                 </a>
               </div>
+
               <Link
                 to="/auth"
                 className="block w-full px-5 py-3 text-center font-medium text-black bg-black hover:bg-gray-100"

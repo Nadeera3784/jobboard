@@ -1,3 +1,14 @@
+export type User = {
+  _id: string;
+  name: string;
+  email: string;
+  role?: string;
+  status?: string;
+  phone?: string;
+  image?: File;
+};
+
+
 export type CreateUserType = {
   name: string;
   email: string;

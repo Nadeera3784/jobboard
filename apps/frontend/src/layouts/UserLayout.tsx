@@ -1,10 +1,20 @@
-import { useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { useState , useEffect} from 'react';
+import { Link, Outlet, useNavigate} from 'react-router-dom';
+
+import appStateStore from '../store';
+import { deleteJWTToken } from '../utils';
 
 export const UserLayout = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(true);
+  const navigate = useNavigate();
+
+  const {getCurrentUser, user} = appStateStore((state) => state);
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   const onClickDropDownToggle = function () {
     setUserDropdownOpen(!userDropdownOpen);
@@ -18,6 +28,11 @@ export const UserLayout = () => {
   const onClickMobileSidebarToggle = function () {
     setMobileSidebarOpen(!mobileSidebarOpen);
     setDesktopSidebarOpen(!mobileSidebarOpen);
+  };
+
+  const onClickSignOut = () => {
+    deleteJWTToken();
+    navigate(`/auth`);
   };
 
   return (
@@ -222,6 +237,16 @@ export const UserLayout = () => {
               </div>
             </div>
             <div className="flex items-center space-x-2">
+
+            <div>
+                    <Link
+                  to="/"
+                  className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
+                >
+                  Jobs
+                  </Link>
+                    </div>
+                    
               <div className="relative inline-block">
                 <button
                   onClick={() => onClickDropDownToggle()}
@@ -231,7 +256,7 @@ export const UserLayout = () => {
                   aria-haspopup="true"
                   aria-expanded="true"
                 >
-                  <span>John doe</span>
+                  <span>{user?.name}</span>
                   <svg
                     className="hi-solid hi-chevron-down inline-block w-5 h-5 opacity-50"
                     fill="currentColor"
@@ -275,6 +300,7 @@ export const UserLayout = () => {
                     </div>
                     <div className="p-2 space-y-1">
                       <button
+                        onClick={() => onClickSignOut()}
                         type="button"
                         role="menuitem"
                         className="w-full text-left flex items-center space-x-2 rounded py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gray-700"

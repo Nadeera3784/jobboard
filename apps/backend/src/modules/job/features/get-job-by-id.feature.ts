@@ -14,7 +14,6 @@ export class GetJobByIdFeature extends Feature {
       const data = await this.jobService.getById(id);
       return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {
-      console.log('BOOM', error);
       return this.responseError(
         HttpStatus.BAD_REQUEST,
         'Something went wrong, Please try again later',

@@ -10,7 +10,7 @@ import {
 export class OpenAIService {
   constructor(private openai: OpenAI) {}
 
-  async chatCompletion(
+  public async chatCompletion(
     model: string,
     messages: ChatCompletionMessageParam[],
     options: Partial<ChatCompletionCreateParamsNonStreaming> = {},
@@ -26,7 +26,12 @@ export class OpenAIService {
     return completion.choices;
   }
 
-  delimitText(text: string, delimiter: string) {
+  public delimitText(text: string, delimiter: string) {
     return `<${delimiter}>${text}</${delimiter}>`;
   }
+
+  public generateOutLine = (payload:string) => {
+
+  }
+
 }

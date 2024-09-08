@@ -162,6 +162,21 @@ export const CreateJobPage = () => {
                           </FormItem>
                         )}
                       />
+    
+                      <div className="flex w-full flex-col gap-1">
+                        <div className="flex items-center">
+                          <div className="flex items-center gap-2">
+                          <Button type='button'>
+                           Generate WIth AI
+                          </Button>
+                          </div>
+                          <div className="ml-5 text-xs text-muted-foreground">
+                          Write a thorough description of what your job will contain, you can even include additional information like tone of voice.
+                          </div>
+                        </div>
+                      </div>
+
+    
                       <div className="grid grid-cols-3">
                         <FormField
                           control={form.control}

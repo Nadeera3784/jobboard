@@ -28,6 +28,8 @@ import {
 import { IdDto } from '../../app/dtos/Id.dto';
 import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
 import { RoleGuard } from '../../authentication/guards/role.guard';
+import { AIJobOutLineGeneratorService } from '../../ai/services';
+import { AssociativeObject } from 'src/modules/ai/interfaces';
 
 @Controller('jobs')
 export class JobController {
@@ -36,6 +38,7 @@ export class JobController {
     private readonly getSearchJobsFeature: GetSearchJobsFeature,
     private readonly getJobByIdFeature: GetJobByIdFeature,
     private readonly getAllJobsFeature: GetAllJobsFeature,
+    private readonly aiJobOutLineGeneratorService: AIJobOutLineGeneratorService,
   ) {}
 
   @Post('/datatable')
@@ -104,5 +107,21 @@ export class JobController {
     const { status, response: featureUpResponse } =
       await this.createJobFeature.handle(createJobDto);
     return response.status(status).json(featureUpResponse);
+  }
+
+  @Post('/outline-generator')
+  @Header('Content-Type', 'application/json')
+  @UseGuards(AuthenticationGuard, RoleGuard)
+  @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY)
+  public async aiOutLineGenearotr(
+    @Res() response: Response,
+  ) {
+    const data: AssociativeObject = {
+      job_descrption: '<job_descrption>Design, develop, and maintain robust and scalable web applications across the entire software development lifecycle, specifically using the MERN stack<job_descrption>/>'
+    };
+
+    const x = await this.aiJobOutLineGeneratorService.handle(data);
+
+    console.log('BOOM', x.metadata.notes);
   }
 }

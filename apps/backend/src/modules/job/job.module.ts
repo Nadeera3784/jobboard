@@ -24,6 +24,7 @@ import { User, UserSchema } from '../user/schemas/user.schema';
 import { Category, CategorySchema } from '../category/schemas/category.schema';
 import { Location, LocationSchema } from '../location/schemas/location.schema';
 import { UserModule } from '../user/user.module';
+import { AIModule } from '../ai/ai.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { UserModule } from '../user/user.module';
       { name: Analytic.name, schema: AnalyticSchema },
     ]),
     UserModule,
+    AIModule
   ],
   controllers: [JobController, ApplicationController],
   providers: [

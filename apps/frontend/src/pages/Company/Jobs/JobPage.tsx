@@ -2,7 +2,6 @@ import { PlusCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { Table } from '../../../components/Table';
-import { AppConstants } from '../../../constants';
 import { useState } from 'react';
 
 export const JobPage = () => {
@@ -33,7 +32,7 @@ export const JobPage = () => {
           <div className="space-y-4 lg:space-y-8">
             <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">
               <Table
-                endpoint={`${AppConstants.API_URL}/jobs/datatable`}
+                endpoint={`/jobs/datatable`}
                 per_page={10}
                 has_row_buttons={true}
                 has_multiselect={false}

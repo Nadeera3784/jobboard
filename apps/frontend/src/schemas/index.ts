@@ -81,7 +81,11 @@ export const UpdateUserSchema = z.object({
     .string()
     .min(1, { message: 'Email is required' })
     .email('This is not a valid email.'),
-  role: z.enum([RoleConstants.ADMIN, RoleConstants.USER]),
+  role: z.enum([
+    RoleConstants.ADMIN,
+    RoleConstants.USER,
+    RoleConstants.COMPANY,
+  ]),
   phone: z.optional(
     z.string().max(12, {
       message: 'Phone number must be 12 characters max',
@@ -100,5 +104,30 @@ export const LoginSchema = z.object({
     .email('This is not a valid email.'),
   password: z.string().min(1, {
     message: 'Password is required',
+  }),
+});
+
+export const CreateJobSchema = z.object({
+  name: z.string().min(1, {
+    message: 'Name is required',
+  }),
+  status: z.optional(z.string()),
+  location: z.string().min(1, {
+    message: 'Location is required',
+  }),
+  category: z.string().min(1, {
+    message: 'Category is required',
+  }),
+  remote: z.string().min(1, {
+    message: 'Remote is required',
+  }),
+  job_type: z.string().min(1, {
+    message: 'Job type is required',
+  }),
+  experience_level: z.string().min(1, {
+    message: 'Experience level is required',
+  }),
+  description: z.string().min(1, {
+    message: 'Description level is required',
   }),
 });

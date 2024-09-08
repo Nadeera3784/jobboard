@@ -4,7 +4,7 @@ import * as yargs from 'yargs';
 @Injectable()
 export class CommandService {
   private _yargs?: yargs.Argv<{}>;
-  private running: boolean = false;
+  private running = false;
 
   initialize(metadatas: yargs.CommandModule[]): void {
     this.yargs.scriptName('cli');

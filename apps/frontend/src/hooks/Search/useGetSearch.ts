@@ -19,7 +19,7 @@ export const useGetSearch = () => {
       ...prevResponse,
       loading: true,
     }));
-    const ENDPOINT = `${AppConstants.API_URL}/jobs/${query}`;
+    const ENDPOINT = `${AppConstants.API_URL}/jobs/search/${query}`;
     try {
       const apiResponse = await axios.get<ApiResponse>(ENDPOINT);
       setResponse({

@@ -1,5 +1,5 @@
-import { useState , useEffect} from 'react';
-import { Link, Outlet, useNavigate} from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 import appStateStore from '../store';
 import { deleteJWTToken } from '../utils';
@@ -10,7 +10,7 @@ export const UserLayout = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(true);
   const navigate = useNavigate();
 
-  const {getCurrentUser, user} = appStateStore((state) => state);
+  const { getCurrentUser, user } = appStateStore(state => state);
 
   useEffect(() => {
     getCurrentUser();
@@ -237,16 +237,15 @@ export const UserLayout = () => {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-
-            <div>
-                    <Link
+              <div>
+                <Link
                   to="/"
                   className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
                 >
                   Jobs
-                  </Link>
-                    </div>
-                    
+                </Link>
+              </div>
+
               <div className="relative inline-block">
                 <button
                   onClick={() => onClickDropDownToggle()}

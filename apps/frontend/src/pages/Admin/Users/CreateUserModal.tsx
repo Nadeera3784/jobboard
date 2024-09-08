@@ -3,6 +3,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useRef, useState } from 'react';
 
 import {
   Form,
@@ -12,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../../../components/Form/Form';
-import { useCreateUser } from '../../../hooks/Users/useCreateUser';
 import { Button } from '../../../components/Form/Button';
 import { Input } from '../../../components/Form/Input';
 import {
@@ -38,10 +38,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../../components/Form/Select';
-import { useRef } from 'react';
+import { httpClient } from '../../../utils';
 
 export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
-  const { response, process } = useCreateUser();
+  const [loading, setLoading] = useState(false);
   const inputAvatarPhoto = useRef<HTMLInputElement>(null);
   const form = useForm<z.infer<typeof CreateUserSchema>>({
     resolver: zodResolver(CreateUserSchema),
@@ -57,6 +57,25 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
     },
   });
 
+  const onCreate = async (params: object) => {
+    try {
+      setLoading(true);
+      const response = await httpClient.post(`/users`, params);
+      if (response.data.statusCode === HttpStatus.OK) {
+        form.reset();
+        toast.success(response.data.message);
+        if (inputAvatarPhoto.current) {
+          inputAvatarPhoto.current.value = '';
+        }
+        refresh();
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast.warning('Something went wrong, Please try again later');
+    }
+  };
+
   const onSubmit = async (values: z.infer<typeof CreateUserSchema>) => {
     const validatedFields = CreateUserSchema.safeParse(values);
 
@@ -64,19 +83,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
       toast.warning('Something went wrong, Please try again later');
       return;
     }
-
-    await process(validatedFields.data);
-
-    if (response.status_code === HttpStatus.OK) {
-      form.reset();
-      if (inputAvatarPhoto.current) {
-        inputAvatarPhoto.current.value = '';
-      }
-      toast.success('User created successfully!');
-      refresh();
-    } else {
-      toast.warning('Something went wrong, Please try again later');
-    }
+    await onCreate(validatedFields.data);
   };
 
   return (
@@ -105,7 +112,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={response.loading}
+                          disabled={loading}
                           placeholder=""
                           type="text"
                         />
@@ -114,7 +121,6 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="email"
@@ -124,7 +130,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={response.loading}
+                          disabled={loading}
                           placeholder=""
                           type="email"
                         />
@@ -133,7 +139,6 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="phone"
@@ -143,7 +148,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={response.loading}
+                          disabled={loading}
                           placeholder=""
                           type="text"
                         />
@@ -152,7 +157,6 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="role"
@@ -162,7 +166,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                       <FormControl>
                         <Select
                           {...field}
-                          disabled={response.loading}
+                          disabled={loading}
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
@@ -183,7 +187,6 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="password"
@@ -193,7 +196,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={response.loading}
+                          disabled={loading}
                           placeholder="********"
                           type="password"
                         />
@@ -202,7 +205,6 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="confirmPassword"
@@ -212,7 +214,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                       <FormControl>
                         <Input
                           {...field}
-                          disabled={response.loading}
+                          disabled={loading}
                           placeholder="********"
                           type="password"
                         />
@@ -221,7 +223,6 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="image"
@@ -231,7 +232,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                       <FormControl>
                         <Input
                           {...fieldProps}
-                          disabled={response.loading}
+                          disabled={loading}
                           type="file"
                           ref={inputAvatarPhoto}
                           onChange={event =>
@@ -245,7 +246,6 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name="status"
@@ -255,7 +255,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                       <FormControl>
                         <Select
                           {...field}
-                          disabled={response.loading}
+                          disabled={loading}
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
@@ -277,17 +277,14 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                   )}
                 />
               </div>
-
               <DialogFooter>
                 <DialogClose asChild>
                   <Button type="button" variant="outline">
                     Close
                   </Button>
                 </DialogClose>
-                <Button disabled={response.loading} type="submit">
-                  {response.loading && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
+                <Button disabled={loading} type="submit">
+                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Create
                 </Button>
               </DialogFooter>

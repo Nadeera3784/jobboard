@@ -12,7 +12,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../../../components/Form/Form';
-import { useCreateLocation } from '../../../hooks/Locations/useCreateLocation';
 import { Button } from '../../../components/Form/Button';
 import { Input } from '../../../components/Form/Input';
 import {
@@ -27,9 +26,11 @@ import {
 } from '../../../components/Dialog/Dialog';
 import { CreateCategorySchema } from '../../../schemas';
 import { HttpStatus } from '../../../constants';
+import { useState } from 'react';
+import { httpClient } from '../../../utils';
 
 export const CreateLocationModal = ({ refresh }: { refresh: () => void }) => {
-  const { response, process } = useCreateLocation();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof CreateCategorySchema>>({
     resolver: zodResolver(CreateCategorySchema),
@@ -38,21 +39,29 @@ export const CreateLocationModal = ({ refresh }: { refresh: () => void }) => {
     },
   });
 
+  const onCreate = async (params: object) => {
+    try {
+      setLoading(true);
+      const response = await httpClient.post(`/locations`, params);
+      if (response.data.statusCode === HttpStatus.OK) {
+        form.reset();
+        toast.success(response.data.message);
+        refresh();
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast.warning('Something went wrong, Please try again later');
+    }
+  };
+
   const onSubmit = async (values: z.infer<typeof CreateCategorySchema>) => {
     const validatedFields = CreateCategorySchema.safeParse(values);
-
     if (!validatedFields.success) {
       toast.warning('Something went wrong, Please try again later');
       return;
     }
-    await process(validatedFields.data);
-    if (response.status_code === HttpStatus.OK) {
-      form.reset();
-      toast.success('Category created successfully!');
-      refresh();
-    } else {
-      toast.warning('Something went wrong, Please try again later');
-    }
+    await onCreate(validatedFields.data);
   };
 
   return (
@@ -80,7 +89,7 @@ export const CreateLocationModal = ({ refresh }: { refresh: () => void }) => {
                     <FormControl>
                       <Input
                         {...field}
-                        disabled={response.loading}
+                        disabled={loading}
                         placeholder=""
                         type="text"
                       />
@@ -95,10 +104,8 @@ export const CreateLocationModal = ({ refresh }: { refresh: () => void }) => {
                     Close
                   </Button>
                 </DialogClose>
-                <Button disabled={response.loading} type="submit">
-                  {response.loading && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
+                <Button disabled={loading} type="submit">
+                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Create
                 </Button>
               </DialogFooter>

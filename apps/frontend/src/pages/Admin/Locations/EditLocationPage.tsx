@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { MoveLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -25,16 +25,13 @@ import {
 import { Input } from '../../../components/Form/Input';
 import { Button } from '../../../components/Form/Button';
 import { CreateCategorySchema as UpdateCategorySchema } from '../../../schemas';
-import { useSharedGetApi } from '../../../hooks/useSharedGetApi';
-import { useSharedPutApi } from '../../../hooks/useSharedPutApi';
 import { HttpStatus } from '../../../constants';
+import { httpClient } from '../../../utils';
 
 export const EditLocationPage = () => {
   let { id } = useParams<{ id: string }>();
 
-  const { response, process } = useSharedGetApi();
-  const { response: updateResponse, process: processUpdateCategory } =
-    useSharedPutApi();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof UpdateCategorySchema>>({
     resolver: zodResolver(UpdateCategorySchema),
@@ -46,17 +43,36 @@ export const EditLocationPage = () => {
 
   const onInit = async () => {
     if (id !== undefined) {
-      await process(`locations/${id}`);
-      form.reset({
-        name: response?.data?.name || '',
-        status: response?.data?.status || '',
-      });
+      try {
+        setLoading(true);
+        const response = await httpClient.get(`/locations/${id}`);
+        if (response.data.statusCode === HttpStatus.OK) {
+          setLoading(false);
+          form.reset({
+            name: response?.data?.data?.name,
+            status: response?.data?.data?.status,
+          });
+        }
+      } catch (error) {
+        setLoading(false);
+        toast.warning('Something went wrong, Please try again later');
+      }
     }
   };
 
-  useEffect(() => {
-    onInit();
-  }, [id, response?.status]);
+  const onUpdate = async (params: object, id: string) => {
+    try {
+      setLoading(true);
+      const response = await httpClient.put(`/locations/${id}`, params);
+      if (response.data.statusCode === HttpStatus.OK) {
+        toast.success(response.data.message);
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast.warning('Something went wrong, Please try again later');
+    }
+  };
 
   const onSubmit = async (values: z.infer<typeof UpdateCategorySchema>) => {
     const validatedFields = UpdateCategorySchema.safeParse(values);
@@ -65,17 +81,13 @@ export const EditLocationPage = () => {
       return;
     }
     if (id) {
-      await processUpdateCategory(`locations/${id}`, {
-        name: values.name,
-        status: values.status,
-      });
-    }
-    if (updateResponse.status || updateResponse.status_code === HttpStatus.OK) {
-      toast.success('Category updated successfully!');
-    } else {
-      toast.warning('Something went wrong, Please try again later');
+      await onUpdate(values, id);
     }
   };
+
+  useEffect(() => {
+    onInit();
+  }, [id]);
 
   return (
     <div className="bg-gray-100">
@@ -97,7 +109,7 @@ export const EditLocationPage = () => {
           <div className="space-y-4 lg:space-y-8">
             <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">
               <div className="space-y-4">
-                {!response.loading && (
+                {!loading && (
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(onSubmit)}
@@ -112,7 +124,7 @@ export const EditLocationPage = () => {
                             <FormControl>
                               <Input
                                 {...field}
-                                disabled={response.loading}
+                                disabled={loading}
                                 placeholder=""
                                 type="text"
                               />
@@ -130,7 +142,7 @@ export const EditLocationPage = () => {
                             <FormControl>
                               <Select
                                 {...field}
-                                disabled={response.loading}
+                                disabled={loading}
                                 onValueChange={field.onChange}
                                 defaultValue={field.value}
                               >
@@ -149,8 +161,8 @@ export const EditLocationPage = () => {
                           </FormItem>
                         )}
                       />
-                      <Button disabled={updateResponse.loading} type="submit">
-                        {updateResponse.loading && (
+                      <Button disabled={loading} type="submit">
+                        {loading && (
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
                         Update

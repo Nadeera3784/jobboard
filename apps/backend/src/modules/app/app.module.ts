@@ -7,6 +7,7 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { BullBoardModule } from '@bull-board/nestjs';
 import { ExpressAdapter } from '@bull-board/express';
 import { EventDispatcherModule } from '../core/event-dispatcher';
+import mongoose from 'mongoose';
 
 import configuration from '../../config/configuration';
 import { CategoryModule } from '../category/category.module';
@@ -101,6 +102,7 @@ import { AnalyticModule } from '../analytic/analytic.module';
 })
 export class AppModule implements OnApplicationShutdown {
   onApplicationShutdown(signal: string): void {
+    mongoose.disconnect();
     Logger.debug(`Application shut down (signal: ${signal})`);
   }
 }

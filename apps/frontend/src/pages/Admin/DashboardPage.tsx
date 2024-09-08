@@ -1,17 +1,14 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import { PlusCircle } from 'lucide-react';
 import appStateStore from '../../store';
 
 export const DashboardPage = () => {
-
-
-  const {getCurrentUser, user} = appStateStore((state) => state);
+  const { getCurrentUser, user } = appStateStore(state => state);
 
   useEffect(() => {
     getCurrentUser();
     console.log('user', user);
   }, []);
-
 
   return (
     <div className="bg-gray-100">

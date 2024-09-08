@@ -9,7 +9,7 @@ import {
 } from '../interfaces';
 
 @Injectable()
-export class GetAllJobsFeature extends Feature {
+export class GetSearchJobsFeature extends Feature {
   constructor(private readonly jobService: JobService) {
     super();
   }
@@ -22,7 +22,7 @@ export class GetAllJobsFeature extends Feature {
     page: number,
   ) {
     try {
-      const jobs = await this.jobService.getAll(
+      const jobs = await this.jobService.getSearch(
         filter,
         search,
         order,

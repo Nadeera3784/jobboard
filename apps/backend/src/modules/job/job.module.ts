@@ -5,8 +5,9 @@ import { JwtService } from '@nestjs/jwt';
 import { JobService, ApplicationService } from './services';
 import {
   CreateJobFeature,
-  GetAllJobsFeature,
+  GetSearchJobsFeature,
   GetJobByIdFeature,
+  GetAllJobsFeature,
   ApplyJobApplicationFeature,
 } from './features';
 import { JobController, ApplicationController } from './controllers';
@@ -41,9 +42,10 @@ import { UserModule } from '../user/user.module';
     JobService,
     ApplicationService,
     CreateJobFeature,
-    GetAllJobsFeature,
+    GetSearchJobsFeature,
     GetJobByIdFeature,
     ApplyJobApplicationFeature,
+    GetAllJobsFeature,
     JobSeedCommand,
     JwtService,
   ],

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { MoveLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -6,6 +6,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { httpClient } from '../../../utils';
 
 import {
   Form,
@@ -25,15 +26,12 @@ import {
 import { Input } from '../../../components/Form/Input';
 import { Button } from '../../../components/Form/Button';
 import { UpdateUserSchema } from '../../../schemas';
-import { useGetUserById } from '../../../hooks/Users/useGetUserById';
-import { useUpdateUser } from '../../../hooks/Users/useUpdateUser';
-import { HttpStatus } from '../../../constants';
+import { HttpStatus, AppConstants } from '../../../constants';
 
 export const EditUserPage = () => {
   let { id } = useParams<{ id: string }>();
 
-  const { response, process } = useGetUserById();
-  const { response: updateResponse, process: processUpdate } = useUpdateUser();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof UpdateUserSchema>>({
     resolver: zodResolver(UpdateUserSchema),
@@ -49,21 +47,49 @@ export const EditUserPage = () => {
 
   const onInit = async () => {
     if (id !== undefined) {
-      await process({ id: id });
-      form.reset({
-        name: response?.data.name,
-        email: response?.data?.email,
-        phone: response?.data?.phone,
-        status: response?.data?.status,
-        image: response?.data?.image,
-        role: response?.data?.role,
-      });
+      try {
+        setLoading(true);
+        const response = await httpClient.get(
+          `${AppConstants.API_URL}/users/${id}`,
+        );
+        if (response.data.statusCode === HttpStatus.OK) {
+          setLoading(false);
+          form.reset({
+            name: response?.data?.data?.name,
+            email: response?.data?.data?.email,
+            phone: response?.data?.data?.phone,
+            status: response?.data?.data?.status,
+            image: response?.data?.data?.image,
+            role: response?.data?.data?.role,
+          });
+        }
+      } catch (error) {
+        setLoading(false);
+        toast.warning('Something went wrong, Please try again later');
+      }
     }
   };
 
   useEffect(() => {
     onInit();
-  }, [id, response?.status]);
+  }, [id]);
+
+  const onUpdate = async (params: object, id: string) => {
+    try {
+      setLoading(true);
+      const response = await httpClient.put(
+        `${AppConstants.API_URL}/users/${id}`,
+        params,
+      );
+      if (response.data.statusCode === HttpStatus.OK) {
+        toast.success(response.data.message);
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast.warning('Something went wrong, Please try again later');
+    }
+  };
 
   const onSubmit = async (values: z.infer<typeof UpdateUserSchema>) => {
     const validatedFields = UpdateUserSchema.safeParse(values);
@@ -72,13 +98,7 @@ export const EditUserPage = () => {
       return;
     }
     if (id) {
-      await processUpdate(validatedFields.data, id);
-    }
-
-    if (updateResponse.status || updateResponse.status_code === HttpStatus.OK) {
-      toast.success('User updated successfully!');
-    } else {
-      toast.warning('Something went wrong, Please try again later');
+      await onUpdate(validatedFields.data, id);
     }
   };
 
@@ -102,7 +122,7 @@ export const EditUserPage = () => {
           <div className="space-y-4 lg:space-y-8">
             <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">
               <div className="space-y-4">
-                {!response.loading && (
+                {!loading && (
                   <Form {...form}>
                     <form
                       onSubmit={form.handleSubmit(onSubmit)}
@@ -117,7 +137,7 @@ export const EditUserPage = () => {
                             <FormControl>
                               <Input
                                 {...field}
-                                disabled={response.loading}
+                                disabled={loading}
                                 placeholder=""
                                 type="text"
                               />
@@ -135,7 +155,7 @@ export const EditUserPage = () => {
                             <FormControl>
                               <Input
                                 {...field}
-                                disabled={response.loading}
+                                disabled={loading}
                                 placeholder=""
                                 type="text"
                               />
@@ -153,7 +173,7 @@ export const EditUserPage = () => {
                             <FormControl>
                               <Input
                                 {...field}
-                                disabled={response.loading}
+                                disabled={loading}
                                 placeholder=""
                                 type="text"
                               />
@@ -171,7 +191,7 @@ export const EditUserPage = () => {
                             <FormControl>
                               <Input
                                 {...field}
-                                disabled={response.loading}
+                                disabled={loading}
                                 type="file"
                                 accept="image/*"
                                 onChange={event =>
@@ -194,7 +214,7 @@ export const EditUserPage = () => {
                             <FormControl>
                               <Select
                                 {...field}
-                                disabled={response.loading}
+                                disabled={loading}
                                 onValueChange={field.onChange}
                                 defaultValue={field.value}
                               >
@@ -213,8 +233,37 @@ export const EditUserPage = () => {
                           </FormItem>
                         )}
                       />
-                      <Button disabled={updateResponse.loading} type="submit">
-                        {updateResponse.loading && (
+                      <FormField
+                        control={form.control}
+                        name="role"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Role</FormLabel>
+                            <FormControl>
+                              <Select
+                                {...field}
+                                disabled={loading}
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <SelectTrigger className="w-[180px]">
+                                  <SelectValue placeholder="Select Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="user">User</SelectItem>
+                                  <SelectItem value="admin">Admin</SelectItem>
+                                  <SelectItem value="company">
+                                    Company
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <Button disabled={loading} type="submit">
+                        {loading && (
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         )}
                         Update

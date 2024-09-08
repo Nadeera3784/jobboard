@@ -1,19 +1,15 @@
 import { BanReasonsEnum } from '../enums/ban-reasons.enum';
 import { BanRegistrationsEnum } from '../enums/ban-register.enum';
 
-const REASON_NO_CAPTCHA: string = 'auth.error.reason.no_captcha';
-const REASON_TWENTY_MINUTES_BAN: string =
-  'auth.error.reason.twenty_minutes_ban';
-const REASON_THREE_HOURS_BAN: string = 'auth.error.reason.three_hours_ban';
-const REASON_PERMANENT_BAN: string = 'auth.error.reason.permanent_ban';
-const REGISTER_TWENTY_MINUTES_BAN: string =
+const REASON_NO_CAPTCHA = 'auth.error.reason.no_captcha';
+const REASON_TWENTY_MINUTES_BAN = 'auth.error.reason.twenty_minutes_ban';
+const REASON_THREE_HOURS_BAN = 'auth.error.reason.three_hours_ban';
+const REASON_PERMANENT_BAN = 'auth.error.reason.permanent_ban';
+const REGISTER_TWENTY_MINUTES_BAN =
   'auth.register.error.reason.twenty_minutes_ban';
-const REGISTER_THREE_HOURS_BAN: string =
-  'auth.register.error.reason.three_hours_ban';
-const REGISTER_PERMANENT_BAN: string =
-  'auth.register.error.reason.permanent_ban';
-export const SECURITY_QUESTION_BAN: string =
-  'auth.security-question.error.reason.ban';
+const REGISTER_THREE_HOURS_BAN = 'auth.register.error.reason.three_hours_ban';
+const REGISTER_PERMANENT_BAN = 'auth.register.error.reason.permanent_ban';
+export const SECURITY_QUESTION_BAN = 'auth.security-question.error.reason.ban';
 
 type IEnumTpProp<R> = { [key in BanReasonsEnum]: R };
 
@@ -34,4 +30,4 @@ export const REGISTER_ERROR_REASONS: IEnumRegistration<string> = {
   [BanRegistrationsEnum.REGISTRATION_THREE_HOURS_BAN]: REGISTER_THREE_HOURS_BAN,
 };
 
-export const MAX_BAN_COUNT: number = 4;
+export const MAX_BAN_COUNT = 4;

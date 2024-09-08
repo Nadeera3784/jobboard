@@ -109,16 +109,16 @@ export const SearchPage = () => {
     }));
   };
 
-const onChangeFilter = (filterKey: keyof Filters) => (value: string) => {
-  if (value === "") {
-    onRemoveFilter(filterKey);
-  } else {
-    const selectedOption = response.data[`${filterKey}`].find(
-      (option: FilterOption) => option._id === value,
-    );
-    updateFilter(filterKey, selectedOption || null);
-  }
-};
+  const onChangeFilter = (filterKey: keyof Filters) => (value: string) => {
+    if (value === '') {
+      onRemoveFilter(filterKey);
+    } else {
+      const selectedOption = response.data[`${filterKey}`].find(
+        (option: FilterOption) => option._id === value,
+      );
+      updateFilter(filterKey, selectedOption || null);
+    }
+  };
 
   const onOrderChange = (value: string) => {
     const [propertyName, direction] = value.split('-');
@@ -201,7 +201,10 @@ const onChangeFilter = (filterKey: keyof Filters) => (value: string) => {
                           onValueChange={onChangeFilter(
                             filterKey as keyof Filters,
                           )}
-                          value={appliedFilters[filterKey as keyof Filters]?._id || ""}
+                          value={
+                            appliedFilters[filterKey as keyof Filters]?._id ||
+                            ''
+                          }
                         >
                           <SelectTrigger>
                             <SelectValue

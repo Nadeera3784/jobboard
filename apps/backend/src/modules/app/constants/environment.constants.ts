@@ -1,3 +1,3 @@
-export const ENVIRONMENT_DEVELOPMENT: string = 'development';
-export const ENVIRONMENT_STAGE: string = 'stage';
-export const ENVIRONMENT_PRODUCTION: string = 'production';
+export const ENVIRONMENT_DEVELOPMENT = 'development';
+export const ENVIRONMENT_STAGE = 'stage';
+export const ENVIRONMENT_PRODUCTION = 'production';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { httpClient } from '../../utils';
 
 import { ApiResponse, GetUserType, ResponseState } from '../../types';
 import { HttpStatus, AppConstants } from '../../constants';
@@ -21,7 +21,7 @@ export const useGetUserById = () => {
     }));
     const ENDPOINT = `${AppConstants.API_URL}/users/${params.id}`;
     try {
-      const apiResponse = await axios.get<ApiResponse>(ENDPOINT);
+      const apiResponse = await httpClient.get<ApiResponse>(ENDPOINT);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

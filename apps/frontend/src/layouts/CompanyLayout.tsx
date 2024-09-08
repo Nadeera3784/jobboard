@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Outlet } from 'react-router-dom';
+import appStateStore from '../store';
 
 export const CompanyLayout = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(true);
+  const { getCurrentUser, user } = appStateStore(state => state);
 
   const onClickDropDownToggle = function () {
     setUserDropdownOpen(!userDropdownOpen);
@@ -19,6 +21,10 @@ export const CompanyLayout = () => {
     setMobileSidebarOpen(!mobileSidebarOpen);
     setDesktopSidebarOpen(!mobileSidebarOpen);
   };
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   const onClickSignOut = () => {};
 
@@ -284,7 +290,7 @@ export const CompanyLayout = () => {
                   aria-haspopup="true"
                   aria-expanded="true"
                 >
-                  <span>John doe</span>
+                  <span>{user?.name}</span>
                   <svg
                     className="hi-solid hi-chevron-down inline-block w-5 h-5 opacity-50"
                     fill="currentColor"

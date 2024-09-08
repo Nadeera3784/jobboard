@@ -13,6 +13,7 @@ import { Response } from 'express';
 
 import {
   CreateJobFeature,
+  GetSearchJobsFeature,
   GetAllJobsFeature,
   GetJobByIdFeature,
 } from '../features';
@@ -32,14 +33,39 @@ import { RoleGuard } from '../../authentication/guards/role.guard';
 export class JobController {
   constructor(
     private readonly createJobFeature: CreateJobFeature,
-    private readonly getAllJobsFeature: GetAllJobsFeature,
+    private readonly getSearchJobsFeature: GetSearchJobsFeature,
     private readonly getJobByIdFeature: GetJobByIdFeature,
+    private readonly getAllJobsFeature: GetAllJobsFeature,
   ) {}
 
-  @Get()
+  @Post('/datatable')
+  @Header('Content-Type', 'application/json')
+  @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY)
+  public async dataTable(
+    @Res() response: Response,
+    @Body('order') order: any,
+    @Body('columns') columns: any,
+    @Body('filters') filters: any,
+    @Body('search') search: string,
+    @Body('limit') limit: number,
+    @Body('start') start: number,
+  ) {
+    const { status, response: featureUpResponse } =
+      await this.getAllJobsFeature.handle(
+        order,
+        columns,
+        filters,
+        search,
+        limit,
+        start,
+      );
+    return response.status(status).json(featureUpResponse);
+  }
+
+  @Get('/search')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async getAll(
+  public async getSearch(
     @Res() response: Response,
     @Query('filter') filter: JobFilterInterface,
     @Query('search') search: JobSearchInterface,
@@ -48,7 +74,7 @@ export class JobController {
     @Query('page') page: number,
   ) {
     const { status, response: featureUpResponse } =
-      await this.getAllJobsFeature.handle(
+      await this.getSearchJobsFeature.handle(
         filter,
         search,
         order,

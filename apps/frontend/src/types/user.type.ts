@@ -8,7 +8,6 @@ export type User = {
   image?: File;
 };
 
-
 export type CreateUserType = {
   name: string;
   email: string;

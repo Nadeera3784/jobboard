@@ -3,6 +3,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { PlusCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useState } from 'react';
 
 import {
   Form,
@@ -12,7 +13,6 @@ import {
   FormLabel,
   FormMessage,
 } from '../../../components/Form/Form';
-import { useCreateCategory } from '../../../hooks/Categories/useCreateCategory';
 import { Button } from '../../../components/Form/Button';
 import { Input } from '../../../components/Form/Input';
 import {
@@ -26,10 +26,11 @@ import {
   DialogTrigger,
 } from '../../../components/Dialog/Dialog';
 import { CreateCategorySchema } from '../../../schemas';
-import { HttpStatus } from '../../../constants';
+import { AppConstants, HttpStatus } from '../../../constants';
+import { httpClient } from '../../../utils';
 
 export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
-  const { response, process } = useCreateCategory();
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof CreateCategorySchema>>({
     resolver: zodResolver(CreateCategorySchema),
@@ -38,6 +39,25 @@ export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
     },
   });
 
+  const onCreate = async (params: object) => {
+    try {
+      setLoading(true);
+      const response = await httpClient.post(
+        `${AppConstants.API_URL}/categories`,
+        params,
+      );
+      if (response.data.statusCode === HttpStatus.OK) {
+        form.reset();
+        toast.success(response.data.message);
+        refresh();
+      }
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast.warning('Something went wrong, Please try again later');
+    }
+  };
+
   const onSubmit = async (values: z.infer<typeof CreateCategorySchema>) => {
     const validatedFields = CreateCategorySchema.safeParse(values);
 
@@ -45,14 +65,7 @@ export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
       toast.warning('Something went wrong, Please try again later');
       return;
     }
-    await process(validatedFields.data);
-    if (response.status_code === HttpStatus.OK) {
-      form.reset();
-      toast.success('Category created successfully!');
-      refresh();
-    } else {
-      toast.warning('Something went wrong, Please try again later');
-    }
+    await onCreate(validatedFields.data);
   };
 
   return (
@@ -80,7 +93,7 @@ export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
                     <FormControl>
                       <Input
                         {...field}
-                        disabled={response.loading}
+                        disabled={loading}
                         placeholder=""
                         type="text"
                       />
@@ -95,10 +108,8 @@ export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
                     Close
                   </Button>
                 </DialogClose>
-                <Button disabled={response.loading} type="submit">
-                  {response.loading && (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  )}
+                <Button disabled={loading} type="submit">
+                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Create
                 </Button>
               </DialogFooter>

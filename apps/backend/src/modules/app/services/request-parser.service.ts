@@ -5,12 +5,9 @@ import { Request } from 'express';
 import { RequestFingerprint } from '../interfaces/request-fingerprint.interface';
 
 export class RequestParser {
-  private static precision: number = 16;
+  private static precision = 16;
 
-  public static parse(
-    request: Request,
-    precision: number = 16,
-  ): RequestFingerprint {
+  public static parse(request: Request, precision = 16): RequestFingerprint {
     if (!request) {
       return this.getEmptyFingerprint();
     }

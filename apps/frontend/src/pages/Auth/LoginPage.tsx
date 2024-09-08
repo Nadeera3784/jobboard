@@ -17,7 +17,7 @@ import { Button } from '../../components/Form/Button';
 import { HttpStatus } from '../../constants';
 import { Spinner } from '../../components/Icons';
 import { useState } from 'react';
-import { httpClient, cacheJwtToken} from '../../utils';
+import { httpClient, cacheJwtToken } from '../../utils';
 
 export const LoginPage = () => {
   const [loading, setLoading] = useState(false);

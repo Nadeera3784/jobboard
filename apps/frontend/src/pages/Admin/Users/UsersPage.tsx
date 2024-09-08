@@ -111,6 +111,10 @@ export const UsersPage = () => {
                         value: RoleConstants.ADMIN,
                         label: RoleConstants.ADMIN,
                       },
+                      {
+                        value: RoleConstants.COMPANY,
+                        label: RoleConstants.COMPANY,
+                      },
                     ],
                   },
                 ]}

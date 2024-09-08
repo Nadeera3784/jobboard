@@ -6,5 +6,4 @@ export * from './user.type';
 export * from './search.type';
 export * from './job.type';
 export * from './icon.type';
-export * from './context.type';
 export * from './provider.type';

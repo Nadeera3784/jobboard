@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 import appStateStore from '../../store';
 
 export const Header = () => {
-
-  const { user } = appStateStore((state) => state);
+  const { user } = appStateStore(state => state);
 
   return (
     <div className="relative bg-gray-50 overflow-hidden">
@@ -84,9 +83,7 @@ export const Header = () => {
                 <span className="inline-flex rounded-md shadow">
                   <>
                     {user?.name ? (
-                      <Link
-                        to={'/' + user?.role}
-                      >
+                      <Link to={'/' + user?.role}>
                         <div className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-800 text-gray-300">
                           <svg
                             className="hi-solid hi-user inline-block w-4 h-4"

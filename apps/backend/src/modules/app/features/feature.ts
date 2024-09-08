@@ -2,7 +2,7 @@ import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 
 @Injectable()
 export class Feature {
-  protected loggable: boolean = false;
+  protected loggable = false;
 
   protected async responseSuccess(
     status: number = HttpStatus.OK,

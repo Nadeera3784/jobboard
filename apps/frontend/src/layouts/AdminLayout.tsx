@@ -1,14 +1,20 @@
 import { MapPinned, Users, Wallet } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 import { deleteJWTToken } from '../utils';
+import appStateStore from '../store';
 
 export const AdminLayout = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(true);
   const navigate = useNavigate();
+  const { getCurrentUser, user } = appStateStore(state => state);
+
+  useEffect(() => {
+    getCurrentUser();
+  }, []);
 
   const onClickDropDownToggle = function () {
     setUserDropdownOpen(!userDropdownOpen);
@@ -309,7 +315,7 @@ export const AdminLayout = () => {
                   aria-haspopup="true"
                   aria-expanded="true"
                 >
-                  <span>John doe</span>
+                  <span>{user?.name}</span>
                   <svg
                     className="hi-solid hi-chevron-down inline-block w-5 h-5 opacity-50"
                     fill="currentColor"

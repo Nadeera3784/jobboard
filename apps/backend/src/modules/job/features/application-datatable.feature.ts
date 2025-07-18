@@ -1,32 +1,32 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 import { Feature } from '../../app/features/feature';
-import { JobService } from '../services/job.service';
+import { ApplicationService } from '../services';
 
 @Injectable()
-export class GetAllJobsFeature extends Feature {
-  constructor(private readonly jobService: JobService) {
+export class ApplicationDatatableFeature extends Feature {
+  constructor(private readonly applicationService: ApplicationService) {
     super();
   }
 
   public async handle(
+    userId: string,
     order,
     columns,
     filters,
     search: string,
     limit: number,
     start: number,
-    userId?: string,
   ) {
     try {
-      const data = await this.jobService.getAll(
+      const data = await this.applicationService.datatable(
+        userId,
         order,
         columns,
         filters,
         search,
         limit,
         start,
-        userId,
       );
       return this.responseSuccess(HttpStatus.OK, null, data);
     } catch (error) {

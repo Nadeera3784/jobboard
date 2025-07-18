@@ -1,3 +1,3 @@
 export class TermsDto {
-    [fieldName: string]: string[];
+  [fieldName: string]: string[];
 }

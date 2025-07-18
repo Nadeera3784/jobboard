@@ -1,31 +1,37 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 import { Feature } from '../../app/features/feature';
-import { JobService } from '../services/job.service';
+import { JobService } from '../services';
+import { UpdateJobDto } from '../dtos';
 
 @Injectable()
-export class GetJobByIdFeature extends Feature {
+export class UpdateJobFeature extends Feature {
   constructor(private readonly jobService: JobService) {
     super();
   }
 
-  public async handle(id: string, userId?: string) {
+  public async handle(id: string, updateJobDto: UpdateJobDto, userId?: string) {
     try {
-      const job = await this.jobService.getById(id);
+      // First check if the job exists
+      const existingJob = await this.jobService.getById(id);
 
-      if (!job) {
+      if (!existingJob) {
         return this.responseError(HttpStatus.NOT_FOUND, 'Job not found');
       }
 
       // If userId is provided (company role), check if they own the job
-      if (userId && job.user.toString() !== userId) {
+      if (userId && existingJob.user.toString() !== userId) {
         return this.responseError(
           HttpStatus.FORBIDDEN,
-          'You do not have permission to access this job',
+          'You do not have permission to update this job',
         );
       }
 
-      return this.responseSuccess(HttpStatus.OK, null, job);
+      await this.jobService.update(id, updateJobDto);
+      return this.responseSuccess(
+        HttpStatus.OK,
+        'Job has been updated successfully',
+      );
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,

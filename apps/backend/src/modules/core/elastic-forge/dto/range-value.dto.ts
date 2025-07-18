@@ -1,5 +1,4 @@
-
 export class RangeValue {
-    lt?: number;
-    gt?: number;
+  lt?: number;
+  gt?: number;
 }

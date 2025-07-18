@@ -5,26 +5,20 @@ import { ElasticSearchConfig } from './elastic-search.config';
 
 @Global()
 @Module({
-    exports: [
-        DelayRemoveClient,
-        ElasticSearchClient,
-    ],
-    providers: [
-        DelayRemoveClient,
-        ElasticSearchClient,
-    ],
+  exports: [DelayRemoveClient, ElasticSearchClient],
+  providers: [DelayRemoveClient, ElasticSearchClient],
 })
 export class ElasticForgehModule {
-    static forRoot(config: ElasticSearchConfig): DynamicModule {
-        return {
-            exports: [],
-            module: ElasticForgehModule,
-            providers: [
-                {
-                    provide: ElasticSearchConfig,
-                    useValue: config,
-                },
-            ],
-        };
-    }
+  static forRoot(config: ElasticSearchConfig): DynamicModule {
+    return {
+      exports: [],
+      module: ElasticForgehModule,
+      providers: [
+        {
+          provide: ElasticSearchConfig,
+          useValue: config,
+        },
+      ],
+    };
+  }
 }

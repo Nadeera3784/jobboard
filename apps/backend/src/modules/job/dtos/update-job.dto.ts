@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 
 export class UpdateJobDto {
   @IsString()
@@ -19,8 +19,8 @@ export class UpdateJobDto {
   location: string;
 
   @IsString()
-  @IsNotEmpty()
-  user: string;
+  @IsOptional()
+  user?: string;
 
   @IsString()
   @IsNotEmpty()

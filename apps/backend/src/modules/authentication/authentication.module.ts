@@ -3,7 +3,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { BullModule } from '@nestjs/bull';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-
 import {
   ResetPasswordFeature,
   SignInFeature,
@@ -60,7 +59,7 @@ import { TwoFactorAuthenticationTokenService } from './services/two-factor-authe
       useFactory: (configService: ConfigService) => ({
         secret: configService.get('app.jwt_key'),
         signOptions: {
-          expiresIn: '1h',
+          expiresIn: configService.get('app.jwt_expires_in') || '7d',
         },
       }),
       inject: [ConfigService],

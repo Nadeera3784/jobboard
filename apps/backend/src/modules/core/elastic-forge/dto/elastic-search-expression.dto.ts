@@ -8,12 +8,12 @@ import { ElasticSearchConditionsDto } from './elastic-search-conditions.dto';
 import { TermsDto } from './terms.dto';
 
 export class ElasticSearchExpressionDto {
-    has_child?: HasChildFilterDto;
-    has_parent?: HasParentFilterDto;
-    nested?: NestedConditionDto;
-    match_phrase?: MatchPhraseDto;
-    query_string?: QueryStringDto;
-    range?: RangeDto;
-    terms?: TermsDto;
-    bool?: ElasticSearchConditionsDto;
+  has_child?: HasChildFilterDto;
+  has_parent?: HasParentFilterDto;
+  nested?: NestedConditionDto;
+  match_phrase?: MatchPhraseDto;
+  query_string?: QueryStringDto;
+  range?: RangeDto;
+  terms?: TermsDto;
+  bool?: ElasticSearchConditionsDto;
 }

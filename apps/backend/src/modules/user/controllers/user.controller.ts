@@ -9,14 +9,16 @@ import {
   ParseFilePipeBuilder,
   Post,
   Put,
+  Req,
   Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { Response } from 'express';
 
-import { CreateUserDto, UpdateUserDto } from '../dtos';
+import { CreateUserDto, UpdateUserDto, UpdateUserSettingsDto } from '../dtos';
 import {
   CreateUserFeature,
   DatatableFeature,
@@ -25,12 +27,16 @@ import {
   GetUserByIdFeature,
   UpdateUserFeature,
 } from '../features';
+import { UpdateUserSettingsFeature } from '../features/update-user-settings.feature';
 import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
 import { RoleGuard } from '../../authentication/guards/role.guard';
 import { RolesEnum } from '../enums';
 import { RolesAllowed } from '../../authentication/decorators/role.decorator';
 import { IdDto } from '../../app/dtos/Id.dto';
-import { FileInterceptor } from '@nestjs/platform-express/multer';
+import {
+  FileInterceptor,
+  FileFieldsInterceptor,
+} from '@nestjs/platform-express/multer';
 
 @Controller('users')
 @UseGuards(AuthenticationGuard, RoleGuard)
@@ -41,6 +47,7 @@ export class UserController {
     private readonly getUserByIdFeature: GetUserByIdFeature,
     private readonly createUserFeature: CreateUserFeature,
     private readonly updateUserFeature: UpdateUserFeature,
+    private readonly updateUserSettingsFeature: UpdateUserSettingsFeature,
     private readonly datatableFeature: DatatableFeature,
   ) {}
 
@@ -81,6 +88,69 @@ export class UserController {
   ) {
     const { status, response: featureUpResponse } =
       await this.createUserFeature.handle(createUserDto, file);
+    return response.status(status).json(featureUpResponse);
+  }
+
+  @Put('/user-settings')
+  @Header('Content-Type', 'application/json')
+  @RolesAllowed(RolesEnum.USER, RolesEnum.COMPANY)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: 'image', maxCount: 1 },
+      { name: 'resume', maxCount: 1 },
+    ]),
+  )
+  public async updateUserSettings(
+    @Req() request,
+    @Res() response: Response,
+    @Body() updateUserSettingsDto: UpdateUserSettingsDto,
+    @UploadedFiles()
+    files: { image?: Express.Multer.File[]; resume?: Express.Multer.File[] },
+  ) {
+    // Validate files if present
+    const imageFile = files?.image?.[0];
+    const resumeFile = files?.resume?.[0];
+
+    // Validate image file
+    if (imageFile) {
+      if (imageFile.size > 1000000) {
+        return response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+          message: 'Image file size must be less than 1MB',
+        });
+      }
+      if (
+        !['image/png', 'image/jpeg', 'image/jpg', 'image/webp'].includes(
+          imageFile.mimetype,
+        )
+      ) {
+        return response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+          message: 'Image must be a valid image file (PNG, JPEG, JPG, or WebP)',
+        });
+      }
+    }
+
+    // Validate resume file
+    if (resumeFile) {
+      if (resumeFile.size > 5000000) {
+        // 5MB limit for resume
+        return response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+          message: 'Resume file size must be less than 5MB',
+        });
+      }
+      if (resumeFile.mimetype !== 'application/pdf') {
+        return response.status(HttpStatus.UNPROCESSABLE_ENTITY).json({
+          message: 'Resume must be a PDF file',
+        });
+      }
+    }
+
+    const { status, response: featureUpResponse } =
+      await this.updateUserSettingsFeature.handle(
+        request.user.id,
+        updateUserSettingsDto,
+        imageFile,
+        resumeFile,
+      );
     return response.status(status).json(featureUpResponse);
   }
 

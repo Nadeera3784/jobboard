@@ -1,4 +1,4 @@
 export class QueryStringDto {
-    fields: string[];
-    query: string;
+  fields: string[];
+  query: string;
 }

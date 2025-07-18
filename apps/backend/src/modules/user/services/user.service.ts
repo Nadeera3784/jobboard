@@ -68,6 +68,22 @@ export class UserService extends ModelService<User> {
     });
   }
 
+  /**
+   * Updates user settings with the provided data.
+   * @param id - The unique identifier of the user to update.
+   * @param updateUserSettingsDto - Data for updating the user settings.
+   * @returns A promise that resolves to the updated user, or null if the user with the specified ID is not found.
+   */
+  public async updateSettings(id: string, updateUserSettingsDto: any) {
+    return await this.userModel.findByIdAndUpdate(
+      { _id: id },
+      updateUserSettingsDto,
+      {
+        returnNewDocument: true,
+      },
+    );
+  }
+
   public async updateEmailVerified(id: string) {
     return await this.userModel.findByIdAndUpdate(
       { _id: id },

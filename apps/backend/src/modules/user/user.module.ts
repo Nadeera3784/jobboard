@@ -10,6 +10,7 @@ import { GetAllUsersFeature } from './features/get-all-users.features';
 import { GetUserByIdFeature } from './features/get-user-by-id.feature';
 import { CreateUserFeature } from './features/create-user.feature';
 import { UpdateUserFeature } from './features/update-user.feature';
+import { UpdateUserSettingsFeature } from './features/update-user-settings.feature';
 import { DatatableFeature } from './features/datatable.feature';
 import { UserDeletedListener } from './listeners/user-deleted.listener';
 import { UserSeedCommand, AdminSeedCommand } from './commands';
@@ -27,6 +28,7 @@ import { AppModule } from '../app/app.module';
     GetUserByIdFeature,
     CreateUserFeature,
     UpdateUserFeature,
+    UpdateUserSettingsFeature,
     DatatableFeature,
     JwtService,
     UserDeletedListener,

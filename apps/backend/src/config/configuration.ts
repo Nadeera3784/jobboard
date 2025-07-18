@@ -10,6 +10,7 @@ export default () => ({
     api_url: env.API_URL,
     environment: env.APP_ENV,
     jwt_key: env.APP_JWT_KEY,
+    jwt_expires_in: env.APP_JWT_EXPIRES_IN || '7d',
     enable_bruteforce_protection: env.APP_ENABLE_BRUTEFORCE_PROTECTION || false,
     enable_2fa: env.APP_ENABLE_2FA || false,
   },

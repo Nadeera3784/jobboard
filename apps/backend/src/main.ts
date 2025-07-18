@@ -31,6 +31,7 @@ async function bootstrap() {
   });
   app.useGlobalPipes(
     new ValidationPipe({
+      transform: true,
       exceptionFactory: (errors: ValidationError[]) =>
         new HttpException(
           getCustomValidationError(getAllConstraints(errors)),

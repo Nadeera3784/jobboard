@@ -9,6 +9,7 @@ import {
   DeleteAnalyticFeature,
   GetAnalyticByIdFeature,
   UpdateAnalyticCountFeature,
+  GetCompanyAnalyticsFeature,
 } from './features';
 import { UserModule } from '../user/user.module';
 
@@ -16,6 +17,8 @@ import { UserModule } from '../user/user.module';
   imports: [
     MongooseModule.forFeature([
       { name: Analytic.name, schema: AnalyticSchema },
+      { name: 'Job', schema: require('../job/schemas/job.schema').JobSchema },
+      { name: 'Application', schema: require('../job/schemas/application.shema').ApplicationSchema },
     ]),
     UserModule,
   ],
@@ -25,6 +28,7 @@ import { UserModule } from '../user/user.module';
     DeleteAnalyticFeature,
     GetAnalyticByIdFeature,
     UpdateAnalyticCountFeature,
+    GetCompanyAnalyticsFeature,
   ],
   controllers: [AnalyticController],
   exports: [AnalyticService],

@@ -1,3 +1,3 @@
 export class MatchPhraseDto {
-    [fieldName: string]: string;
+  [fieldName: string]: string;
 }

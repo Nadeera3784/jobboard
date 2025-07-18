@@ -35,7 +35,9 @@ export class SecurityQuestionService {
 
   public async validate(dto: ValidateSecurityQuestionDto, request: Request) {
     const parsedRequest: RequestFingerprint = RequestParser.parse(request);
+    return parsedRequest;
   }
+
   public async defineSecurityQuestion(dto: SecurityQuestionDto): Promise<void> {
     const answer: string = this.generateHash(dto.answer);
     await this.securityQuestionModel.updateOne(

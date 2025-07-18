@@ -11,19 +11,19 @@ import { TermsExpression } from './terms.expression';
 
 // Define a common type for expressions
 type ExpressionClass = {
-    getName(): string;
-    getExpression(field: string, value: any): any;
+  getName(): string;
+  getExpression(field: string, value: any): any;
 };
 
 export const Expressions: ExpressionClass[] = [
-    ContainsExpression,
-    EndsWithExpression,
-    GreaterThanExpression,
-    LessThanExpression,
-    MatchExpression,
-    TermsExpression,
-    StartsWithExpression,
-    NestedExpression,
-    ChildExpression,
-    ParentExpression,
+  ContainsExpression,
+  EndsWithExpression,
+  GreaterThanExpression,
+  LessThanExpression,
+  MatchExpression,
+  TermsExpression,
+  StartsWithExpression,
+  NestedExpression,
+  ChildExpression,
+  ParentExpression,
 ];

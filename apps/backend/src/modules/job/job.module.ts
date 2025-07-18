@@ -9,6 +9,11 @@ import {
   GetJobByIdFeature,
   GetAllJobsFeature,
   ApplyJobApplicationFeature,
+  ApplicationDatatableFeature,
+  UpdateJobFeature,
+  JobApplicationsDatatableFeature,
+  DownloadResumeFeature,
+  GenerateJobDescriptionFeature,
 } from './features';
 import { JobController, ApplicationController } from './controllers';
 import { JobSeedCommand } from './commands';
@@ -37,7 +42,7 @@ import { AIModule } from '../ai/ai.module';
       { name: Analytic.name, schema: AnalyticSchema },
     ]),
     UserModule,
-    AIModule
+    AIModule,
   ],
   controllers: [JobController, ApplicationController],
   providers: [
@@ -47,7 +52,12 @@ import { AIModule } from '../ai/ai.module';
     GetSearchJobsFeature,
     GetJobByIdFeature,
     ApplyJobApplicationFeature,
+    ApplicationDatatableFeature,
+    UpdateJobFeature,
     GetAllJobsFeature,
+    JobApplicationsDatatableFeature,
+    DownloadResumeFeature,
+    GenerateJobDescriptionFeature,
     JobSeedCommand,
     JwtService,
   ],

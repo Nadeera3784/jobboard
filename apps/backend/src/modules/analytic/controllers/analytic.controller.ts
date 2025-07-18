@@ -6,6 +6,7 @@ import {
   Header,
   Param,
   Post,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +15,7 @@ import {
   DeleteAnalyticFeature,
   GetAnalyticByIdFeature,
   UpdateAnalyticCountFeature,
+  GetCompanyAnalyticsFeature,
 } from '../features';
 import { UpdateCountDto } from '../dtos';
 import { AuthenticationGuard, RoleGuard } from '../../authentication/guards';
@@ -26,6 +28,7 @@ export class AnalyticController {
     private readonly deleteAnalyticFeature: DeleteAnalyticFeature,
     private readonly getAnalyticByIdFeature: GetAnalyticByIdFeature,
     private readonly updateAnalyticCountFeature: UpdateAnalyticCountFeature,
+    private readonly getCompanyAnalyticsFeature: GetCompanyAnalyticsFeature,
   ) {}
 
   @Post()
@@ -36,6 +39,16 @@ export class AnalyticController {
   ) {
     const { status, response: featureUpResponse } =
       await this.updateAnalyticCountFeature.handle(updateCountDto);
+    return response.status(status).json(featureUpResponse);
+  }
+
+  @Get('/company')
+  @Header('Content-Type', 'application/json')
+  @UseGuards(AuthenticationGuard, RoleGuard)
+  @RolesAllowed(RolesEnum.COMPANY)
+  public async getCompanyAnalytics(@Res() response, @Req() request) {
+    const { status, response: featureUpResponse } =
+      await this.getCompanyAnalyticsFeature.handle(request.user.id);
     return response.status(status).json(featureUpResponse);
   }
 

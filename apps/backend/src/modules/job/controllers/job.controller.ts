@@ -5,7 +5,9 @@ import {
   Header,
   Param,
   Post,
+  Put,
   Query,
+  Req,
   Res,
   UseGuards,
 } from '@nestjs/common';
@@ -16,9 +18,11 @@ import {
   GetSearchJobsFeature,
   GetAllJobsFeature,
   GetJobByIdFeature,
+  UpdateJobFeature,
+  GenerateJobDescriptionFeature,
 } from '../features';
 import { RolesEnum } from '../../user/enums';
-import { CreateJobDto } from '../dtos';
+import { CreateJobDto, UpdateJobDto, GenerateJobDescriptionDto } from '../dtos';
 import { RolesAllowed } from '../../authentication/decorators/role.decorator';
 import {
   JobFilterInterface,
@@ -28,8 +32,7 @@ import {
 import { IdDto } from '../../app/dtos/Id.dto';
 import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
 import { RoleGuard } from '../../authentication/guards/role.guard';
-import { AIJobOutLineGeneratorService } from '../../ai/services';
-import { AssociativeObject } from 'src/modules/ai/interfaces';
+
 
 @Controller('jobs')
 export class JobController {
@@ -38,13 +41,16 @@ export class JobController {
     private readonly getSearchJobsFeature: GetSearchJobsFeature,
     private readonly getJobByIdFeature: GetJobByIdFeature,
     private readonly getAllJobsFeature: GetAllJobsFeature,
-    private readonly aiJobOutLineGeneratorService: AIJobOutLineGeneratorService,
+    private readonly updateJobFeature: UpdateJobFeature,
+    private readonly generateJobDescriptionFeature: GenerateJobDescriptionFeature,
   ) {}
 
   @Post('/datatable')
   @Header('Content-Type', 'application/json')
+  @UseGuards(AuthenticationGuard, RoleGuard)
   @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY)
   public async dataTable(
+    @Req() request,
     @Res() response: Response,
     @Body('order') order: any,
     @Body('columns') columns: any,
@@ -53,6 +59,9 @@ export class JobController {
     @Body('limit') limit: number,
     @Body('start') start: number,
   ) {
+    const userId =
+      request.user.role === RolesEnum.COMPANY ? request.user.id : null;
+
     const { status, response: featureUpResponse } =
       await this.getAllJobsFeature.handle(
         order,
@@ -61,6 +70,7 @@ export class JobController {
         search,
         limit,
         start,
+        userId,
       );
     return response.status(status).json(featureUpResponse);
   }
@@ -89,10 +99,37 @@ export class JobController {
 
   @Get('/:id')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(RolesEnum.ADMIN)
-  public async getById(@Res() response: Response, @Param() { id }: IdDto) {
+  @UseGuards(AuthenticationGuard, RoleGuard)
+  @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY, RolesEnum.USER)
+  public async getById(
+    @Req() request,
+    @Res() response: Response,
+    @Param() { id }: IdDto,
+  ) {
     const { status, response: featureUpResponse } =
-      await this.getJobByIdFeature.handle(id);
+      await this.getJobByIdFeature.handle(
+        id,
+        request.user.role === RolesEnum.COMPANY ? request.user.id : null,
+      );
+    return response.status(status).json(featureUpResponse);
+  }
+
+  @Put('/:id')
+  @Header('Content-Type', 'application/json')
+  @UseGuards(AuthenticationGuard, RoleGuard)
+  @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY)
+  public async update(
+    @Req() request,
+    @Res() response: Response,
+    @Param() { id }: IdDto,
+    @Body() updateJobDto: UpdateJobDto,
+  ) {
+    const { status, response: featureUpResponse } =
+      await this.updateJobFeature.handle(
+        id,
+        updateJobDto,
+        request.user.role === RolesEnum.COMPANY ? request.user.id : null,
+      );
     return response.status(status).json(featureUpResponse);
   }
 
@@ -109,19 +146,16 @@ export class JobController {
     return response.status(status).json(featureUpResponse);
   }
 
-  @Post('/outline-generator')
+  @Post('/generate-description')
   @Header('Content-Type', 'application/json')
   @UseGuards(AuthenticationGuard, RoleGuard)
   @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY)
-  public async aiOutLineGenearotr(
+  public async generateJobDescription(
     @Res() response: Response,
+    @Body() generateJobDescriptionDto: GenerateJobDescriptionDto,
   ) {
-    const data: AssociativeObject = {
-      job_descrption: '<job_descrption>Design, develop, and maintain robust and scalable web applications across the entire software development lifecycle, specifically using the MERN stack<job_descrption>/>'
-    };
-
-    const x = await this.aiJobOutLineGeneratorService.handle(data);
-
-    console.log('BOOM', x.metadata.notes);
+    const { status, response: featureUpResponse } =
+      await this.generateJobDescriptionFeature.handle(generateJobDescriptionDto);
+    return response.status(status).json(featureUpResponse);
   }
 }

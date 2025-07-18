@@ -3,203 +3,61 @@ import {
   ChatCompletionCreateParamsNonStreaming,
   ChatCompletionMessageParam,
 } from 'openai/resources';
+import OpenAI from 'openai';
 
-import { AssociativeObject, GPTResult, Outcome } from '../interfaces';
-import { OpenAIService } from './open-ai.service';
 import configuration from '../../../config/configuration';
 
 @Injectable()
-export abstract class AIService {
-  constructor(protected openAIService: OpenAIService) {}
+export class AIService {
+  private openai: OpenAI;
 
-  async handle(input: AssociativeObject): Promise<Outcome> {
-    const result = await this.getResult(input);
-
-    return this.getOutcomeFromResult(result);
+  constructor() {
+    const config = configuration();
+    this.openai = new OpenAI({
+      apiKey: config.ai.openai_api_key,
+    });
   }
 
-  protected async getResult(
-    input: AssociativeObject,
-  ): Promise<GPTResult | Error> {
+  public async generateJobDescription(jobTitle: string, additionalInfo?: string): Promise<string> {
     try {
-      const promptMessages = this.promptMessages(input);
-
-      const contents = await this.requestOpenAI(promptMessages);
-
-      let result = this.pickBestGPTResult(contents, input);
-
-      if (this.shouldConfirmResult(result, input)) {
-        const confirmPromptMessages = this.confirmPromptMessages(
-          promptMessages,
-          result,
-          input,
-        );
-
-        const contents = await this.requestOpenAI(confirmPromptMessages);
-
-        const confirmResult = this.pickBestGPTResult(contents, input);
-
-        result = this.combineGPTResults(result, confirmResult);
-      }
-
-      return result;
-    } catch (error) {
-      return error;
-    }
-  }
-
-  protected promptMessages(
-    input: AssociativeObject,
-  ): ChatCompletionMessageParam[] {
-    return [
-      {
+      const systemMessage: ChatCompletionMessageParam = {
         role: 'system',
-        content: this.systemMessage(input),
-      },
-      {
-        role: 'user',
-        content: this.userMessage(input),
-      },
-    ];
-  }
-
-  protected abstract systemMessage(input: AssociativeObject): string;
-
-  protected abstract userMessage(input: AssociativeObject): string;
-
-  protected abstract shouldConfirmResult(
-    result: GPTResult,
-    input: AssociativeObject,
-  ): boolean;
-
-  protected confirmPromptMessages(
-    promptMessages: ChatCompletionMessageParam[],
-    result: GPTResult,
-    input: AssociativeObject,
-  ): ChatCompletionMessageParam[] {
-    return [
-      ...promptMessages,
-      {
-        role: 'assistant',
-        content: result.content,
-      },
-      {
-        role: 'user',
-        content: this.confirmMessage(input),
-      },
-    ];
-  }
-
-  protected abstract confirmMessage(input: AssociativeObject): string;
-
-  protected async requestOpenAI(messages: ChatCompletionMessageParam[]) {
-    const options = this.chatCompletionOptions();
-
-    const response = await this.openAIService.chatCompletion(
-      this.chatCompletionModel(),
-      messages,
-      options,
-    );
-
-    return response.map((val) =>
-      this.parseContentToObject(val?.message?.content),
-    );
-  }
-
-  protected chatCompletionOptions(): Partial<ChatCompletionCreateParamsNonStreaming> {
-    return {
-      max_tokens: 1024,
-      n: 1, // Only 1 completion response
-      top_p: 0.2, // Less randomness
-    };
-  }
-
-  protected chatCompletionModel(): string {
-    return configuration().ai.model.gpt;
-  }
-
-  protected parseContentToObject(content: string): GPTResult {
-    try {
-      const jsonIndex = content.indexOf('<output>');
-      const jsonString = content
-        .substring(jsonIndex + 8, content.lastIndexOf('</output>'))
-        .replace(/\n/g, '');
-      const data = JSON.parse(jsonString) as AssociativeObject;
-
-      const notes = content
-        .substring(0, jsonIndex)
-        .replace(/<\/note>\n+<note>/g, '\n')
-        .replace(/\n+/g, '\n');
-
-      return {
-        data,
-        notes,
-        content,
+        content: `You are a professional HR expert and job description writer. Create comprehensive, engaging, and professional job descriptions that attract top talent. Focus on clarity, specificity, and inclusivity.`
       };
+
+      const userPrompt = `Create a detailed job description for the position: "${jobTitle}"
+      
+      ${additionalInfo ? `Additional context: ${additionalInfo}` : ''}
+      
+      Please include the following sections:
+      1. Job Overview (2-3 sentences)
+      2. Key Responsibilities (5-7 bullet points)
+      3. Required Qualifications (4-6 bullet points)
+      4. Preferred Qualifications (3-4 bullet points)
+      5. What We Offer (3-4 bullet points about benefits/company culture)
+      
+      Make it professional, engaging, and specific to the role. Use clear, inclusive language and avoid jargon.`;
+
+      const userMessage: ChatCompletionMessageParam = {
+        role: 'user',
+        content: userPrompt
+      };
+
+      const params: ChatCompletionCreateParamsNonStreaming = {
+        model: configuration().ai.model.gpt4_0,
+        messages: [systemMessage, userMessage],
+        temperature: 0.7,
+        max_tokens: 1500,
+      };
+
+      const completion = await this.openai.chat.completions.create(params);
+      
+      return completion.choices[0]?.message?.content || 'Failed to generate job description';
     } catch (error) {
-      console.log('Error converting OpenAI response to JSON', error as Error);
-      return { data: {}, notes: content, content };
+      console.error('Error generating job description:', error);
+      throw new Error('Failed to generate job description');
     }
   }
 
-  protected pickBestGPTResult(
-    results: GPTResult[],
-    metadata: AssociativeObject,
-  ): GPTResult {
-    if (results.length === 0) {
-      throw new Error('Empty results');
-    }
-
-    if (results.length === 1) {
-      return results[0];
-    }
-
-    const sortedResults = this.sortGPTResults(results, metadata);
-    const filteredResults = this.filterGPTResults(sortedResults, metadata);
-
-    return filteredResults.shift();
-  }
-
-  protected filterGPTResults(
-    results: GPTResult[],
-    metadata: AssociativeObject,
-  ): GPTResult[] {
-    return results;
-  }
-
-  protected sortGPTResults(
-    results: GPTResult[],
-    metadata: AssociativeObject,
-  ): GPTResult[] {
-    return results;
-  }
-
-  protected combineGPTResults(
-    result1: GPTResult,
-    result2: GPTResult,
-  ): GPTResult {
-    const data1 = result1.data;
-    const data1comment = (data1.comment as string) ?? '';
-
-    const data2 = result2.data;
-    const data2comment = (data2.comment as string) ?? '';
-
-    const notes1 = result1.notes;
-    const notes2 = result2.notes;
-
-    return {
-      ...result1,
-      ...result2,
-      data: {
-        ...data1,
-        ...data2,
-        comment: data1comment + data2comment,
-      },
-      notes: notes1 + notes2,
-    };
-  }
-
-  protected abstract getOutcomeFromResult(
-    result: GPTResult | Error | null,
-  ): Outcome;
+  public async polishJobDescrption() {}
 }

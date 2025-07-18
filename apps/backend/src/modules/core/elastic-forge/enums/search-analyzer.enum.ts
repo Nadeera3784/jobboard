@@ -1,3 +1,3 @@
 export enum SearchAnalyzer {
-    AutocompleteSearch = "autocomplete_search"
+  AutocompleteSearch = 'autocomplete_search',
 }

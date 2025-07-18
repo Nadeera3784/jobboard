@@ -29,6 +29,7 @@ export class JobService {
     search: string,
     limit: number,
     start: number,
+    userId?: string,
   ) {
     try {
       let searchQuery: any = {};
@@ -36,6 +37,11 @@ export class JobService {
       let recordsTotal = 0;
       let recordsFiltered = 0;
       const whereQuery: any = {};
+
+      // Filter by user ID if provided (for company users)
+      if (userId) {
+        whereQuery.user = userId;
+      }
 
       if (filters.status) {
         whereQuery.status = filters.status;
@@ -48,7 +54,7 @@ export class JobService {
       if (search) {
         const regex = new RegExp(search, 'i');
         searchQuery = {
-          $or: [{ name: regex }, { email: regex }],
+          $or: [{ name: regex }, { description: regex }],
         };
       }
 
@@ -65,14 +71,15 @@ export class JobService {
         }
       }
 
-      recordsTotal = await this.jobModel.countDocuments({});
-
+      // Update count queries to respect user filter
+      const countQuery = userId ? { user: userId } : {};
+      recordsTotal = await this.jobModel.countDocuments(countQuery);
       recordsFiltered = await this.jobModel.countDocuments(searchQuery);
 
       let results = await this.jobModel
-        .find(searchQuery, 'name')
+        .find(searchQuery)
         .select(
-          '_id remote job_type experience_level status created_at expired_at status',
+          '_id name remote job_type experience_level status created_at expired_at',
         )
         .skip(Number(start))
         .limit(Number(limit))
@@ -86,13 +93,19 @@ export class JobService {
               id: 1,
               label: 'Edit',
               type: 'link',
-              endpoint: `/admin/users/${result._id}`,
+              endpoint: `/company/jobs/${result._id}`,
             },
             {
               id: 2,
+              label: 'Applications',
+              type: 'link',
+              endpoint: `/company/jobs/${result._id}/applications`,
+            },
+            {
+              id: 3,
               label: 'Delete',
               type: 'delete',
-              endpoint: `${this.configService.get('app.api_url')}/users/${
+              endpoint: `${this.configService.get('app.api_url')}/jobs/${
                 result._id
               }`,
               confirm_message: 'Are you sure want to delete?',

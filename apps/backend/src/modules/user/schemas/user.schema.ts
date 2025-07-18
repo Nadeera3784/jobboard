@@ -49,6 +49,17 @@ export class User extends Document {
     value: string;
   };
 
+  @Prop({
+    type: { _id: false, key: { type: String }, value: { type: String } },
+    default: null,
+  })
+  @IsObject()
+  @IsOptional()
+  resume?: {
+    key: string;
+    value: string;
+  };
+
   @Prop({ enum: RolesEnum, default: RolesEnum.USER })
   @IsOptional()
   role: string;
@@ -65,6 +76,56 @@ export class User extends Document {
   @IsOptional()
   @IsBoolean()
   is_two_factor_authentication_enabled: boolean;
+
+  @Prop({ default: null })
+  @IsOptional()
+  @IsString()
+  about?: string;
+
+  @Prop({ default: null })
+  @IsOptional()
+  @IsString()
+  country?: string;
+
+  @Prop({ default: null })
+  @IsOptional()
+  @IsString()
+  streetAddress?: string;
+
+  @Prop({ default: null })
+  @IsOptional()
+  @IsString()
+  city?: string;
+
+  @Prop({ default: null })
+  @IsOptional()
+  @IsString()
+  state?: string;
+
+  @Prop({ default: null })
+  @IsOptional()
+  @IsString()
+  zip?: string;
+
+  @Prop({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  comments?: boolean;
+
+  @Prop({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  candidates?: boolean;
+
+  @Prop({ default: false })
+  @IsOptional()
+  @IsBoolean()
+  offers?: boolean;
+
+  @Prop({ default: 'email', enum: ['everything', 'email', 'nothing'] })
+  @IsOptional()
+  @IsString()
+  pushNotifications?: string;
 
   @Prop({ default: now(), select: false })
   @IsOptional()

@@ -1,6 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader2, Briefcase, Users, Eye, Clock, TrendingUp, AlertTriangle, PlusCircle } from 'lucide-react';
+import {
+  Loader2,
+  Briefcase,
+  Users,
+  Eye,
+  Clock,
+  TrendingUp,
+  AlertTriangle,
+  PlusCircle,
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { httpClient } from '../../utils';
 import { HttpStatus } from '../../constants';
@@ -27,9 +36,9 @@ export const DashboardPage = () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await httpClient.get('/analytics/company');
-      
+
       if (response.data.statusCode === HttpStatus.OK) {
         setAnalytics(response.data.data);
       } else {
@@ -37,7 +46,8 @@ export const DashboardPage = () => {
         toast.error('Failed to load analytics data');
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Failed to fetch analytics';
+      const errorMessage =
+        error.response?.data?.message || 'Failed to fetch analytics';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -68,8 +78,8 @@ export const DashboardPage = () => {
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
               <p className="text-red-600 mb-4">{error}</p>
-              <button 
-                onClick={fetchAnalytics} 
+              <button
+                onClick={fetchAnalytics}
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
               >
                 Retry
@@ -106,8 +116,12 @@ export const DashboardPage = () => {
               <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Total Jobs</p>
-                    <p className="text-3xl font-bold text-gray-900">{analytics?.totalJobs || 0}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      Total Jobs
+                    </p>
+                    <p className="text-3xl font-bold text-gray-900">
+                      {analytics?.totalJobs || 0}
+                    </p>
                   </div>
                   <div className="p-3 bg-blue-100 rounded-full">
                     <Briefcase className="h-6 w-6 text-blue-600" />
@@ -121,8 +135,12 @@ export const DashboardPage = () => {
               <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Active Jobs</p>
-                    <p className="text-3xl font-bold text-green-600">{analytics?.activeJobs || 0}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      Active Jobs
+                    </p>
+                    <p className="text-3xl font-bold text-green-600">
+                      {analytics?.activeJobs || 0}
+                    </p>
                   </div>
                   <div className="p-3 bg-green-100 rounded-full">
                     <TrendingUp className="h-6 w-6 text-green-600" />
@@ -136,8 +154,12 @@ export const DashboardPage = () => {
               <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Total Applications</p>
-                    <p className="text-3xl font-bold text-purple-600">{analytics?.totalApplications || 0}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      Total Applications
+                    </p>
+                    <p className="text-3xl font-bold text-purple-600">
+                      {analytics?.totalApplications || 0}
+                    </p>
                   </div>
                   <div className="p-3 bg-purple-100 rounded-full">
                     <Users className="h-6 w-6 text-purple-600" />
@@ -151,8 +173,12 @@ export const DashboardPage = () => {
               <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Total Views</p>
-                    <p className="text-3xl font-bold text-orange-600">{analytics?.totalViews || 0}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      Total Views
+                    </p>
+                    <p className="text-3xl font-bold text-orange-600">
+                      {analytics?.totalViews || 0}
+                    </p>
                   </div>
                   <div className="p-3 bg-orange-100 rounded-full">
                     <Eye className="h-6 w-6 text-orange-600" />
@@ -169,8 +195,12 @@ export const DashboardPage = () => {
               <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Recent Applications</p>
-                    <p className="text-xl font-semibold text-gray-900">{analytics?.recentApplications || 0}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      Recent Applications
+                    </p>
+                    <p className="text-xl font-semibold text-gray-900">
+                      {analytics?.recentApplications || 0}
+                    </p>
                     <p className="text-xs text-gray-500 mt-1">Last 30 days</p>
                   </div>
                   <div className="p-2 bg-blue-100 rounded-full">
@@ -185,8 +215,12 @@ export const DashboardPage = () => {
               <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium text-gray-600">Jobs Expiring Soon</p>
-                    <p className="text-xl font-semibold text-red-600">{analytics?.jobsExpiringSoon || 0}</p>
+                    <p className="text-sm font-medium text-gray-600">
+                      Jobs Expiring Soon
+                    </p>
+                    <p className="text-xl font-semibold text-red-600">
+                      {analytics?.jobsExpiringSoon || 0}
+                    </p>
                     <p className="text-xs text-gray-500 mt-1">Next 7 days</p>
                   </div>
                   <div className="p-2 bg-red-100 rounded-full">
@@ -200,15 +234,26 @@ export const DashboardPage = () => {
             <div className="flex flex-col rounded-lg shadow-sm bg-white overflow-hidden border border-gray-200">
               <div className="p-6">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 mb-3">Performance</p>
+                  <p className="text-sm font-medium text-gray-600 mb-3">
+                    Performance
+                  </p>
                   <div className="space-y-2">
                     <div>
-                      <p className="text-xs text-gray-500">Avg. Applications per Job</p>
-                      <p className="text-lg font-semibold text-gray-900">{analytics?.performance.averageApplicationsPerJob || '0'}</p>
+                      <p className="text-xs text-gray-500">
+                        Avg. Applications per Job
+                      </p>
+                      <p className="text-lg font-semibold text-gray-900">
+                        {analytics?.performance.averageApplicationsPerJob ||
+                          '0'}
+                      </p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500">Avg. Views per Job</p>
-                      <p className="text-lg font-semibold text-gray-900">{analytics?.performance.averageViewsPerJob || '0'}</p>
+                      <p className="text-xs text-gray-500">
+                        Avg. Views per Job
+                      </p>
+                      <p className="text-lg font-semibold text-gray-900">
+                        {analytics?.performance.averageViewsPerJob || '0'}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -218,7 +263,9 @@ export const DashboardPage = () => {
 
           {/* Quick Actions */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              Quick Actions
+            </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <Link
                 to="/company/jobs"

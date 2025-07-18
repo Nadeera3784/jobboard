@@ -134,7 +134,6 @@ export const CompanyLayout = () => {
                   <span className="py-2 flex-grow">Jobs</span>
                 </Link>
 
-
                 <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
                   Account
                 </div>

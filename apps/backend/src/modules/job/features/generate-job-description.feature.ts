@@ -13,16 +13,16 @@ export class GenerateJobDescriptionFeature extends Feature {
   public async handle(generateJobDescriptionDto: GenerateJobDescriptionDto) {
     try {
       const { jobTitle, additionalInfo } = generateJobDescriptionDto;
-      
+
       const description = await this.aiService.generateJobDescription(
-        jobTitle, 
-        additionalInfo
+        jobTitle,
+        additionalInfo,
       );
 
       return this.responseSuccess(
         HttpStatus.OK,
         'Job description generated successfully',
-        { description }
+        { description },
       );
     } catch (error) {
       return this.responseError(
@@ -32,4 +32,4 @@ export class GenerateJobDescriptionFeature extends Feature {
       );
     }
   }
-} 
+}

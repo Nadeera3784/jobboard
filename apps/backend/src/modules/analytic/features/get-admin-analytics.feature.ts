@@ -22,16 +22,18 @@ export class GetAdminAnalyticsFeature extends Feature {
   public async handle() {
     try {
       // Total counts
-      const totalUsers = await this.userModel.countDocuments({ 
-        role: RolesEnum.USER 
+      const totalUsers = await this.userModel.countDocuments({
+        role: RolesEnum.USER,
       });
-      
-      const totalCompanies = await this.userModel.countDocuments({ 
-        role: RolesEnum.COMPANY 
+
+      const totalCompanies = await this.userModel.countDocuments({
+        role: RolesEnum.COMPANY,
       });
-      
+
       const totalJobs = await this.jobModel.countDocuments();
-      const activeJobs = await this.jobModel.countDocuments({ status: 'Active' });
+      const activeJobs = await this.jobModel.countDocuments({
+        status: 'Active',
+      });
       const totalApplications = await this.applicationModel.countDocuments();
       const totalCategories = await this.categoryModel.countDocuments();
       const totalLocations = await this.locationModel.countDocuments();
@@ -167,8 +169,11 @@ export class GetAdminAnalyticsFeature extends Feature {
       ]);
 
       // Monthly growth trends (last 6 months)
-      const sixMonthsAgo = moment().subtract(6, 'months').startOf('month').toDate();
-      
+      const sixMonthsAgo = moment()
+        .subtract(6, 'months')
+        .startOf('month')
+        .toDate();
+
       const monthlyUserGrowth = await this.userModel.aggregate([
         {
           $match: {
@@ -244,15 +249,15 @@ export class GetAdminAnalyticsFeature extends Feature {
             applications: weeklyApplications,
           },
         },
-        topCategories: topCategories.map(cat => ({
+        topCategories: topCategories.map((cat) => ({
           name: cat.name,
           jobCount: cat.jobCount,
         })),
-        topLocations: topLocations.map(loc => ({
+        topLocations: topLocations.map((loc) => ({
           name: loc.name,
           jobCount: loc.jobCount,
         })),
-        topCompanies: topCompanies.map(comp => ({
+        topCompanies: topCompanies.map((comp) => ({
           name: comp.name,
           jobCount: comp.jobCount,
         })),
@@ -261,19 +266,30 @@ export class GetAdminAnalyticsFeature extends Feature {
           return acc;
         }, {}),
         growth: {
-          monthlyUsers: monthlyUserGrowth.map(item => ({
-            month: `${item._id.year}-${String(item._id.month).padStart(2, '0')}`,
+          monthlyUsers: monthlyUserGrowth.map((item) => ({
+            month: `${item._id.year}-${String(item._id.month).padStart(
+              2,
+              '0',
+            )}`,
             count: item.count,
           })),
-          monthlyJobs: monthlyJobGrowth.map(item => ({
-            month: `${item._id.year}-${String(item._id.month).padStart(2, '0')}`,
+          monthlyJobs: monthlyJobGrowth.map((item) => ({
+            month: `${item._id.year}-${String(item._id.month).padStart(
+              2,
+              '0',
+            )}`,
             count: item.count,
           })),
         },
         systemHealth: {
-          averageApplicationsPerJob: totalJobs > 0 ? (totalApplications / totalJobs).toFixed(1) : '0',
-          averageViewsPerJob: totalJobs > 0 ? ((totalViews[0]?.totalViews || 0) / totalJobs).toFixed(1) : '0',
-          jobCompletionRate: totalJobs > 0 ? ((activeJobs / totalJobs) * 100).toFixed(1) : '0',
+          averageApplicationsPerJob:
+            totalJobs > 0 ? (totalApplications / totalJobs).toFixed(1) : '0',
+          averageViewsPerJob:
+            totalJobs > 0
+              ? ((totalViews[0]?.totalViews || 0) / totalJobs).toFixed(1)
+              : '0',
+          jobCompletionRate:
+            totalJobs > 0 ? ((activeJobs / totalJobs) * 100).toFixed(1) : '0',
         },
       };
 
@@ -286,4 +302,4 @@ export class GetAdminAnalyticsFeature extends Feature {
       );
     }
   }
-} 
+}

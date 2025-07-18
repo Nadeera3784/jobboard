@@ -27,16 +27,16 @@ export class GetCompanyAnalyticsFeature extends Feature {
       }
 
       const companyObjectId = new Types.ObjectId(companyId);
-      
+
       // Get total jobs by company
-      const totalJobs = await this.jobModel.countDocuments({ 
-        user: companyObjectId 
+      const totalJobs = await this.jobModel.countDocuments({
+        user: companyObjectId,
       });
 
       // Get active jobs
-      const activeJobs = await this.jobModel.countDocuments({ 
+      const activeJobs = await this.jobModel.countDocuments({
         user: companyObjectId,
-        status: 'Active'
+        status: 'Active',
       });
 
       // Get total applications across all company jobs
@@ -62,7 +62,9 @@ export class GetCompanyAnalyticsFeature extends Feature {
         },
       ];
 
-      const totalApplicationsResult = await this.applicationModel.aggregate(totalApplicationsPipeline);
+      const totalApplicationsResult = await this.applicationModel.aggregate(
+        totalApplicationsPipeline,
+      );
       const totalApplications = totalApplicationsResult[0]?.total || 0;
 
       // Get recent applications (last 30 days)
@@ -90,11 +92,15 @@ export class GetCompanyAnalyticsFeature extends Feature {
         },
       ];
 
-      const recentApplicationsResult = await this.applicationModel.aggregate(recentApplicationsPipeline);
+      const recentApplicationsResult = await this.applicationModel.aggregate(
+        recentApplicationsPipeline,
+      );
       const recentApplications = recentApplicationsResult[0]?.total || 0;
 
       // Get analytics data (views) from analytics collection
-      const analyticsData = await this.analyticService.getCompanyAnalytics(companyId);
+      const analyticsData = await this.analyticService.getCompanyAnalytics(
+        companyId,
+      );
 
       // Get jobs expiring soon (next 7 days)
       const sevenDaysFromNow = moment().add(7, 'days').toDate();
@@ -112,8 +118,12 @@ export class GetCompanyAnalyticsFeature extends Feature {
         totalViews: analyticsData.totalViews || 0,
         jobsExpiringSoon,
         performance: {
-          averageApplicationsPerJob: totalJobs > 0 ? (totalApplications / totalJobs).toFixed(1) : '0',
-          averageViewsPerJob: totalJobs > 0 ? (analyticsData.totalViews / totalJobs).toFixed(1) : '0',
+          averageApplicationsPerJob:
+            totalJobs > 0 ? (totalApplications / totalJobs).toFixed(1) : '0',
+          averageViewsPerJob:
+            totalJobs > 0
+              ? (analyticsData.totalViews / totalJobs).toFixed(1)
+              : '0',
         },
       };
 
@@ -126,4 +136,4 @@ export class GetCompanyAnalyticsFeature extends Feature {
       );
     }
   }
-} 
+}

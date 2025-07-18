@@ -16,4 +16,4 @@ export const trackAnalytics = async ({ jobId, type }: TrackAnalyticsParams) => {
     // Silently fail - analytics shouldn't break user experience
     console.warn('Analytics tracking failed:', error);
   }
-}; 
+};

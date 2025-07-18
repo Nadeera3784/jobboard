@@ -97,11 +97,17 @@ export const CreateJobPage = () => {
     await onCreate(values);
   };
 
-  const generateDescription = async (params: { jobTitle: string; additionalInfo?: string }): Promise<string | null> => {
+  const generateDescription = async (params: {
+    jobTitle: string;
+    additionalInfo?: string;
+  }): Promise<string | null> => {
     try {
       setAiLoading(true);
-      const response = await httpClient.post(`/jobs/generate-description`, params);
-      
+      const response = await httpClient.post(
+        `/jobs/generate-description`,
+        params,
+      );
+
       if (response.data.statusCode === HttpStatus.OK) {
         toast.success(response.data.message);
         return response.data.data.description;
@@ -112,8 +118,8 @@ export const CreateJobPage = () => {
     } catch (error: any) {
       console.error('Error generating job description:', error);
       toast.warning(
-        error.response?.data?.message || 
-        'Something went wrong while generating job description. Please try again later'
+        error.response?.data?.message ||
+          'Something went wrong while generating job description. Please try again later',
       );
       return null;
     } finally {
@@ -205,12 +211,12 @@ export const CreateJobPage = () => {
                           </FormItem>
                         )}
                       />
-    
+
                       <div className="flex w-full flex-col gap-1">
                         <div className="flex items-center">
                           <div className="flex items-center gap-2">
-                            <Button 
-                              type='button' 
+                            <Button
+                              type="button"
                               onClick={handleGenerateDescription}
                               disabled={loading || aiLoading}
                             >
@@ -223,12 +229,13 @@ export const CreateJobPage = () => {
                             </Button>
                           </div>
                           <div className="ml-5 text-xs text-muted-foreground">
-                            AI will use any existing description content as additional context. You can add notes before generating.
+                            AI will use any existing description content as
+                            additional context. You can add notes before
+                            generating.
                           </div>
                         </div>
                       </div>
 
-    
                       <div className="grid grid-cols-3">
                         <FormField
                           control={form.control}

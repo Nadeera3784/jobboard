@@ -1,18 +1,18 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { 
-  ArrowLeft, 
-  Building2, 
-  Briefcase, 
-  Users, 
-  Eye, 
+import {
+  ArrowLeft,
+  Building2,
+  Briefcase,
+  Users,
+  Eye,
   TrendingUp,
   Calendar,
   MapPin,
   Mail,
   Phone,
-  Loader2
+  Loader2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -61,7 +61,8 @@ export const CompanyDetailsPage = () => {
         jobsExpiringSoon: 0,
       });
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Failed to fetch company data';
+      const errorMessage =
+        error.response?.data?.message || 'Failed to fetch company data';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {
@@ -73,9 +74,12 @@ export const CompanyDetailsPage = () => {
     fetchCompanyData();
   }, [id]);
 
-  const tableFilters = useMemo(() => ({
-    companyId: id,
-  }), [id]);
+  const tableFilters = useMemo(
+    () => ({
+      companyId: id,
+    }),
+    [id],
+  );
 
   if (loading) {
     return (
@@ -101,7 +105,9 @@ export const CompanyDetailsPage = () => {
         <div className="container p-4 lg:p-8">
           <div className="flex items-center justify-center h-64">
             <div className="text-center">
-              <p className="text-red-600 mb-4">{error || 'Company not found'}</p>
+              <p className="text-red-600 mb-4">
+                {error || 'Company not found'}
+              </p>
               <Link
                 to="/admin/users"
                 className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
@@ -132,7 +138,9 @@ export const CompanyDetailsPage = () => {
               Back to Users
             </Link>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{company.name}</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                {company.name}
+              </h1>
               <p className="text-gray-600">Company Details & Analytics</p>
             </div>
           </div>
@@ -166,7 +174,9 @@ export const CompanyDetailsPage = () => {
               <div className="flex-1">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Company Information</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                      Company Information
+                    </h3>
                     <div className="space-y-2">
                       <div className="flex items-center text-sm text-gray-600">
                         <Mail className="mr-2 h-4 w-4" />
@@ -180,33 +190,46 @@ export const CompanyDetailsPage = () => {
                       )}
                       <div className="flex items-center text-sm text-gray-600">
                         <Calendar className="mr-2 h-4 w-4" />
-                        Member since {company.created_at ? new Date(company.created_at).toLocaleDateString() : 'Unknown'}
+                        Member since{' '}
+                        {company.created_at
+                          ? new Date(company.created_at).toLocaleDateString()
+                          : 'Unknown'}
                       </div>
                       <div className="flex items-center text-sm">
-                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                          company.status === 'Active' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-red-100 text-red-800'
-                        }`}>
+                        <span
+                          className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                            company.status === 'Active'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-red-100 text-red-800'
+                          }`}
+                        >
                           {company.status}
                         </span>
                       </div>
                     </div>
                   </div>
                   <div>
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">Additional Details</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                      Additional Details
+                    </h3>
                     <div className="space-y-2">
                       {company.about && (
                         <div>
-                          <p className="text-sm text-gray-600 font-medium">About:</p>
-                          <p className="text-sm text-gray-700">{company.about}</p>
+                          <p className="text-sm text-gray-600 font-medium">
+                            About:
+                          </p>
+                          <p className="text-sm text-gray-700">
+                            {company.about}
+                          </p>
                         </div>
                       )}
                       {(company.city || company.state || company.country) && (
                         <div className="flex items-start text-sm text-gray-600">
                           <MapPin className="mr-2 h-4 w-4 mt-0.5 flex-shrink-0" />
                           <span>
-                            {[company.city, company.state, company.country].filter(Boolean).join(', ')}
+                            {[company.city, company.state, company.country]
+                              .filter(Boolean)
+                              .join(', ')}
                           </span>
                         </div>
                       )}
@@ -224,8 +247,12 @@ export const CompanyDetailsPage = () => {
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Jobs</p>
-                  <p className="text-3xl font-bold text-gray-900">{analytics.totalJobs}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Jobs
+                  </p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {analytics.totalJobs}
+                  </p>
                 </div>
                 <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Briefcase className="h-6 w-6 text-blue-600" />
@@ -236,8 +263,12 @@ export const CompanyDetailsPage = () => {
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Active Jobs</p>
-                  <p className="text-3xl font-bold text-gray-900">{analytics.activeJobs}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Active Jobs
+                  </p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {analytics.activeJobs}
+                  </p>
                 </div>
                 <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
                   <TrendingUp className="h-6 w-6 text-green-600" />
@@ -248,8 +279,12 @@ export const CompanyDetailsPage = () => {
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Applications</p>
-                  <p className="text-3xl font-bold text-gray-900">{analytics.totalApplications}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Applications
+                  </p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {analytics.totalApplications}
+                  </p>
                 </div>
                 <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
                   <Users className="h-6 w-6 text-purple-600" />
@@ -260,8 +295,12 @@ export const CompanyDetailsPage = () => {
             <div className="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Views</p>
-                  <p className="text-3xl font-bold text-gray-900">{analytics.totalViews}</p>
+                  <p className="text-sm font-medium text-gray-600">
+                    Total Views
+                  </p>
+                  <p className="text-3xl font-bold text-gray-900">
+                    {analytics.totalViews}
+                  </p>
                 </div>
                 <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
                   <Eye className="h-6 w-6 text-orange-600" />
@@ -274,7 +313,9 @@ export const CompanyDetailsPage = () => {
         {/* Jobs Table */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="p-6 border-b border-gray-200">
-            <h2 className="text-xl font-semibold text-gray-900">Company Jobs</h2>
+            <h2 className="text-xl font-semibold text-gray-900">
+              Company Jobs
+            </h2>
             <p className="text-gray-600">All jobs posted by {company.name}</p>
           </div>
           <div className="p-6">
@@ -384,4 +425,4 @@ export const CompanyDetailsPage = () => {
       </div>
     </div>
   );
-}; 
+};

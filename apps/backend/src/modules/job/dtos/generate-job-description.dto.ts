@@ -8,4 +8,4 @@ export class GenerateJobDescriptionDto {
   @IsString()
   @IsOptional()
   additionalInfo?: string;
-} 
+}

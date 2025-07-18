@@ -9,11 +9,11 @@ interface ProfileCompletionProps {
 export const ProfileCompletion = ({ user }: ProfileCompletionProps) => {
   const hasProfilePicture = !!user?.image?.value;
   const hasResume = !!user?.resume?.value;
-  
+
   const completedItems = [hasProfilePicture, hasResume].filter(Boolean).length;
   const totalItems = 2;
   const completionPercentage = Math.round((completedItems / totalItems) * 100);
-  
+
   const isComplete = completedItems === totalItems;
 
   // Hide the indicator when profile is 100% complete
@@ -25,7 +25,9 @@ export const ProfileCompletion = ({ user }: ProfileCompletionProps) => {
     <div className="px-4 py-3 mb-4">
       <div className="bg-white rounded-lg border border-gray-200 p-4">
         <div className="flex items-center justify-between mb-3">
-          <h3 className="text-sm font-medium text-gray-900">Profile Completion</h3>
+          <h3 className="text-sm font-medium text-gray-900">
+            Profile Completion
+          </h3>
           <div className="flex items-center">
             <AlertCircle className="h-4 w-4 text-yellow-500" />
             <span className="ml-1 text-sm font-medium text-gray-700">
@@ -33,11 +35,11 @@ export const ProfileCompletion = ({ user }: ProfileCompletionProps) => {
             </span>
           </div>
         </div>
-        
+
         {/* Progress Bar */}
         <div className="mb-3">
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
+            <div
               className="h-2 rounded-full transition-all duration-300 bg-yellow-500"
               style={{ width: `${completionPercentage}%` }}
             />
@@ -54,12 +56,16 @@ export const ProfileCompletion = ({ user }: ProfileCompletionProps) => {
                 <div className="h-4 w-4 rounded-full border-2 border-gray-300" />
               )}
               <User className="h-4 w-4 text-gray-400 ml-2 mr-2" />
-              <span className={hasProfilePicture ? 'text-gray-700' : 'text-gray-500'}>
+              <span
+                className={
+                  hasProfilePicture ? 'text-gray-700' : 'text-gray-500'
+                }
+              >
                 Profile Picture
               </span>
             </div>
           </div>
-          
+
           <div className="flex items-center text-sm">
             <div className="flex items-center">
               {hasResume ? (
@@ -85,4 +91,4 @@ export const ProfileCompletion = ({ user }: ProfileCompletionProps) => {
       </div>
     </div>
   );
-}; 
+};

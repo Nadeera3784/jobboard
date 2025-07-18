@@ -86,7 +86,6 @@ export const UserLayout = () => {
             </div>
           </div>
           <div className="overflow-y-auto">
-
             <div className="p-4 w-full">
               <nav className="space-y-1">
                 <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">

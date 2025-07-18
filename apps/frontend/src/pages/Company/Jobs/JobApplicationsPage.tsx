@@ -58,7 +58,9 @@ export const JobApplicationsPage = () => {
       <div className="container p-4 lg:p-8">
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Job Applications</h2>
+            <h2 className="text-3xl font-bold tracking-tight">
+              Job Applications
+            </h2>
             <div className="flex items-center space-x-2">
               <Link to="/company/jobs">
                 <Button variant="default">
@@ -70,8 +72,10 @@ export const JobApplicationsPage = () => {
           </div>
           <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
             <p className="text-sm text-blue-800">
-              <strong>Note:</strong> Download buttons will only appear for applicants who have uploaded their resume. 
-              Downloading a resume will automatically update the application status to "Resume downloaded".
+              <strong>Note:</strong> Download buttons will only appear for
+              applicants who have uploaded their resume. Downloading a resume
+              will automatically update the application status to "Resume
+              downloaded".
             </p>
           </div>
         </div>
@@ -114,4 +118,4 @@ export const JobApplicationsPage = () => {
       </div>
     </div>
   );
-}; 
+};

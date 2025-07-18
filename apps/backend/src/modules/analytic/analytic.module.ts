@@ -20,10 +20,22 @@ import { UserModule } from '../user/user.module';
     MongooseModule.forFeature([
       { name: Analytic.name, schema: AnalyticSchema },
       { name: 'Job', schema: require('../job/schemas/job.schema').JobSchema },
-      { name: 'Application', schema: require('../job/schemas/application.shema').ApplicationSchema },
-      { name: 'User', schema: require('../user/schemas/user.schema').UserSchema },
-      { name: 'Category', schema: require('../category/schemas/category.schema').CategorySchema },
-      { name: 'Location', schema: require('../location/schemas/location.schema').LocationSchema },
+      {
+        name: 'Application',
+        schema: require('../job/schemas/application.shema').ApplicationSchema,
+      },
+      {
+        name: 'User',
+        schema: require('../user/schemas/user.schema').UserSchema,
+      },
+      {
+        name: 'Category',
+        schema: require('../category/schemas/category.schema').CategorySchema,
+      },
+      {
+        name: 'Location',
+        schema: require('../location/schemas/location.schema').LocationSchema,
+      },
     ]),
     UserModule,
   ],

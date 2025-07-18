@@ -8,4 +8,4 @@ export type Application = {
   user: string;
   status: string;
   created_at: string;
-}; 
+};

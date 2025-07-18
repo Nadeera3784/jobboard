@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { SettingsForm } from "../../components/User/SettingsForm";
+import { SettingsForm } from '../../components/User/SettingsForm';
 import appStateStore from '../../store';
 import { httpClient } from '../../utils';
 import { User, UpdateUserType } from '../../types';
@@ -22,8 +22,11 @@ export const SettingsPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await httpClient.put(`${AppConstants.API_URL}/users/${user._id}`, formData);
-      
+      const response = await httpClient.put(
+        `${AppConstants.API_URL}/users/${user._id}`,
+        formData,
+      );
+
       if (response.status === HttpStatus.OK) {
         toast.success('Settings updated successfully!');
         getCurrentUser(); // Refresh user data
@@ -31,7 +34,10 @@ export const SettingsPage = () => {
         toast.error('Failed to update settings');
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to update settings';
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Failed to update settings';
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);
@@ -48,12 +54,11 @@ export const SettingsPage = () => {
           </div>
         </div>
 
-        <SettingsForm 
-          user={user} 
+        <SettingsForm
+          user={user}
           onSubmit={handleSubmit}
           isLoading={isLoading}
-        />   
-  
+        />
       </div>
     </div>
   );

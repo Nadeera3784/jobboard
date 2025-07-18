@@ -18,11 +18,14 @@ export class AIService {
     });
   }
 
-  public async generateJobDescription(jobTitle: string, additionalInfo?: string): Promise<string> {
+  public async generateJobDescription(
+    jobTitle: string,
+    additionalInfo?: string,
+  ): Promise<string> {
     try {
       const systemMessage: ChatCompletionMessageParam = {
         role: 'system',
-        content: `You are a professional HR expert and job description writer. Create comprehensive, engaging, and professional job descriptions that attract top talent. Focus on clarity, specificity, and inclusivity.`
+        content: `You are a professional HR expert and job description writer. Create comprehensive, engaging, and professional job descriptions that attract top talent. Focus on clarity, specificity, and inclusivity.`,
       };
 
       const userPrompt = `Create a detailed job description for the position: "${jobTitle}"
@@ -40,7 +43,7 @@ export class AIService {
 
       const userMessage: ChatCompletionMessageParam = {
         role: 'user',
-        content: userPrompt
+        content: userPrompt,
       };
 
       const params: ChatCompletionCreateParamsNonStreaming = {
@@ -51,8 +54,11 @@ export class AIService {
       };
 
       const completion = await this.openai.chat.completions.create(params);
-      
-      return completion.choices[0]?.message?.content || 'Failed to generate job description';
+
+      return (
+        completion.choices[0]?.message?.content ||
+        'Failed to generate job description'
+      );
     } catch (error) {
       console.error('Error generating job description:', error);
       throw new Error('Failed to generate job description');

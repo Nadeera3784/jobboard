@@ -33,7 +33,6 @@ import { IdDto } from '../../app/dtos/Id.dto';
 import { AuthenticationGuard } from '../../authentication/guards/authentication.guard';
 import { RoleGuard } from '../../authentication/guards/role.guard';
 
-
 @Controller('jobs')
 export class JobController {
   constructor(
@@ -60,13 +59,10 @@ export class JobController {
     @Body('start') start: number,
   ) {
     let userId = null;
-    
-    // For company users, filter by their own ID
+
     if (request.user.role === RolesEnum.COMPANY) {
       userId = request.user.id;
-    }
-    // For admin users, allow filtering by specific company ID if provided
-    else if (request.user.role === RolesEnum.ADMIN && filters?.companyId) {
+    } else if (request.user.role === RolesEnum.ADMIN && filters?.companyId) {
       userId = filters.companyId;
     }
 
@@ -114,7 +110,11 @@ export class JobController {
     const { status, response: featureUpResponse } =
       await this.getJobByIdFeature.handle(
         id,
-        request.user ? request.user.role === RolesEnum.COMPANY ? request.user.id : null : null,
+        request.user
+          ? request.user.role === RolesEnum.COMPANY
+            ? request.user.id
+            : null
+          : null,
       );
     return response.status(status).json(featureUpResponse);
   }
@@ -160,7 +160,9 @@ export class JobController {
     @Body() generateJobDescriptionDto: GenerateJobDescriptionDto,
   ) {
     const { status, response: featureUpResponse } =
-      await this.generateJobDescriptionFeature.handle(generateJobDescriptionDto);
+      await this.generateJobDescriptionFeature.handle(
+        generateJobDescriptionDto,
+      );
     return response.status(status).json(featureUpResponse);
   }
 }

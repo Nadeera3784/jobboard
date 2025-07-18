@@ -28,10 +28,11 @@ httpClient.interceptors.response.use(
     if (error.response.status === 401 || error.response.status === 403) {
       // Only redirect to auth if we're on a protected route
       const currentPath = window.location.pathname;
-      const isPublicRoute = currentPath === '/' || 
-                           currentPath.startsWith('/search') || 
-                           currentPath.startsWith('/auth');
-      
+      const isPublicRoute =
+        currentPath === '/' ||
+        currentPath.startsWith('/search') ||
+        currentPath.startsWith('/auth');
+
       if (!isPublicRoute) {
         localStorage.clear();
         window.location.href = '/auth';

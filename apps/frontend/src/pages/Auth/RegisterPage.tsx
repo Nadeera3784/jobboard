@@ -40,14 +40,21 @@ export const RegisterPage = () => {
     setLoading(true);
     try {
       const { confirmPassword, terms, ...registerData } = values;
-      const response = await httpClient.post('authentication/signup', registerData);
-      
+      const response = await httpClient.post(
+        'authentication/signup',
+        registerData,
+      );
+
       if (response.status === HttpStatus.OK) {
-        toast.success('Account created successfully! Please check your email to verify your account.');
+        toast.success(
+          'Account created successfully! Please check your email to verify your account.',
+        );
         navigate('/auth');
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
+      const errorMessage =
+        error.response?.data?.message ||
+        'Registration failed. Please try again.';
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -80,7 +87,10 @@ export const RegisterPage = () => {
         <div className="p-5 lg:p-6 flex-grow w-full">
           <div className="sm:p-5 lg:px-10 lg:py-8">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-6"
+              >
                 <FormField
                   control={form.control}
                   name="name"
@@ -88,9 +98,9 @@ export const RegisterPage = () => {
                     <FormItem>
                       <FormLabel>Name</FormLabel>
                       <FormControl>
-                        <Input 
-                          placeholder="Enter your full name" 
-                          {...field} 
+                        <Input
+                          placeholder="Enter your full name"
+                          {...field}
                           disabled={loading}
                         />
                       </FormControl>
@@ -98,7 +108,7 @@ export const RegisterPage = () => {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="email"
@@ -106,10 +116,10 @@ export const RegisterPage = () => {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input 
+                        <Input
                           type="email"
-                          placeholder="Enter your email" 
-                          {...field} 
+                          placeholder="Enter your email"
+                          {...field}
                           disabled={loading}
                         />
                       </FormControl>
@@ -136,7 +146,10 @@ export const RegisterPage = () => {
                               disabled={loading}
                               className="h-4 w-4 text-black focus:ring-black border-gray-300"
                             />
-                            <label htmlFor="user" className="text-sm font-medium">
+                            <label
+                              htmlFor="user"
+                              className="text-sm font-medium"
+                            >
                               Job Seeker - Looking for employment opportunities
                             </label>
                           </div>
@@ -150,7 +163,10 @@ export const RegisterPage = () => {
                               disabled={loading}
                               className="h-4 w-4 text-black focus:ring-black border-gray-300"
                             />
-                            <label htmlFor="company" className="text-sm font-medium">
+                            <label
+                              htmlFor="company"
+                              className="text-sm font-medium"
+                            >
                               Company - Looking to hire talent
                             </label>
                           </div>
@@ -168,10 +184,10 @@ export const RegisterPage = () => {
                     <FormItem>
                       <FormLabel>Phone (Optional)</FormLabel>
                       <FormControl>
-                        <Input 
+                        <Input
                           type="tel"
-                          placeholder="Enter your phone number" 
-                          {...field} 
+                          placeholder="Enter your phone number"
+                          {...field}
                           disabled={loading}
                         />
                       </FormControl>
@@ -179,7 +195,7 @@ export const RegisterPage = () => {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="password"
@@ -187,10 +203,10 @@ export const RegisterPage = () => {
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
-                        <Input 
+                        <Input
                           type="password"
-                          placeholder="Choose a strong password" 
-                          {...field} 
+                          placeholder="Choose a strong password"
+                          {...field}
                           disabled={loading}
                         />
                       </FormControl>
@@ -198,7 +214,7 @@ export const RegisterPage = () => {
                     </FormItem>
                   )}
                 />
-                
+
                 <FormField
                   control={form.control}
                   name="confirmPassword"
@@ -206,10 +222,10 @@ export const RegisterPage = () => {
                     <FormItem>
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
-                        <Input 
+                        <Input
                           type="password"
-                          placeholder="Confirm your chosen password" 
-                          {...field} 
+                          placeholder="Confirm your chosen password"
+                          {...field}
                           disabled={loading}
                         />
                       </FormControl>
@@ -248,11 +264,7 @@ export const RegisterPage = () => {
                   )}
                 />
 
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full"
-                >
+                <Button type="submit" disabled={loading} className="w-full">
                   {loading && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
                   Create Account
                 </Button>

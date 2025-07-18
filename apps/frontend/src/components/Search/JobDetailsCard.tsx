@@ -29,16 +29,18 @@ const JobDetailsCard: React.FC<JobCardProps> = ({ job }) => {
     }
 
     setIsApplying(true);
-    
+
     try {
       const response = await httpClient.post(
         `${AppConstants.API_URL}/applications/jobs/${job._id}`,
-        { user: user._id }
+        { user: user._id },
       );
 
       if (response.status === HttpStatus.OK) {
-        toast.success(response.data.message || 'Application submitted successfully!');
-        
+        toast.success(
+          response.data.message || 'Application submitted successfully!',
+        );
+
         // Track application analytics
         if (job._id) {
           trackAnalytics({
@@ -48,13 +50,19 @@ const JobDetailsCard: React.FC<JobCardProps> = ({ job }) => {
         }
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || error.message || 'Failed to submit application';
-      
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        'Failed to submit application';
+
       // Handle specific error cases
       if (error.response?.status === 401) {
         toast.error('Please log in to apply for jobs');
         navigate('/auth');
-      } else if (error.response?.status === 400 && errorMessage.includes('profile')) {
+      } else if (
+        error.response?.status === 400 &&
+        errorMessage.includes('profile')
+      ) {
         // Profile incomplete error
         toast.error(errorMessage);
         setTimeout(() => {

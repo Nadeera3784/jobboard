@@ -25,29 +25,31 @@ export class GetUserAnalyticsFeature extends Feature {
       }
 
       const userObjectId = new Types.ObjectId(userId);
-      
+
       // Get user profile data
-      const user = await this.userModel.findById(userObjectId).select('name email image resume phone created_at');
+      const user = await this.userModel
+        .findById(userObjectId)
+        .select('name email image resume phone created_at');
       if (!user) {
         return this.responseError(HttpStatus.NOT_FOUND, 'User not found');
       }
 
       // Get total applications by user
-      const totalApplications = await this.applicationModel.countDocuments({ 
-        user: userObjectId 
+      const totalApplications = await this.applicationModel.countDocuments({
+        user: userObjectId,
       });
 
       // Get applications by status
       const applicationsByStatus = await this.applicationModel.aggregate([
         {
-          $match: { user: userObjectId }
+          $match: { user: userObjectId },
         },
         {
           $group: {
             _id: '$status',
-            count: { $sum: 1 }
-          }
-        }
+            count: { $sum: 1 },
+          },
+        },
       ]);
 
       // Get recent applications (last 30 days)
@@ -73,9 +75,12 @@ export class GetUserAnalyticsFeature extends Feature {
         hasPhone: !!user.phone,
       };
 
-      const completedFields = Object.values(profileFields).filter(Boolean).length;
+      const completedFields =
+        Object.values(profileFields).filter(Boolean).length;
       const totalFields = Object.keys(profileFields).length;
-      const profileCompletionPercentage = Math.round((completedFields / totalFields) * 100);
+      const profileCompletionPercentage = Math.round(
+        (completedFields / totalFields) * 100,
+      );
 
       // Process status breakdown
       const statusBreakdown = {
@@ -85,7 +90,7 @@ export class GetUserAnalyticsFeature extends Feature {
         'Resume downloaded': 0,
       };
 
-      applicationsByStatus.forEach(status => {
+      applicationsByStatus.forEach((status) => {
         if (statusBreakdown.hasOwnProperty(status._id)) {
           statusBreakdown[status._id] = status.count;
         }
@@ -99,8 +104,8 @@ export class GetUserAnalyticsFeature extends Feature {
           path: 'job',
           populate: {
             path: 'user',
-            select: 'name'
-          }
+            select: 'name',
+          },
         })
         .sort({ created_at: -1 })
         .limit(5)
@@ -119,7 +124,7 @@ export class GetUserAnalyticsFeature extends Feature {
             .filter(([_, completed]) => !completed)
             .map(([field, _]) => field.replace('has', '').toLowerCase()),
         },
-        latestApplications: latestApplications.map(app => ({
+        latestApplications: latestApplications.map((app) => ({
           jobTitle: app.job?.name || 'Unknown Job',
           companyName: app.job?.user?.name || 'Unknown Company',
           status: app.status,
@@ -137,4 +142,4 @@ export class GetUserAnalyticsFeature extends Feature {
       );
     }
   }
-} 
+}

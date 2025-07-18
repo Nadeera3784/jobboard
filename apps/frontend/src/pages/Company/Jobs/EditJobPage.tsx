@@ -78,7 +78,8 @@ export const EditJobPage = () => {
         });
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Failed to fetch job data';
+      const errorMessage =
+        error.response?.data?.message || 'Failed to fetch job data';
       toast.error(errorMessage);
       if (error.response?.status === 403) {
         navigate('/company/jobs');
@@ -112,7 +113,8 @@ export const EditJobPage = () => {
         navigate('/company/jobs');
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Failed to update job';
+      const errorMessage =
+        error.response?.data?.message || 'Failed to update job';
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -389,9 +391,7 @@ export const EditJobPage = () => {
                                   <SelectValue placeholder="Select Status" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="Active">
-                                    Active
-                                  </SelectItem>
+                                  <SelectItem value="Active">Active</SelectItem>
                                   <SelectItem value="InActive">
                                     InActive
                                   </SelectItem>
@@ -425,4 +425,4 @@ export const EditJobPage = () => {
       </div>
     </div>
   );
-}; 
+};

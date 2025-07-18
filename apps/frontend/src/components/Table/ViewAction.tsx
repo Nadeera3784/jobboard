@@ -17,4 +17,4 @@ export const ViewAction = ({ data }: { data: ActionProps }) => {
       )}
     </>
   );
-}; 
+};

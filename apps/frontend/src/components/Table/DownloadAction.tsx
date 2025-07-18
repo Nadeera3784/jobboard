@@ -17,7 +17,9 @@ export const DownloadAction = ({
     try {
       // First update the application status
       if (data.applicationId) {
-        await httpClient.put(`/applications/${data.applicationId}/download-resume`);
+        await httpClient.put(
+          `/applications/${data.applicationId}/download-resume`,
+        );
       }
 
       // Then download the file using the backend endpoint
@@ -25,25 +27,25 @@ export const DownloadAction = ({
         const response = await httpClient.get(data.endpoint, {
           responseType: 'blob',
         });
-        
+
         if (response.status === HttpStatus.OK) {
           // Create blob URL and trigger download
           const blob = new Blob([response.data], { type: 'application/pdf' });
           const url = window.URL.createObjectURL(blob);
-          
+
           // Create a temporary link and trigger download
           const link = document.createElement('a');
           link.href = url;
           link.download = data.filename || 'resume.pdf';
           document.body.appendChild(link);
           link.click();
-          
+
           // Clean up
           document.body.removeChild(link);
           window.URL.revokeObjectURL(url);
 
           toast.success('Resume downloaded successfully!');
-          
+
           // Refresh the table if callback provided
           if (onDownloadComplete) {
             onDownloadComplete();
@@ -51,7 +53,8 @@ export const DownloadAction = ({
         }
       }
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Failed to download resume';
+      const errorMessage =
+        error.response?.data?.message || 'Failed to download resume';
       toast.error(errorMessage);
     }
   };
@@ -62,4 +65,4 @@ export const DownloadAction = ({
       {data.label}
     </Button>
   );
-}; 
+};

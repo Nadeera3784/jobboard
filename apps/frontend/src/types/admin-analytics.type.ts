@@ -50,4 +50,4 @@ export interface AdminAnalytics {
     averageViewsPerJob: string;
     jobCompletionRate: string;
   };
-} 
+}

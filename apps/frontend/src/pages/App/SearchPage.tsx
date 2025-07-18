@@ -256,7 +256,7 @@ export const SearchPage = () => {
 
   const onClickGetJobDetails = async (job: Job) => {
     setSelectedJob(job);
-    
+
     // Track job view analytics
     if (job._id) {
       trackAnalytics({

@@ -25,6 +25,9 @@ import { CompanyLayout } from '../layouts/CompanyLayout';
 import { DashboardPage as CompanyDashboardPage } from '../pages/Company/DashboardPage';
 import { JobPage as CompanyJobPage } from '../pages/Company/Jobs/JobPage';
 import { CreateJobPage as CompanyCreateJobPage } from '../pages/Company/Jobs/CreateJobPage';
+import { EditJobPage as CompanyEditJobPage } from '../pages/Company/Jobs/EditJobPage';
+import { JobApplicationsPage as CompanyJobApplicationsPage } from '../pages/Company/Jobs/JobApplicationsPage';
+import { CompanySettingsPage } from '../pages/Company/SettingsPage';
 
 export const AppRouter = () => {
   return (
@@ -49,6 +52,9 @@ export const AppRouter = () => {
           <Route index element={<CompanyDashboardPage />} />
           <Route path="jobs" element={<CompanyJobPage />} />
           <Route path="jobs/create" element={<CompanyCreateJobPage />} />
+          <Route path="jobs/:id" element={<CompanyEditJobPage />} />
+          <Route path="jobs/:id/applications" element={<CompanyJobApplicationsPage />} />
+          <Route path="settings" element={<CompanySettingsPage />} />
         </Route>
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<DashboardPage />} />

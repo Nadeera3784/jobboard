@@ -1,4 +1,86 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Loader2, Briefcase, Users, Eye, Clock, TrendingUp, AlertTriangle, PlusCircle } from 'lucide-react';
+import { toast } from 'sonner';
+import { httpClient } from '../../utils';
+import { HttpStatus } from '../../constants';
+
+interface CompanyAnalytics {
+  totalJobs: number;
+  activeJobs: number;
+  totalApplications: number;
+  recentApplications: number;
+  totalViews: number;
+  jobsExpiringSoon: number;
+  performance: {
+    averageApplicationsPerJob: string;
+    averageViewsPerJob: string;
+  };
+}
+
 export const DashboardPage = () => {
+  const [analytics, setAnalytics] = useState<CompanyAnalytics | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchAnalytics = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await httpClient.get('/analytics/company');
+      
+      if (response.data.statusCode === HttpStatus.OK) {
+        setAnalytics(response.data.data);
+      } else {
+        setError('Failed to fetch analytics');
+        toast.error('Failed to load analytics data');
+      }
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Failed to fetch analytics';
+      setError(errorMessage);
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-gray-100">
+        <div className="container p-4 lg:p-8">
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="h-8 w-8 animate-spin" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="bg-gray-100">
+        <div className="container p-4 lg:p-8">
+          <div className="flex items-center justify-center h-64">
+            <div className="text-center">
+              <p className="text-red-600 mb-4">{error}</p>
+              <button 
+                onClick={fetchAnalytics} 
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Retry
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-gray-100">
       <div className="container p-4 lg:p-8">
@@ -6,76 +88,161 @@ export const DashboardPage = () => {
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             <div className="flex items-center space-x-2">
-              <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-black text-white shadow hover:bg-gray-600 h-9 px-4 py-2">
-                <svg
-                  width={15}
-                  height={15}
-                  viewBox="0 0 15 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="mr-2 h-4 w-4"
-                >
-                  <path
-                    d="M7.49991 0.876892C3.84222 0.876892 0.877075 3.84204 0.877075 7.49972C0.877075 11.1574 3.84222 14.1226 7.49991 14.1226C11.1576 14.1226 14.1227 11.1574 14.1227 7.49972C14.1227 3.84204 11.1576 0.876892 7.49991 0.876892ZM1.82707 7.49972C1.82707 4.36671 4.36689 1.82689 7.49991 1.82689C10.6329 1.82689 13.1727 4.36671 13.1727 7.49972C13.1727 10.6327 10.6329 13.1726 7.49991 13.1726C4.36689 13.1726 1.82707 10.6327 1.82707 7.49972ZM7.50003 4C7.77617 4 8.00003 4.22386 8.00003 4.5V7H10.5C10.7762 7 11 7.22386 11 7.5C11 7.77614 10.7762 8 10.5 8H8.00003V10.5C8.00003 10.7761 7.77617 11 7.50003 11C7.22389 11 7.00003 10.7761 7.00003 10.5V8H4.50003C4.22389 8 4.00003 7.77614 4.00003 7.5C4.00003 7.22386 4.22389 7 4.50003 7H7.00003V4.5C7.00003 4.22386 7.22389 4 7.50003 4Z"
-                    fill="currentColor"
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                New Category
-              </button>
+              <Link
+                to="/company/jobs/create"
+                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-blue-600 text-white shadow hover:bg-blue-700 h-9 px-4 py-2"
+              >
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Create New Job
+              </Link>
             </div>
           </div>
         </div>
         <div className="space-y-4 lg:space-y-8">
-          <>
-            {/* Simple Statistics Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-8">
-              {/* Card: Simple Widget */}
-              <div className="flex flex-col rounded shadow-sm bg-white overflow-hidden">
-                {/* Card Body: Simple Widget */}
-                <div className="p-5 lg:p-6 grow w-full">
-                  <dl>
-                    <dt className="text-2xl font-semibold">87</dt>
-                    <dd className="uppercase font-medium text-sm text-gray-500 tracking-wider">
-                      Sales
-                    </dd>
-                  </dl>
+          {/* Main Statistics Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            {/* Total Jobs */}
+            <div className="flex flex-col rounded-lg shadow-sm bg-white overflow-hidden border border-gray-200">
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Total Jobs</p>
+                    <p className="text-3xl font-bold text-gray-900">{analytics?.totalJobs || 0}</p>
+                  </div>
+                  <div className="p-3 bg-blue-100 rounded-full">
+                    <Briefcase className="h-6 w-6 text-blue-600" />
+                  </div>
                 </div>
-                {/* END Card Body: Simple Widget */}
               </div>
-              {/* END Card: Simple Widget */}
-              {/* Card: Simple Widget */}
-              <div className="flex flex-col rounded shadow-sm bg-white overflow-hidden">
-                {/* Card Body: Simple Widget */}
-                <div className="p-5 lg:p-6 grow w-full">
-                  <dl>
-                    <dt className="text-2xl font-semibold">$4,570</dt>
-                    <dd className="uppercase font-medium text-sm text-gray-500 tracking-wider">
-                      Earnings
-                    </dd>
-                  </dl>
-                </div>
-                {/* END Card Body: Simple Widget */}
-              </div>
-              {/* END Card: Simple Widget */}
-              {/* Card: Simple Widget */}
-              <div className="flex flex-col rounded shadow-sm bg-white overflow-hidden">
-                {/* Card Body: Simple Widget */}
-                <div className="p-5 lg:p-6 grow w-full">
-                  <dl>
-                    <dt className="text-2xl font-semibold">$27,910</dt>
-                    <dd className="uppercase font-medium text-sm text-gray-500 tracking-wider">
-                      Wallet
-                    </dd>
-                  </dl>
-                </div>
-                {/* END Card Body: Simple Widget */}
-              </div>
-              {/* END Card: Simple Widget */}
             </div>
-            {/* END Simple Statistics Grid */}
-          </>
+
+            {/* Active Jobs */}
+            <div className="flex flex-col rounded-lg shadow-sm bg-white overflow-hidden border border-gray-200">
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Active Jobs</p>
+                    <p className="text-3xl font-bold text-green-600">{analytics?.activeJobs || 0}</p>
+                  </div>
+                  <div className="p-3 bg-green-100 rounded-full">
+                    <TrendingUp className="h-6 w-6 text-green-600" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Total Applications */}
+            <div className="flex flex-col rounded-lg shadow-sm bg-white overflow-hidden border border-gray-200">
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Total Applications</p>
+                    <p className="text-3xl font-bold text-purple-600">{analytics?.totalApplications || 0}</p>
+                  </div>
+                  <div className="p-3 bg-purple-100 rounded-full">
+                    <Users className="h-6 w-6 text-purple-600" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Total Views */}
+            <div className="flex flex-col rounded-lg shadow-sm bg-white overflow-hidden border border-gray-200">
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Total Views</p>
+                    <p className="text-3xl font-bold text-orange-600">{analytics?.totalViews || 0}</p>
+                  </div>
+                  <div className="p-3 bg-orange-100 rounded-full">
+                    <Eye className="h-6 w-6 text-orange-600" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Secondary Statistics Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            {/* Recent Applications */}
+            <div className="flex flex-col rounded-lg shadow-sm bg-white overflow-hidden border border-gray-200">
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Recent Applications</p>
+                    <p className="text-xl font-semibold text-gray-900">{analytics?.recentApplications || 0}</p>
+                    <p className="text-xs text-gray-500 mt-1">Last 30 days</p>
+                  </div>
+                  <div className="p-2 bg-blue-100 rounded-full">
+                    <Clock className="h-5 w-5 text-blue-600" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Jobs Expiring Soon */}
+            <div className="flex flex-col rounded-lg shadow-sm bg-white overflow-hidden border border-gray-200">
+              <div className="p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Jobs Expiring Soon</p>
+                    <p className="text-xl font-semibold text-red-600">{analytics?.jobsExpiringSoon || 0}</p>
+                    <p className="text-xs text-gray-500 mt-1">Next 7 days</p>
+                  </div>
+                  <div className="p-2 bg-red-100 rounded-full">
+                    <AlertTriangle className="h-5 w-5 text-red-600" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Performance Metrics */}
+            <div className="flex flex-col rounded-lg shadow-sm bg-white overflow-hidden border border-gray-200">
+              <div className="p-6">
+                <div>
+                  <p className="text-sm font-medium text-gray-600 mb-3">Performance</p>
+                  <div className="space-y-2">
+                    <div>
+                      <p className="text-xs text-gray-500">Avg. Applications per Job</p>
+                      <p className="text-lg font-semibold text-gray-900">{analytics?.performance.averageApplicationsPerJob || '0'}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-500">Avg. Views per Job</p>
+                      <p className="text-lg font-semibold text-gray-900">{analytics?.performance.averageViewsPerJob || '0'}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Link
+                to="/company/jobs"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <Briefcase className="h-5 w-5 text-blue-600 mr-3" />
+                <span className="text-sm font-medium">Manage Jobs</span>
+              </Link>
+              <Link
+                to="/company/jobs/create"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <PlusCircle className="h-5 w-5 text-green-600 mr-3" />
+                <span className="text-sm font-medium">Create New Job</span>
+              </Link>
+              <Link
+                to="/company/settings"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <Users className="h-5 w-5 text-purple-600 mr-3" />
+                <span className="text-sm font-medium">Company Settings</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

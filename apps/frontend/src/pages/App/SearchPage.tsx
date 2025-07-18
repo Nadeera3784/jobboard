@@ -1,7 +1,8 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { useGetSearch } from '../../hooks/Search/useGetSearch';
-import { useSharedGetApi } from '../../hooks/useSharedGetApi';
+import { httpClient } from '../../utils';
+import { HttpStatus, AppConstants } from '../../constants';
+import { ApiResponse, ResponseState } from '../../types';
 import {
   Select,
   SelectContent,
@@ -51,9 +52,127 @@ export const SearchPage = () => {
     _id: '',
   });
 
-  const { response, process } = useSharedGetApi();
-  const { response: searchReponse, process: processSearch } = useGetSearch();
-  const { response: jobReponse, process: processGetById } = useSharedGetApi();
+  // Replace hooks with direct state management
+  const [response, setResponse] = useState<ResponseState>({
+    status: false,
+    loading: false,
+    errored: false,
+    data: {},
+    status_code: HttpStatus.OK,
+    message: '',
+  });
+
+  const [searchReponse, setSearchResponse] = useState<ResponseState>({
+    status: false,
+    loading: false,
+    errored: false,
+    data: {},
+    status_code: HttpStatus.OK,
+    message: '',
+  });
+
+  const [jobReponse, setJobResponse] = useState<ResponseState>({
+    status: false,
+    loading: false,
+    errored: false,
+    data: {},
+    status_code: HttpStatus.OK,
+    message: '',
+  });
+
+  // Direct API call functions
+  const process = async (params: string) => {
+    setResponse(prevResponse => ({
+      ...prevResponse,
+      loading: true,
+    }));
+    const URL = `/${params}`;
+    try {
+      const apiResponse = await httpClient.get<ApiResponse>(URL);
+      setResponse({
+        errored: false,
+        status: apiResponse.data.statusCode === HttpStatus.OK,
+        message: apiResponse.data.message,
+        data: apiResponse.data.data,
+        status_code: apiResponse.status,
+        loading: false,
+      });
+    } catch (error: any) {
+      setResponse({
+        errored: true,
+        message:
+          error.response?.data.errors ||
+          error.response?.data.message ||
+          error.message,
+        data: {},
+        status: false,
+        status_code: error.response?.status || HttpStatus.BAD_REQUEST,
+        loading: false,
+      });
+    }
+  };
+
+  const processSearch = async (query: string) => {
+    setSearchResponse(prevResponse => ({
+      ...prevResponse,
+      loading: true,
+    }));
+    const ENDPOINT = `/jobs/search${query}`;
+    try {
+      const apiResponse = await httpClient.get<ApiResponse>(ENDPOINT);
+      setSearchResponse({
+        errored: false,
+        status: apiResponse.data.statusCode === HttpStatus.OK,
+        message: apiResponse.data.message,
+        data: apiResponse.data.data,
+        status_code: apiResponse.status,
+        loading: false,
+      });
+    } catch (error: any) {
+      setSearchResponse({
+        errored: true,
+        message:
+          error.response?.data.errors ||
+          error.response?.data.message ||
+          error.message,
+        data: {},
+        status: false,
+        status_code: error.response?.status || HttpStatus.BAD_REQUEST,
+        loading: false,
+      });
+    }
+  };
+
+  const processGetById = async (params: string) => {
+    setJobResponse(prevResponse => ({
+      ...prevResponse,
+      loading: true,
+    }));
+    const URL = `/${params}`;
+    try {
+      const apiResponse = await httpClient.get<ApiResponse>(URL);
+      setJobResponse({
+        errored: false,
+        status: apiResponse.data.statusCode === HttpStatus.OK,
+        message: apiResponse.data.message,
+        data: apiResponse.data.data,
+        status_code: apiResponse.status,
+        loading: false,
+      });
+    } catch (error: any) {
+      setJobResponse({
+        errored: true,
+        message:
+          error.response?.data.errors ||
+          error.response?.data.message ||
+          error.message,
+        data: {},
+        status: false,
+        status_code: error.response?.status || HttpStatus.BAD_REQUEST,
+        loading: false,
+      });
+    }
+  };
   let jobid = new URLSearchParams(window.location.search).get('jobid');
 
   useEffect(() => {

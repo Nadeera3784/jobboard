@@ -6,6 +6,7 @@ import { DateColumn } from './DateColumn';
 import { LabelColumn } from './LabelColumn';
 import { LinkAction } from './LinkAction';
 import { DeleteAction } from './DeleteAction';
+import { DownloadAction } from './DownloadAction';
 import { EmptyContent } from './EmptyContent';
 import {
   TableProps,
@@ -166,6 +167,10 @@ export const Table: React.FC<TableProps> = ({
 
   const onFilterChange = (value: any) => {
     setSelectedFilters(value);
+  };
+
+  const onDownloadComplete = () => {
+    fetchData(); // Refresh table after download to update status
   };
 
   const totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -335,6 +340,12 @@ export const Table: React.FC<TableProps> = ({
                                   onClickOpenDialog={() =>
                                     onClickDialog(action)
                                   }
+                                />
+                              )}
+                              {action.type === 'download' && (
+                                <DownloadAction
+                                  data={action}
+                                  onDownloadComplete={onDownloadComplete}
                                 />
                               )}
                             </span>

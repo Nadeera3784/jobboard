@@ -18,6 +18,42 @@ export const CreateCategorySchema = z.object({
   status: z.optional(z.string()),
 });
 
+export const RegisterSchema = z
+  .object({
+    name: z.string().min(2, {
+      message: 'Name must be at least 2 characters',
+    }),
+    email: z
+      .string()
+      .min(1, { message: 'Email is required' })
+      .email('This is not a valid email.'),
+    password: z.string().min(6, {
+      message: 'Password must be at least 6 characters',
+    }),
+    confirmPassword: z.string().min(6, {
+      message: 'Confirm password must be at least 6 characters',
+    }),
+    role: z.enum([RoleConstants.USER, RoleConstants.COMPANY], {
+      message: 'Please select your account type',
+    }),
+    phone: z.optional(z.string()),
+    terms: z.boolean().refine(val => val === true, {
+      message: 'You must accept the terms and conditions',
+    }),
+  })
+  .refine(
+    data => {
+      if (data.password !== data.confirmPassword) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'The passwords did not match',
+      path: ['confirmPassword'],
+    },
+  );
+
 export const CreateUserSchema = z
   .object({
     name: z.string().min(5, {
@@ -130,4 +166,5 @@ export const CreateJobSchema = z.object({
   description: z.string().min(1, {
     message: 'Description level is required',
   }),
+  user: z.optional(z.string()),
 });

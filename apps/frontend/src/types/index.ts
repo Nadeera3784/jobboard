@@ -7,3 +7,4 @@ export * from './search.type';
 export * from './job.type';
 export * from './icon.type';
 export * from './provider.type';
+export * from './application.type';

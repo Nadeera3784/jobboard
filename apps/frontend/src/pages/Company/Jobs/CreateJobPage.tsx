@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader2, MoveLeft } from 'lucide-react';
+import { Loader2, MoveLeft, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,6 +32,7 @@ import appStateStore from '../../../store';
 
 export const CreateJobPage = () => {
   const [loading, setLoading] = useState(false);
+  const [aiLoading, setAiLoading] = useState(false);
   const [locations, setLocations] = useState([]);
   const [categories, setCategories] = useState([]);
   const [jobTypes, setJobTypes] = useState([]);
@@ -94,6 +95,48 @@ export const CreateJobPage = () => {
     }
     values.user = user?._id;
     await onCreate(values);
+  };
+
+  const generateDescription = async (params: { jobTitle: string; additionalInfo?: string }): Promise<string | null> => {
+    try {
+      setAiLoading(true);
+      const response = await httpClient.post(`/jobs/generate-description`, params);
+      
+      if (response.data.statusCode === HttpStatus.OK) {
+        toast.success(response.data.message);
+        return response.data.data.description;
+      } else {
+        toast.warning('Failed to generate job description');
+        return null;
+      }
+    } catch (error: any) {
+      console.error('Error generating job description:', error);
+      toast.warning(
+        error.response?.data?.message || 
+        'Something went wrong while generating job description. Please try again later'
+      );
+      return null;
+    } finally {
+      setAiLoading(false);
+    }
+  };
+
+  const handleGenerateDescription = async () => {
+    const jobTitle = form.getValues('name');
+    if (!jobTitle) {
+      toast.warning('Please enter a job title first');
+      return;
+    }
+
+    const currentDescription = form.getValues('description');
+    const description = await generateDescription({
+      jobTitle,
+      additionalInfo: currentDescription || undefined,
+    });
+
+    if (description) {
+      form.setValue('description', description);
+    }
   };
 
   useEffect(() => {
@@ -166,12 +209,21 @@ export const CreateJobPage = () => {
                       <div className="flex w-full flex-col gap-1">
                         <div className="flex items-center">
                           <div className="flex items-center gap-2">
-                          <Button type='button'>
-                           Generate WIth AI
-                          </Button>
+                            <Button 
+                              type='button' 
+                              onClick={handleGenerateDescription}
+                              disabled={loading || aiLoading}
+                            >
+                              {aiLoading ? (
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              ) : (
+                                <Sparkles className="mr-2 h-4 w-4" />
+                              )}
+                              Generate With AI
+                            </Button>
                           </div>
                           <div className="ml-5 text-xs text-muted-foreground">
-                          Write a thorough description of what your job will contain, you can even include additional information like tone of voice.
+                            AI will use any existing description content as additional context. You can add notes before generating.
                           </div>
                         </div>
                       </div>

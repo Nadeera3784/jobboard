@@ -1,6 +1,59 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+import { useState } from 'react';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '../../components/Form/Form';
+import { RegisterSchema } from '../../schemas';
+import { Input } from '../../components/Form/Input';
+import { Button } from '../../components/Form/Button';
+import { HttpStatus, RoleConstants } from '../../constants';
+import { Spinner } from '../../components/Icons';
+import { httpClient } from '../../utils';
 
 export const RegisterPage = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      role: RoleConstants.USER,
+      phone: '',
+      terms: false,
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
+    setLoading(true);
+    try {
+      const { confirmPassword, terms, ...registerData } = values;
+      const response = await httpClient.post('authentication/signup', registerData);
+      
+      if (response.status === HttpStatus.OK) {
+        toast.success('Account created successfully! Please check your email to verify your account.');
+        navigate('/auth');
+      }
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Registration failed. Please try again.';
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="py-6 lg:py-0 w-full md:w-8/12 lg:w-6/12 xl:w-4/12 relative">
       <div className="mb-8 text-center">
@@ -26,80 +79,185 @@ export const RegisterPage = () => {
       <div className="flex flex-col rounded shadow-sm bg-white overflow-hidden">
         <div className="p-5 lg:p-6 flex-grow w-full">
           <div className="sm:p-5 lg:px-10 lg:py-8">
-            <form className="space-y-6">
-              <div className="space-y-1">
-                <label htmlFor="tk-pages-sign-up-name" className="font-medium">
-                  Name
-                </label>
-                <input
-                  className="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-black focus:ring-none focus-visible:outline-none"
-                  type="text"
-                  id="tk-pages-sign-up-name"
-                  placeholder="Enter your first name"
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Name</FormLabel>
+                      <FormControl>
+                        <Input 
+                          placeholder="Enter your full name" 
+                          {...field} 
+                          disabled={loading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div className="space-y-1">
-                <label htmlFor="tk-pages-sign-up-email" className="font-medium">
-                  Email
-                </label>
-                <input
-                  className="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-black focus:ring-none focus-visible:outline-none"
-                  type="email"
-                  id="tk-pages-sign-up-email"
-                  placeholder="Enter your email"
+                
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="email"
+                          placeholder="Enter your email" 
+                          {...field} 
+                          disabled={loading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-              </div>
-              <div className="space-y-1">
-                <label
-                  htmlFor="tk-pages-sign-up-password"
-                  className="font-medium"
+
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Account Type</FormLabel>
+                      <FormControl>
+                        <div className="space-y-3">
+                          <div className="flex items-center space-x-3">
+                            <input
+                              type="radio"
+                              id="user"
+                              value={RoleConstants.USER}
+                              checked={field.value === RoleConstants.USER}
+                              onChange={field.onChange}
+                              disabled={loading}
+                              className="h-4 w-4 text-black focus:ring-black border-gray-300"
+                            />
+                            <label htmlFor="user" className="text-sm font-medium">
+                              Job Seeker - Looking for employment opportunities
+                            </label>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <input
+                              type="radio"
+                              id="company"
+                              value={RoleConstants.COMPANY}
+                              checked={field.value === RoleConstants.COMPANY}
+                              onChange={field.onChange}
+                              disabled={loading}
+                              className="h-4 w-4 text-black focus:ring-black border-gray-300"
+                            />
+                            <label htmlFor="company" className="text-sm font-medium">
+                              Company - Looking to hire talent
+                            </label>
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone (Optional)</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="tel"
+                          placeholder="Enter your phone number" 
+                          {...field} 
+                          disabled={loading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="password"
+                          placeholder="Choose a strong password" 
+                          {...field} 
+                          disabled={loading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                
+                <FormField
+                  control={form.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input 
+                          type="password"
+                          placeholder="Confirm your chosen password" 
+                          {...field} 
+                          disabled={loading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="terms"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                      <FormControl>
+                        <input
+                          type="checkbox"
+                          checked={field.value}
+                          onChange={field.onChange}
+                          disabled={loading}
+                          className="h-4 w-4 text-black focus:ring-black border-gray-300 rounded"
+                        />
+                      </FormControl>
+                      <div className="space-y-1 leading-none">
+                        <FormLabel className="text-sm">
+                          I accept{' '}
+                          <a
+                            href="#"
+                            className="underline text-gray-600 hover:text-gray-500"
+                          >
+                            terms &amp; conditions
+                          </a>
+                        </FormLabel>
+                        <FormMessage />
+                      </div>
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full"
                 >
-                  Password
-                </label>
-                <input
-                  className="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-black focus:ring-none focus-visible:outline-none"
-                  type="password"
-                  id="tk-pages-sign-up-password"
-                  placeholder="Choose a strong password"
-                />
-              </div>
-              <div className="space-y-1">
-                <label
-                  htmlFor="tk-pages-sign-up-password-confirm"
-                  className="font-medium"
-                >
-                  Confirm Password
-                </label>
-                <input
-                  className="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-black focus:ring-none focus-visible:outline-none"
-                  type="password"
-                  id="tk-pages-sign-up-password-confirm"
-                  placeholder="Confirm your chosen password"
-                />
-              </div>
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="border border-gray-200 rounded h-4 w-4 text-indigo-500 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                />
-                <span className="ml-2">
-                  {' '}
-                  I accept{' '}
-                  <a
-                    href="www.google.com"
-                    className="underline text-gray-600 hover:text-gray-500"
-                  >
-                    terms &amp; conditions
-                  </a>
-                </span>
-              </div>
-              <button
-                type="submit"
-                className="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none w-full px-4 py-3 leading-6 rounded border-black bg-black text-white hover:text-white hover:bg-gray-800 hover:border-gray-800 active:bg-black active:border-black focus-visible:outline-none"
-              >
-                Create Account
-              </button>
-            </form>
+                  {loading && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
+                  Create Account
+                </Button>
+              </form>
+            </Form>
           </div>
         </div>
         <div className="py-4 px-5 lg:px-6 w-full text-sm text-center bg-gray-50">

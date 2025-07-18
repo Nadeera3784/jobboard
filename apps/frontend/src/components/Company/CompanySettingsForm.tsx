@@ -13,10 +13,9 @@ import {
 import { Input } from '../../components/Form/Input';
 import { Button } from '../../components/Form/Button';
 import { User, UpdateUserSettingsType } from '../../types';
-import { FileText } from 'lucide-react';
 
-const settingsSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
+const companySettingsSchema = z.object({
+  name: z.string().min(1, 'Company name is required'),
   email: z.string().email('Invalid email address'),
   phone: z.string().optional(),
   about: z.string().optional(),
@@ -31,25 +30,23 @@ const settingsSchema = z.object({
   pushNotifications: z.enum(['everything', 'email', 'nothing']).optional(),
 });
 
-type SettingsFormData = z.infer<typeof settingsSchema>;
+type CompanySettingsFormData = z.infer<typeof companySettingsSchema>;
 
-interface SettingsFormProps {
+interface CompanySettingsFormProps {
   user: User | null;
-  onSubmit: (data: UpdateUserSettingsType, imageFile?: File, resumeFile?: File) => Promise<void>;
+  onSubmit: (data: UpdateUserSettingsType, imageFile?: File) => Promise<void>;
   isLoading: boolean;
 }
 
-export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) => {
+export const CompanySettingsForm = ({ user, onSubmit, isLoading }: CompanySettingsFormProps) => {
     const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
-    const [selectedResumeFile, setSelectedResumeFile] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(
         user?.image?.value || null
     );
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const resumeInputRef = useRef<HTMLInputElement>(null);
 
-    const form = useForm<SettingsFormData>({
-        resolver: zodResolver(settingsSchema),
+    const form = useForm<CompanySettingsFormData>({
+        resolver: zodResolver(companySettingsSchema),
         defaultValues: {
             name: user?.name || '',
             email: user?.email || '',
@@ -97,30 +94,7 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
         fileInputRef.current?.click();
     };
 
-    const handleResumeSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            // Validate file type - PDF only
-            if (file.type !== 'application/pdf') {
-                alert('Please select a valid PDF file');
-                return;
-            }
-            
-            // Validate file size (5MB)
-            if (file.size > 5000000) {
-                alert('Resume file size must be less than 5MB');
-                return;
-            }
-            
-            setSelectedResumeFile(file);
-        }
-    };
-
-    const handleChangeResume = () => {
-        resumeInputRef.current?.click();
-    };
-
-    const handleSubmit = async (data: SettingsFormData) => {
+    const handleSubmit = async (data: CompanySettingsFormData) => {
         const updateData: UpdateUserSettingsType = {
             name: data.name,
             email: data.email,
@@ -136,7 +110,7 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
             offers: data.offers,
             pushNotifications: data.pushNotifications,
         };
-        await onSubmit(updateData, selectedImageFile || undefined, selectedResumeFile || undefined);
+        await onSubmit(updateData, selectedImageFile || undefined);
     };
 
     return (
@@ -146,7 +120,7 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
                     <div>
                         <div>
                             <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                Profile
+                                Company Profile
                             </h3>
                             <p className="mt-1 max-w-2xl text-sm text-gray-500">
                                 This information will be displayed publicly so be careful what
@@ -162,14 +136,14 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                                About
+                                                About Company
                                             </FormLabel>
                                             <FormControl>
                                                 <textarea
                                                     {...field}
                                                     rows={3}
                                                     className="max-w-lg shadow-sm block w-full focus:ring-black focus:border-black sm:text-sm border border-gray-300 rounded-md"
-                                                    placeholder="Write a few sentences about yourself."
+                                                    placeholder="Write a few sentences about your company."
                                                 />
                                             </FormControl>
                                             <FormMessage />
@@ -183,7 +157,7 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
                                     htmlFor="photo"
                                     className="block text-sm font-medium text-gray-700"
                                 >
-                                    Photo
+                                    Company Logo
                                 </label>
                                 <div className="mt-1 sm:mt-0 sm:col-span-2">
                                     <div className="flex items-center">
@@ -191,7 +165,7 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
                                             {imagePreview ? (
                                                 <img
                                                     src={imagePreview}
-                                                    alt="Profile"
+                                                    alt="Company Logo"
                                                     className="h-full w-full object-cover"
                                                 />
                                             ) : (
@@ -210,7 +184,7 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
                                             accept="image/png,image/jpeg,image/jpg,image/webp"
                                             onChange={handleFileSelect}
                                             className="hidden"
-                                            aria-label="Upload profile photo"
+                                            aria-label="Upload company logo"
                                         />
                                         <button
                                             type="button"
@@ -227,75 +201,13 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
                                     )}
                                 </div>
                             </div>
-
-                            <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-center sm:border-t sm:border-gray-200 sm:pt-5">
-                                <label
-                                    htmlFor="resume"
-                                    className="block text-sm font-medium text-gray-700"
-                                >
-                                    Resume
-                                </label>
-                                <div className="mt-1 sm:mt-0 sm:col-span-2">
-                                    <div className="flex items-center">
-                                        <div className="flex items-center space-x-3">
-                                            <div className="flex items-center justify-center h-12 w-12 rounded-md bg-gray-100">
-                                                <FileText className="h-6 w-6 text-gray-400" />
-                                            </div>
-                                            <div className="flex-1">
-                                                {user?.resume?.value ? (
-                                                    <p className="text-sm font-medium text-gray-900">
-                                                        Current resume uploaded
-                                                    </p>
-                                                ) : (
-                                                    <p className="text-sm text-gray-500">
-                                                        No resume uploaded
-                                                    </p>
-                                                )}
-                                                {selectedResumeFile && (
-                                                    <p className="text-sm text-gray-500">
-                                                        New file: {selectedResumeFile.name}
-                                                    </p>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <input
-                                            ref={resumeInputRef}
-                                            type="file"
-                                            accept=".pdf"
-                                            onChange={handleResumeSelect}
-                                            className="hidden"
-                                            aria-label="Upload resume"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={handleChangeResume}
-                                            className="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
-                                        >
-                                            {user?.resume?.value ? 'Change' : 'Upload'}
-                                        </button>
-                                        {user?.resume?.value && (
-                                            <a
-                                                href={user.resume.value}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="ml-3 bg-gray-600 py-2 px-3 border border-transparent rounded-md shadow-sm text-sm leading-4 font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                                            >
-                                                View
-                                            </a>
-                                        )}
-                                    </div>
-                                    <p className="mt-2 text-sm text-gray-500">
-                                        Upload your resume in PDF format (max 5MB)
-                                    </p>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
                     <div className="pt-8 space-y-6 sm:pt-10 sm:space-y-5">
                         <div>
                             <h3 className="text-lg leading-6 font-medium text-gray-900">
-                                Personal Information
+                                Company Information
                             </h3>
                             <p className="mt-1 max-w-2xl text-sm text-gray-500">
                                 Use a permanent address where you can receive mail.
@@ -309,13 +221,13 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                                                Name
+                                                Company Name
                                             </FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
                                                     type="text"
-                                                    autoComplete="given-name"
+                                                    autoComplete="organization"
                                                     className="max-w-lg block w-full shadow-sm focus:ring-black focus:border-black sm:max-w-xs sm:text-sm border-gray-300 rounded-md"
                                                 />
                                             </FormControl>
@@ -540,8 +452,8 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
                                                             Comments
                                                         </label>
                                                         <p className="text-gray-500">
-                                                            Get notified when someones posts a comment on a
-                                                            posting.
+                                                            Get notified when someone posts a comment on a
+                                                            job posting.
                                                         </p>
                                                     </div>
                                                 </div>
@@ -744,4 +656,4 @@ export const SettingsForm = ({ user, onSubmit, isLoading }: SettingsFormProps) =
             </form>
         </Form>
     );
-};
+}; 

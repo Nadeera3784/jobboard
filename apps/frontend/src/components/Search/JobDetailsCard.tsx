@@ -1,5 +1,8 @@
 import { PanelTopOpen } from 'lucide-react';
 import moment from 'moment';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 import { JobCardProps } from '../../types';
 import {
@@ -8,8 +11,58 @@ import {
   CurrencyDollarIcon,
   CalendarIcon,
 } from '../Icons';
+import { httpClient } from '../../utils';
+import { AppConstants, HttpStatus } from '../../constants';
+import appStateStore from '../../store';
 
 const JobDetailsCard: React.FC<JobCardProps> = ({ job }) => {
+  const [isApplying, setIsApplying] = useState(false);
+  const navigate = useNavigate();
+  const { user } = appStateStore(state => state);
+
+  const handleApply = async () => {
+    // Check if user is logged in
+    if (!user) {
+      toast.error('Please log in to apply for jobs');
+      navigate('/auth');
+      return;
+    }
+
+    setIsApplying(true);
+    
+    try {
+      const response = await httpClient.post(
+        `${AppConstants.API_URL}/applications/jobs/${job._id}`,
+        { user: user._id }
+      );
+
+      if (response.status === HttpStatus.OK) {
+        toast.success(response.data.message || 'Application submitted successfully!');
+      }
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to submit application';
+      
+      // Handle specific error cases
+      if (error.response?.status === 401) {
+        toast.error('Please log in to apply for jobs');
+        navigate('/auth');
+      } else if (error.response?.status === 400 && errorMessage.includes('profile')) {
+        // Profile incomplete error
+        toast.error(errorMessage);
+        setTimeout(() => {
+          navigate('/user/settings');
+        }, 2000);
+      } else if (error.response?.status === 409) {
+        // Already applied error
+        toast.error(errorMessage);
+      } else {
+        toast.error(errorMessage);
+      }
+    } finally {
+      setIsApplying(false);
+    }
+  };
+
   return (
     <div className="bg-white">
       <div className="max-w-7xl mx-auto px-4 py-5 sm:px-6 xl:flex xl:items-center xl:justify-between">
@@ -62,10 +115,12 @@ const JobDetailsCard: React.FC<JobCardProps> = ({ job }) => {
                 <span>
                   <button
                     type="button"
-                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-purple-500"
+                    onClick={handleApply}
+                    disabled={isApplying}
+                    className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <PanelTopOpen className="-ml-1 mr-2 h-5 w-5 text-gray-400" />
-                    Apply
+                    {isApplying ? 'Applying...' : 'Apply'}
                   </button>
                 </span>
               </div>

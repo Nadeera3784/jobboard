@@ -20,8 +20,6 @@ export const DeleteDialog: React.FC<DeleteDialogProps> = ({
   action,
   refresh,
 }) => {
-  // const { response, process } = useSharedDeleteApi();
-
   const onClickDelete = async () => {
     if (action && action.endpoint) {
       try {
@@ -37,19 +35,6 @@ export const DeleteDialog: React.FC<DeleteDialogProps> = ({
         toast.warning('Something went wrong, Please try again later');
       }
     }
-    // if (action && action.endpoint) {
-    //   response.loading = loading;
-    //   await process(action.endpoint);
-    //   response.loading = loading;
-
-    //   if (response.status_code === HttpStatus.OK) {
-    //     onClose();
-    //     toast.warning(response?.message || 'Deleted Successfully!');
-    //     refresh();
-    //   } else {
-    //     toast.warning('Something went wrong, Please try again later');
-    //   }
-    // }
   };
 
   return (

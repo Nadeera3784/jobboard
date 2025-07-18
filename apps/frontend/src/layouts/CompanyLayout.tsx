@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 import appStateStore from '../store';
+import { deleteJWTToken } from '../utils';
 
 export const CompanyLayout = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [desktopSidebarOpen, setDesktopSidebarOpen] = useState(true);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(true);
+  const navigate = useNavigate();
   const { getCurrentUser, user } = appStateStore(state => state);
 
   const onClickDropDownToggle = function () {
@@ -26,7 +28,10 @@ export const CompanyLayout = () => {
     getCurrentUser();
   }, []);
 
-  const onClickSignOut = () => {};
+  const onClickSignOut = () => {
+    deleteJWTToken();
+    navigate('/auth');
+  };
 
   return (
     <>
@@ -128,58 +133,13 @@ export const CompanyLayout = () => {
                   </span>
                   <span className="py-2 flex-grow">Jobs</span>
                 </Link>
-                <Link
-                  to="/company"
-                  className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
-                >
-                  <span className="flex-none flex items-center">
-                    <svg
-                      className="text-gray-400 group-hover:text-gray-500 flex-shrink-0 h-6 w-6"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10 21h7a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v11m0 5l4.879-4.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242z"
-                      />
-                    </svg>
-                  </span>
-                  <span className="py-2 flex-grow">Applications</span>
-                </Link>
-                <Link
-                  to="/company"
-                  className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
-                >
-                  <span className="flex-none flex items-center">
-                    <svg
-                      className="text-gray-400 group-hover:text-gray-500 flex-shrink-0 h-6 w-6"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
-                      />
-                    </svg>
-                  </span>
-                  <span className="py-2 flex-grow">Team</span>
-                </Link>
+
 
                 <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
                   Account
                 </div>
-                <a
-                  href=""
+                <Link
+                  to="/company/settings"
                   className="flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50"
                 >
                   <span className="flex-none flex items-center opacity-50">
@@ -205,7 +165,7 @@ export const CompanyLayout = () => {
                     </svg>
                   </span>
                   <span className="py-2 grow">Settings</span>
-                </a>
+                </Link>
                 <button
                   type="button"
                   onClick={onClickSignOut}
@@ -312,9 +272,9 @@ export const CompanyLayout = () => {
                 >
                   <div className="bg-white ring-1 ring-black ring-opacity-5 rounded divide-y divide-gray-100">
                     <div className="p-2 space-y-1">
-                      <a
+                      <Link
+                        to="/company/settings"
                         role="menuitem"
-                        href=""
                         className="flex items-center space-x-2 rounded py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gray-700"
                       >
                         <svg
@@ -330,12 +290,13 @@ export const CompanyLayout = () => {
                           />
                         </svg>
                         <span>Settings</span>
-                      </a>
+                      </Link>
                     </div>
                     <div className="p-2 space-y-1">
                       <button
                         type="button"
                         role="menuitem"
+                        onClick={onClickSignOut}
                         className="w-full text-left flex items-center space-x-2 rounded py-2 px-3 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-700 focus:outline-none focus:bg-gray-100 focus:text-gray-700"
                       >
                         <svg

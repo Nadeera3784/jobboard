@@ -3,6 +3,7 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 import appStateStore from '../store';
 import { deleteJWTToken } from '../utils';
+import { ProfileCompletion } from '../components/User/ProfileCompletion';
 
 export const UserLayout = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
@@ -85,6 +86,7 @@ export const UserLayout = () => {
             </div>
           </div>
           <div className="overflow-y-auto">
+
             <div className="p-4 w-full">
               <nav className="space-y-1">
                 <div className="px-3 pt-5 pb-2 text-xs font-medium uppercase tracking-wider text-gray-500">
@@ -134,28 +136,6 @@ export const UserLayout = () => {
                   </span>
                   <span className="py-2 flex-grow">Applications</span>
                 </Link>
-                <Link
-                  to="/user/statistics"
-                  className={`flex items-center space-x-3 px-3 font-medium rounded text-gray-600 hover:text-gray-700 hover:bg-gray-100 active:bg-gray-50`}
-                >
-                  <span className="flex-none flex items-center">
-                    <svg
-                      className="hi-outline hi-chart-square-bar inline-block w-6 h-6"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                      />
-                    </svg>
-                  </span>
-                  <span className="py-2 flex-grow">Statistics</span>
-                </Link>
 
                 <Link
                   to="/user/settings"
@@ -187,6 +167,8 @@ export const UserLayout = () => {
                 </Link>
               </nav>
             </div>
+
+            <ProfileCompletion user={user} />
           </div>
         </nav>
 

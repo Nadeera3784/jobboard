@@ -2,10 +2,16 @@ import { create } from 'zustand';
 import { httpClient } from '../utils';
 import { User } from '../types';
 
-const stateStore = set => ({
+interface StateStore {
+  user: User | null;
+  setCurrentUser: (payload: User) => void;
+  getCurrentUser: () => Promise<void>;
+}
+
+const stateStore = (set: any): StateStore => ({
   user: null,
   setCurrentUser: (payload: User) => {
-    set(state => ({ user: payload }));
+    set((state: any) => ({ user: payload }));
   },
   getCurrentUser: async () => {
     const response = await httpClient.get('authentication/me');

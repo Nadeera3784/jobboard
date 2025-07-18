@@ -40,6 +40,8 @@ export type ActionProps = {
   endpoint?: string;
   method?: string;
   confirm_message?: string;
+  applicationId?: string;
+  filename?: string;
 };
 
 export type PaginationProps = {

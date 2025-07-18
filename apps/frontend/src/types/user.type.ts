@@ -5,7 +5,28 @@ export type User = {
   role?: string;
   status?: string;
   phone?: string;
-  image?: File;
+  image?: {
+    key: string;
+    value: string;
+  };
+  resume?: {
+    key: string;
+    value: string;
+  };
+  about?: string;
+  country?: string;
+  streetAddress?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  comments?: boolean;
+  candidates?: boolean;
+  offers?: boolean;
+  pushNotifications?: string;
+  created_at?: string;
+  updated_at?: string;
+  email_verified?: string;
+  is_two_factor_authentication_enabled?: boolean;
 };
 
 export type CreateUserType = {
@@ -33,4 +54,20 @@ export type GetUserType = {
 
 export type DeleteUserType = {
   endpoint: string;
+};
+
+export type UpdateUserSettingsType = {
+  name: string;
+  email: string;
+  phone?: string;
+  about?: string;
+  country?: string;
+  streetAddress?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  comments?: boolean;
+  candidates?: boolean;
+  offers?: boolean;
+  pushNotifications?: string;
 };

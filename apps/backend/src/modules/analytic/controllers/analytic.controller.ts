@@ -16,6 +16,8 @@ import {
   GetAnalyticByIdFeature,
   UpdateAnalyticCountFeature,
   GetCompanyAnalyticsFeature,
+  GetUserAnalyticsFeature,
+  GetAdminAnalyticsFeature,
 } from '../features';
 import { UpdateCountDto } from '../dtos';
 import { AuthenticationGuard, RoleGuard } from '../../authentication/guards';
@@ -29,6 +31,8 @@ export class AnalyticController {
     private readonly getAnalyticByIdFeature: GetAnalyticByIdFeature,
     private readonly updateAnalyticCountFeature: UpdateAnalyticCountFeature,
     private readonly getCompanyAnalyticsFeature: GetCompanyAnalyticsFeature,
+    private readonly getUserAnalyticsFeature: GetUserAnalyticsFeature,
+    private readonly getAdminAnalyticsFeature: GetAdminAnalyticsFeature,
   ) {}
 
   @Post()
@@ -42,6 +46,16 @@ export class AnalyticController {
     return response.status(status).json(featureUpResponse);
   }
 
+  @Get('/admin')
+  @Header('Content-Type', 'application/json')
+  @UseGuards(AuthenticationGuard, RoleGuard)
+  @RolesAllowed(RolesEnum.ADMIN)
+  public async getAdminAnalytics(@Res() response) {
+    const { status, response: featureUpResponse } =
+      await this.getAdminAnalyticsFeature.handle();
+    return response.status(status).json(featureUpResponse);
+  }
+
   @Get('/company')
   @Header('Content-Type', 'application/json')
   @UseGuards(AuthenticationGuard, RoleGuard)
@@ -49,6 +63,16 @@ export class AnalyticController {
   public async getCompanyAnalytics(@Res() response, @Req() request) {
     const { status, response: featureUpResponse } =
       await this.getCompanyAnalyticsFeature.handle(request.user.id);
+    return response.status(status).json(featureUpResponse);
+  }
+
+  @Get('/user')
+  @Header('Content-Type', 'application/json')
+  @UseGuards(AuthenticationGuard, RoleGuard)
+  @RolesAllowed(RolesEnum.USER)
+  public async getUserAnalytics(@Res() response, @Req() request) {
+    const { status, response: featureUpResponse } =
+      await this.getUserAnalyticsFeature.handle(request.user.id);
     return response.status(status).json(featureUpResponse);
   }
 

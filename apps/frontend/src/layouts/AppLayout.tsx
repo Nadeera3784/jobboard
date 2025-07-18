@@ -3,12 +3,17 @@ import { Outlet } from 'react-router-dom';
 import { Header } from '../components/Header/Header';
 import { Footer } from '../components/Footer/Footer';
 import appStateStore from '../store';
+import { getJWTToken } from '../utils';
 
 export const AppLayout = () => {
   const { getCurrentUser } = appStateStore(state => state);
 
   useEffect(() => {
-    getCurrentUser();
+    // Only fetch user data if there's a JWT token (user is logged in)
+    const token = getJWTToken();
+    if (token) {
+      getCurrentUser();
+    }
   }, []);
 
   return (

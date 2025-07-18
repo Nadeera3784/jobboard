@@ -11,7 +11,7 @@ import {
   CurrencyDollarIcon,
   CalendarIcon,
 } from '../Icons';
-import { httpClient } from '../../utils';
+import { httpClient, trackAnalytics } from '../../utils';
 import { AppConstants, HttpStatus } from '../../constants';
 import appStateStore from '../../store';
 
@@ -38,6 +38,14 @@ const JobDetailsCard: React.FC<JobCardProps> = ({ job }) => {
 
       if (response.status === HttpStatus.OK) {
         toast.success(response.data.message || 'Application submitted successfully!');
+        
+        // Track application analytics
+        if (job._id) {
+          trackAnalytics({
+            jobId: job._id,
+            type: 'application_count',
+          });
+        }
       }
     } catch (error: any) {
       const errorMessage = error.response?.data?.message || error.message || 'Failed to submit application';

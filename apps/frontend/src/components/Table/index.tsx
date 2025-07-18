@@ -8,6 +8,7 @@ import { LinkAction } from './LinkAction';
 import { DeleteAction } from './DeleteAction';
 import { DownloadAction } from './DownloadAction';
 import { EmptyContent } from './EmptyContent';
+import { ViewAction } from './ViewAction';
 import {
   TableProps,
   ColumnProps,
@@ -333,6 +334,9 @@ export const Table: React.FC<TableProps> = ({
                             <span key={index} className="px-1">
                               {action.type === 'link' && (
                                 <LinkAction data={action} />
+                              )}
+                              {action.type === 'view' && (
+                                <ViewAction data={action} />
                               )}
                               {action.type === 'delete' && (
                                 <DeleteAction

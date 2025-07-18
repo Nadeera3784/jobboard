@@ -26,8 +26,16 @@ httpClient.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 401 || error.response.status === 403) {
-      localStorage.clear();
-      window.location.href = '/auth';
+      // Only redirect to auth if we're on a protected route
+      const currentPath = window.location.pathname;
+      const isPublicRoute = currentPath === '/' || 
+                           currentPath.startsWith('/search') || 
+                           currentPath.startsWith('/auth');
+      
+      if (!isPublicRoute) {
+        localStorage.clear();
+        window.location.href = '/auth';
+      }
     }
     return Promise.reject(error);
   },

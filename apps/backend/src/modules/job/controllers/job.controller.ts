@@ -59,8 +59,16 @@ export class JobController {
     @Body('limit') limit: number,
     @Body('start') start: number,
   ) {
-    const userId =
-      request.user.role === RolesEnum.COMPANY ? request.user.id : null;
+    let userId = null;
+    
+    // For company users, filter by their own ID
+    if (request.user.role === RolesEnum.COMPANY) {
+      userId = request.user.id;
+    }
+    // For admin users, allow filtering by specific company ID if provided
+    else if (request.user.role === RolesEnum.ADMIN && filters?.companyId) {
+      userId = filters.companyId;
+    }
 
     const { status, response: featureUpResponse } =
       await this.getAllJobsFeature.handle(
@@ -77,7 +85,6 @@ export class JobController {
 
   @Get('/search')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(RolesEnum.ADMIN)
   public async getSearch(
     @Res() response: Response,
     @Query('filter') filter: JobFilterInterface,
@@ -99,8 +106,6 @@ export class JobController {
 
   @Get('/:id')
   @Header('Content-Type', 'application/json')
-  @UseGuards(AuthenticationGuard, RoleGuard)
-  @RolesAllowed(RolesEnum.ADMIN, RolesEnum.COMPANY, RolesEnum.USER)
   public async getById(
     @Req() request,
     @Res() response: Response,
@@ -109,7 +114,7 @@ export class JobController {
     const { status, response: featureUpResponse } =
       await this.getJobByIdFeature.handle(
         id,
-        request.user.role === RolesEnum.COMPANY ? request.user.id : null,
+        request.user ? request.user.role === RolesEnum.COMPANY ? request.user.id : null : null,
       );
     return response.status(status).json(featureUpResponse);
   }

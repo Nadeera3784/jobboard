@@ -10,6 +10,8 @@ import {
   GetAnalyticByIdFeature,
   UpdateAnalyticCountFeature,
   GetCompanyAnalyticsFeature,
+  GetUserAnalyticsFeature,
+  GetAdminAnalyticsFeature,
 } from './features';
 import { UserModule } from '../user/user.module';
 
@@ -19,6 +21,9 @@ import { UserModule } from '../user/user.module';
       { name: Analytic.name, schema: AnalyticSchema },
       { name: 'Job', schema: require('../job/schemas/job.schema').JobSchema },
       { name: 'Application', schema: require('../job/schemas/application.shema').ApplicationSchema },
+      { name: 'User', schema: require('../user/schemas/user.schema').UserSchema },
+      { name: 'Category', schema: require('../category/schemas/category.schema').CategorySchema },
+      { name: 'Location', schema: require('../location/schemas/location.schema').LocationSchema },
     ]),
     UserModule,
   ],
@@ -29,6 +34,8 @@ import { UserModule } from '../user/user.module';
     GetAnalyticByIdFeature,
     UpdateAnalyticCountFeature,
     GetCompanyAnalyticsFeature,
+    GetUserAnalyticsFeature,
+    GetAdminAnalyticsFeature,
   ],
   controllers: [AnalyticController],
   exports: [AnalyticService],

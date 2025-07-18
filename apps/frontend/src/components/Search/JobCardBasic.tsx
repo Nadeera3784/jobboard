@@ -1,10 +1,20 @@
 import { Link } from 'react-router-dom';
 import { JobCardProps } from '../../types';
-import { limitString, removeHtmlTags } from '../../utils';
+import { limitString, removeHtmlTags, trackAnalytics } from '../../utils';
 import PlaceholderAvatar from '../Shared/PlaceholderAvatar';
 import { BriefcaseIconV2, Type, LocationMarkerIconV2 } from '../Icons';
 
 const JobCardBasic: React.FC<JobCardProps> = ({ job }) => {
+  const handleApplyClick = () => {
+    // Track job view when user clicks to apply/view details
+    if (job._id) {
+      trackAnalytics({
+        jobId: job._id,
+        type: 'view_count',
+      });
+    }
+  };
+
   return (
     <div className="w-full lg:w-1/3 p-4">
       <div className="p-6 bg-white shadow rounded-[24px]">
@@ -71,6 +81,7 @@ const JobCardBasic: React.FC<JobCardProps> = ({ job }) => {
           <div className="w-full px-2 mb-2 md:mb-0">
             <Link
               to={`/search?jobid=${job._id}`}
+              onClick={handleApplyClick}
               className="flex justify-center py-4 text-sm text-white bg-black hover:bg-gray-900 rounded-[12px] transition duration-200"
             >
               <span>Apply now</span>

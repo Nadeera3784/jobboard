@@ -13,7 +13,7 @@ import {
   UpdateJobFeature,
   JobApplicationsDatatableFeature,
   DownloadResumeFeature,
-  GenerateJobDescriptionFeature,
+  GenerateJobDescriptionFeature
 } from './features';
 import { JobController, ApplicationController } from './controllers';
 import { JobSeedCommand } from './commands';

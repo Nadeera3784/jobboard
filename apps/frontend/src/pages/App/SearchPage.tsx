@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { httpClient } from '../../utils';
-import { HttpStatus, AppConstants } from '../../constants';
+import { httpClient, trackAnalytics } from '../../utils';
+import { HttpStatus } from '../../constants';
 import { ApiResponse, ResponseState } from '../../types';
 import {
   Select,
@@ -185,7 +185,9 @@ export const SearchPage = () => {
   }, [searchReponse.status, currentPage, search, filter, order]);
 
   useEffect(() => {
-    processGetById(`jobs/${selectedJob._id}`);
+    if (selectedJob._id) {
+      processGetById(`jobs/${selectedJob._id}`);
+    }
   }, [selectedJob]);
 
   useEffect(() => {
@@ -254,6 +256,14 @@ export const SearchPage = () => {
 
   const onClickGetJobDetails = async (job: Job) => {
     setSelectedJob(job);
+    
+    // Track job view analytics
+    if (job._id) {
+      trackAnalytics({
+        jobId: job._id,
+        type: 'view_count',
+      });
+    }
   };
 
   const startPage = Math.max(1, currentPage - 2);

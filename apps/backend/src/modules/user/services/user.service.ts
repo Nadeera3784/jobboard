@@ -216,25 +216,37 @@ export class UserService extends ModelService<User> {
         .sort(sort)
         .exec();
       results = results.map((result: any) => {
+        const baseActions = [
+          {
+            id: 1,
+            label: 'Edit',
+            type: 'link',
+            endpoint: `/admin/users/${result._id}`,
+          },
+          {
+            id: 2,
+            label: 'Delete',
+            type: 'delete',
+            endpoint: `${this.configService.get('app.api_url')}/users/${
+              result._id
+            }`,
+            confirm_message: 'Are you sure want to delete?',
+          },
+        ];
+
+        // Add View action for company users
+        if (result.role === 'company') {
+          baseActions.unshift({
+            id: 0,
+            label: 'View',
+            type: 'view',
+            endpoint: `/admin/companies/${result._id}`,
+          });
+        }
+
         return {
           ...result.toObject(),
-          actions: [
-            {
-              id: 1,
-              label: 'Edit',
-              type: 'link',
-              endpoint: `/admin/users/${result._id}`,
-            },
-            {
-              id: 2,
-              label: 'Delete',
-              type: 'delete',
-              endpoint: `${this.configService.get('app.api_url')}/users/${
-                result._id
-              }`,
-              confirm_message: 'Are you sure want to delete?',
-            },
-          ],
+          actions: baseActions,
         };
       });
 

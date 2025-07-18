@@ -14,8 +14,14 @@ const stateStore = (set: any): StateStore => ({
     set((state: any) => ({ user: payload }));
   },
   getCurrentUser: async () => {
-    const response = await httpClient.get('authentication/me');
-    set({ user: response.data.data });
+    try {
+      const response = await httpClient.get('authentication/me');
+      set({ user: response.data.data });
+    } catch (error) {
+      // Silently handle errors - user might not be logged in
+      // The HTTP interceptor will handle redirects if needed
+      set({ user: null });
+    }
   },
 });
 

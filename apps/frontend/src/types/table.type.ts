@@ -22,6 +22,7 @@ export type TableProps = {
   has_row_buttons: boolean;
   has_multiselect: boolean;
   refresh: boolean;
+  additionalFilters?: Record<string, any>;
 };
 
 export type SortItemProps = {

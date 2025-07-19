@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { CompanySettingsForm } from '../../components/Company/CompanySettingsForm';
 import appStateStore from '../../store';
 import { UpdateUserSettingsType } from '../../types';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 import { AppConstants, HttpStatus } from '../../constants';
 
 export const CompanySettingsPage = () => {
@@ -36,7 +36,7 @@ export const CompanySettingsPage = () => {
         // Append the image file
         data.append('image', imageFile);
 
-        response = await httpClient.put(
+        response = await Intercom.put(
           `${AppConstants.API_URL}/users/user-settings`,
           data,
           {
@@ -47,7 +47,7 @@ export const CompanySettingsPage = () => {
         );
       } else {
         // Use JSON for text-only updates
-        response = await httpClient.put(
+        response = await Intercom.put(
           `${AppConstants.API_URL}/users/user-settings`,
           formData,
         );

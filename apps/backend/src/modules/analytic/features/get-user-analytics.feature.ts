@@ -16,7 +16,7 @@ export class GetUserAnalyticsFeature extends Feature {
 
   public async handle(userId: string) {
     try {
-      // Validate that userId is a valid MongoDB ObjectId
+ 
       if (!Types.ObjectId.isValid(userId)) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,
@@ -26,7 +26,6 @@ export class GetUserAnalyticsFeature extends Feature {
 
       const userObjectId = new Types.ObjectId(userId);
 
-      // Get user profile data
       const user = await this.userModel
         .findById(userObjectId)
         .select('name email image resume phone created_at');
@@ -34,12 +33,11 @@ export class GetUserAnalyticsFeature extends Feature {
         return this.responseError(HttpStatus.NOT_FOUND, 'User not found');
       }
 
-      // Get total applications by user
       const totalApplications = await this.applicationModel.countDocuments({
         user: userObjectId,
       });
 
-      // Get applications by status
+
       const applicationsByStatus = await this.applicationModel.aggregate([
         {
           $match: { user: userObjectId },
@@ -52,21 +50,18 @@ export class GetUserAnalyticsFeature extends Feature {
         },
       ]);
 
-      // Get recent applications (last 30 days)
       const thirtyDaysAgo = moment().subtract(30, 'days').toDate();
       const recentApplications = await this.applicationModel.countDocuments({
         user: userObjectId,
         created_at: { $gte: thirtyDaysAgo },
       });
 
-      // Get applications this week
       const sevenDaysAgo = moment().subtract(7, 'days').toDate();
       const weeklyApplications = await this.applicationModel.countDocuments({
         user: userObjectId,
         created_at: { $gte: sevenDaysAgo },
       });
 
-      // Calculate profile completion
       const profileFields = {
         hasName: !!user.name,
         hasEmail: !!user.email,
@@ -82,7 +77,6 @@ export class GetUserAnalyticsFeature extends Feature {
         (completedFields / totalFields) * 100,
       );
 
-      // Process status breakdown
       const statusBreakdown = {
         'Application submitted': 0,
         'Application viewed': 0,
@@ -96,7 +90,6 @@ export class GetUserAnalyticsFeature extends Feature {
         }
       });
 
-      // Get latest applications with job details
       const latestApplications = await this.applicationModel
         .find({ user: userObjectId })
         .populate('job', 'name user')

@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { httpClient, trackAnalytics } from '../../utils';
+import { Intercom, trackAnalytics } from '../../utils';
 import { HttpStatus } from '../../constants';
 import { ApiResponse, ResponseState } from '../../types';
 import {
@@ -88,7 +88,7 @@ export const SearchPage = () => {
     }));
     const URL = `/${params}`;
     try {
-      const apiResponse = await httpClient.get<ApiResponse>(URL);
+      const apiResponse = await Intercom.get<ApiResponse>(URL);
       setResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,
@@ -119,7 +119,7 @@ export const SearchPage = () => {
     }));
     const ENDPOINT = `/jobs/search${query}`;
     try {
-      const apiResponse = await httpClient.get<ApiResponse>(ENDPOINT);
+      const apiResponse = await Intercom.get<ApiResponse>(ENDPOINT);
       setSearchResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,
@@ -150,7 +150,7 @@ export const SearchPage = () => {
     }));
     const URL = `/${params}`;
     try {
-      const apiResponse = await httpClient.get<ApiResponse>(URL);
+      const apiResponse = await Intercom.get<ApiResponse>(URL);
       setJobResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

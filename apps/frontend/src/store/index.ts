@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { httpClient } from '../utils';
+import { Intercom } from '../utils';
 import { User } from '../types';
 
 interface StateStore {
@@ -15,7 +15,7 @@ const stateStore = (set: any): StateStore => ({
   },
   getCurrentUser: async () => {
     try {
-      const response = await httpClient.get('authentication/me');
+      const response = await Intercom.get('authentication/me');
       set({ user: response.data.data });
     } catch (error) {
       // Silently handle errors - user might not be logged in

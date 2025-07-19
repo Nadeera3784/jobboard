@@ -8,6 +8,7 @@ import { CreateUserDto, UpdateUserDto } from '../dtos';
 import { User } from '../schemas/user.schema';
 import { RolesEnum } from '../enums';
 import { ModelService } from '../../app/services';
+import { ObjectId } from 'mongoose';
 
 @Injectable()
 export class UserService extends ModelService<User> {
@@ -18,62 +19,34 @@ export class UserService extends ModelService<User> {
     super();
   }
 
-  /**
-   * Retrieves all users.
-   * @returns A promise that resolves to an array of all users.
-   */
+
   public async getAll() {
     return await this.userModel.find();
   }
 
-  /**
-   * Creates a new user with the provided user data.
-   * @param createUserDto - Data for creating a new user.
-   * @returns A promise that resolves to the created user, or an error if the operation fails.
-   * TODO:update with genSalt
-   */
+
   public async create(createUserDto: CreateUserDto) {
     return await this.userModel.create(createUserDto);
   }
 
-  /**
-   * Retrieves a user by their unique identifier.
-   * @param id - The unique identifier of the user to retrieve.
-   * @returns A promise that resolves to the user with the specified ID, or null if not found.
-   */
   public async getById(id: string) {
     return await this.userModel.findById(id);
   }
 
-  /**
-   * Retrieves a user by their email address.
-   * @param email - The email address of the user to retrieve.
-   * @returns A promise that resolves to the user with the specified email, or null if not found.
-   */
+ 
   public async getByEmail(email: string) {
     return await this.userModel.findOne({
       email: email,
     });
   }
 
-  /**
-   * Updates an existing user with the provided data.
-   * @param id - The unique identifier of the user to update.
-   * @param updateUserDto - Data for updating the user.
-   * @returns A promise that resolves to the updated user, or null if the user with the specified ID is not found.
-   */
+
   public async update(id: string, updateUserDto: UpdateUserDto) {
     return await this.userModel.findByIdAndUpdate({ _id: id }, updateUserDto, {
       returnNewDocument: true,
     });
   }
 
-  /**
-   * Updates user settings with the provided data.
-   * @param id - The unique identifier of the user to update.
-   * @param updateUserSettingsDto - Data for updating the user settings.
-   * @returns A promise that resolves to the updated user, or null if the user with the specified ID is not found.
-   */
   public async updateSettings(id: string, updateUserSettingsDto: any) {
     return await this.userModel.findByIdAndUpdate(
       { _id: id },
@@ -102,7 +75,7 @@ export class UserService extends ModelService<User> {
     );
   }
 
-  public async updatePassword(id: string, password: string) {
+  public async updatePassword(id: ObjectId, password: string) {
     return await this.userModel.findByIdAndUpdate(
       { _id: id },
       {
@@ -150,11 +123,7 @@ export class UserService extends ModelService<User> {
       });
   }
 
-  /**
-   * Deletes a user with the specified ID.
-   * @param id - The unique identifier of the user to delete.
-   * @returns A promise that resolves to a deletion result indicating success or failure.
-   */
+
   public async delete(id: string) {
     return await this.userModel.deleteOne({
       _id: id,

@@ -60,10 +60,7 @@ export class AIService {
         'Failed to generate job description'
       );
     } catch (error) {
-      console.error('Error generating job description:', error);
       throw new Error('Failed to generate job description');
     }
   }
-
-  public async polishJobDescrption() {}
 }

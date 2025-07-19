@@ -17,7 +17,7 @@ import { Button } from '../../components/Form/Button';
 import { HttpStatus } from '../../constants';
 import { Spinner } from '../../components/Icons';
 import { useState } from 'react';
-import { httpClient, cacheJwtToken } from '../../utils';
+import { Intercom, cacheJwtToken } from '../../utils';
 
 export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ export const LoginPage = () => {
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     setLoading(true);
     try {
-      const response = await httpClient.post('authentication/signin', values);
+      const response = await Intercom.post('authentication/signin', values);
       if (response.status === HttpStatus.OK) {
         const { redirect_identifier, access_token } = response.data.data;
         cacheJwtToken(access_token);

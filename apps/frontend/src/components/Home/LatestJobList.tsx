@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import JobCardBasic from '../Search/JobCardBasic';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 import { HttpStatus } from '../../constants';
 import { ApiResponse, ResponseState } from '../../types';
 
@@ -22,7 +22,7 @@ const LatestJobList = () => {
     }));
     const ENDPOINT = `/jobs/search${query}`;
     try {
-      const apiResponse = await httpClient.get<ApiResponse>(ENDPOINT);
+      const apiResponse = await Intercom.get<ApiResponse>(ENDPOINT);
       setSearchResponse({
         errored: false,
         status: apiResponse.data.statusCode === HttpStatus.OK,

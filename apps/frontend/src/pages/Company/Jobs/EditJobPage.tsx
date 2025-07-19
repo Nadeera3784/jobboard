@@ -24,7 +24,7 @@ import {
 import { Input } from '../../../components/Form/Input';
 import { Textarea } from '../../../components/Form/Textarea';
 import { Button } from '../../../components/Form/Button';
-import { httpClient } from '../../../utils';
+import { Intercom } from '../../../utils';
 import { HttpStatus } from '../../../constants';
 import { CreateJobSchema } from '../../../schemas';
 import { FilterOption } from '../../../types';
@@ -63,7 +63,7 @@ export const EditJobPage = () => {
 
     try {
       setInitialLoading(true);
-      const response = await httpClient.get(`/jobs/${id}`);
+      const response = await Intercom.get(`/jobs/${id}`);
       if (response.data.statusCode === HttpStatus.OK) {
         const job = response.data.data;
         form.reset({
@@ -91,7 +91,7 @@ export const EditJobPage = () => {
 
   const fetchFilters = async () => {
     try {
-      const response = await httpClient.get(`/app/shared/filters`);
+      const response = await Intercom.get(`/app/shared/filters`);
       if (response.data.statusCode === HttpStatus.OK) {
         setLocations(response.data.data.location);
         setCategories(response.data.data.category);
@@ -107,7 +107,7 @@ export const EditJobPage = () => {
   const onUpdate = async (params: object) => {
     try {
       setLoading(true);
-      const response = await httpClient.put(`/jobs/${id}`, params);
+      const response = await Intercom.put(`/jobs/${id}`, params);
       if (response.data.statusCode === HttpStatus.OK) {
         toast.success(response.data.message);
         navigate('/company/jobs');

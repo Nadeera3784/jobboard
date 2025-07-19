@@ -11,7 +11,6 @@ export class DownloadResumeFeature extends Feature {
 
   public async handle(applicationId: string) {
     try {
-      // Update application status to "Resume downloaded"
       const updatedApplication =
         await this.applicationService.updateResumeDownloadStatus(applicationId);
 

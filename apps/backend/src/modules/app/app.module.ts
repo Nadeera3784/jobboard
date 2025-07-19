@@ -33,15 +33,16 @@ import { AnalyticModule } from '../analytic/analytic.module';
     }),
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get('database.mongodb.uri'),
+        uri: configService.get<string>('database.mongodb.uri'),
+        retryAttempts: configService.get<number>('database.mongodb.retry_attempts'),
       }),
       inject: [ConfigService],
     }),
     BullModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         redis: {
-          host: configService.get('cache.redis.host'),
-          port: configService.get('cache.redis.port'),
+          host: configService.get<string>('cache.redis.host'),
+          port: configService.get<number>('cache.redis.port'),
         },
       }),
       inject: [ConfigService],
@@ -66,10 +67,10 @@ import { AnalyticModule } from '../analytic/analytic.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         return {
-          accessKeyId: configService.get('filesystem.disks.s3.key'),
-          secretAccessKey: configService.get('filesystem.disks.s3.secret'),
-          region: configService.get('filesystem.disks.s3.region'),
-          bucket: configService.get('filesystem.disks.s3.bucket'),
+          accessKeyId: configService.get<string>('filesystem.disks.s3.key'),
+          secretAccessKey: configService.get<string>('filesystem.disks.s3.secret'),
+          region: configService.get<string>('filesystem.disks.s3.region'),
+          bucket: configService.get<string>('filesystem.disks.s3.bucket'),
         };
       },
     }),
@@ -81,7 +82,7 @@ import { AnalyticModule } from '../analytic/analytic.module';
           name: configService.get('app.app_name'),
           version: '1.0.0',
           port: Number(configService.get('app.app_port')),
-          environment: configService.get('app.environment'),
+          environment: configService.get<string>('app.environment'),
           databaseCheck: true,
           type: 'html',
         };

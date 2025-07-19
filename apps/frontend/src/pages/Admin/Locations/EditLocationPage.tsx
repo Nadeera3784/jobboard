@@ -26,7 +26,7 @@ import { Input } from '../../../components/Form/Input';
 import { Button } from '../../../components/Form/Button';
 import { CreateCategorySchema as UpdateCategorySchema } from '../../../schemas';
 import { HttpStatus } from '../../../constants';
-import { httpClient } from '../../../utils';
+import { Intercom } from '../../../utils';
 
 export const EditLocationPage = () => {
   let { id } = useParams<{ id: string }>();
@@ -45,7 +45,7 @@ export const EditLocationPage = () => {
     if (id !== undefined) {
       try {
         setLoading(true);
-        const response = await httpClient.get(`/locations/${id}`);
+        const response = await Intercom.get(`/locations/${id}`);
         if (response.data.statusCode === HttpStatus.OK) {
           setLoading(false);
           form.reset({
@@ -63,7 +63,7 @@ export const EditLocationPage = () => {
   const onUpdate = async (params: object, id: string) => {
     try {
       setLoading(true);
-      const response = await httpClient.put(`/locations/${id}`, params);
+      const response = await Intercom.put(`/locations/${id}`, params);
       if (response.data.statusCode === HttpStatus.OK) {
         toast.success(response.data.message);
       }

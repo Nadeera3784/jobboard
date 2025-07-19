@@ -1,7 +1,7 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 
 import { Feature } from '../../app/features/feature';
-import { AnalyticService } from '../services/analytic.service';
+import { AnalyticService } from '../services';
 import { UpdateCountDto } from '../dtos';
 
 @Injectable()

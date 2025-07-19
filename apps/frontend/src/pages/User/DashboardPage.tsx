@@ -13,7 +13,7 @@ import {
   Settings,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 import { HttpStatus } from '../../constants';
 
 interface UserAnalytics {
@@ -51,7 +51,7 @@ export const DashboardPage = () => {
       setLoading(true);
       setError(null);
 
-      const response = await httpClient.get('/analytics/user');
+      const response = await Intercom.get('/analytics/user');
 
       if (response.data.statusCode === HttpStatus.OK) {
         setAnalytics(response.data.data);

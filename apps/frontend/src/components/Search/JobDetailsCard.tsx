@@ -11,7 +11,7 @@ import {
   CurrencyDollarIcon,
   CalendarIcon,
 } from '../Icons';
-import { httpClient, trackAnalytics } from '../../utils';
+import { Intercom, trackAnalytics } from '../../utils';
 import { AppConstants, HttpStatus } from '../../constants';
 import appStateStore from '../../store';
 
@@ -31,7 +31,7 @@ const JobDetailsCard: React.FC<JobCardProps> = ({ job }) => {
     setIsApplying(true);
 
     try {
-      const response = await httpClient.post(
+      const response = await Intercom.post(
         `${AppConstants.API_URL}/applications/jobs/${job._id}`,
         { user: user._id },
       );

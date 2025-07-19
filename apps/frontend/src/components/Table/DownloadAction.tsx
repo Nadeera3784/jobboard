@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 
 import { Button } from '../Form/Button';
 import { ActionProps } from '../../types';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 import { HttpStatus } from '../../constants';
 
 export const DownloadAction = ({
@@ -17,14 +17,14 @@ export const DownloadAction = ({
     try {
       // First update the application status
       if (data.applicationId) {
-        await httpClient.put(
+        await Intercom.put(
           `/applications/${data.applicationId}/download-resume`,
         );
       }
 
       // Then download the file using the backend endpoint
       if (data.endpoint) {
-        const response = await httpClient.get(data.endpoint, {
+        const response = await Intercom.get(data.endpoint, {
           responseType: 'blob',
         });
 

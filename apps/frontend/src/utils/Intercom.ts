@@ -1,13 +1,13 @@
 import axios from 'axios';
 
 import { AppConstants } from '../constants';
-import { getJWTToken } from '../utils';
+import { getJWTToken } from '.';
 
-const httpClient = axios.create({
+const Intercom = axios.create({
   baseURL: AppConstants.API_URL,
 });
 
-httpClient.interceptors.request.use(
+Intercom.interceptors.request.use(
   async function (config) {
     const token = getJWTToken();
     if (token) {
@@ -20,13 +20,12 @@ httpClient.interceptors.request.use(
   },
 );
 
-httpClient.interceptors.response.use(
+Intercom.interceptors.response.use(
   function (response) {
     return Promise.resolve(response);
   },
   function (error) {
     if (error.response.status === 401 || error.response.status === 403) {
-      // Only redirect to auth if we're on a protected route
       const currentPath = window.location.pathname;
       const isPublicRoute =
         currentPath === '/' ||
@@ -44,4 +43,4 @@ httpClient.interceptors.response.use(
 
 //http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-export { httpClient };
+export { Intercom };

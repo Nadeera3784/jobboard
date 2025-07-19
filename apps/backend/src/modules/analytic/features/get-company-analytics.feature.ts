@@ -18,7 +18,7 @@ export class GetCompanyAnalyticsFeature extends Feature {
 
   public async handle(companyId: string) {
     try {
-      // Validate that companyId is a valid MongoDB ObjectId
+
       if (!Types.ObjectId.isValid(companyId)) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,
@@ -28,18 +28,15 @@ export class GetCompanyAnalyticsFeature extends Feature {
 
       const companyObjectId = new Types.ObjectId(companyId);
 
-      // Get total jobs by company
       const totalJobs = await this.jobModel.countDocuments({
         user: companyObjectId,
       });
 
-      // Get active jobs
       const activeJobs = await this.jobModel.countDocuments({
         user: companyObjectId,
         status: 'Active',
       });
 
-      // Get total applications across all company jobs
       const totalApplicationsPipeline = [
         {
           $lookup: {
@@ -67,7 +64,6 @@ export class GetCompanyAnalyticsFeature extends Feature {
       );
       const totalApplications = totalApplicationsResult[0]?.total || 0;
 
-      // Get recent applications (last 30 days)
       const thirtyDaysAgo = moment().subtract(30, 'days').toDate();
       const recentApplicationsPipeline = [
         {

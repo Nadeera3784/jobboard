@@ -6,7 +6,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { httpClient } from '../../../utils';
+import { Intercom } from '../../../utils';
 
 import {
   Form,
@@ -49,7 +49,7 @@ export const EditUserPage = () => {
     if (id !== undefined) {
       try {
         setLoading(true);
-        const response = await httpClient.get(
+        const response = await Intercom.get(
           `${AppConstants.API_URL}/users/${id}`,
         );
         if (response.data.statusCode === HttpStatus.OK) {
@@ -77,7 +77,7 @@ export const EditUserPage = () => {
   const onUpdate = async (params: object, id: string) => {
     try {
       setLoading(true);
-      const response = await httpClient.put(
+      const response = await Intercom.put(
         `${AppConstants.API_URL}/users/${id}`,
         params,
       );

@@ -28,7 +28,7 @@ import {
 } from '../Dialog/DropdownMenu';
 import { Button } from '../Form/Button';
 import { DeleteDialog } from './DeleteDialog';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 
 export const Table: React.FC<TableProps> = ({
   endpoint,
@@ -65,7 +65,7 @@ export const Table: React.FC<TableProps> = ({
   ) => {
     setLoading(true);
     try {
-      const response = await httpClient.post(endpoint, {
+      const response = await Intercom.post(endpoint, {
         order: order,
         columns: columns.filter(column => columnVisibility[column.name]),
         filters: selectedFilters,

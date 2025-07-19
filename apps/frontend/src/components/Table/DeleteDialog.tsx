@@ -10,7 +10,7 @@ import {
   AlertDialogTitle,
 } from '../Dialog/AlertDialog';
 import { DeleteDialogProps } from '../../types';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 import { HttpStatus } from '../../constants';
 
 export const DeleteDialog: React.FC<DeleteDialogProps> = ({
@@ -23,7 +23,7 @@ export const DeleteDialog: React.FC<DeleteDialogProps> = ({
   const onClickDelete = async () => {
     if (action && action.endpoint) {
       try {
-        const response = await httpClient.delete(action.endpoint);
+        const response = await Intercom.delete(action.endpoint);
         if (response.status === HttpStatus.OK) {
           onClose();
           toast.warning(response?.data?.message || 'Deleted Successfully!');

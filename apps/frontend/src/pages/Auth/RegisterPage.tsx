@@ -17,7 +17,7 @@ import { Input } from '../../components/Form/Input';
 import { Button } from '../../components/Form/Button';
 import { HttpStatus, RoleConstants } from '../../constants';
 import { Spinner } from '../../components/Icons';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 
 export const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ export const RegisterPage = () => {
     setLoading(true);
     try {
       const { confirmPassword, terms, ...registerData } = values;
-      const response = await httpClient.post(
+      const response = await Intercom.post(
         'authentication/signup',
         registerData,
       );

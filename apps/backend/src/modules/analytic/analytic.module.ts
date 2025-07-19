@@ -3,7 +3,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 
 import { AnalyticController } from './controllers';
-import { Analytic, AnalyticSchema } from './schemas';
+import { Analytic, AnalyticSchema} from './schemas';
+import { Job, JobSchema, Application, ApplicationSchema} from '../job/schemas';
+import { User, UserSchema} from '../user/schemas';
+import { Category, CategorySchema} from '../category/schemas';
+import { Location, LocationSchema} from '../location/schemas';
 import { AnalyticService } from './services';
 import {
   DeleteAnalyticFeature,
@@ -19,25 +23,25 @@ import { UserModule } from '../user/user.module';
   imports: [
     MongooseModule.forFeature([
       { name: Analytic.name, schema: AnalyticSchema },
-      { name: 'Job', schema: require('../job/schemas/job.schema').JobSchema },
+      { name: Job.name, schema: JobSchema },
       {
-        name: 'Application',
-        schema: require('../job/schemas/application.shema').ApplicationSchema,
+        name: Application.name,
+        schema: ApplicationSchema,
       },
       {
-        name: 'User',
-        schema: require('../user/schemas/user.schema').UserSchema,
+        name: User.name,
+        schema: UserSchema,
       },
       {
-        name: 'Category',
-        schema: require('../category/schemas/category.schema').CategorySchema,
+        name: Category.name,
+        schema: CategorySchema,
       },
       {
-        name: 'Location',
-        schema: require('../location/schemas/location.schema').LocationSchema,
+        name: Location.name,
+        schema: LocationSchema,
       },
     ]),
-    UserModule,
+    UserModule
   ],
   providers: [
     JwtService,

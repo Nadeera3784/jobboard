@@ -12,14 +12,13 @@ export class UpdateJobFeature extends Feature {
 
   public async handle(id: string, updateJobDto: UpdateJobDto, userId?: string) {
     try {
-      // First check if the job exists
+
       const existingJob = await this.jobService.getById(id);
 
       if (!existingJob) {
         return this.responseError(HttpStatus.NOT_FOUND, 'Job not found');
       }
 
-      // If userId is provided (company role), check if they own the job
       if (userId && existingJob.user.toString() !== userId) {
         return this.responseError(
           HttpStatus.FORBIDDEN,

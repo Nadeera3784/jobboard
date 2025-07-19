@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { httpClient } from '../../../utils';
+import { Intercom } from '../../../utils';
 import { HttpStatus } from '../../../constants';
 import { User } from '../../../types';
 import { Table } from '../../../components/Table';
@@ -45,7 +45,7 @@ export const CompanyDetailsPage = () => {
       setError(null);
 
       // Fetch company details
-      const companyResponse = await httpClient.get(`/users/${id}`);
+      const companyResponse = await Intercom.get(`/users/${id}`);
       if (companyResponse.data.statusCode === HttpStatus.OK) {
         setCompany(companyResponse.data.data);
       }

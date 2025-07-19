@@ -27,7 +27,7 @@ import {
 import { CreateCategorySchema } from '../../../schemas';
 import { HttpStatus } from '../../../constants';
 import { useState } from 'react';
-import { httpClient } from '../../../utils';
+import { Intercom } from '../../../utils';
 
 export const CreateLocationModal = ({ refresh }: { refresh: () => void }) => {
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ export const CreateLocationModal = ({ refresh }: { refresh: () => void }) => {
   const onCreate = async (params: object) => {
     try {
       setLoading(true);
-      const response = await httpClient.post(`/locations`, params);
+      const response = await Intercom.post(`/locations`, params);
       if (response.data.statusCode === HttpStatus.OK) {
         form.reset();
         toast.success(response.data.message);

@@ -17,7 +17,7 @@ import { RolesAllowed } from '../../authentication/decorators/role.decorator';
 import { RolesEnum } from '../../user/enums';
 
 @UseGuards(AuthenticationGuard, RoleGuard)
-@Controller('api/v1/security-question')
+@Controller('security-question')
 export class SecurityQuestionController {
   constructor(
     private readonly securityQuestionService: SecurityQuestionService,

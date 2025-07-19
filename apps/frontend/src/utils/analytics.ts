@@ -1,4 +1,4 @@
-import { httpClient } from './HttpClient';
+import { Intercom } from './Intercom';
 
 interface TrackAnalyticsParams {
   jobId: string;
@@ -7,13 +7,11 @@ interface TrackAnalyticsParams {
 
 export const trackAnalytics = async ({ jobId, type }: TrackAnalyticsParams) => {
   try {
-    await httpClient.post('/analytics', {
+    await Intercom.post('/analytics', {
       job: jobId,
       type: type,
     });
-    // Silently track analytics - don't show errors to users
   } catch (error) {
-    // Silently fail - analytics shouldn't break user experience
     console.warn('Analytics tracking failed:', error);
   }
 };

@@ -4,7 +4,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { UserService } from './services/user.service';
 import { UserController } from './controllers/user.controller';
-import { UserSchema, User } from './schemas/user.schema';
+import { UserSchema, User } from './schemas';
 import { DeleteUserFeature } from './features/delete-user.feature';
 import { GetAllUsersFeature } from './features/get-all-users.features';
 import { GetUserByIdFeature } from './features/get-user-by-id.feature';

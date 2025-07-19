@@ -11,7 +11,7 @@ import {
   PlusCircle,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 import { HttpStatus } from '../../constants';
 
 interface CompanyAnalytics {
@@ -37,7 +37,7 @@ export const DashboardPage = () => {
       setLoading(true);
       setError(null);
 
-      const response = await httpClient.get('/analytics/company');
+      const response = await Intercom.get('/analytics/company');
 
       if (response.data.statusCode === HttpStatus.OK) {
         setAnalytics(response.data.data);

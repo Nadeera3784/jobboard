@@ -1,11 +1,16 @@
-import { Injectable, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpStatus, Logger } from '@nestjs/common';
 
 import { Feature } from '../../app/features/feature';
 import { JobService } from '../services/job.service';
 
+
 @Injectable()
 export class GetJobByIdFeature extends Feature {
-  constructor(private readonly jobService: JobService) {
+  private readonly logger = new Logger(GetJobByIdFeature.name);
+
+  constructor(
+    private readonly jobService: JobService,
+  ) {
     super();
   }
 
@@ -14,19 +19,13 @@ export class GetJobByIdFeature extends Feature {
       const job = await this.jobService.getById(id);
 
       if (!job) {
+        this.logger.warn(`Job not found: ${id}`);
         return this.responseError(HttpStatus.NOT_FOUND, 'Job not found');
-      }
-
-      // If userId is provided (company role), check if they own the job
-      if (userId && job.user.toString() !== userId) {
-        return this.responseError(
-          HttpStatus.FORBIDDEN,
-          'You do not have permission to access this job',
-        );
       }
 
       return this.responseSuccess(HttpStatus.OK, null, job);
     } catch (error) {
+      this.logger.error(`Error getting job by ID: ${id}`, error);
       return this.responseError(
         HttpStatus.BAD_REQUEST,
         'Something went wrong, Please try again later',

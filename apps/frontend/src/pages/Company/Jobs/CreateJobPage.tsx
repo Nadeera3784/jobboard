@@ -24,7 +24,7 @@ import {
 import { Input } from '../../../components/Form/Input';
 import { Textarea } from '../../../components/Form/Textarea';
 import { Button } from '../../../components/Form/Button';
-import { httpClient } from '../../../utils';
+import { Intercom } from '../../../utils';
 import { HttpStatus } from '../../../constants';
 import { CreateJobSchema } from '../../../schemas';
 import { FilterOption } from '../../../types';
@@ -57,7 +57,7 @@ export const CreateJobPage = () => {
   const onInit = async () => {
     try {
       setLoading(true);
-      const response = await httpClient.get(`/app/shared/filters`);
+      const response = await Intercom.get(`/app/shared/filters`);
       if (response.data.statusCode === HttpStatus.OK) {
         setLocations(response.data.data.location);
         setCategories(response.data.data.category);
@@ -75,7 +75,7 @@ export const CreateJobPage = () => {
   const onCreate = async (params: object) => {
     try {
       setLoading(true);
-      const response = await httpClient.post(`/jobs`, params);
+      const response = await Intercom.post(`/jobs`, params);
       if (response.data.statusCode === HttpStatus.OK) {
         form.reset();
         toast.success(response.data.message);
@@ -103,7 +103,7 @@ export const CreateJobPage = () => {
   }): Promise<string | null> => {
     try {
       setAiLoading(true);
-      const response = await httpClient.post(
+      const response = await Intercom.post(
         `/jobs/generate-description`,
         params,
       );

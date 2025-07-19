@@ -38,7 +38,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../../../components/Form/Select';
-import { httpClient } from '../../../utils';
+import { Intercom } from '../../../utils';
 
 export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
   const [loading, setLoading] = useState(false);
@@ -60,7 +60,7 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
   const onCreate = async (params: object) => {
     try {
       setLoading(true);
-      const response = await httpClient.post(`/users`, params);
+      const response = await Intercom.post(`/users`, params);
       if (response.data.statusCode === HttpStatus.OK) {
         form.reset();
         toast.success(response.data.message);

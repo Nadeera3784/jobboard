@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { SettingsForm } from '../../components/User/SettingsForm';
 import appStateStore from '../../store';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 import { User, UpdateUserType } from '../../types';
 import { HttpStatus, AppConstants } from '../../constants';
 
@@ -22,7 +22,7 @@ export const SettingsPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await httpClient.put(
+      const response = await Intercom.put(
         `${AppConstants.API_URL}/users/${user._id}`,
         formData,
       );

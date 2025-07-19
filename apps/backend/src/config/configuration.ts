@@ -17,6 +17,7 @@ export default () => ({
   database: {
     mongodb: {
       uri: env.MONGODB_URI,
+      retry_attempts: env.MONGODB_RETRY_ATTEMPTS || 3,
     },
   },
   ai: {

@@ -16,7 +16,7 @@ import { toast } from 'sonner';
 
 import appStateStore from '../../store';
 import { AdminAnalytics } from '../../types';
-import { httpClient } from '../../utils';
+import { Intercom } from '../../utils';
 import { HttpStatus } from '../../constants';
 
 export const DashboardPage = () => {
@@ -30,7 +30,7 @@ export const DashboardPage = () => {
       setLoading(true);
       setError(null);
 
-      const response = await httpClient.get('/analytics/admin');
+      const response = await Intercom.get('/analytics/admin');
 
       if (response.data.statusCode === HttpStatus.OK) {
         setAnalytics(response.data.data);

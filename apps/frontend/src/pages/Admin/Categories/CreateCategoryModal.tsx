@@ -27,7 +27,7 @@ import {
 } from '../../../components/Dialog/Dialog';
 import { CreateCategorySchema } from '../../../schemas';
 import { AppConstants, HttpStatus } from '../../../constants';
-import { httpClient } from '../../../utils';
+import { Intercom } from '../../../utils';
 
 export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
   const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ export const CreateCategoryModal = ({ refresh }: { refresh: () => void }) => {
   const onCreate = async (params: object) => {
     try {
       setLoading(true);
-      const response = await httpClient.post(
+      const response = await Intercom.post(
         `${AppConstants.API_URL}/categories`,
         params,
       );

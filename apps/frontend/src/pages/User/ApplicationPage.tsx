@@ -36,7 +36,7 @@ export const ApplicationPage = () => {
   return (
     <div className="bg-gray-100">
       <div className="container p-4 lg:p-8">
-        <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="flex-1 space-y-4 py-3 pt-6">
           <div className="flex items-center justify-between space-y-2">
             <h2 className="text-3xl font-bold tracking-tight">
               My Applications
@@ -45,15 +45,17 @@ export const ApplicationPage = () => {
           </div>
         </div>
         <div className="space-y-4 lg:space-y-8">
-          <Table
-            endpoint={`${AppConstants.API_URL}/applications/datatable`}
-            per_page={10}
-            columns={columns}
-            has_row_buttons={false}
-            has_multiselect={false}
-            filters={[]}
-            refresh={refresh}
-          />
+          <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">
+            <Table
+              endpoint={`${AppConstants.API_URL}/applications/datatable`}
+              per_page={10}
+              columns={columns}
+              has_row_buttons={false}
+              has_multiselect={false}
+              filters={[]}
+              refresh={refresh}
+            />
+          </div>
         </div>
       </div>
     </div>

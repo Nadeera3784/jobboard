@@ -9,7 +9,6 @@ export const AppLayout = () => {
   const { getCurrentUser } = appStateStore(state => state);
 
   useEffect(() => {
-    // Only fetch user data if there's a JWT token (user is logged in)
     const token = getJWTToken();
     if (token) {
       getCurrentUser();

@@ -75,18 +75,17 @@ export const CompanySettingsPage = () => {
       <div className="container p-4 lg:p-8">
         <div className="flex-1 space-y-4 mb-5">
           <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">
-              Company Settings
-            </h2>
+            <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
             <div className="flex items-center space-x-2"></div>
           </div>
         </div>
-
-        <CompanySettingsForm
-          user={user}
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
-        />
+        <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">
+          <CompanySettingsForm
+            user={user}
+            onSubmit={handleSubmit}
+            isLoading={isLoading}
+          />
+        </div>
       </div>
     </div>
   );

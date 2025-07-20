@@ -4,6 +4,8 @@ import { Link, Outlet, useNavigate } from 'react-router-dom';
 import appStateStore from '../store';
 import { deleteJWTToken } from '../utils';
 import { ProfileCompletion } from '../components/User/ProfileCompletion';
+import Logo from '../assets/images/logo.png';
+import { DashboardFooter } from '../components/Footer';
 
 export const UserLayout = () => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
@@ -50,18 +52,7 @@ export const UserLayout = () => {
               href=""
               className="inline-flex items-center space-x-2 font-bold text-lg tracking-wide text-primary hover:text-gray-500"
             >
-              <svg
-                className="hi-solid hi-cube-transparent inline-block w-6 h-6 text-primary"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M9.504 1.132a1 1 0 01.992 0l1.75 1a1 1 0 11-.992 1.736L10 3.152l-1.254.716a1 1 0 11-.992-1.736l1.75-1zM5.618 4.504a1 1 0 01-.372 1.364L5.016 6l.23.132a1 1 0 11-.992 1.736L4 7.723V8a1 1 0 01-2 0V6a.996.996 0 01.52-.878l1.734-.99a1 1 0 011.364.372zm8.764 0a1 1 0 011.364-.372l1.733.99A1.002 1.002 0 0118 6v2a1 1 0 11-2 0v-.277l-.254.145a1 1 0 11-.992-1.736l.23-.132-.23-.132a1 1 0 01-.372-1.364zm-7 4a1 1 0 011.364-.372L10 8.848l1.254-.716a1 1 0 11.992 1.736L11 10.58V12a1 1 0 11-2 0v-1.42l-1.246-.712a1 1 0 01-.372-1.364zM3 11a1 1 0 011 1v1.42l1.246.712a1 1 0 11-.992 1.736l-1.75-1A1 1 0 012 14v-2a1 1 0 011-1zm14 0a1 1 0 011 1v2a1 1 0 01-.504.868l-1.75 1a1 1 0 11-.992-1.736L16 13.42V12a1 1 0 011-1zm-9.618 5.504a1 1 0 011.364-.372l.254.145V16a1 1 0 112 0v.277l.254-.145a1 1 0 11.992 1.736l-1.735.992a.995.995 0 01-1.022 0l-1.735-.992a1 1 0 01-.372-1.364z"
-                  clipRule="evenodd"
-                />
-              </svg>
+              <img className="inline-block w-6 h-6" alt="logo" src={Logo} />
               <span>JobBoard</span>
             </a>
             <div className="lg:hidden">
@@ -171,7 +162,7 @@ export const UserLayout = () => {
           </div>
         </nav>
 
-        <header
+        <aside
           className={`flex flex-none items-center h-16 bg-white shadow-sm fixed top-0 right-0 left-0 z-30 ${desktopSidebarOpen || mobileSidebarOpen ? (desktopSidebarOpen ? 'lg:pl-64' : 'pl-64') : ''}`}
         >
           <div className="flex justify-between max-w-10xl mx-auto px-4 lg:px-8 w-full">
@@ -305,56 +296,11 @@ export const UserLayout = () => {
               </div>
             </div>
           </div>
-        </header>
-
-        {/* END Page Header */}
-
-        {/* Page Content */}
+        </aside>
         <main className="flex flex-auto flex-col max-w-full pt-16">
           <Outlet />
         </main>
-        {/* END Page Content */}
-
-        {/* Page Footer */}
-        <footer className="flex flex-none items-center bg-white">
-          <div className="text-center flex flex-col md:text-left md:flex-row md:justify-between text-sm max-w-10xl mx-auto px-4 lg:px-8 w-full">
-            <div className="pt-4 pb-1 md:pb-4">
-              <a
-                href="https://google.com"
-                target="_blank"
-                className="font-medium text-gray-600 hover:text-gray-400"
-              >
-                JobBoard
-              </a>{' '}
-              ©
-            </div>
-            <div className="pb-4 pt-1 md:pt-4 inline-flex items-center justify-center">
-              <span>Crafted with</span>
-              <svg
-                className="hi-solid hi-heart inline-block w-4 h-4 mx-1 text-red-600"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>
-                by{' '}
-                <a
-                  href="https://google.com"
-                  target="_blank"
-                  className="font-medium text-gray-600 hover:text-gray-400"
-                >
-                  nadeera
-                </a>
-              </span>
-            </div>
-          </div>
-        </footer>
+        <DashboardFooter />
       </div>
     </>
   );

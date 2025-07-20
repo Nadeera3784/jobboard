@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { SettingsForm } from '../../components/User/SettingsForm';
 import appStateStore from '../../store';
 import { Intercom } from '../../utils';
-import { User, UpdateUserType } from '../../types';
+import { UpdateUserType } from '../../types';
 import { HttpStatus, AppConstants } from '../../constants';
 
 export const SettingsPage = () => {
@@ -23,13 +23,13 @@ export const SettingsPage = () => {
     setIsLoading(true);
     try {
       const response = await Intercom.put(
-        `${AppConstants.API_URL}/users/${user._id}`,
+        `${AppConstants.API_URL}/users/user-settings`,
         formData,
       );
 
       if (response.status === HttpStatus.OK) {
         toast.success('Settings updated successfully!');
-        getCurrentUser(); // Refresh user data
+        getCurrentUser();
       } else {
         toast.error('Failed to update settings');
       }
@@ -53,12 +53,13 @@ export const SettingsPage = () => {
             <div className="flex items-center space-x-2"></div>
           </div>
         </div>
-
-        <SettingsForm
-          user={user}
-          onSubmit={handleSubmit}
-          isLoading={isLoading}
-        />
+        <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex bg-white">
+          <SettingsForm
+            user={user}
+            onSubmit={handleSubmit}
+            isLoading={isLoading}
+          />
+        </div>
       </div>
     </div>
   );

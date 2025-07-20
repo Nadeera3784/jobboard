@@ -548,7 +548,7 @@ export const SettingsForm = ({
                                       type="checkbox"
                                       checked={field.value}
                                       onChange={field.onChange}
-                                      className="focus:ring-black h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                      className="focus:ring-black h-4 w-4 text-black border-gray-300 rounded"
                                     />
                                   </FormControl>
                                 </FormItem>
@@ -581,7 +581,7 @@ export const SettingsForm = ({
                                         type="checkbox"
                                         checked={field.value}
                                         onChange={field.onChange}
-                                        className="focus:ring-black h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                        className="focus:ring-black h-4 w-4 text-black border-gray-300 rounded"
                                       />
                                     </FormControl>
                                   </FormItem>
@@ -614,7 +614,7 @@ export const SettingsForm = ({
                                         type="checkbox"
                                         checked={field.value}
                                         onChange={field.onChange}
-                                        className="focus:ring-black h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                        className="focus:ring-black h-4 w-4 text-black border-gray-300 rounded"
                                       />
                                     </FormControl>
                                   </FormItem>
@@ -670,7 +670,7 @@ export const SettingsForm = ({
                                       value="everything"
                                       checked={field.value === 'everything'}
                                       onChange={field.onChange}
-                                      className="focus:ring-black h-4 w-4 text-indigo-600 border-gray-300"
+                                      className="focus:ring-black h-4 w-4 text-black border-gray-300"
                                     />
                                   </FormControl>
                                 </FormItem>
@@ -696,7 +696,7 @@ export const SettingsForm = ({
                                       value="email"
                                       checked={field.value === 'email'}
                                       onChange={field.onChange}
-                                      className="focus:ring-black h-4 w-4 text-indigo-600 border-gray-300"
+                                      className="focus:ring-black h-4 w-4 text-black border-gray-300"
                                     />
                                   </FormControl>
                                 </FormItem>
@@ -722,7 +722,7 @@ export const SettingsForm = ({
                                       value="nothing"
                                       checked={field.value === 'nothing'}
                                       onChange={field.onChange}
-                                      className="focus:ring-black h-4 w-4 text-indigo-600 border-gray-300"
+                                      className="focus:ring-black h-4 w-4 text-black border-gray-300"
                                     />
                                   </FormControl>
                                 </FormItem>

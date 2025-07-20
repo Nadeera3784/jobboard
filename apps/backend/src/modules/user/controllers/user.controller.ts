@@ -93,7 +93,7 @@ export class UserController {
 
   @Put('/user-settings')
   @Header('Content-Type', 'application/json')
-  @RolesAllowed(RolesEnum.USER, RolesEnum.COMPANY)
+  @RolesAllowed(RolesEnum.USER, RolesEnum.COMPANY, RolesEnum.ADMIN)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'image', maxCount: 1 },

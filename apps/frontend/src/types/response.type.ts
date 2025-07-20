@@ -1,14 +1,13 @@
-export type ApiResponse = {
+export type ApiResponse<T = unknown> = {
+  status: boolean;
   statusCode: number;
+  data: T;
   message: string;
-  data: any;
 };
 
-export type ResponseState = {
+export type ErrorResponse<T = unknown> = {
   status: boolean;
-  loading: boolean;
-  errored: boolean;
-  data: any;
-  status_code: number | null;
+  statusCode: number;
+  data: T;
   message: string;
 };

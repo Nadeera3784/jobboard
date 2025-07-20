@@ -31,25 +31,33 @@ export class SecurityQuestionController {
 
   @Get('/question')
   @Header('Content-Type', 'application/json')
-  public async getUserSecurityQuestion(): Promise<void> {}
+  public async getUserSecurityQuestion(): Promise<void> {
+    // TODO: Implement get user security question logic
+  }
 
   @Post('validate')
   @Header('Content-Type', 'application/json')
   public async validateAnswer(
-    @Body() dto: ValidateSecurityQuestionDto,
-    @Req() request,
-    @Res() response,
-  ): Promise<void> {}
+    @Body() _dto: ValidateSecurityQuestionDto,
+    @Req() _request,
+    @Res() _response,
+  ): Promise<void> {
+    // TODO: Implement validate security question answer logic
+  }
 
   @Post('define')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
   public async defineSecurityQuestion(
-    @Body() dto: SecurityQuestionDto,
-  ): Promise<void> {}
+    @Body() _dto: SecurityQuestionDto,
+  ): Promise<void> {
+    // TODO: Implement define security question logic
+  }
 
   @Delete('undefine')
   @Header('Content-Type', 'application/json')
   @RolesAllowed(RolesEnum.ADMIN)
-  public async unDefineSecurityQuestion(): Promise<void> {}
+  public async unDefineSecurityQuestion(): Promise<void> {
+    // TODO: Implement undefine security question logic
+  }
 }

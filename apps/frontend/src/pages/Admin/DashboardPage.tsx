@@ -20,7 +20,7 @@ import { Intercom } from '../../utils';
 import { HttpStatus } from '../../constants';
 
 export const DashboardPage = () => {
-  const { getCurrentUser, user } = appStateStore(state => state);
+  const { getCurrentUser } = appStateStore(state => state);
   const [analytics, setAnalytics] = useState<AdminAnalytics | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,9 +38,9 @@ export const DashboardPage = () => {
         setError('Failed to fetch analytics');
         toast.error('Failed to load analytics data');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage =
-        error.response?.data?.message || 'Failed to fetch analytics';
+        error instanceof Error ? error.message : 'Failed to fetch analytics';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {

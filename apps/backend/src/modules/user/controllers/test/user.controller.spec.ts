@@ -12,6 +12,7 @@ import {
   GetUserByIdFeature,
   UpdateUserFeature,
 } from '../../features';
+import { UpdateUserSettingsFeature } from '../../features/update-user-settings.feature';
 import { UserController } from '../user.controller';
 import { UserService } from '../../services/user.service';
 import { RolesEnum, UserStatusEnum } from '../../enums';
@@ -63,7 +64,14 @@ describe('controllers/UserController', () => {
         {
           provide: UserService,
           useValue: {
-            updae: jest.fn().mockResolvedValue(mockData),
+            update: jest.fn().mockResolvedValue(mockData),
+          },
+        },
+        UpdateUserSettingsFeature,
+        {
+          provide: UserService,
+          useValue: {
+            updateSettings: jest.fn().mockResolvedValue(mockData),
           },
         },
         DeleteUserFeature,

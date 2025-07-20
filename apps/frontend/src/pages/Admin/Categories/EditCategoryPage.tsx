@@ -29,7 +29,7 @@ import { HttpStatus } from '../../../constants';
 import { Intercom } from '../../../utils';
 
 export const EditCategoryPage = () => {
-  let { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
 
   const [loading, setLoading] = useState(false);
 

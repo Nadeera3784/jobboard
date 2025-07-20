@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { SettingsForm } from '../../components/User/SettingsForm';
 import appStateStore from '../../store';
 import { Intercom } from '../../utils';
-import { UpdateUserType } from '../../types';
+import { UpdateUserSettingsType } from '../../types';
 import { HttpStatus, AppConstants } from '../../constants';
 
 export const SettingsPage = () => {
@@ -14,7 +14,11 @@ export const SettingsPage = () => {
     getCurrentUser();
   }, []);
 
-  const handleSubmit = async (formData: UpdateUserType) => {
+  const handleSubmit = async (
+    formData: UpdateUserSettingsType,
+    imageFile?: File,
+    resumeFile?: File,
+  ) => {
     if (!user?._id) {
       toast.error('User not found');
       return;
@@ -22,10 +26,43 @@ export const SettingsPage = () => {
 
     setIsLoading(true);
     try {
-      const response = await Intercom.put(
-        `${AppConstants.API_URL}/users/user-settings`,
-        formData,
-      );
+      let response;
+
+      if (imageFile || resumeFile) {
+        // Use FormData for file uploads
+        const data = new FormData();
+
+        // Append all form fields
+        Object.entries(formData).forEach(([key, value]) => {
+          if (value !== undefined && value !== null) {
+            data.append(key, value.toString());
+          }
+        });
+
+        // Append files if present
+        if (imageFile) {
+          data.append('image', imageFile);
+        }
+        if (resumeFile) {
+          data.append('resume', resumeFile);
+        }
+
+        response = await Intercom.put(
+          `${AppConstants.API_URL}/users/user-settings`,
+          data,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          },
+        );
+      } else {
+        // Use JSON for text-only updates
+        response = await Intercom.put(
+          `${AppConstants.API_URL}/users/user-settings`,
+          formData,
+        );
+      }
 
       if (response.status === HttpStatus.OK) {
         toast.success('Settings updated successfully!');
@@ -33,11 +70,9 @@ export const SettingsPage = () => {
       } else {
         toast.error('Failed to update settings');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        'Failed to update settings';
+        error instanceof Error ? error.message : 'Failed to update settings';
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);

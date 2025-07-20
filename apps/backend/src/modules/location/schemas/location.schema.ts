@@ -23,5 +23,3 @@ export class Location extends Document {
 }
 
 export const LocationSchema = SchemaFactory.createForClass(Location);
-
-LocationSchema.index({ name: 1 });

@@ -6,11 +6,7 @@ import { useState } from 'react';
 import { AppConstants } from '../../../constants';
 
 export const JobPage = () => {
-  const [refresh, setRefresh] = useState(false);
-
-  const onRefresh = () => {
-    setRefresh(!refresh);
-  };
+  const [refresh] = useState(false);
 
   return (
     <div className="bg-gray-100">

@@ -9,7 +9,7 @@ import { Button } from '../../../components/Form/Button';
 
 export const JobApplicationsPage = () => {
   const { id } = useParams<{ id: string }>();
-  const [refresh, setRefresh] = useState(false);
+  const [refresh] = useState(false);
 
   const columns: ColumnProps[] = [
     {

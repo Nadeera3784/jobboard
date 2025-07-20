@@ -29,7 +29,7 @@ import { UpdateUserSchema } from '../../../schemas';
 import { HttpStatus, AppConstants } from '../../../constants';
 
 export const EditUserPage = () => {
-  let { id } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
 
   const [loading, setLoading] = useState(false);
 
@@ -185,7 +185,9 @@ export const EditUserPage = () => {
                       <FormField
                         control={form.control}
                         name="image"
-                        render={({ field: { value, onChange, ...field } }) => (
+                        render={({
+                          field: { value: _value, onChange, ...field },
+                        }) => (
                           <FormItem>
                             <FormLabel>Avatar</FormLabel>
                             <FormControl>

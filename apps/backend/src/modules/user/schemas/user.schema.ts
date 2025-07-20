@@ -138,17 +138,18 @@ export class User extends Document {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
-UserSchema.pre<User>('save', function (next: Function) {
-  const user = this;
-  if (user.password) {
-    bcrypt.genSalt(10, function (err, salt) {
+UserSchema.pre<User>('save', function (next: (err?: Error) => void) {
+  if (this.password) {
+    bcrypt.genSalt(10, (err, salt) => {
       if (err) return next(err);
-      bcrypt.hash(user.password, salt, (err, hash) => {
+      bcrypt.hash(this.password, salt, (err, hash) => {
         if (err) return next(err);
-        user.password = hash;
+        this.password = hash;
         next();
       });
     });
+  } else {
+    next();
   }
 });
 

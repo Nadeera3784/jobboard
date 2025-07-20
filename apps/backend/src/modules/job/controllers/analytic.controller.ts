@@ -1,6 +1,4 @@
 import { Controller } from '@nestjs/common';
 
 @Controller('analytics')
-export class AnalyticController {
-  constructor() {}
-}
+export class AnalyticController {}

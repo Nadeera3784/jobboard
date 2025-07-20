@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Query } from 'mongoose';
+import { Model } from 'mongoose';
 import { ConfigService } from '@nestjs/config';
 
 import { SecurityQuestionService } from './security-question.service';

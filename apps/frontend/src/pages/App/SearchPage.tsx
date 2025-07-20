@@ -173,7 +173,7 @@ export const SearchPage = () => {
       });
     }
   };
-  let jobid = new URLSearchParams(window.location.search).get('jobid');
+  const jobid = new URLSearchParams(window.location.search).get('jobid');
 
   useEffect(() => {
     process('app/shared/filters');

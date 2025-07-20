@@ -59,9 +59,9 @@ export const DashboardPage = () => {
         setError('Failed to fetch analytics');
         toast.error('Failed to load analytics data');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage =
-        error.response?.data?.message || 'Failed to fetch analytics';
+        error instanceof Error ? error.message : 'Failed to fetch analytics';
       setError(errorMessage);
       toast.error(errorMessage);
     } finally {

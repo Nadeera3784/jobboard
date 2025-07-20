@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { Intercom } from '../utils';
 import { User } from '../types';
+import { Intercom } from '../utils';
 
 interface StateStore {
   user: User | null;
@@ -8,23 +8,30 @@ interface StateStore {
   getCurrentUser: () => Promise<void>;
 }
 
-const stateStore = (set: any): StateStore => ({
+type SetFunction = (
+  partial:
+    | StateStore
+    | Partial<StateStore>
+    | ((state: StateStore) => StateStore | Partial<StateStore>),
+  replace?: boolean | undefined,
+) => void;
+
+const stateStore = (set: SetFunction): StateStore => ({
   user: null,
   setCurrentUser: (payload: User) => {
-    set((state: any) => ({ user: payload }));
+    set(() => ({ user: payload }));
   },
   getCurrentUser: async () => {
     try {
       const response = await Intercom.get('authentication/me');
       set({ user: response.data.data });
     } catch (error) {
-      // Silently handle errors - user might not be logged in
-      // The HTTP interceptor will handle redirects if needed
+      console.error('Failed to get current user:', error);
       set({ user: null });
     }
   },
 });
 
-const appStateStore = create(stateStore);
+const appStateStore = create<StateStore>(stateStore);
 
 export default appStateStore;

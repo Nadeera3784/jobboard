@@ -10,5 +10,8 @@ export class UserLoginListener {
     eventName: USER_LOGIN_EVENT,
     priority: 90,
   })
-  async onUserLogInEvent(data: UserLoginEvent): Promise<void> {}
+  async onUserLogInEvent(_data: UserLoginEvent): Promise<void> {
+    // TODO: Implement user login event handling logic
+    // This could include logging, analytics, or other post-login actions
+  }
 }

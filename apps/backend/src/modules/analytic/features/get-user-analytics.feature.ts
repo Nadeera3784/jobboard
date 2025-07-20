@@ -112,8 +112,10 @@ export class GetUserAnalyticsFeature extends Feature {
           completedFields,
           totalFields,
           missingFields: Object.entries(profileFields)
-            .filter(([_, completed]) => !completed)
-            .map(([field, _]) => field.replace('has', '').toLowerCase()),
+            .filter(([_field, completed]) => !completed)
+            .map(([field, _completed]) =>
+              field.replace('has', '').toLowerCase(),
+            ),
         },
         latestApplications: latestApplications.map((app) => ({
           jobTitle: app.job?.name || 'Unknown Job',

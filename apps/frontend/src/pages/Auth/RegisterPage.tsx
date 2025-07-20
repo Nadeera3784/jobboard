@@ -39,11 +39,12 @@ export const RegisterPage = () => {
   const onSubmit = async (values: z.infer<typeof RegisterSchema>) => {
     setLoading(true);
     try {
-      const { confirmPassword, terms, ...registerData } = values;
-      const response = await Intercom.post(
-        'authentication/signup',
-        registerData,
-      );
+      const { name, email, password } = values;
+      const response = await Intercom.post('authentication/signup', {
+        name,
+        email,
+        password,
+      });
 
       if (response.status === HttpStatus.OK) {
         toast.success(
@@ -51,10 +52,11 @@ export const RegisterPage = () => {
         );
         navigate('/auth');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage =
-        error.response?.data?.message ||
-        'Registration failed. Please try again.';
+        error instanceof Error
+          ? error.message
+          : 'Registration failed. Please try again.';
       toast.error(errorMessage);
     } finally {
       setLoading(false);

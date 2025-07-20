@@ -4,7 +4,7 @@ import { ColumnProps } from '../../types';
 import { AppConstants } from '../../constants';
 
 export const ApplicationPage = () => {
-  const [refresh, setRefresh] = useState(false);
+  const [refresh] = useState(false);
 
   const columns: ColumnProps[] = [
     {

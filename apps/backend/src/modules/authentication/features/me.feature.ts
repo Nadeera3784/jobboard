@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpStatus } from '@nestjs/common';
 
 import { Feature } from '../../app/features/feature';
 import { UserService } from '../../user/services/user.service';

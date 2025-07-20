@@ -5,7 +5,7 @@ import { Star } from 'lucide-react';
 import UserAvatar from '../../assets/images/user_1.jpg';
 
 const Testimonial = () => {
-  var settings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,

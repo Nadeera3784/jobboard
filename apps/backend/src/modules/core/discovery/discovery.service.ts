@@ -21,7 +21,7 @@ export class DiscoveryService {
   ) {
     const modulesMap = [...this.modulesContainer.entries()];
     this.discoveredControllers = Promise.all(
-      flatMap(modulesMap, ([key, nestModule]) => {
+      flatMap(modulesMap, ([_key, nestModule]) => {
         const components = [...nestModule.routes.values()];
         return components
           .filter((component) => component.scope !== Scope.REQUEST)
@@ -29,7 +29,7 @@ export class DiscoveryService {
       }),
     );
     this.discoveredProviders = Promise.all(
-      flatMap(modulesMap, ([key, nestModule]) => {
+      flatMap(modulesMap, ([_key, nestModule]) => {
         const components = [...nestModule.components.values()];
         return components
           .filter((component) => component.scope !== Scope.REQUEST)
@@ -62,7 +62,7 @@ export class DiscoveryService {
   ): Promise<DiscoveredMethod[]> {
     const controllersWithMeta = (
       await this.controllersWithMetaAtKey(metaKey)
-    ).filter((x) => metaFilter(x.meta));
+    ).filter((_x) => metaFilter(_x.meta));
     const methodsFromDecoratedControllers = flatMap(
       controllersWithMeta,
       (controller) => {
@@ -74,7 +74,7 @@ export class DiscoveryService {
     );
     const decoratedMethods = (
       await this.controllerMethodsWithMetaAtKey(metaKey)
-    ).filter((x) => metaFilter(x.meta));
+    ).filter((_x) => metaFilter(_x.meta));
     return uniqBy(
       [...methodsFromDecoratedControllers, ...decoratedMethods],
       (x) => x.discoveredMethod.handler,

@@ -115,7 +115,7 @@ export const CreateJobPage = () => {
         toast.warning('Failed to generate job description');
         return null;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error generating job description:', error);
       toast.warning(
         error.response?.data?.message ||

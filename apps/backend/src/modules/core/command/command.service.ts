@@ -3,7 +3,7 @@ import * as yargs from 'yargs';
 
 @Injectable()
 export class CommandService {
-  private _yargs?: yargs.Argv<{}>;
+  private _yargs?: yargs.Argv<object>;
   private running = false;
 
   initialize(metadatas: yargs.CommandModule[]): void {
@@ -30,7 +30,7 @@ export class CommandService {
     process.exit(code);
   }
 
-  get yargs(): yargs.Argv<{}> {
+  get yargs(): yargs.Argv<object> {
     if (this._yargs === undefined) {
       this._yargs = yargs;
     }

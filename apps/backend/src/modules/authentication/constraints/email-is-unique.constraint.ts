@@ -13,8 +13,11 @@ import { UserService } from '../../user/services/user.service';
 @Injectable()
 export class EmailIsUnique implements ValidatorConstraintInterface {
   constructor(private readonly userService: UserService) {}
-  public async validate(email: string): Promise<boolean> {
-    return !(await this.userService.getByEmail(email));
+  public async validate(
+    value: any,
+    _args: ValidationArguments,
+  ): Promise<boolean> {
+    return !(await this.userService.getByEmail(value));
   }
 
   public defaultMessage(_args: ValidationArguments): string {

@@ -9,8 +9,11 @@ import { pwnedPassword } from 'hibp';
 
 @ValidatorConstraint({ async: true })
 class PasswordNotPwned implements ValidatorConstraintInterface {
-  public async validate(password: string): Promise<boolean> {
-    return !(await pwnedPassword(password));
+  public async validate(
+    value: any,
+    _args: ValidationArguments,
+  ): Promise<boolean> {
+    return !(await pwnedPassword(value));
   }
 
   public defaultMessage(_args: ValidationArguments): string {

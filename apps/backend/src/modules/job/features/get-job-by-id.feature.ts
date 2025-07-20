@@ -11,7 +11,7 @@ export class GetJobByIdFeature extends Feature {
     super();
   }
 
-  public async handle(id: string, userId?: string) {
+  public async handle(id: string, _userId?: string) {
     try {
       const job = await this.jobService.getById(id);
 

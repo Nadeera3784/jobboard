@@ -59,11 +59,9 @@ export const CompanySettingsPage = () => {
       } else {
         toast.error('Failed to update settings');
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        'Failed to update settings';
+        error instanceof Error ? error.message : 'Failed to update settings';
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);

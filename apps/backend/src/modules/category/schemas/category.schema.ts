@@ -23,5 +23,3 @@ export class Category extends Document {
 }
 
 export const CategorySchema = SchemaFactory.createForClass(Category);
-
-CategorySchema.index({ name: 1 });

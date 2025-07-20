@@ -46,7 +46,7 @@ export class FilesystemService {
       ContentType: mimeType ? mimeType : this.getMimeFromExtension(file),
       ACL: 'public-read',
     } as PutObjectRequest;
-    const reponse = await this.client.upload(params).promise();
+    await this.client.upload(params).promise();
     return { url: this.url(file), path: file };
   }
 

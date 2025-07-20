@@ -226,7 +226,9 @@ export const CreateUserModal = ({ refresh }: { refresh: () => void }) => {
                 <FormField
                   control={form.control}
                   name="image"
-                  render={({ field: { value, onChange, ...fieldProps } }) => (
+                  render={({
+                    field: { value: _value, onChange, ...fieldProps },
+                  }) => (
                     <FormItem>
                       <FormLabel>Avatar</FormLabel>
                       <FormControl>

@@ -15,7 +15,7 @@ export class UserUpdatedListener {
   })
   async onUserUpdateddEvent(event: UserUpdatedEvent) {
     if (event.type === USER_DATE_SYNC) {
-      await this.userService.refreshUpdatedDate(event.id);
+      await this.userService.refreshUpdatedDate(event.id.toString());
     }
   }
 }

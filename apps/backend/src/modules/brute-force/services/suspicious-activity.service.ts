@@ -214,7 +214,7 @@ export class SuspiciousActivityService {
     if (userId) {
       query.user = userId;
     }
-    const promises: Array<Query<number, any>> = [
+    const promises: Promise<number>[] = [
       this.loginAttemptModel.countDocuments(query),
     ];
     if (userId) {
@@ -359,7 +359,7 @@ export class SuspiciousActivityService {
     if (userId) {
       query.user = userId;
     }
-    const promises: Array<Query<number, any>> = [
+    const promises: Promise<number>[] = [
       this.securityQuestionAttemptModel.countDocuments(query),
     ];
 

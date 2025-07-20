@@ -33,7 +33,7 @@ export class VerificationTokenService {
     const existingToken = await this.getByEmail(email);
 
     if (existingToken) {
-      await this.delete(existingToken._id);
+      await this.delete(existingToken._id.toString());
     }
 
     return await this.create({

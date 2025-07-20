@@ -1,4 +1,6 @@
+import { ObjectId } from "mongoose";
+
 export class UserUpdatedEvent {
-  id: string;
+  id: ObjectId;
   type: string;
 }

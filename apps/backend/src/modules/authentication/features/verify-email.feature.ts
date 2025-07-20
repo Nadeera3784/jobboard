@@ -36,8 +36,8 @@ export class VerifyEmailFeature extends Feature {
           'Email does not exist!',
         );
       }
-      await this.userService.updateEmailVerified(existingUser._id);
-      await this.verificationTokenService.delete(existingToken._id);
+      await this.userService.updateEmailVerified(existingUser._id.toString());
+      await this.verificationTokenService.delete(existingToken._id.toString());
       return this.responseSuccess(HttpStatus.OK, 'Email verified!');
     } catch (error) {
       return this.responseError(

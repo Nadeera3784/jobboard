@@ -20,6 +20,7 @@ import { RequestFingerprint } from '../../app/interfaces/request-fingerprint.int
 import { RequestParser } from '../../app/services/request-parser.service';
 import { UserLoginEvent } from '../events/user-login-event';
 import { USER_LOGIN_EVENT } from '../constants';
+import { ObjectId } from 'mongoose';
 
 @Injectable()
 export class SignInFeature extends Feature {
@@ -78,20 +79,20 @@ export class SignInFeature extends Feature {
 
         const accessToken = this.jwtService.sign(payload);
 
-        await this.dispatchDateSyncEvent(user._id);
+        await this.dispatchDateSyncEvent(user._id as ObjectId);
+
+        await this.suspiciousActivityService.removeUserFromBlockList(user._id.toString());
+
+        await this.suspiciousActivityService.clearLoginFailures(user._id.toString(), null);
 
         return this.responseSuccess(HttpStatus.OK, 'Login successfully', {
           type: 'Bearer',
           access_token: accessToken,
           redirect_identifier: user.role,
         });
+      } else {
+        return this.responseError(HttpStatus.UNAUTHORIZED, 'Invalid credentials');
       }
-
-      await this.suspiciousActivityService.removeUserFromBlockList(user._id);
-
-      await this.suspiciousActivityService.clearLoginFailures(user._id, null);
-
-      return this.responseError(HttpStatus.UNAUTHORIZED, 'Invalid credentials');
     } catch (error) {
       return this.responseError(
         HttpStatus.BAD_REQUEST,
@@ -112,7 +113,7 @@ export class SignInFeature extends Feature {
     this.eventDispatcher.dispatch(USER_REGISTERED, event);
   }
 
-  private async dispatchDateSyncEvent(id: string) {
+  private async dispatchDateSyncEvent(id: ObjectId) {
     const event: UserUpdatedEvent = { type: USER_DATE_SYNC, id: id };
     this.eventDispatcher.dispatch(USER_UPDATED, event);
   }

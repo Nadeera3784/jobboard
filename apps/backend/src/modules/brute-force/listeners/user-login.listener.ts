@@ -72,7 +72,7 @@ export class UserLoginListener {
     let userEmail: string = null;
     const user: User = data.user;
     if (user) {
-      userId = user._id;
+      userId = user._id.toString();
       userEmail = user.email;
     }
     return { userId, userEmail };

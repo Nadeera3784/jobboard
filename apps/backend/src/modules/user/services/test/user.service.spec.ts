@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { Model } from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getModelToken } from '@nestjs/mongoose';
 
@@ -170,7 +170,7 @@ describe('user/services/UserService', () => {
     const password = 'password';
     jest.spyOn(userModel, 'findByIdAndUpdate').mockResolvedValue(mockData);
     await expect(
-      userService.updatePassword(id, password),
+      userService.updatePassword(id as any as ObjectId, password),
     ).resolves.toMatchObject(mockData);
   });
 
@@ -178,7 +178,7 @@ describe('user/services/UserService', () => {
     const id = '';
     const password = 'password';
     jest.spyOn(userModel, 'findByIdAndUpdate').mockRejectedValue(null);
-    await expect(userService.updatePassword(id, password)).rejects.toBeFalsy();
+    await expect(userService.updatePassword(id as any as ObjectId, password)).rejects.toBeFalsy();
   });
 
   it('delete success', async () => {

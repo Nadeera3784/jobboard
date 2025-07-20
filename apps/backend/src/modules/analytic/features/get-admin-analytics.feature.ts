@@ -21,7 +21,6 @@ export class GetAdminAnalyticsFeature extends Feature {
 
   public async handle() {
     try {
-
       const totalUsers = await this.userModel.countDocuments({
         role: RolesEnum.USER,
       });

@@ -18,7 +18,6 @@ export class GetCompanyAnalyticsFeature extends Feature {
 
   public async handle(companyId: string) {
     try {
-
       if (!Types.ObjectId.isValid(companyId)) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,

@@ -3,14 +3,11 @@ import { Injectable, HttpStatus, Logger } from '@nestjs/common';
 import { Feature } from '../../app/features/feature';
 import { JobService } from '../services/job.service';
 
-
 @Injectable()
 export class GetJobByIdFeature extends Feature {
   private readonly logger = new Logger(GetJobByIdFeature.name);
 
-  constructor(
-    private readonly jobService: JobService,
-  ) {
+  constructor(private readonly jobService: JobService) {
     super();
   }
 

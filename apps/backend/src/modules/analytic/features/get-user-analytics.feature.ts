@@ -16,7 +16,6 @@ export class GetUserAnalyticsFeature extends Feature {
 
   public async handle(userId: string) {
     try {
- 
       if (!Types.ObjectId.isValid(userId)) {
         return this.responseError(
           HttpStatus.BAD_REQUEST,
@@ -36,7 +35,6 @@ export class GetUserAnalyticsFeature extends Feature {
       const totalApplications = await this.applicationModel.countDocuments({
         user: userObjectId,
       });
-
 
       const applicationsByStatus = await this.applicationModel.aggregate([
         {

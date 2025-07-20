@@ -3,11 +3,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { JwtService } from '@nestjs/jwt';
 
 import { AnalyticController } from './controllers';
-import { Analytic, AnalyticSchema} from './schemas';
-import { Job, JobSchema, Application, ApplicationSchema} from '../job/schemas';
-import { User, UserSchema} from '../user/schemas';
-import { Category, CategorySchema} from '../category/schemas';
-import { Location, LocationSchema} from '../location/schemas';
+import { Analytic, AnalyticSchema } from './schemas';
+import { Job, JobSchema, Application, ApplicationSchema } from '../job/schemas';
+import { User, UserSchema } from '../user/schemas';
+import { Category, CategorySchema } from '../category/schemas';
+import { Location, LocationSchema } from '../location/schemas';
 import { AnalyticService } from './services';
 import {
   DeleteAnalyticFeature,
@@ -41,7 +41,7 @@ import { UserModule } from '../user/user.module';
         schema: LocationSchema,
       },
     ]),
-    UserModule
+    UserModule,
   ],
   providers: [
     JwtService,

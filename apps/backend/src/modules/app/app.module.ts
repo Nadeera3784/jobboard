@@ -34,7 +34,9 @@ import { AnalyticModule } from '../analytic/analytic.module';
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         uri: configService.get<string>('database.mongodb.uri'),
-        retryAttempts: configService.get<number>('database.mongodb.retry_attempts'),
+        retryAttempts: configService.get<number>(
+          'database.mongodb.retry_attempts',
+        ),
       }),
       inject: [ConfigService],
     }),
@@ -68,7 +70,9 @@ import { AnalyticModule } from '../analytic/analytic.module';
       useFactory: (configService: ConfigService) => {
         return {
           accessKeyId: configService.get<string>('filesystem.disks.s3.key'),
-          secretAccessKey: configService.get<string>('filesystem.disks.s3.secret'),
+          secretAccessKey: configService.get<string>(
+            'filesystem.disks.s3.secret',
+          ),
           region: configService.get<string>('filesystem.disks.s3.region'),
           bucket: configService.get<string>('filesystem.disks.s3.bucket'),
         };

@@ -12,7 +12,6 @@ export class UpdateJobFeature extends Feature {
 
   public async handle(id: string, updateJobDto: UpdateJobDto, userId?: string) {
     try {
-
       const existingJob = await this.jobService.getById(id);
 
       if (!existingJob) {

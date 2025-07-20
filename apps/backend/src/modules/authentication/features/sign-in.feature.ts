@@ -81,9 +81,14 @@ export class SignInFeature extends Feature {
 
         await this.dispatchDateSyncEvent(user._id as ObjectId);
 
-        await this.suspiciousActivityService.removeUserFromBlockList(user._id.toString());
+        await this.suspiciousActivityService.removeUserFromBlockList(
+          user._id.toString(),
+        );
 
-        await this.suspiciousActivityService.clearLoginFailures(user._id.toString(), null);
+        await this.suspiciousActivityService.clearLoginFailures(
+          user._id.toString(),
+          null,
+        );
 
         return this.responseSuccess(HttpStatus.OK, 'Login successfully', {
           type: 'Bearer',
@@ -91,7 +96,10 @@ export class SignInFeature extends Feature {
           redirect_identifier: user.role,
         });
       } else {
-        return this.responseError(HttpStatus.UNAUTHORIZED, 'Invalid credentials');
+        return this.responseError(
+          HttpStatus.UNAUTHORIZED,
+          'Invalid credentials',
+        );
       }
     } catch (error) {
       return this.responseError(

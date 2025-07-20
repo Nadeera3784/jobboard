@@ -19,11 +19,9 @@ export class UserService extends ModelService<User> {
     super();
   }
 
-
   public async getAll() {
     return await this.userModel.find();
   }
-
 
   public async create(createUserDto: CreateUserDto) {
     return await this.userModel.create(createUserDto);
@@ -33,13 +31,11 @@ export class UserService extends ModelService<User> {
     return await this.userModel.findById(id);
   }
 
- 
   public async getByEmail(email: string) {
     return await this.userModel.findOne({
       email: email,
     });
   }
-
 
   public async update(id: string, updateUserDto: UpdateUserDto) {
     return await this.userModel.findByIdAndUpdate({ _id: id }, updateUserDto, {
@@ -122,7 +118,6 @@ export class UserService extends ModelService<User> {
         batchSize: batchSize,
       });
   }
-
 
   public async delete(id: string) {
     return await this.userModel.deleteOne({

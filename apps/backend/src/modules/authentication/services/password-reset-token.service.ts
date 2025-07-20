@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, ObjectId} from 'mongoose';
+import { Model, ObjectId } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { PasswordResetToken } from '../schemas/passwordResetToken.schema';

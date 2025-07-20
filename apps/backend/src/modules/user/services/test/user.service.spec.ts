@@ -178,7 +178,9 @@ describe('user/services/UserService', () => {
     const id = '';
     const password = 'password';
     jest.spyOn(userModel, 'findByIdAndUpdate').mockRejectedValue(null);
-    await expect(userService.updatePassword(id as any as ObjectId, password)).rejects.toBeFalsy();
+    await expect(
+      userService.updatePassword(id as any as ObjectId, password),
+    ).rejects.toBeFalsy();
   });
 
   it('delete success', async () => {

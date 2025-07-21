@@ -4,7 +4,7 @@ The JobBoard is a robust platform designed to streamline the process of job mana
 
 ![Backend CI](https://github.com/Nadeera3784/jobboard/actions/workflows/main.yml/badge.svg?branch=main)
 
-![Landing Page](https://github.com/Nadeera3784/jobboard/screenshots/1.png)
+![Landing Page](https://raw.githubusercontent.com/Nadeera3784/jobboard/master/screenshots/1.png)
 
 ## Features
 

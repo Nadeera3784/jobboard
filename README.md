@@ -126,6 +126,14 @@ $ npm install
 $ npm run dev
 ```
 
+## Job List
 ![2](https://raw.githubusercontent.com/Nadeera3784/jobboard/master/screenshots/2.png)
+
+## User Dasboard
 ![3](https://raw.githubusercontent.com/Nadeera3784/jobboard/master/screenshots/3.png)
+
+## Company Dashboard
 ![4](https://raw.githubusercontent.com/Nadeera3784/jobboard/master/screenshots/4.png)
+
+## Admin Dashboard
+![4](https://raw.githubusercontent.com/Nadeera3784/jobboard/master/screenshots/5.png)

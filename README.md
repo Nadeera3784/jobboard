@@ -125,3 +125,7 @@ $ npm install
 # development
 $ npm run dev
 ```
+
+![2](https://raw.githubusercontent.com/Nadeera3784/jobboard/master/screenshots/2.png)
+![3](https://raw.githubusercontent.com/Nadeera3784/jobboard/master/screenshots/3.png)
+![4](https://raw.githubusercontent.com/Nadeera3784/jobboard/master/screenshots/4.png)

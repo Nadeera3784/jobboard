@@ -38,24 +38,14 @@ export class DiscoveryService {
     );
   }
 
-  /**
-   * Discovers all providers in a Nest App that match a filter
-   *
-   * @param filter
-   */
+
   async providers(
     filter: (component: DiscoveredClass) => boolean,
   ): Promise<DiscoveredClass[]> {
     return (await this.discoveredProviders).filter((x) => filter(x));
   }
 
-  /**
-   * Discovers all controller methods that either directly have a certain meta key attached to them
-   * or belong to a controller that has the same meta key attached to them
-   *
-   * @param metaKey The meta key to scan for
-   * @param metaFilter An optional filter for the contents of the meta object
-   */
+
   async methodsAndControllerMethodsWithMetaAtKey(
     metaKey: string,
     metaFilter: (meta: any) => boolean = (meta) => true,
@@ -81,11 +71,6 @@ export class DiscoveryService {
     );
   }
 
-  /**
-   * Discovers all providers in an App that have meta at a specific key and returns the provider(s) and associated meta
-   *
-   * @param metaKey The metakey to scan for
-   */
   async providersWithMetaAtKey<T>(
     metaKey: string,
   ): Promise<Array<DiscoveredClassWithMeta<T>>> {
@@ -96,23 +81,13 @@ export class DiscoveryService {
     }));
   }
 
-  /**
-   * Discovers all controllers in a Nest App that match a filter
-   *
-   * @param filter
-   */
   async controllers(
     filter: (component: DiscoveredClass) => boolean,
   ): Promise<DiscoveredClass[]> {
     return (await this.discoveredControllers).filter((x) => filter(x));
   }
 
-  /**
-   * Discovers all controllers in an App that have meta at a specific key
-   * and returns the controller(s) and associated meta
-   *
-   * @param metaKey The metakey to scan for
-   */
+
   async controllersWithMetaAtKey<T>(
     metaKey: string,
   ): Promise<Array<DiscoveredClassWithMeta<T>>> {
@@ -123,12 +98,6 @@ export class DiscoveryService {
     }));
   }
 
-  /**
-   * Discovers all method handlersMapping matching a particular metakey from a Provider or Controller
-   *
-   * @param component
-   * @param metaKey
-   */
   classMethodsWithMetaAtKey(
     component: DiscoveredClass,
     metaKey: string,
@@ -145,12 +114,6 @@ export class DiscoveryService {
       .filter((x) => !!x.meta);
   }
 
-  /**
-   * Discovers all the methods that exist on providers in a Nest App that contain metadata under a specific key
-   *
-   * @param metaKey The metakey to scan for
-   * @param providerFilter A predicate used to limit the providers being scanned. Defaults to all providers
-   */
   async providerMethodsWithMetaAtKey(
     metaKey: string,
     providerFilter: (component: DiscoveredClass) => boolean = (x) => true,
@@ -161,12 +124,6 @@ export class DiscoveryService {
     );
   }
 
-  /**
-   * Discovers all the methods that exist on controllers in a Nest App that contain metadata under a specific key
-   *
-   * @param metaKey The metakey to scan for
-   * @param controllerFilter A predicate used to limit the controllers being scanned. Defaults to all providers
-   */
   async controllerMethodsWithMetaAtKey(
     metaKey: string,
     controllerFilter: (component: DiscoveredClass) => boolean = (x) => true,
@@ -229,13 +186,7 @@ export class DiscoveryService {
       return Reflect.getMetadata(key, component.injectType);
     }
   }
-
-  /**
-   * A filter that can be used to search for DiscoveredClasses in an App that contain meta attached to a
-   * certain key
-   *
-   * @param key The meta key to search for
-   */
+  
   private withMetaAtKey = (key: string) => (component: DiscoveredClass) => {
     const metaTargets = [
       component.instance ? component.instance.constructor : null,

@@ -71,10 +71,8 @@ export class SignInFeature extends Feature {
 
       if (isValidPassword) {
         if (user.is_two_factor_authentication_enabled) {
-          // Generate and send 2FA code
           await this.secondFactorService.generate(user);
 
-          // Create a temporary session identifier for 2FA validation
           const tempPayload = { userId: user._id.toString(), temp: true };
           const tempToken = this.jwtService.sign(tempPayload, {
             expiresIn: '10m',

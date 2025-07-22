@@ -16,8 +16,8 @@ import {
   ForgotPasswordDto,
   SignInDto,
   SignupDto,
-  AuthenticateTwoFactorTokenDto,
 } from '../dtos';
+
 import {
   MeFeature,
   ResetPasswordFeature,
@@ -25,9 +25,6 @@ import {
   VerifyEmailFeature,
   SignInFeature,
   SignUpFeature,
-  GenerateTwoFactorSecretFeature,
-  GenerateTwoFactorTokenFeature,
-  SignInTwoFactorTokenFeature,
 } from '../features';
 import { AuthenticationGuard } from '../guards/authentication.guard';
 
@@ -38,9 +35,6 @@ export class AuthenticationController {
     private readonly verifyEmailFeature: VerifyEmailFeature,
     private readonly forgotPasswordFeature: ForgotPasswordFeature,
     private readonly resetPasswordFeature: ResetPasswordFeature,
-    private readonly generateTwoFactorSecretFeature: GenerateTwoFactorSecretFeature,
-    private readonly generateTwoFactorTokenFeature: GenerateTwoFactorTokenFeature,
-    private readonly signInTwoFactorTokenFeature: SignInTwoFactorTokenFeature,
     private readonly signInFeature: SignInFeature,
     private readonly meFeature: MeFeature,
   ) {}
@@ -106,40 +100,6 @@ export class AuthenticationController {
     const { status, response: featureUpResponse } = await this.meFeature.handle(
       request.user.id,
     );
-    return response.status(status).json(featureUpResponse);
-  }
-
-  @Post('2fa/token')
-  @Header('Content-Type', 'application/json')
-  @UseGuards(AuthenticationGuard)
-  async generateToken(@Res() response: Response, @Req() request) {
-    const { status, response: featureUpResponse } =
-      await this.generateTwoFactorTokenFeature.handle(request.user.id);
-    return response.status(status).json(featureUpResponse);
-  }
-
-  @Post('2fa/generate')
-  @Header('Content-Type', 'application/json')
-  @UseGuards(AuthenticationGuard)
-  async generateSecret(@Res() response: Response, @Req() request) {
-    const { status, response: featureUpResponse } =
-      await this.generateTwoFactorSecretFeature.handle(request.user.id);
-    return response.status(status).json(featureUpResponse);
-  }
-
-  @Post('2fa/authenticate')
-  @Header('Content-Type', 'application/json')
-  @UseGuards(AuthenticationGuard)
-  async authenticate(
-    @Res() response: Response,
-    @Req() request,
-    @Body() authenticateTwoFactorTokenDto: AuthenticateTwoFactorTokenDto,
-  ) {
-    const { status, response: featureUpResponse } =
-      await this.signInTwoFactorTokenFeature.handle(
-        request.user.id,
-        authenticateTwoFactorTokenDto,
-      );
     return response.status(status).json(featureUpResponse);
   }
 }

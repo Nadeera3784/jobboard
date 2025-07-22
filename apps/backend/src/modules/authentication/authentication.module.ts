@@ -10,18 +10,15 @@ import {
   VerifyEmailFeature,
   SignUpFeature,
   ForgotPasswordFeature,
-  GenerateTwoFactorSecretFeature,
-  GenerateTwoFactorTokenFeature,
-  SignInTwoFactorTokenFeature,
 } from './features';
+
 import {
   PasswordResetTokenSchema,
   PasswordResetToken,
   VerificationTokenSchema,
   VerificationToken,
-  twoFactorAuthenticationToken,
-  TwoFactorAuthenticationTokenSchema,
 } from './schemas';
+
 import { UserModule } from '../user/user.module';
 import { UserRegisterdListener } from './listeners/user-registerd.listener';
 import { ResetPasswordListener } from './listeners/reset-password.listener';
@@ -35,17 +32,13 @@ import { UserUpdatedListener } from '../user/listeners/user-updated.listener';
 import { AppModule } from '../app/app.module';
 import { BruteForceModule } from '../brute-force/brute-force.module';
 import { EmailIsUnique } from './constraints';
-import { TwoFactorAuthenticationTokenService } from './services/two-factor-authentication.service';
+import { SecondFactorModule } from '../2fa/second-factor.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: PasswordResetToken.name, schema: PasswordResetTokenSchema },
       { name: VerificationToken.name, schema: VerificationTokenSchema },
-      {
-        name: twoFactorAuthenticationToken.name,
-        schema: TwoFactorAuthenticationTokenSchema,
-      },
     ]),
     BullModule.registerQueue(
       {
@@ -67,6 +60,7 @@ import { TwoFactorAuthenticationTokenService } from './services/two-factor-authe
     forwardRef(() => AppModule),
     UserModule,
     BruteForceModule,
+    forwardRef(() => SecondFactorModule),
   ],
   providers: [
     AuthenticationService,
@@ -82,12 +76,8 @@ import { TwoFactorAuthenticationTokenService } from './services/two-factor-authe
     ResetPasswordFeature,
     SignInFeature,
     MeFeature,
-    GenerateTwoFactorSecretFeature,
-    GenerateTwoFactorTokenFeature,
-    SignInTwoFactorTokenFeature,
     UserUpdatedListener,
     EmailIsUnique,
-    TwoFactorAuthenticationTokenService,
   ],
   controllers: [AuthenticationController],
 })

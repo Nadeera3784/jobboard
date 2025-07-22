@@ -38,13 +38,11 @@ export class DiscoveryService {
     );
   }
 
-
   async providers(
     filter: (component: DiscoveredClass) => boolean,
   ): Promise<DiscoveredClass[]> {
     return (await this.discoveredProviders).filter((x) => filter(x));
   }
-
 
   async methodsAndControllerMethodsWithMetaAtKey(
     metaKey: string,
@@ -86,7 +84,6 @@ export class DiscoveryService {
   ): Promise<DiscoveredClass[]> {
     return (await this.discoveredControllers).filter((x) => filter(x));
   }
-
 
   async controllersWithMetaAtKey<T>(
     metaKey: string,
@@ -186,7 +183,7 @@ export class DiscoveryService {
       return Reflect.getMetadata(key, component.injectType);
     }
   }
-  
+
   private withMetaAtKey = (key: string) => (component: DiscoveredClass) => {
     const metaTargets = [
       component.instance ? component.instance.constructor : null,

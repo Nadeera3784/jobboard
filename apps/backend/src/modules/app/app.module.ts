@@ -22,6 +22,7 @@ import { CommandModule } from '../core/command';
 import { FileSystemModule } from '../core/file-system';
 import { StatusModule } from '../core/status';
 import { AnalyticModule } from '../analytic/analytic.module';
+import { SecondFactorModule } from '../2fa/second-factor.module';
 
 @Module({
   imports: [
@@ -100,6 +101,7 @@ import { AnalyticModule } from '../analytic/analytic.module';
     CommandModule,
     EventDispatcherModule,
     AnalyticModule,
+    SecondFactorModule,
   ],
   controllers: [AppController],
   providers: [AppService, CacheService, EmailService, GetSharedFiltersFeature],

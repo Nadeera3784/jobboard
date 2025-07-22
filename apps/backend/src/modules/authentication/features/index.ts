@@ -4,6 +4,3 @@ export * from './reset-password.feature';
 export * from './sign-in.feature';
 export * from './sign-up.feature';
 export * from './verify-email.feature';
-export * from './generate-two-factor-secret.feature';
-export * from './generate-two-factor-token.feature';
-export * from './sign-in-two-factor-token.feature';

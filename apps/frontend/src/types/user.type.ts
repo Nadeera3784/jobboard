@@ -70,4 +70,5 @@ export type UpdateUserSettingsType = {
   candidates?: boolean;
   offers?: boolean;
   pushNotifications?: string;
+  is_two_factor_authentication_enabled?: boolean;
 };

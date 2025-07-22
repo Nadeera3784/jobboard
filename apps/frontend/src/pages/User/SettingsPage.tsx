@@ -29,17 +29,14 @@ export const SettingsPage = () => {
       let response;
 
       if (imageFile || resumeFile) {
-        // Use FormData for file uploads
         const data = new FormData();
 
-        // Append all form fields
         Object.entries(formData).forEach(([key, value]) => {
           if (value !== undefined && value !== null) {
             data.append(key, value.toString());
           }
         });
 
-        // Append files if present
         if (imageFile) {
           data.append('image', imageFile);
         }
@@ -57,7 +54,6 @@ export const SettingsPage = () => {
           },
         );
       } else {
-        // Use JSON for text-only updates
         response = await Intercom.put(
           `${AppConstants.API_URL}/users/user-settings`,
           formData,

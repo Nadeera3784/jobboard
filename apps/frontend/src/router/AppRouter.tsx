@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { LoginPage } from '../pages/Auth/LoginPage';
+import { TwoFactorAuthPage } from '../pages/Auth/TwoFactorAuthPage';
 import { HomePage } from '../pages/App/HomePage';
 import { AppLayout } from '../layouts/AppLayout';
 import { RegisterPage } from '../pages/Auth/RegisterPage';
@@ -35,6 +36,7 @@ export const AppRouter = () => {
       <Routes>
         <Route path="/auth" element={<AuthLayout />}>
           <Route index element={<LoginPage />} />
+          <Route path="2fa" element={<TwoFactorAuthPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="forgot-password" element={<ForgotPasswordPage />} />
         </Route>

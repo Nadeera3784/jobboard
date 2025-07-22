@@ -29,6 +29,7 @@ const settingsSchema = z.object({
   candidates: z.boolean().optional(),
   offers: z.boolean().optional(),
   pushNotifications: z.enum(['everything', 'email', 'nothing']).optional(),
+  is_two_factor_authentication_enabled: z.boolean().optional(),
 });
 
 type SettingsFormData = z.infer<typeof settingsSchema>;
@@ -76,13 +77,14 @@ export const SettingsForm = ({
       pushNotifications:
         (user?.pushNotifications as 'everything' | 'email' | 'nothing') ||
         'email',
+      is_two_factor_authentication_enabled:
+        user?.is_two_factor_authentication_enabled || false,
     },
   });
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      // Validate file type
       if (
         !['image/png', 'image/jpeg', 'image/jpg', 'image/webp'].includes(
           file.type,
@@ -92,7 +94,6 @@ export const SettingsForm = ({
         return;
       }
 
-      // Validate file size (1MB)
       if (file.size > 1000000) {
         alert('File size must be less than 1MB');
         return;
@@ -100,7 +101,6 @@ export const SettingsForm = ({
 
       setSelectedImageFile(file);
 
-      // Create preview
       const reader = new FileReader();
       reader.onload = e => {
         setImagePreview(e.target?.result as string);
@@ -122,7 +122,6 @@ export const SettingsForm = ({
         return;
       }
 
-      // Validate file size (5MB)
       if (file.size > 5000000) {
         alert('Resume file size must be less than 5MB');
         return;
@@ -151,6 +150,8 @@ export const SettingsForm = ({
       candidates: data.candidates,
       offers: data.offers,
       pushNotifications: data.pushNotifications,
+      is_two_factor_authentication_enabled:
+        data.is_two_factor_authentication_enabled,
     };
     await onSubmit(
       updateData,
@@ -508,6 +509,67 @@ export const SettingsForm = ({
                     </FormItem>
                   )}
                 />
+              </div>
+            </div>
+          </div>
+
+          <div className="divide-y divide-gray-200 pt-8 space-y-6 sm:pt-10 sm:space-y-5">
+            <div>
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                Security
+              </h3>
+              <p className="mt-1 max-w-2xl text-sm text-gray-500">
+                Manage your account security settings.
+              </p>
+            </div>
+            <div className="space-y-6 sm:space-y-5 divide-y divide-gray-200">
+              <div className="pt-6 sm:pt-5">
+                <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start">
+                  <div>
+                    <div className="text-base font-medium text-gray-900 sm:text-sm sm:text-gray-700">
+                      Two-Factor Authentication
+                    </div>
+                    <p className="mt-1 text-sm text-gray-500">
+                      Add an extra layer of security to your account
+                    </p>
+                  </div>
+                  <div className="mt-4 sm:mt-0 sm:col-span-2">
+                    <div className="max-w-lg">
+                      <div className="relative flex items-start">
+                        <div className="flex items-center h-5">
+                          <FormField
+                            control={form.control}
+                            name="is_two_factor_authentication_enabled"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormControl>
+                                  <input
+                                    type="checkbox"
+                                    checked={field.value}
+                                    onChange={field.onChange}
+                                    className="focus:ring-black h-4 w-4 text-black border-gray-300 rounded"
+                                  />
+                                </FormControl>
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <div className="ml-3 text-sm">
+                          <label
+                            htmlFor="is_two_factor_authentication_enabled"
+                            className="font-medium text-gray-700"
+                          >
+                            Enable Two-Factor Authentication
+                          </label>
+                          <p className="text-gray-500">
+                            Require a verification code from your email in
+                            addition to your password when signing in.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

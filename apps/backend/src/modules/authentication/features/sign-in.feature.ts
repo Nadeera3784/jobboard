@@ -21,6 +21,7 @@ import { RequestParser } from '../../app/services/request-parser.service';
 import { UserLoginEvent } from '../events/user-login-event';
 import { USER_LOGIN_EVENT } from '../constants';
 import { ObjectId } from 'mongoose';
+import { SecondFactorService } from '../../2fa/services';
 
 @Injectable()
 export class SignInFeature extends Feature {
@@ -29,6 +30,7 @@ export class SignInFeature extends Feature {
     private readonly jwtService: JwtService,
     private readonly tokenService: VerificationTokenService,
     private readonly suspiciousActivityService: SuspiciousActivityService,
+    private readonly secondFactorService: SecondFactorService,
     private eventDispatcher: EventDispatcher,
   ) {
     super();
@@ -68,12 +70,26 @@ export class SignInFeature extends Feature {
       this.eventDispatcher.dispatch(USER_LOGIN_EVENT, loginEvent);
 
       if (isValidPassword) {
-        /*
-        TODO:add two factor authentication reponse
-        if(user.is_two_factor_authentication_enabled){
+        if (user.is_two_factor_authentication_enabled) {
+          // Generate and send 2FA code
+          await this.secondFactorService.generate(user);
 
+          // Create a temporary session identifier for 2FA validation
+          const tempPayload = { userId: user._id.toString(), temp: true };
+          const tempToken = this.jwtService.sign(tempPayload, {
+            expiresIn: '10m',
+          });
+
+          return this.responseSuccess(
+            HttpStatus.OK,
+            'Two-factor authentication required',
+            {
+              requires_2fa: true,
+              temp_token: tempToken,
+              message: 'Please check your email for the verification code',
+            },
+          );
         }
-        */
 
         const payload = { id: user._id };
 

@@ -91,4 +91,14 @@ export class UpdateUserSettingsDto {
   @IsOptional()
   @IsString()
   pushNotifications?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value === 'true';
+    }
+    return value;
+  })
+  is_two_factor_authentication_enabled?: boolean;
 }

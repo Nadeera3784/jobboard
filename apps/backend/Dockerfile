@@ -1,4 +1,4 @@
-FROM node:20.12.1
+FROM node:22.17.0
 
 WORKDIR /apps/backend
 

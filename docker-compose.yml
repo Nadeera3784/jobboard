@@ -11,31 +11,31 @@ volumes:
 
 services:
 
-  # backend:
-  #   build:
-  #     context: ./apps/backend
-  #     dockerfile: Dockerfile
-  #   container_name: backend
-  #   ports:
-  #     - '3000:3000'
-  #   volumes:
-  #     - ./apps/backend:/apps/backend   
-  #     - /apps/backend/node_modules
-  #   networks:
-  #     - jobboard-network
+  backend:
+    build:
+      context: ./apps/backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./apps/backend:/apps/backend   
+      - /apps/backend/node_modules
+    networks:
+      - jobboard-network
 
-  # frontend:
-  #   build:
-  #     context: ./apps/frontend
-  #     dockerfile: Dockerfile
-  #   container_name: frontend
-  #   ports:
-  #     - '5173:5173'
-  #   volumes:
-  #     - ./apps/frontend:/apps/frontend   
-  #     - /apps/frontend/node_modules
-  #   networks:
-  #     - jobboard-network
+  frontend:
+    build:
+      context: ./apps/frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - '5173:5173'
+    volumes:
+      - ./apps/frontend:/apps/frontend   
+      - /apps/frontend/node_modules
+    networks:
+      - jobboard-network
 
   redis:
     build:
